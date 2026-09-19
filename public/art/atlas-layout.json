@@ -1,0 +1,128 @@
+{
+  "width": 1774,
+  "height": 887,
+  "columns": 4,
+  "rows": 2,
+  "sprites": [
+    {
+      "id": "bolt",
+      "cellBounds": [
+        0,
+        0,
+        444,
+        444
+      ],
+      "visibleBoundsAlpha16": [
+        57,
+        39,
+        376,
+        436
+      ]
+    },
+    {
+      "id": "stone",
+      "cellBounds": [
+        444,
+        0,
+        887,
+        444
+      ],
+      "visibleBoundsAlpha16": [
+        491,
+        79,
+        837,
+        434
+      ]
+    },
+    {
+      "id": "net",
+      "cellBounds": [
+        887,
+        0,
+        1330,
+        444
+      ],
+      "visibleBoundsAlpha16": [
+        934,
+        31,
+        1255,
+        436
+      ]
+    },
+    {
+      "id": "trading",
+      "cellBounds": [
+        1330,
+        0,
+        1774,
+        444
+      ],
+      "visibleBoundsAlpha16": [
+        1367,
+        38,
+        1746,
+        424
+      ]
+    },
+    {
+      "id": "rat",
+      "cellBounds": [
+        0,
+        444,
+        444,
+        887
+      ],
+      "visibleBoundsAlpha16": [
+        55,
+        534,
+        417,
+        802
+      ]
+    },
+    {
+      "id": "weasel",
+      "cellBounds": [
+        444,
+        444,
+        887,
+        887
+      ],
+      "visibleBoundsAlpha16": [
+        502,
+        564,
+        843,
+        809
+      ]
+    },
+    {
+      "id": "boar",
+      "cellBounds": [
+        887,
+        444,
+        1330,
+        887
+      ],
+      "visibleBoundsAlpha16": [
+        949,
+        493,
+        1278,
+        821
+      ]
+    },
+    {
+      "id": "badger",
+      "cellBounds": [
+        1330,
+        444,
+        1774,
+        887
+      ],
+      "visibleBoundsAlpha16": [
+        1343,
+        471,
+        1749,
+        827
+      ]
+    }
+  ]
+}

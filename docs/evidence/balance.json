@@ -1,0 +1,111 @@
+{
+  "generatedOn": "2026-09-20",
+  "level": "lantern-pass",
+  "method": {
+    "seed": 42,
+    "fixedStepSeconds": 0.03333333333333333,
+    "durationUnit": "simulation combat seconds from GameState.clock",
+    "durationNote": "Preparation time is intentionally not included; player planning brings the combat duration into the 5–8 minute encounter target.",
+    "reproduction": "npm test -- --reporter=verbose",
+    "strategyTest": "tests/lantern-pass-strategy.test.ts"
+  },
+  "before": {
+    "label": "six-wave baseline",
+    "waveCount": 6,
+    "economy": {
+      "lodgeCost": 70,
+      "lodgeUpgradeCost": 75,
+      "lodgeIncomeLevel1": 10,
+      "lodgeIncomeLevel2": 18
+    },
+    "spendingLed": {
+      "card": "reach",
+      "phase": "won",
+      "durationSeconds": 161.46666666666007,
+      "livesRemaining": 12,
+      "kills": 102,
+      "coins": 537,
+      "totalInterest": 77,
+      "totalTrade": 0
+    },
+    "twoLodgeInvestment": {
+      "card": "supply",
+      "phase": "won",
+      "durationSeconds": 194.0333333333249,
+      "livesRemaining": 5,
+      "kills": 95,
+      "coins": 685,
+      "totalInterest": 75,
+      "totalTrade": 120
+    }
+  },
+  "after": {
+    "label": "eight-wave tuned encounter",
+    "waveCount": 8,
+    "economy": {
+      "lodgeCost": 55,
+      "lodgeUpgradeCost": 40,
+      "lodgeIncomeLevel1": 12,
+      "lodgeIncomeLevel2": 22
+    },
+    "spendingLed": {
+      "card": "reach",
+      "phase": "won",
+      "durationSeconds": 257.0666666666555,
+      "livesRemaining": 12,
+      "kills": 178,
+      "coins": 1167,
+      "totalInterest": 117,
+      "totalTrade": 0
+    },
+    "oneLodgeInvestment": {
+      "card": "supply",
+      "phase": "won",
+      "durationSeconds": 262.86666666666014,
+      "livesRemaining": 12,
+      "kills": 178,
+      "coins": 1256,
+      "totalInterest": 140,
+      "totalTrade": 96
+    },
+    "twoLodgeInvestment": {
+      "card": "supply",
+      "phase": "won",
+      "durationSeconds": 289.4000000000146,
+      "livesRemaining": 5,
+      "kills": 171,
+      "coins": 1368,
+      "totalInterest": 131,
+      "totalTrade": 192
+    }
+  },
+  "wavePlan": [
+    { "title": "Footsteps in the rain", "reward": 25, "groups": [{ "kind": "raider", "count": 9, "gap": 2.2 }] },
+    { "title": "A quicker shadow", "reward": 28, "groups": [{ "kind": "raider", "count": 8, "gap": 1.8 }, { "kind": "runner", "count": 5, "gap": 1.6 }] },
+    { "title": "Iron on the trail", "reward": 30, "groups": [{ "kind": "armored", "count": 4, "gap": 3 }, { "kind": "raider", "count": 10, "gap": 1.4 }] },
+    { "title": "The long column", "reward": 34, "groups": [{ "kind": "raider", "count": 16, "gap": 1.1 }, { "kind": "runner", "count": 8, "gap": 1.1 }] },
+    { "title": "Hold the crossing", "reward": 38, "groups": [{ "kind": "armored", "count": 9, "gap": 1.7 }, { "kind": "runner", "count": 10, "gap": 1.1 }] },
+    { "title": "The Roadwarden arrives", "reward": 45, "groups": [{ "kind": "armored", "count": 6, "gap": 2 }, { "kind": "boss", "count": 1, "gap": 4 }, { "kind": "raider", "count": 16, "gap": 1.2 }] },
+    { "title": "Briar and iron", "reward": 50, "groups": [{ "kind": "armored", "count": 10, "gap": 1.4 }, { "kind": "runner", "count": 12, "gap": 0.9 }, { "kind": "raider", "count": 12, "gap": 0.9 }] },
+    { "title": "The lantern line", "reward": 65, "groups": [{ "kind": "armored", "count": 8, "gap": 1.8 }, { "kind": "runner", "count": 12, "gap": 0.9 }, { "kind": "boss", "count": 2, "gap": 3.5 }, { "kind": "raider", "count": 20, "gap": 0.9 }] }
+  ],
+  "payback": {
+    "oneLodge": {
+      "totalStructureCost": 55,
+      "grossLevel1IncomeAcrossEightWaves": 96,
+      "grossSurplusBeforeInterestAndDefense": 41,
+      "payoutsToRecoverBaseCost": 5
+    },
+    "twoLodges": {
+      "totalStructureCost": 110,
+      "grossLevel1IncomeAcrossEightWaves": 192,
+      "grossSurplusBeforeInterestAndDefense": 82,
+      "payoutsToRecoverBaseCost": 5
+    },
+    "upgrade": {
+      "incrementalCost": 40,
+      "incrementalIncomePerWave": 10,
+      "fullEightWaveIncrementalPaybackRequiresFourPayouts": true
+    }
+  }
+}

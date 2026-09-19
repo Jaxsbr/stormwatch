@@ -1,0 +1,52 @@
+[
+  {
+    "file": "public/art/title-background.webp",
+    "width": 1672,
+    "height": 941,
+    "alpha": false,
+    "bytes": 212612,
+    "sha256": "4ce05791ff4d4df747d2273a0f592928c85b3b87345ea8c0a52bda5ac1d5fee7",
+    "source": "Native image generation for Stormwatch; original retained locally",
+    "encoding": "WebP quality 88"
+  },
+  {
+    "file": "public/art/sprite-atlas.webp",
+    "width": 1774,
+    "height": 887,
+    "alpha": true,
+    "bytes": 1182472,
+    "sha256": "762334fcc6526db8afb7acae65993753c84cee337cb2b5f69c42410f94cb425e",
+    "source": "Native image generation for Stormwatch; original retained locally",
+    "encoding": "lossless WebP"
+  },
+  {
+    "file": "public/art/expedition-map.webp",
+    "width": 1659,
+    "height": 948,
+    "alpha": false,
+    "bytes": 462484,
+    "sha256": "8fc6425a87de63f44a77d903dcce5771c3e5e3f77b45ac4de73e03c5d83ae692",
+    "source": "Native image generation for Stormwatch; original retained locally",
+    "encoding": "WebP quality 88"
+  },
+  {
+    "file": "public/art/ground.webp",
+    "width": 1254,
+    "height": 1254,
+    "alpha": false,
+    "bytes": 291132,
+    "sha256": "51eec1d43d6787495623652537723fb349145ec62705152bba8be1e34d345ed5",
+    "source": "Native image generation for Stormwatch; original retained locally",
+    "encoding": "WebP quality 88"
+  },
+  {
+    "file": "public/art/forest-prop.webp",
+    "width": 1254,
+    "height": 1254,
+    "alpha": true,
+    "bytes": 871122,
+    "sha256": "f2fac43ef6e98f26be1d2b6364a04a49058a37a4808949a53aaeb65c3baa721f",
+    "source": "Native image generation for Stormwatch; original retained locally",
+    "encoding": "lossless WebP"
+  }
+]
