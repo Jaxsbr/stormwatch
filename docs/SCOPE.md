@@ -1,6 +1,6 @@
-# Stormwatch — proposed MVP and acceptance contract
+# Stormwatch — approved MVP and acceptance contract
 
-Status: confirmed by the owner on 20 September 2026; implementation authorized. Working title and proposed personal repository name: Stormwatch / `Jaxsbr/stormwatch`. Name availability has not been verified; an unavailable name requires an agreed replacement. This document supersedes provisional MVP recommendations in RESEARCH.md. DECISIONS.md records the owner's decisions.
+Status: confirmed by the owner on 20 September 2026; implementation authorized. Approved title and personal repository name: Stormwatch / `Jaxsbr/stormwatch`. This document records the confirmed product decisions; architectural records live in `decisions/`.
 
 ## Product promise
 

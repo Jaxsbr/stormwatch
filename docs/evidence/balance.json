@@ -79,6 +79,31 @@
       "totalTrade": 192
     }
   },
+  "secondEncounter": {
+    "level": "rainstone-crossing",
+    "healthScale": 1.12,
+    "strategyTest": "tests/rainstone-strategy.test.ts",
+    "spendingLed": {
+      "card": "reach",
+      "phase": "won",
+      "durationSeconds": 257.79999999998944,
+      "livesRemaining": 12,
+      "kills": 152,
+      "coins": 1083,
+      "totalInterest": 128,
+      "totalTrade": 0
+    },
+    "oneLodgeInvestment": {
+      "card": "supply",
+      "phase": "won",
+      "durationSeconds": 277.8666666666721,
+      "livesRemaining": 12,
+      "kills": 152,
+      "coins": 1167,
+      "totalInterest": 146,
+      "totalTrade": 96
+    }
+  },
   "wavePlan": [
     { "title": "Footsteps in the rain", "reward": 25, "groups": [{ "kind": "raider", "count": 9, "gap": 2.2 }] },
     { "title": "A quicker shadow", "reward": 28, "groups": [{ "kind": "raider", "count": 8, "gap": 1.8 }, { "kind": "runner", "count": 5, "gap": 1.6 }] },

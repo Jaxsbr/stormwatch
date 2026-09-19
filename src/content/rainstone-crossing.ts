@@ -1,11 +1,11 @@
-import type { LevelDef } from '../sim/types';
+import type { LevelDef } from "../sim/types";
 
 export const rainstoneCrossing: LevelDef = {
-  id: 'rainstone-crossing',
-  name: 'Rainstone Crossing',
-  subtitle: '02 / THE RIVER WATCH',
+  id: "rainstone-crossing",
+  name: "Rainstone Crossing",
+  subtitle: "02 / THE RIVER WATCH",
   description:
-    'The river bends around the old stone crossing where the village keeps its river watch. Hold the causeway through the storm — the fields on both banks are the last shelter before the deep water.',
+    "The river bends around the old stone crossing where the village keeps its river watch. Hold the causeway through the storm — the fields on both banks are the last shelter before the deep water.",
   width: 12,
   depth: 8,
   path: [
@@ -28,69 +28,69 @@ export const rainstoneCrossing: LevelDef = {
   ],
   startCoins: 185,
   healthScale: 1.12,
-  accent: '#91b9ac',
+  accent: "#91b9ac",
   waves: [
     {
-      title: 'First Drizzle',
+      title: "First Drizzle",
       reward: 28,
-      groups: [{ kind: 'raider', count: 10, gap: 2.2 }],
+      groups: [{ kind: "raider", count: 10, gap: 2.2 }],
     },
     {
-      title: 'Rising Weeds',
+      title: "Rising Weeds",
       reward: 30,
       groups: [
-        { kind: 'raider', count: 7, gap: 1.7 },
-        { kind: 'runner', count: 6, gap: 1.8 },
+        { kind: "raider", count: 7, gap: 1.7 },
+        { kind: "runner", count: 6, gap: 1.8 },
       ],
     },
     {
-      title: 'Low Water Drums',
+      title: "Low Water Drums",
       reward: 34,
       groups: [
-        { kind: 'armored', count: 5, gap: 2.4 },
-        { kind: 'raider', count: 10, gap: 1.4 },
+        { kind: "armored", count: 5, gap: 2.4 },
+        { kind: "raider", count: 10, gap: 1.4 },
       ],
     },
     {
-      title: 'Mud Runners',
+      title: "Mud Runners",
       reward: 38,
       groups: [
-        { kind: 'runner', count: 12, gap: 1.4 },
-        { kind: 'raider', count: 10, gap: 1.5 },
+        { kind: "runner", count: 12, gap: 1.4 },
+        { kind: "raider", count: 10, gap: 1.5 },
       ],
     },
     {
-      title: 'Falling Rain',
+      title: "Falling Rain",
       reward: 42,
       groups: [
-        { kind: 'armored', count: 8, gap: 2 },
-        { kind: 'runner', count: 10, gap: 1.2 },
+        { kind: "armored", count: 8, gap: 2 },
+        { kind: "runner", count: 10, gap: 1.2 },
       ],
     },
     {
-      title: 'River Swell',
+      title: "River Swell",
       reward: 48,
       groups: [
-        { kind: 'armored', count: 5, gap: 2 },
-        { kind: 'boss', count: 1, gap: 4 },
-        { kind: 'raider', count: 12, gap: 1.3 },
+        { kind: "armored", count: 5, gap: 2 },
+        { kind: "boss", count: 1, gap: 4 },
+        { kind: "raider", count: 12, gap: 1.3 },
       ],
     },
     {
-      title: 'Stonefall Thunder',
+      title: "Stonefall Thunder",
       reward: 55,
       groups: [
-        { kind: 'armored', count: 10, gap: 1.5 },
-        { kind: 'runner', count: 16, gap: 1 },
+        { kind: "armored", count: 10, gap: 1.5 },
+        { kind: "runner", count: 16, gap: 1 },
       ],
     },
     {
-      title: 'The Long Downpour',
+      title: "The Long Downpour",
       reward: 70,
       groups: [
-        { kind: 'armored', count: 8, gap: 1.8 },
-        { kind: 'boss', count: 2, gap: 4 },
-        { kind: 'raider', count: 20, gap: 1.2 },
+        { kind: "armored", count: 8, gap: 1.8 },
+        { kind: "boss", count: 2, gap: 4 },
+        { kind: "raider", count: 20, gap: 1.2 },
       ],
     },
   ],

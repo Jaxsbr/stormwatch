@@ -1,7 +1,7 @@
 // Pure persistence adapter for Stormwatch saves.
 // No dependencies, no DOM access — the caller owns localStorage.
 
-export const SAVE_KEY = 'stormwatch.save.v1';
+export const SAVE_KEY = "stormwatch.save.v1";
 
 export interface SaveData {
   version: 1;
@@ -13,33 +13,33 @@ export interface SaveData {
   tutorialSeen: boolean;
 }
 
-const LEVEL_IDS: readonly string[] = ['lantern-pass', 'rainstone-crossing'];
-const UNLOCK_IDS: readonly string[] = ['thrift'];
+const LEVEL_IDS: readonly string[] = ["lantern-pass", "rainstone-crossing"];
+const UNLOCK_IDS: readonly string[] = ["thrift"];
 
 const DEFAULT_MUSIC = 0.45;
 const DEFAULT_EFFECTS = 0.6;
 
 function isRecord(value: unknown): value is Record<string, unknown> {
-  return typeof value === 'object' && value !== null && !Array.isArray(value);
+  return typeof value === "object" && value !== null && !Array.isArray(value);
 }
 
 function hasDangerousKey(key: string): boolean {
   // Reject pollution vectors ("__proto__", "constructor", "prototype")
   // and anything smuggled through a null byte.
   return (
-    key === '__proto__' ||
-    key === 'constructor' ||
-    key === 'prototype' ||
-    key.includes('\0')
+    key === "__proto__" ||
+    key === "constructor" ||
+    key === "prototype" ||
+    key.includes("\0")
   );
 }
 
 function toStrictBoolean(value: unknown, fallback: boolean): boolean {
-  return typeof value === 'boolean' ? value : fallback;
+  return typeof value === "boolean" ? value : fallback;
 }
 
 function toVolume(value: unknown, fallback: number): number {
-  if (typeof value !== 'number' || !Number.isFinite(value)) {
+  if (typeof value !== "number" || !Number.isFinite(value)) {
     return fallback;
   }
   return Math.min(1, Math.max(0, value));
@@ -47,7 +47,7 @@ function toVolume(value: unknown, fallback: number): number {
 
 function toStarCount(value: unknown): number | null {
   if (
-    typeof value !== 'number' ||
+    typeof value !== "number" ||
     !Number.isFinite(value) ||
     !Number.isInteger(value)
   ) {
@@ -64,7 +64,7 @@ function toUnlockedList(value: unknown): string[] {
   const out: string[] = [];
   for (const entry of value) {
     if (
-      typeof entry === 'string' &&
+      typeof entry === "string" &&
       UNLOCK_IDS.includes(entry) &&
       !seen.has(entry)
     ) {
@@ -83,7 +83,7 @@ function toStarsRecord(value: unknown): Record<string, number> {
   for (const key of Object.keys(value)) {
     // Object.keys always yields strings; guard keeps the whitelist check
     // strict (no NaN / type-confusion slip-through).
-    if (typeof key !== 'string' || hasDangerousKey(key)) {
+    if (typeof key !== "string" || hasDangerousKey(key)) {
       continue;
     }
     if (!LEVEL_IDS.includes(key)) {
@@ -103,8 +103,8 @@ function deriveUnlocked(
 ): string[] {
   const out = new Set(storedUnlocked);
   // lantern-pass with any stars always implies the thrift unlock.
-  if ((stars['lantern-pass'] ?? 0) > 0) {
-    out.add('thrift');
+  if ((stars["lantern-pass"] ?? 0) > 0) {
+    out.add("thrift");
   }
   return Array.from(out);
 }
@@ -166,7 +166,7 @@ export function recordVictory(
   stars: number,
 ): SaveData {
   // Unknown (or non-string) level id: no change at all.
-  if (typeof levelId !== 'string' || !LEVEL_IDS.includes(levelId)) {
+  if (typeof levelId !== "string" || !LEVEL_IDS.includes(levelId)) {
     return save;
   }
 
@@ -185,11 +185,11 @@ export function recordVictory(
   const nextUnlocked = [...save.unlocked];
   // First lantern-pass win unlocks thrift.
   if (
-    levelId === 'lantern-pass' &&
-    nextStars['lantern-pass'] > 0 &&
-    !nextUnlocked.includes('thrift')
+    levelId === "lantern-pass" &&
+    nextStars["lantern-pass"] > 0 &&
+    !nextUnlocked.includes("thrift")
   ) {
-    nextUnlocked.push('thrift');
+    nextUnlocked.push("thrift");
   }
 
   return {

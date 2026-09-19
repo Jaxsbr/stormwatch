@@ -13,8 +13,16 @@
 - SHA-256: `379f3f2c6f967afaf4f2bd95027cf123cf6770b8d1f35acea0eb32fbeb6798c2`
 - Size: 2,086,369 bytes. MP3, stereo, 44,100 Hz, approximately 256 kb/s. Probed duration approximately 65.071 seconds (MP3 bitrate estimate).
 
-Selection is based on the author-provided orchestral adventure/violin/drum description and loop designation. Full decoding with FFmpeg succeeded. Measured mean level is −13.9 dBFS and peak is −0.1 dBFS. These are technical checks, **not a listening review**. Audible instrumentation, hopeful tone, seamless loop transition, repetition fatigue, and the final music/effects mix remain unverified until listened to in the running game. The source is a real recorded orchestral music asset, not a generated-tone substitute. Playback should begin after a user gesture, respect volume/mute, and pause with gameplay.
+Selection is based on the author-provided orchestral adventure/violin/drum description and loop designation. Full decoding with FFmpeg succeeded. Measured mean level is −13.9 dBFS and peak is −0.1 dBFS. These are technical checks, **not a listening review**. Audible instrumentation, hopeful tone, seamless loop transition, repetition fatigue, and the final music/effects mix remain unverified until listened to in the running game. The author supplies it as an orchestral music loop; its instrumentation has not been independently verified by listening. Playback should begin after a user gesture, respect volume/mute, and pause with gameplay.
 
 ## Generated illustrations
 
-The title scene and entity atlas were created for Stormwatch with OpenAI's native image generation on 20 September 2026. No third-party reference images were supplied. Runtime files are `public/art/title-background.png` and `public/art/sprite-atlas.png`; their original PNGs, prompt specifications, dimensions, hashes, and review observations are retained in the local asset source directory. Do not describe these as third-party CC0 works; the CC0 dedication above applies only to TAD's music.
+The title scene, entity atlas, expedition map, ground texture and forest prop were created for Stormwatch with OpenAI native image generation on 20 September 2026. No third-party reference images were supplied. Runtime files are the five WebP images in `public/art/`. Their dimensions, encoding and SHA-256 hashes are in `public/art/manifest.json`; sprite bounds are in `atlas-layout.json`. Full-resolution PNGs are retained locally, not required to build. See [production guidance](ASSETS.md) for review and prompt specifications. These are generated project assets, not third-party CC0 works; the CC0 dedication above applies only to TAD's music.
+
+## Fonts
+
+Cormorant Garamond and DM Sans were obtained from the official Google Fonts distribution and are served locally. Their SIL Open Font License notices are committed in `public/fonts/cormorantgaramond-OFL.txt` and `public/fonts/dmsans-OFL.txt`. Font files retain the downloaded TrueType bytes; filenames and CSS declare their `.ttf` format. No external font request is made at runtime.
+
+## Sound effects
+
+UI, build, combat, economy and result cues are synthesized by project code using Web Audio oscillators. They do not use third-party sample packs. They supplement the licensed music track.

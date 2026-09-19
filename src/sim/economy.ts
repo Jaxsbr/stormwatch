@@ -32,7 +32,7 @@ export function interestFor(balance: number): number {
 // Trade buildings pay per level: level 1 -> 12 coins, level >= 2 -> 22 coins.
 // All other kinds pay zero.
 function tradeForStructure(s: StructureIncome): number {
-  if (s.kind !== 'trade') return 0;
+  if (s.kind !== "trade") return 0;
   const level = nonnegInt(s.level);
   return level >= 2 ? 22 : level === 1 ? 12 : 0;
 }
