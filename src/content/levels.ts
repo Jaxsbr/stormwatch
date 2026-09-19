@@ -1,2 +1,3 @@
 import { lanternPass } from './lantern-pass';
-export const LEVELS = [lanternPass];
+import { rainstoneCrossing } from './rainstone-crossing';
+export const LEVELS = [lanternPass, rainstoneCrossing];
