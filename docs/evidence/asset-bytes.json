@@ -1,0 +1,82 @@
+{
+  "date": "2026-09-20",
+  "publicAssetBytes": 6183531,
+  "productionDirectoryBytes": 6804826,
+  "fullAssetBudgetBytes": 20000000,
+  "withinFullAssetBudget": true,
+  "note": "Disk bytes, not a cold network transfer measurement. Production includes the optional QA entry.",
+  "files": [
+    {
+      "file": "public/art/atlas-layout.json",
+      "bytes": 1733
+    },
+    {
+      "file": "public/art/expedition-map.webp",
+      "bytes": 462484
+    },
+    {
+      "file": "public/art/forest-prop.webp",
+      "bytes": 871122
+    },
+    {
+      "file": "public/art/ground.webp",
+      "bytes": 291132
+    },
+    {
+      "file": "public/art/manifest.json",
+      "bytes": 1654
+    },
+    {
+      "file": "public/art/sprite-atlas.webp",
+      "bytes": 1182472
+    },
+    {
+      "file": "public/art/title-background.webp",
+      "bytes": 212612
+    },
+    {
+      "file": "public/audio/expedition.mp3",
+      "bytes": 2086369
+    },
+    {
+      "file": "public/fonts/cormorant-garamond-0.ttf",
+      "bytes": 290496
+    },
+    {
+      "file": "public/fonts/cormorant-garamond-1.ttf",
+      "bytes": 290392
+    },
+    {
+      "file": "public/fonts/cormorant-garamond-2.ttf",
+      "bytes": 289992
+    },
+    {
+      "file": "public/fonts/cormorantgaramond-OFL.txt",
+      "bytes": 4387
+    },
+    {
+      "file": "public/fonts/dm-sans-3.ttf",
+      "bytes": 48280
+    },
+    {
+      "file": "public/fonts/dm-sans-4.ttf",
+      "bytes": 48308
+    },
+    {
+      "file": "public/fonts/dm-sans-5.ttf",
+      "bytes": 48280
+    },
+    {
+      "file": "public/fonts/dm-sans-6.ttf",
+      "bytes": 48200
+    },
+    {
+      "file": "public/fonts/dmsans-OFL.txt",
+      "bytes": 4482
+    },
+    {
+      "file": "public/fonts/fonts.css",
+      "bytes": 1136
+    }
+  ]
+}
