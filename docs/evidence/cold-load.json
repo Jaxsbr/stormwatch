@@ -1,0 +1,58 @@
+{
+  "profile": "Server-enforced aggregate10Mbps body delivery and100ms request delay; HTTP loopback; no-store responses; fresh origin",
+  "instrumentation": "Title-ready waits for successful image decode, fonts and2animation frames. Resource Timing may omit coalesced image; server byte log is authoritative for transmitted files.",
+  "result": {
+    "titleReadyMs": 1552.1000000238419,
+    "titleImageDecoded": true,
+    "titleImageWidth": 1672,
+    "titleImageTimingIncluded": false,
+    "transferBytes": 1007384,
+    "resources": [
+      {
+        "file": "/fonts/fonts.css",
+        "durationMs": 116.40000009536743,
+        "transferBytes": 1436
+      },
+      {
+        "file": "/assets/game-BF9js7JM.js",
+        "durationMs": 166.60000002384186,
+        "transferBytes": 23347
+      },
+      {
+        "file": "/assets/game-9No0ZBzq.css",
+        "durationMs": 169.29999995231628,
+        "transferBytes": 23480
+      },
+      {
+        "file": "/assets/battlefield-BM9usv2S.js",
+        "durationMs": 766.7999999523163,
+        "transferBytes": 568526
+      },
+      {
+        "file": "/assets/load-report-D2Xzr5Zo.js",
+        "durationMs": 110.80000007152557,
+        "transferBytes": 1607
+      },
+      {
+        "file": "/fonts/dm-sans-6.ttf",
+        "durationMs": 254.89999997615814,
+        "transferBytes": 48500
+      },
+      {
+        "file": "/fonts/dm-sans-3.ttf",
+        "durationMs": 277.10000002384186,
+        "transferBytes": 48580
+      },
+      {
+        "file": "/fonts/cormorant-garamond-0.ttf",
+        "durationMs": 632.3999999761581,
+        "transferBytes": 290796
+      }
+    ],
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/152.0.0.0 Safari/537.36",
+    "viewport": [
+      1280,
+      720
+    ]
+  }
+}

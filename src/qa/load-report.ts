@@ -3,7 +3,7 @@ export async function showLoadReport() {
   if (!new URLSearchParams(location.search).has("measure")) return;
   const image = new Image();
   image.src = `${import.meta.env.BASE_URL}art/title-background.webp`;
-  await Promise.all([document.fonts.ready, image.decode().catch(() => {})]);
+  await Promise.all([document.fonts.ready, image.decode()]);
   await new Promise<void>((resolve) =>
     requestAnimationFrame(() => requestAnimationFrame(() => resolve())),
   );
@@ -14,6 +14,11 @@ export async function showLoadReport() {
     PerformanceNavigationTiming | undefined;
   const report = {
     titleReadyMs: performance.now(),
+    titleImageDecoded: image.complete && image.naturalWidth > 0,
+    titleImageWidth: image.naturalWidth,
+    titleImageTimingIncluded: resources.some((r) =>
+      r.name.includes("title-background.webp"),
+    ),
     transferBytes:
       resources.reduce((sum, r) => sum + r.transferSize, 0) +
       (navigation?.transferSize ?? 0),

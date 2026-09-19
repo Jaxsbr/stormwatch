@@ -1,6 +1,6 @@
 # Reference research and product decisions
 
-Research was performed before implementation on20 September2026. Direct observations, source claims and design interpretations are separated below. Reference screenshots remain in the local research folder; no reference-game artwork was incorporated into Stormwatch.
+Research was performed before implementation on20 September 2026. Direct observations, source claims and design interpretations are separated below. Reference screenshots remain in the local research folder; no reference-game artwork was incorporated into Stormwatch.
 
 | Reference | Directly inspected | Lessons retained |
 |---|---|---|

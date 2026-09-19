@@ -199,9 +199,14 @@ function updateHud() {
   const activeWave =
     s.phase === "wave" || (s.phase === "paused" && s.resumePhase === "wave");
   start.disabled = s.phase !== "preparation";
-  start.innerHTML = activeWave
-    ? `${s.enemies.length} on the trail`
-    : `Start wave ${s.wave + 1} <span>→</span>`;
+  start.innerHTML =
+    s.phase === "won"
+      ? "Watch complete"
+      : s.phase === "lost"
+        ? "Watch ended"
+        : activeWave
+          ? `${s.enemies.length} on the trail`
+          : `Start wave ${s.wave + 1} <span>→</span>`;
   const remaining = Math.max(0, Math.ceil(s.abilityReadyAt - s.clock));
   const rescue = document.querySelector<HTMLButtonElement>("#rescue")!;
   rescue.disabled = s.phase !== "wave" || remaining > 0;

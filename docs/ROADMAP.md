@@ -8,7 +8,7 @@ Playable two-encounter candidate with generated painterly art, hybrid Three.js b
 
 | Priority | Work | Depends on | Acceptance |
 |---|---|---|---|
-| P0 | Physical phone and audible mix sign-off | Candidate build, iPhone12-class Safari/Pixel6-class Chrome, listener | Essential taps on physical devices; 3 stress runs per device at p95≤35ms; music loop/mix heard and notes recorded |
+| P0 | Physical phone and audible mix sign-off | Candidate build, iPhone 12-class Safari/Pixel 6-class Chrome, listener | Essential taps on physical devices; 3 stress runs per device at p95≤35ms; music loop/mix heard and notes recorded |
 | P1 | Family playtest and economy tuning | Stable verified input/layout | Observe first-time play without coaching; 5–8min encounters including planning; spending and saving both understandable; document failures before adjusting costs |
 | P1 | Resolve any measured performance gaps | Raw benchmark and gameplay evidence | Desktop p95≤20ms and no attributable >100ms gameplay frame; retain before/after evidence |
 | P2 | More varied second encounter tactics | Playtest results | A distinct pressure pattern without extra rules unless justified; both reasonable strategies viable, no required grinding |
@@ -17,6 +17,8 @@ Playable two-encounter candidate with generated painterly art, hybrid Three.js b
 | P3 | Additional biome and enemy/tower behavior | Above foundations stable | New content follows documented extension process, has cohesive art, focused rule tests and budgets |
 
 ## Known limits
+
+Battlefield textures stream in after entering the scene; a dedicated asset-ready transition would improve slower connections.
 
 The first encounter is intentionally forgiving and can leave a large late wallet; deterministic viable strategies are not a substitute for children's playtesting. Combat simulation duration is roughly 4.3–4.6 minutes for tested lines, plus planning; the 5–8 minute target includes player preparation. The 2× convenience speed shortens wall time.
 

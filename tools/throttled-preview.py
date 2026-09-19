@@ -3,6 +3,7 @@ Usage: python3 tools/throttled-preview.py [dist-directory] [port]
 This models application-level delivery, not physical mobile radio/TCP conditions.
 """
 import http.server
+import json
 import os
 import sys
 import threading
@@ -14,11 +15,15 @@ next_slot = 0.0
 
 class ProfiledHandler(http.server.SimpleHTTPRequestHandler):
     def do_GET(self):
+        self.sent_body = 0
+        self.sent_headers = 0
         time.sleep(0.100)
         super().do_GET()
+        print(json.dumps({'path': self.path, 'bodyBytes': self.sent_body, 'headerBytes': self.sent_headers}), flush=True)
 
     def end_headers(self):
         self.send_header('Cache-Control', 'no-store')
+        self.sent_headers = sum(len(line) for line in self._headers_buffer) + 2
         super().end_headers()
 
     def copyfile(self, source, outputfile):
@@ -33,6 +38,7 @@ class ProfiledHandler(http.server.SimpleHTTPRequestHandler):
                 time.sleep(max(0, deadline - time.monotonic()))
                 outputfile.write(chunk)
                 outputfile.flush()
+                self.sent_body += len(chunk)
         except (BrokenPipeError, ConnectionResetError):
             pass
 

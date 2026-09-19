@@ -17,7 +17,7 @@ Initial menu captures used the browser's existing approximately 1480×1328 viewp
 7. Opened Settings during combat: gameplay paused behind dialog. Earlier mute remained enabled; unchecked it to restore default audible preference. Closing Settings resumed the live wave. Actual audible output was not assessed.
 8. Manually launched all eight waves. No further construction after the preparation for wave4; savings accumulated. Commander and all three ordinary enemy silhouettes appeared. Wave5 payout visibly totaled80=20interest+22trade+38reward, demonstrating the interest cap in the HUD.
 9. **Victory: three stars,12/12 village hearts,1512 remaining crowns,178 raiders stopped,125 total interest,166 trading income.** Unlock message named Rainstone Crossing and Careful carpenters. Final defensive layout: two level2 bolts, one level2 lobber, one level2 net, one level2 trading lodge. This is evidence of one viable savings/investment-led playthrough, not broad balance proof.
-10. Try again produced fresh preparation:220crowns,12/12hearts,wave0/8 and no structures. Return-to-map action showed a confirmation dialog explaining attempt reset; page was then deliberately reloaded, rather than confirming departure. Title showed Continue; expedition map retained three stars and enabled Rainstone Crossing. Rainstone briefing displayed the fourth, newly unlocked Careful carpenters card.
+10. Try again produced fresh preparation:220crowns,12/12 hearts,wave0/8 and no structures. Return-to-map action showed a confirmation dialog explaining attempt reset; page was then deliberately reloaded, rather than confirming departure. Title showed Continue; expedition map retained three stars and enabled Rainstone Crossing. Rainstone briefing displayed the fourth, newly unlocked Careful carpenters card.
 
 No browser console warnings/errors were captured at the mid-run check. This is a sampled check, not a guarantee about all later log output.
 
@@ -50,4 +50,38 @@ All paths are relative to the repository root:
 
 ## Remaining checks
 
-Defeat and assistance were not exercised in this pass. Rainstone was unlocked and its briefing checked, but its encounter was not played here. Physical touch targets and touch gestures, audible music/mix/loop transition, keyboard-only accessibility, malformed saves, physical mobile performance, and exhaustive occlusion/picking edge cases remain unverified by this report. The full win involved mouse clicks, including canvas placement and rescue targeting; viewport resizing alone does not verify touch.
+Defeat and assistance were not exercised in this pass. Rainstone was initially only unlocked and its briefing checked; the follow-up below completes its encounter. Physical touch targets and touch gestures, audible music/mix/loop transition, keyboard-only accessibility, malformed saves, physical mobile performance, and exhaustive occlusion/picking edge cases remain unverified by this report. The full win involved mouse clicks, including canvas placement and rescue targeting; viewport resizing alone does not verify touch.
+
+## Follow-up: refreshed production build and Rainstone completion
+
+After the separate benchmark completed, refreshed the production preview on the same origin so the earned unlock remained available. Used only the Chrome extension browser; other browser sessions were not touched. Exact Chrome version remains uncollected. No source edits or rebuilds occurred during this follow-up.
+
+### Responsive fix verification
+
+Selected a Bolt watch in Rainstone preparation and captured the rebuilt sidebar at 1280×720, 844×390 and 1024×768. At desktop and tablet sizes, payout, selected tower actions, rescue and wave-start controls all fit visibly. At 844×390, tower details scroll independently: scrolling the inspector exposes the complete Upgrade/Sell row while the payout and wave controls stay fixed. There is no longer any overlap. Cancel is visible in placement mode; its CSS minimum target is 44×44, although physical touch was not tested.
+
+- `captures/after-sidebar-desktop.png`
+- `captures/after-sidebar-phone.png`
+- `captures/after-sidebar-phone-actions.png`
+- `captures/after-sidebar-tablet.png`
+
+The paused live-wave button now retains the current trail count instead of announcing the next wave. After victory it reads **Watch complete**, replacing the nonexistent next-wave label. See `captures/after-paused-label.png` and the Rainstone victory capture below.
+
+### Spending-led second encounter
+
+Chose **Careful carpenters** and started Rainstone with 185 crowns. Placed and upgraded two Bolt watches before wave 1, spending 168 and retaining 17. Each bolt upgrade cost **44**, confirming the advertised 20% reduction from 55. Later Stone lobber upgrades cost 60 rather than 75; Bramble net upgrade cost 48 rather than 60.
+
+Manually launched all eight waves at 2× speed through visible buttons. Added an upgraded Stone lobber and net before wave 3, a third upgraded bolt before wave 4, and a second upgraded lobber before wave 5. Some attempted road placements were rejected; selecting clear adjacent terrain succeeded. No trading lodge was built and no rescue was used. Final line was **three level-2 bolts, two level-2 lobbers, one level-2 net**.
+
+**Result: three stars, 12/12 village hearts, 1,181 remaining crowns, 152 raiders stopped, 131 interest earned, zero trading income.** This gives one verified defense-spending playthrough alongside the earlier lodge-and-savings playthrough; the two runs use different maps and cards and do not establish a controlled balance comparison.
+
+Returned to the expedition using the victory action, reloaded, selected Continue, and verified **both missions retained three stars**. Captured warning/error log check returned an empty list. Reset the viewport override and left the completed expedition map available for handoff.
+
+| Capture | Evidence |
+|---|---|
+| `captures/rainstone-combat.png` | Defensive line after wave 4 (preparation screen, despite filename) |
+| `captures/rainstone-wave6.png` | Wave-6 payout and complete six-defense layout |
+| `captures/rainstone-final-wave.png` | Eight-wave victory, final statistics and corrected Watch complete label |
+| `captures/both-missions-complete.png` | Both three-star results persisted after reload |
+
+The earlier sidebar/label findings are now verified resolved in the refreshed build. Audio listening and physical device/touch/performance limits above remain unchanged.

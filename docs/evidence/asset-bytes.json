@@ -1,7 +1,7 @@
 {
   "date": "2026-09-20",
   "publicAssetBytes": 6183531,
-  "productionDirectoryBytes": 6804826,
+  "productionDirectoryBytes": 6805031,
   "fullAssetBudgetBytes": 20000000,
   "withinFullAssetBudget": true,
   "note": "Disk bytes, not a cold network transfer measurement. Production includes the optional QA entry.",

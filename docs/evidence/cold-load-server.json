@@ -1,0 +1,61 @@
+{
+  "records": [
+    {
+      "path": "/?measure=1",
+      "bodyBytes": 812,
+      "headerBytes": 210
+    },
+    {
+      "path": "/fonts/fonts.css",
+      "bodyBytes": 1136,
+      "headerBytes": 210
+    },
+    {
+      "path": "/assets/game-BF9js7JM.js",
+      "bodyBytes": 23047,
+      "headerBytes": 218
+    },
+    {
+      "path": "/assets/game-9No0ZBzq.css",
+      "bodyBytes": 23180,
+      "headerBytes": 211
+    },
+    {
+      "path": "/assets/battlefield-BM9usv2S.js",
+      "bodyBytes": 568226,
+      "headerBytes": 219
+    },
+    {
+      "path": "/assets/load-report-D2Xzr5Zo.js",
+      "bodyBytes": 1307,
+      "headerBytes": 217
+    },
+    {
+      "path": "/fonts/dm-sans-6.ttf",
+      "bodyBytes": 48200,
+      "headerBytes": 211
+    },
+    {
+      "path": "/fonts/dm-sans-3.ttf",
+      "bodyBytes": 48280,
+      "headerBytes": 211
+    },
+    {
+      "path": "/art/title-background.webp",
+      "bodyBytes": 212612,
+      "headerBytes": 214
+    },
+    {
+      "path": "/fonts/cormorant-garamond-0.ttf",
+      "bodyBytes": 290496,
+      "headerBytes": 212
+    },
+    {
+      "path": "/favicon.ico",
+      "bodyBytes": 0,
+      "headerBytes": 209
+    }
+  ],
+  "successfulBodyAndHeaderBytes": 1219429,
+  "note": "Successful static responses include title image missing from browser Resource Timing. A small favicon404 body is excluded; total transfer remains under1.23MB including that response."
+}
