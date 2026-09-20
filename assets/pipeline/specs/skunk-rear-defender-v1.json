@@ -1,0 +1,123 @@
+{
+  "version": 1,
+  "id": "skunk-rear-defender-v1",
+  "kind": "cutout-character",
+  "source": "assets/source/defenders-v1/skunk-rear-parts.png",
+  "prompt": "art/v2/skunk-rear-defender-v1/prompt.txt",
+  "view": "rear",
+  "width": 1536,
+  "height": 1024,
+  "units": "Native source pixels. Whole body scale1; all attachments flattened into body crop. Arm pivots and hand grips are crop-local.",
+  "parts": [
+    {
+      "id": "body",
+      "rect": [
+        40,
+        0,
+        880,
+        730
+      ],
+      "pivot": [
+        630,
+        715
+      ],
+      "scale": 1,
+      "z": 1,
+      "attachments": {
+        "holdShoulder": [
+          755,
+          315
+        ],
+        "drawShoulder": [
+          500,
+          315
+        ],
+        "payloadGrip": [
+          656,
+          272.75
+        ]
+      }
+    },
+    {
+      "id": "holdArm",
+      "rect": [
+        980,
+        265,
+        520,
+        280
+      ],
+      "pivot": [
+        115,
+        100
+      ],
+      "scale": 0.65,
+      "z": 0,
+      "attachTo": "body.holdShoulder",
+      "joints": {
+        "grip": [
+          435,
+          175
+        ],
+        "elbow": [
+          240,
+          185
+        ]
+      }
+    },
+    {
+      "id": "drawArm",
+      "rect": [
+        320,
+        730,
+        440,
+        265
+      ],
+      "pivot": [
+        105,
+        140
+      ],
+      "scale": 0.65,
+      "z": 3,
+      "attachTo": "body.drawShoulder",
+      "joints": {
+        "grip": [
+          345,
+          75
+        ],
+        "elbow": [
+          195,
+          185
+        ]
+      }
+    },
+    {
+      "id": "payload",
+      "rect": [
+        1000,
+        760,
+        215,
+        190
+      ],
+      "pivot": [
+        110,
+        145
+      ],
+      "scale": 0.65,
+      "z": 4,
+      "attachTo": "body.payloadGrip",
+      "joints": {
+        "grip": [
+          110,
+          145
+        ],
+        "release": [
+          110,
+          95
+        ]
+      }
+    }
+  ],
+  "animation": {
+    "action": "thrower"
+  }
+}

@@ -7,7 +7,7 @@ import type {
 } from "../sim/types";
 export const TOWERS: Record<TowerKind, TowerDef> = {
   bolt: {
-    name: "Bolt watch",
+    name: "Squirrel archer",
     role: "Precise • reliable",
     cost: 40,
     upgrade: 55,
@@ -18,7 +18,7 @@ export const TOWERS: Record<TowerKind, TowerDef> = {
     color: "#eec576",
   },
   stone: {
-    name: "Stone lobber",
+    name: "Skunk slinger",
     role: "Splash • groups",
     cost: 65,
     upgrade: 75,
@@ -29,7 +29,7 @@ export const TOWERS: Record<TowerKind, TowerDef> = {
     color: "#e59169",
   },
   net: {
-    name: "Bramble net",
+    name: "Turtle trapper",
     role: "Slow • control",
     cost: 50,
     upgrade: 60,
@@ -40,7 +40,7 @@ export const TOWERS: Record<TowerKind, TowerDef> = {
     color: "#a8c8a3",
   },
   trade: {
-    name: "Trading lodge",
+    name: "Donkey trader",
     role: "Income • investment",
     cost: 55,
     upgrade: 40,
@@ -105,7 +105,7 @@ export const CARDS: {
   },
   {
     id: "supply",
-    name: "Well-stocked wagons",
+    name: "Supply wagons",
     tag: "RESOURCES",
     description: "Begin with 45 extra crowns. Build now, or save for interest.",
     icon: "▣",

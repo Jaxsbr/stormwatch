@@ -1,0 +1,173 @@
+{
+  "version": 1,
+  "id": "weasel-rear-rig-v1",
+  "kind": "cutout-character",
+  "source": "assets/source/reboot/weasel-rear-rig-parts-v1.png",
+  "width": 2172,
+  "height": 724,
+  "view": "rear",
+  "units": "sourcepixels localtoeachcrop; restPositionrootrelativeYup",
+  "parts": [
+    {
+      "id": "body",
+      "rect": [
+        40,
+        0,
+        780,
+        710
+      ],
+      "pivot": [
+        510,
+        490
+      ],
+      "scale": 1,
+      "z": 2,
+      "attachments": {
+        "nearHip": [
+          560,
+          490
+        ],
+        "farHip": [
+          460,
+          490
+        ]
+      },
+      "restPosition": [
+        0,
+        0
+      ],
+      "texture": "art/v2/weasel-rear-rig-v1/body.webp",
+      "sha256": "5c2c5e627a9d0c4a95b918587d5646dda66e54d1014a477ae1b7416c86ce5098",
+      "bytes": 89208
+    },
+    {
+      "id": "nearLeg",
+      "rect": [
+        1045,
+        105,
+        280,
+        610
+      ],
+      "pivot": [
+        140,
+        90
+      ],
+      "scale": 0.5,
+      "z": 1,
+      "joints": {
+        "hip": [
+          140,
+          90
+        ],
+        "knee": [
+          140,
+          300
+        ],
+        "ankle": [
+          140,
+          460
+        ],
+        "sole": [
+          140,
+          580
+        ]
+      },
+      "attachTo": "body.nearHip",
+      "restPosition": [
+        50,
+        0
+      ],
+      "texture": "art/v2/weasel-rear-rig-v1/nearLeg.webp",
+      "sha256": "9f1ac320fb09d2b20df8c30b866a2fa6578ab12bb693a2a6405af8f2ba9be3e7",
+      "bytes": 30958
+    },
+    {
+      "id": "farLeg",
+      "rect": [
+        1620,
+        105,
+        290,
+        610
+      ],
+      "pivot": [
+        145,
+        90
+      ],
+      "scale": 0.5,
+      "z": 0,
+      "joints": {
+        "hip": [
+          145,
+          90
+        ],
+        "knee": [
+          145,
+          300
+        ],
+        "ankle": [
+          145,
+          460
+        ],
+        "sole": [
+          145,
+          580
+        ]
+      },
+      "attachTo": "body.farHip",
+      "restPosition": [
+        -50,
+        0
+      ],
+      "texture": "art/v2/weasel-rear-rig-v1/farLeg.webp",
+      "sha256": "ff5b4064e045ede17bc6e1e25f4dc5a18d16195e41c56e5d46d9001c3f3d35ae",
+      "bytes": 30472
+    }
+  ],
+  "animation": {
+    "hipHeight": 145,
+    "suggestedCycleSeconds": 0.58,
+    "nearPhase": 0,
+    "farPhase": 0.5,
+    "footTravelAxis": "screenY",
+    "nearLegAnatomy": "character right",
+    "farLegAnatomy": "character left"
+  },
+  "review": {
+    "status": "candidate",
+    "notes": "Imported native separated parts. Assembly and motion gates pending."
+  },
+  "sourceSha256": "a1511bf2d41ee215c420a1bc5dc7cafbbf06241f37d58a7bd000e4fbb6f0f644",
+  "validation": {
+    "width": 2172,
+    "height": 724,
+    "parts": [
+      {
+        "id": "body",
+        "visiblePixels": 174208,
+        "transparentFraction": 0.6619086312748285
+      },
+      {
+        "id": "nearLeg",
+        "visiblePixels": 77662,
+        "transparentFraction": 0.5218149882903981
+      },
+      {
+        "id": "farLeg",
+        "visiblePixels": 76160,
+        "transparentFraction": 0.5460825325042397
+      }
+    ],
+    "warnings": [
+      "Manual projection, silhouette, attachment, occlusion and motion review still required. Numeric checks do not approve artwork."
+    ]
+  },
+  "encoding": {
+    "format": "webp",
+    "quality": 92,
+    "alphaQuality": 100,
+    "effort": 6,
+    "source": "native source crop",
+    "alphaVerifiedExact": true
+  },
+  "prompt": "art/v2/weasel-rear-rig-v1/prompt.txt"
+}

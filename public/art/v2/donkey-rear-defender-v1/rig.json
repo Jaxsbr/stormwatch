@@ -1,0 +1,179 @@
+{
+  "version": 1,
+  "id": "donkey-rear-defender-v1",
+  "kind": "cutout-character",
+  "source": "assets/source/defenders-v1/donkey-rear-parts.png",
+  "prompt": "art/v2/donkey-rear-defender-v1/prompt.txt",
+  "view": "rear",
+  "parts": [
+    {
+      "id": "body",
+      "rect": [
+        250,
+        0,
+        445,
+        910
+      ],
+      "pivot": [
+        220,
+        885
+      ],
+      "scale": 1,
+      "z": 1,
+      "attachments": {
+        "holdShoulder": [
+          90,
+          475
+        ],
+        "drawShoulder": [
+          355,
+          475
+        ],
+        "payloadGrip": [
+          400,
+          530
+        ]
+      },
+      "texture": "art/v2/donkey-rear-defender-v1/body.webp",
+      "sha256": "a2bce7c0c77ef6eaf7b9c66b9a857df3de80ed2404eeb7ed09005e6419cb1065",
+      "bytes": 117850
+    },
+    {
+      "id": "holdArm",
+      "rect": [
+        780,
+        470,
+        500,
+        250
+      ],
+      "pivot": [
+        100,
+        85
+      ],
+      "scale": 0.65,
+      "z": 0,
+      "attachTo": "body.holdShoulder",
+      "joints": {
+        "shoulder": [
+          100,
+          85
+        ],
+        "elbow": [
+          265,
+          170
+        ],
+        "grip": [
+          400,
+          175
+        ]
+      },
+      "texture": "art/v2/donkey-rear-defender-v1/holdArm.webp",
+      "sha256": "d0f4b5c978d82d6444a1e72f95eac9580224e072689504266707420538a740cd",
+      "bytes": 33140
+    },
+    {
+      "id": "drawArm",
+      "rect": [
+        250,
+        925,
+        465,
+        250
+      ],
+      "pivot": [
+        105,
+        100
+      ],
+      "scale": 0.65,
+      "z": 0,
+      "attachTo": "body.drawShoulder",
+      "joints": {
+        "shoulder": [
+          105,
+          100
+        ],
+        "elbow": [
+          250,
+          170
+        ],
+        "grip": [
+          375,
+          95
+        ]
+      },
+      "texture": "art/v2/donkey-rear-defender-v1/drawArm.webp",
+      "sha256": "8665213bf7ed19100a57cbf84b0c060e5fc5ffb7291ea104ec60896d6c2d530f",
+      "bytes": 32430
+    },
+    {
+      "id": "payload",
+      "rect": [
+        865,
+        905,
+        290,
+        275
+      ],
+      "pivot": [
+        115,
+        95
+      ],
+      "scale": 0.45,
+      "z": 4,
+      "attachTo": "body.payloadGrip",
+      "joints": {
+        "grip": [
+          115,
+          90
+        ]
+      },
+      "texture": "art/v2/donkey-rear-defender-v1/payload.webp",
+      "sha256": "96e3455ae1b3068c2c8295cc628157cb80172ccdd0bcab477d5fbdd7db0c1936",
+      "bytes": 28060
+    }
+  ],
+  "reviewNotes": "Rear native body with heel-facing boots, no full baked arms. Head has slight left yaw/muzzle edge, no visible eye. Manual crop-bounded anchors; rear arms behind torso. Assembly/purse placement pending.",
+  "sourceSha256": "1046bafc30ef40d094e29c25b8dc2f4f3576a07bc68cc7c5f79f9a80eb454c7d",
+  "review": {
+    "status": "candidate",
+    "notes": "Imported native separated parts. Assembly and motion gates pending."
+  },
+  "validation": {
+    "width": 1312,
+    "height": 1199,
+    "parts": [
+      {
+        "id": "body",
+        "visiblePixels": 224480,
+        "transparentFraction": 0.41930114828991233
+      },
+      {
+        "id": "holdArm",
+        "visiblePixels": 54974,
+        "transparentFraction": 0.52904
+      },
+      {
+        "id": "drawArm",
+        "visiblePixels": 55693,
+        "transparentFraction": 0.49044301075268815
+      },
+      {
+        "id": "payload",
+        "visiblePixels": 40811,
+        "transparentFraction": 0.449717868338558
+      }
+    ],
+    "warnings": [
+      "Manual projection, silhouette, attachment, occlusion and motion review still required. Numeric checks do not approve artwork."
+    ]
+  },
+  "encoding": {
+    "format": "webp",
+    "quality": 92,
+    "alphaQuality": 100,
+    "effort": 6,
+    "source": "native source crop",
+    "alphaVerifiedExact": true
+  },
+  "animation": {
+    "action": "trader"
+  }
+}

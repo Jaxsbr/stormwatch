@@ -1,0 +1,153 @@
+{
+  "version": 1,
+  "id": "squirrel-rear-defender-v1",
+  "kind": "cutout-character",
+  "source": "assets/source/defenders-v1/squirrel-rear-parts.png",
+  "prompt": "art/v2/squirrel-rear-defender-v1/prompt.txt",
+  "view": "rear",
+  "parts": [
+    {
+      "id": "body",
+      "rect": [
+        15,
+        0,
+        745,
+        800
+      ],
+      "pivot": [
+        515,
+        765
+      ],
+      "scale": 1,
+      "z": 1,
+      "attachments": {
+        "holdShoulder": [
+          405,
+          360
+        ],
+        "drawShoulder": [
+          650,
+          360
+        ],
+        "bowGrip": [
+          515,
+          450
+        ]
+      }
+    },
+    {
+      "id": "holdArm",
+      "rect": [
+        830,
+        285,
+        450,
+        245
+      ],
+      "pivot": [
+        85,
+        80
+      ],
+      "scale": 0.7,
+      "z": 0,
+      "attachTo": "body.holdShoulder",
+      "joints": {
+        "shoulder": [
+          85,
+          80
+        ],
+        "elbow": [
+          225,
+          165
+        ],
+        "grip": [
+          355,
+          175
+        ]
+      }
+    },
+    {
+      "id": "drawArm",
+      "rect": [
+        320,
+        825,
+        365,
+        255
+      ],
+      "pivot": [
+        90,
+        125
+      ],
+      "scale": 0.7,
+      "z": 0,
+      "attachTo": "body.drawShoulder",
+      "joints": {
+        "shoulder": [
+          90,
+          125
+        ],
+        "elbow": [
+          185,
+          175
+        ],
+        "grip": [
+          285,
+          80
+        ]
+      }
+    },
+    {
+      "id": "bow",
+      "rect": [
+        940,
+        540,
+        215,
+        640
+      ],
+      "pivot": [
+        175,
+        310
+      ],
+      "scale": 0.7,
+      "z": 2,
+      "attachTo": "body.bowGrip",
+      "string": {
+        "tipNear": [
+          28,
+          20
+        ],
+        "tipFar": [
+          28,
+          620
+        ],
+        "braceCenter": [
+          28,
+          310
+        ],
+        "drawCenter": [
+          -40,
+          310
+        ]
+      },
+      "joints": {
+        "release": [
+          28,
+          310
+        ]
+      },
+      "rail": {
+        "rear": [
+          -40,
+          335
+        ],
+        "release": [
+          28,
+          335
+        ]
+      }
+    }
+  ],
+  "reviewNotes": "Native rear body, separate arms and bow; true alpha. Empty sleeves visible, tail partly covers left hip. Manual anchors; arm orientation/occlusion and bow foreshortening require runtime assembly review. Fixed crop height800 matches front; side root750 requires consistent apparent character height.",
+  "animation": {
+    "action": "archer"
+  }
+}

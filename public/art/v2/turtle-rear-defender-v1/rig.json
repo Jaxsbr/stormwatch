@@ -1,0 +1,173 @@
+{
+  "version": 1,
+  "id": "turtle-rear-defender-v1",
+  "kind": "cutout-character",
+  "source": "assets/source/defenders-v1/turtle-rear-parts.png",
+  "prompt": "art/v2/turtle-rear-defender-v1/prompt.txt",
+  "view": "rear",
+  "parts": [
+    {
+      "id": "body",
+      "rect": [
+        80,
+        0,
+        660,
+        790
+      ],
+      "pivot": [
+        330,
+        755
+      ],
+      "scale": 1,
+      "z": 1,
+      "attachments": {
+        "holdShoulder": [
+          115,
+          285
+        ],
+        "drawShoulder": [
+          545,
+          285
+        ],
+        "payloadGrip": [
+          600,
+          385
+        ]
+      },
+      "texture": "art/v2/turtle-rear-defender-v1/body.webp",
+      "sha256": "b1b4e4a057780189f429d6ba9fffb5d8d83ba627629c255b5f056688e9b83c9f",
+      "bytes": 144146
+    },
+    {
+      "id": "holdArm",
+      "rect": [
+        765,
+        290,
+        540,
+        315
+      ],
+      "pivot": [
+        110,
+        95
+      ],
+      "scale": 0.6,
+      "z": 0,
+      "attachTo": "body.holdShoulder",
+      "joints": {
+        "shoulder": [
+          110,
+          95
+        ],
+        "elbow": [
+          275,
+          165
+        ],
+        "grip": [
+          450,
+          195
+        ]
+      },
+      "texture": "art/v2/turtle-rear-defender-v1/holdArm.webp",
+      "sha256": "02ccc244c109bc5cc0884c5643a110868f8bc7dd1de92c3f5fc33ecd3bafa7c6",
+      "bytes": 41418
+    },
+    {
+      "id": "drawArm",
+      "rect": [
+        140,
+        810,
+        595,
+        340
+      ],
+      "pivot": [
+        120,
+        125
+      ],
+      "scale": 0.6,
+      "z": 0,
+      "attachTo": "body.drawShoulder",
+      "joints": {
+        "shoulder": [
+          120,
+          125
+        ],
+        "elbow": [
+          295,
+          230
+        ],
+        "grip": [
+          490,
+          130
+        ]
+      },
+      "texture": "art/v2/turtle-rear-defender-v1/drawArm.webp",
+      "sha256": "52c1e2c89c965f5c076952238882d99350adc6a5d7f2662371314eda1617d00a",
+      "bytes": 51012
+    },
+    {
+      "id": "payload",
+      "rect": [
+        795,
+        785,
+        480,
+        390
+      ],
+      "pivot": [
+        225,
+        175
+      ],
+      "scale": 0.35,
+      "z": 4,
+      "attachTo": "body.payloadGrip",
+      "texture": "art/v2/turtle-rear-defender-v1/payload.webp",
+      "sha256": "bb5e5c9e149170b22df21e3538397bb9435540b9987648cf5f9fa14ef3da0e20",
+      "bytes": 65124
+    }
+  ],
+  "reviewNotes": "Native rear shell-facing body, no face/chest and no baked full arms. Small claws remain visible at outer edges of feet. All body anchors within crop. Manual joints; rear arm occlusion and payload handoff pending assembly.",
+  "sourceSha256": "1ab960697336946df8fa278e31585601c6aff6507849ed8d09c60f69ca9acc6a",
+  "review": {
+    "status": "candidate",
+    "notes": "Imported native separated parts. Assembly and motion gates pending."
+  },
+  "validation": {
+    "width": 1312,
+    "height": 1199,
+    "parts": [
+      {
+        "id": "body",
+        "visiblePixels": 294356,
+        "transparentFraction": 0.42022056003068664
+      },
+      {
+        "id": "holdArm",
+        "visiblePixels": 73804,
+        "transparentFraction": 0.5452204585537919
+      },
+      {
+        "id": "drawArm",
+        "visiblePixels": 92653,
+        "transparentFraction": 0.5195205140879882
+      },
+      {
+        "id": "payload",
+        "visiblePixels": 103551,
+        "transparentFraction": 0.4156623931623932
+      }
+    ],
+    "warnings": [
+      "Manual projection, silhouette, attachment, occlusion and motion review still required. Numeric checks do not approve artwork."
+    ]
+  },
+  "encoding": {
+    "format": "webp",
+    "quality": 92,
+    "alphaQuality": 100,
+    "effort": 6,
+    "source": "native source crop",
+    "alphaVerifiedExact": true
+  },
+  "animation": {
+    "action": "thrower"
+  }
+}

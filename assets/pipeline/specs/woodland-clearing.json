@@ -1,0 +1,7 @@
+{
+  "id":"woodland-clearing-v2",
+  "kind":"biome",
+  "subject":"Rain-dark woodland frontier: layered pine forest, mossy roots, rocky banks, tiny amber lanterns and a distant timber outpost. Intimate adventurous atmosphere, a sheltered valley clearing rather than a floating board.",
+  "composition":"Wide horizontal battlefield, about16:9. Elevated near-front view. Sculpted-looking painterly scenery frames the upper quarter and lower fifth; low unobtrusive side banks. The central broad meadow is continuous low-contrast moss/earth, open and unobstructed for a winding path and defenses. Foreground roots and rocks create depth. No horizon sky dominating the scene. No tile edges, checkerboard, grid, path, road, characters, towers, text or UI. Keep the central70percent of width open so live gameplay provides the focal points.",
+  "review":{"status":"unreviewed","notes":"Continuous scene; actual connected path is composited from simulation geometry."}
+}

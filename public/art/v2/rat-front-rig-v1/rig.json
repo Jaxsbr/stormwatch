@@ -1,0 +1,173 @@
+{
+  "version": 1,
+  "id": "rat-front-rig-v1",
+  "kind": "cutout-character",
+  "source": "assets/source/reboot/rat-front-rig-parts-v1.png",
+  "width": 2172,
+  "height": 724,
+  "view": "front",
+  "units": "sourcepixels localtoeachcrop; restPositionrootrelativeYup",
+  "parts": [
+    {
+      "id": "body",
+      "rect": [
+        160,
+        0,
+        760,
+        672
+      ],
+      "pivot": [
+        440,
+        520
+      ],
+      "scale": 1,
+      "z": 2,
+      "attachments": {
+        "nearHip": [
+          375,
+          520
+        ],
+        "farHip": [
+          475,
+          520
+        ]
+      },
+      "restPosition": [
+        0,
+        0
+      ],
+      "texture": "art/v2/rat-front-rig-v1/body.webp",
+      "sha256": "8866709e2e0aa1110fe18e5af489489195368ddd9e07954a892869f4cc9ba65b",
+      "bytes": 108026
+    },
+    {
+      "id": "nearLeg",
+      "rect": [
+        1120,
+        140,
+        280,
+        560
+      ],
+      "pivot": [
+        130,
+        60
+      ],
+      "scale": 0.55,
+      "z": 1,
+      "joints": {
+        "hip": [
+          130,
+          60
+        ],
+        "knee": [
+          130,
+          260
+        ],
+        "ankle": [
+          130,
+          410
+        ],
+        "sole": [
+          130,
+          530
+        ]
+      },
+      "attachTo": "body.nearHip",
+      "restPosition": [
+        -65,
+        0
+      ],
+      "texture": "art/v2/rat-front-rig-v1/nearLeg.webp",
+      "sha256": "115c15baf36a5f920e6f2b923555805822d11519d1878be73cee5e4f3b30af44",
+      "bytes": 29498
+    },
+    {
+      "id": "farLeg",
+      "rect": [
+        1610,
+        140,
+        270,
+        560
+      ],
+      "pivot": [
+        135,
+        60
+      ],
+      "scale": 0.55,
+      "z": 0,
+      "joints": {
+        "hip": [
+          135,
+          60
+        ],
+        "knee": [
+          135,
+          260
+        ],
+        "ankle": [
+          135,
+          410
+        ],
+        "sole": [
+          135,
+          530
+        ]
+      },
+      "attachTo": "body.farHip",
+      "restPosition": [
+        35,
+        0
+      ],
+      "texture": "art/v2/rat-front-rig-v1/farLeg.webp",
+      "sha256": "e7094dbf01556e16d2374a8bfaf630ec6f881e863b3ef2f06e89e635644ddd9c",
+      "bytes": 28620
+    }
+  ],
+  "animation": {
+    "hipHeight": 145,
+    "suggestedCycleSeconds": 0.8,
+    "nearPhase": 0,
+    "farPhase": 0.5,
+    "footTravelAxis": "screenY",
+    "nearLegAnatomy": "character right",
+    "farLegAnatomy": "character left"
+  },
+  "review": {
+    "status": "candidate",
+    "notes": "Imported native separated parts. Assembly and motion gates pending."
+  },
+  "sourceSha256": "52d5698d6049cd84f0d735054c5463e509876cc1ca8a9e7142948b2e396e4731",
+  "validation": {
+    "width": 2172,
+    "height": 724,
+    "parts": [
+      {
+        "id": "body",
+        "visiblePixels": 246931,
+        "transparentFraction": 0.500984884085213
+      },
+      {
+        "id": "nearLeg",
+        "visiblePixels": 78372,
+        "transparentFraction": 0.48323341836734696
+      },
+      {
+        "id": "farLeg",
+        "visiblePixels": 77718,
+        "transparentFraction": 0.4648346560846561
+      }
+    ],
+    "warnings": [
+      "Manual projection, silhouette, attachment, occlusion and motion review still required. Numeric checks do not approve artwork."
+    ]
+  },
+  "encoding": {
+    "format": "webp",
+    "quality": 92,
+    "alphaQuality": 100,
+    "effort": 6,
+    "source": "native source crop",
+    "alphaVerifiedExact": true
+  },
+  "prompt": "art/v2/rat-front-rig-v1/prompt.txt"
+}

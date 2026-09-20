@@ -1,0 +1,7 @@
+{
+  "id": "cobblestone-material-v1",
+  "kind": "texture",
+  "subject": "Seamless hand-painted old cobblestone trail material for a woodland strategy game. Many small irregular warm grey and muted tan worn stones bedded into packed dark earth, with a little moss in narrow joints. Broad painted stone planes with soft worn edges and subtle relief. Natural practical craftsmanship, muted overall contrast complementary to mossy woodland ground.",
+  "composition": "Square seamless tileable material, overhead orthographic view, opaque full bleed. Identical small stone scale throughout, roughly 18 to 25 stones across the image. Edge-to-edge continuous surface with opposite edges matching for seamless repetition. No road outline or isolated path; this is only the material that runtime clips into a road. No dominant large stones, large cracks, focal motifs, lighting gradient, vignette, borders, regular grid, labels, text, props, plants above ground, scenery or perspective convergence. Keep surface restrained and readable beneath tiny game units. Soft consistent upper-left stone-face lighting with minimal joint contrast. Prefer 1024x1024.",
+  "review": { "status": "unreviewed", "notes": "Native material to be clipped by runtime path geometry; verify tiling and rendered scale in game." }
+}

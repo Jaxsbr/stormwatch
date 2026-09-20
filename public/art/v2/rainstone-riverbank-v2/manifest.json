@@ -1,0 +1,27 @@
+{
+  "version": 1,
+  "id": "rainstone-riverbank-v2",
+  "kind": "biome",
+  "subject": "Rainstone riverbank tower-defense BATTLE MAP: one continuous low-contrast blue-grey damp earth and fine slate grit ground plane, with sparse soft moss. Small mossy slate rocks, reeds, low alder trees and tiny amber lanterns decorate the outer perimeter. A narrow dark teal river runs only along the extreme RIGHT edge and bottom-right corner. All props belong to the same local map at the SAME physical scale everywhere. Dark child-friendly woodland adventure, practical natural objects.",
+  "composition": "Wide horizontal 16:9 game map. FIXED ORTHOGRAPHIC elevated 3/4 projection looking down onto one ground plane. A flat overhead strategy map with upright illustrated props, NOT a landscape painting. Terrain fills all four edges. Same rock, tree crown, lantern and ground texture size at top and bottom; ZERO distance-based scaling, ZERO perspective convergence, ZERO atmospheric recession. Shallow local slate banks show a little front face. Perimeter props can be cropped but never enlarged into foreground decoration. River occupies ONLY rightmost 9 percent width and a small lower-right corner, its width stays constant; no river crossing the center. Central 75 percent width and middle 70 percent height are open, smooth, low-detail low-contrast earth/slate for legible units and live paths. Keep texture very subdued in central playing area, no large center rocks or high-contrast gravel speckles. Small trees and reeds confined to shallow outer perimeter strips. No sky, horizon, skyline, mountains, distant trees, valley, distant landmarks, buildings, fort, waterfall, vanishing point, road, path, grid, checkerboard, characters, towers, UI or text. Upper edge scenery is as close and same scale as lower edge scenery.",
+  "review": {
+    "status": "projection-reviewed-in-game-pending",
+    "notes": "Native image directly inspected: consistent-scale elevated map, no horizon or recession, same-scale lanterns and rocks around perimeter. Water confined to right edge and lower-right corner; center quiet blue-grey earth. Runtime contrast/readability gate pending."
+  },
+  "texture": "art/v2/rainstone-riverbank-v2/atlas.webp",
+  "width": 1672,
+  "height": 941,
+  "frames": [],
+  "sha256": "8c5fddf4863ae819fbb16be0489428db7298e1f57a5eb9da1416b3ddea353db8",
+  "bytes": 384930,
+  "provenance": "Native image generation; prompt and descriptor retained; imported without repainting or alpha substitution",
+  "validation": {
+    "id": "rainstone-riverbank-v2",
+    "width": 1672,
+    "height": 941,
+    "hasAlpha": false,
+    "errors": [],
+    "warnings": [],
+    "frames": []
+  }
+}

@@ -1,0 +1,127 @@
+{
+  "version": 1,
+  "id": "bolt-overhead-rig-v3",
+  "kind": "cutout-tower",
+  "source": "assets/source/reboot/bolt-overhead-parts.png",
+  "width": 2172,
+  "height": 724,
+  "camera": {
+    "elevationDegrees": 75,
+    "azimuth": 0,
+    "projection": "orthographic",
+    "screenAligned": true
+  },
+  "units": "local source pixels; restPosition relative footprintpivot Y up",
+  "parts": [
+    {
+      "id": "base",
+      "rect": [
+        80,
+        0,
+        680,
+        724
+      ],
+      "pivot": [
+        340,
+        380
+      ],
+      "scale": 1,
+      "z": 0,
+      "attachments": {
+        "mount": [
+          340,
+          350
+        ],
+        "operator": [
+          435,
+          268
+        ]
+      },
+      "texture": "art/v3/bolt-rig/base.webp",
+      "restPosition": [
+        0,
+        0
+      ]
+    },
+    {
+      "id": "bow",
+      "rect": [
+        850,
+        0,
+        785,
+        680
+      ],
+      "pivot": [
+        245,
+        380
+      ],
+      "scale": 0.72,
+      "z": 2,
+      "attachTo": "base.mount",
+      "string": {
+        "tipNear": [
+          208,
+          626
+        ],
+        "tipFar": [
+          208,
+          49
+        ],
+        "braceCenter": [
+          208,
+          337
+        ],
+        "drawCenter": [
+          370,
+          337
+        ]
+      },
+      "rail": {
+        "rear": [
+          370,
+          337
+        ],
+        "release": [
+          22,
+          337
+        ]
+      },
+      "recoilAxis": [
+        1,
+        0
+      ],
+      "texture": "art/v3/bolt-rig/bow.webp",
+      "restPosition": [
+        0,
+        30
+      ]
+    },
+    {
+      "id": "operator",
+      "rect": [
+        1735,
+        220,
+        360,
+        350
+      ],
+      "pivot": [
+        177,
+        225
+      ],
+      "scale": 0.62,
+      "z": 1,
+      "attachTo": "base.operator",
+      "texture": "art/v3/bolt-rig/operator.webp",
+      "restPosition": [
+        95,
+        112
+      ]
+    }
+  ],
+  "review": {
+    "status": "candidate-parts-approved-projection",
+    "notes": "Parts retain approved overheadcamera. No string/arrow baked into bow. Manualanchors requireassemblyreview; fixedpartscales only."
+  },
+  "sourceSha256": "d0a899627dfc59a14d429d2917e66fec2338b8b1c366c2a24562e0dc8af52ec0",
+  "prompt": "art/v3/bolt-rig/prompt.txt"
+}

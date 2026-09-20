@@ -7,14 +7,16 @@ import type { EnemyKind, TowerKind } from "../sim/types";
 
 // Deliberately artificial rendering stress. Never imported by the playable game.
 const root = document.querySelector<HTMLDivElement>("#qa")!;
-root.innerHTML = `<style>body{margin:0;background:#142825;color:#f5e5c0;font:14px system-ui}header{height:110px;padding:12px;box-sizing:border-box;display:flex;gap:16px;align-items:center}button{min-height:44px;padding:10px}#field{height:calc(100vh - 110px)}#status{white-space:pre-wrap}#results{position:absolute;bottom:8px;left:8px;max-height:35vh;overflow:auto;background:#142825ed;font-size:11px;pointer-events:none}</style><header><div><b>Stormwatch · artificial stress fixture</b><br>Seed 42 · 60 enemies · 12 defenses · 3 lodges<br>150 combined shots/effects · 10s warmup + 180s × 3</div><button id="start">Run three benchmarks</button><button id="download" disabled>Download evidence</button><span id="status">Ready. Keep this tab visible.</span></header><div id="field"></div><pre id="results"></pre>`;
+root.innerHTML = `<style>body{margin:0;background:#142825;color:#f5e5c0;font:14px system-ui}header{height:110px;padding:12px;box-sizing:border-box;display:flex;gap:16px;align-items:center}button{min-height:44px;padding:10px}#field{height:calc(100vh - 110px)}#status{white-space:pre-wrap}#results{position:absolute;bottom:8px;left:8px;max-height:35vh;overflow:auto;background:#142825ed;font-size:11px;pointer-events:none}</style><header><div><b>Stormwatch · artificial stress fixture</b><br>Seed 42 · 60 enemies · 12 defenses · 3 lodges<br>150 combined shots/effects · 10s warmup + 180s × 3</div><button id="start">Run three benchmarks</button><button id="diagnostic">Run one diagnostic</button><button id="download" disabled>Download evidence</button><span id="status">Ready. Keep this tab visible.</span></header><div id="field"></div><pre id="results"></pre>`;
 const field = new Battlefield(document.querySelector("#field")!);
+field.profileTiming = true;
 let game: Game;
 let nextId = 100000;
 let elapsed = 0;
 let last = 0;
 let running = false;
 let run = 0;
+let runLimit = 3;
 let samples: number[] = [];
 let invalid = false;
 let transitions: { time: number; phase: string; payout: boolean }[] = [];
@@ -22,8 +24,33 @@ const results: unknown[] = [];
 let peakEnemies = 0,
   peakEffects = 0;
 let rescueCount = 0;
+let previousWork = {
+  totalMs: 0,
+  renderMs: 0,
+  rebuiltScene: false,
+  phase: "idle",
+  renderer: { ...field.frameProfile },
+};
+let rebuiltScene = false;
+let renderSamples: number[] = [];
+let workSamples: number[] = [];
+let phaseSamples: {
+  figures: number[];
+  effects: number[];
+  submission: number[];
+} = {
+  figures: [],
+  effects: [],
+  submission: [],
+};
+let longFrames: {
+  intervalMs: number;
+  elapsed: number;
+  previousWork: typeof previousWork;
+}[] = [];
 const status = document.querySelector("#status")!;
 function fixture() {
+  rebuiltScene = true;
   game = new Game(
     { ...lanternPass, waves: [{ title: "Stress", reward: 30, groups: [] }] },
     "nets",
@@ -118,6 +145,26 @@ function finishRun() {
     p95Ms: percentile(ordered, 0.95),
     worstMs: ordered.at(-1),
     framesOver100Ms: samples.filter((x) => x > 100).length,
+    renderCpuP95Ms: percentile(
+      [...renderSamples].sort((a, b) => a - b),
+      0.95,
+    ),
+    frameWorkCpuP95Ms: percentile(
+      [...workSamples].sort((a, b) => a - b),
+      0.95,
+    ),
+    phaseCpuP95Ms: Object.fromEntries(
+      Object.entries(phaseSamples).map(([name, values]) => [
+        name,
+        percentile(
+          [...values].sort((a, b) => a - b),
+          0.95,
+        ),
+      ]),
+    ),
+    longFrames,
+    cpuTimingNote:
+      "Synchronous JavaScript work only; does not measure asynchronous GPU completion. Long intervals include preceding frame work and browser scheduling.",
     peakEnemies,
     defenses,
     lodges,
@@ -139,16 +186,22 @@ function finishRun() {
     2,
   );
   run++;
-  if (run === 3) {
+  if (run === runLimit) {
     running = false;
     status.textContent = "Complete. Download evidence.";
     (document.querySelector("#download") as HTMLButtonElement).disabled = false;
     (document.querySelector("#start") as HTMLButtonElement).disabled = false;
+    (document.querySelector("#diagnostic") as HTMLButtonElement).disabled =
+      false;
   } else resetRun();
 }
 function resetRun() {
   elapsed = 0;
   samples = [];
+  renderSamples = [];
+  workSamples = [];
+  phaseSamples = { figures: [], effects: [], submission: [] };
+  longFrames = [];
   invalid = false;
   transitions = [];
   peakEnemies = 0;
@@ -160,8 +213,14 @@ function frame(now: number) {
   const raw = last ? now - last : 0;
   last = now;
   if (running) {
+    const workStart = performance.now();
+    rebuiltScene = false;
     elapsed += raw / 1000;
-    if (elapsed >= 10) samples.push(raw);
+    if (elapsed >= 10) {
+      samples.push(raw);
+      if (raw > 100)
+        longFrames.push({ intervalMs: raw, elapsed, previousWork });
+    }
     const stage = elapsed % 60;
     // Actual simulation resolves an empty wave, credits payout, and emits victory at each minute boundary.
     if (stage > 58.5) {
@@ -188,25 +247,48 @@ function frame(now: number) {
       replenish();
     }
     game.drainEvents();
+    const renderStart = performance.now();
     field.update(game, null, Math.min(raw / 1000, 0.1));
+    const renderMs = performance.now() - renderStart;
     peakEnemies = Math.max(peakEnemies, game.state.enemies.length);
     peakEffects = Math.max(
       peakEffects,
       game.state.shots.length + game.state.effects.length,
     );
-    status.textContent = `Run ${run + 1}/3 · ${elapsed < 10 ? "warmup" : "measuring"} ${elapsed.toFixed(0)}/190s\n${game.state.enemies.length} enemies · ${game.state.shots.length + game.state.effects.length} shots/effects · ${game.state.phase}${invalid ? " · INVALID: hidden tab" : ""}`;
+    status.textContent = `Run ${run + 1}/${runLimit} · ${elapsed < 10 ? "warmup" : "measuring"} ${elapsed.toFixed(0)}/190s\n${game.state.enemies.length} enemies · ${game.state.shots.length + game.state.effects.length} shots/effects · ${game.state.phase}${invalid ? " · INVALID: hidden tab" : ""}`;
+    previousWork = {
+      totalMs: performance.now() - workStart,
+      renderMs,
+      rebuiltScene,
+      phase: game.state.phase,
+      renderer: { ...field.frameProfile },
+    };
+    if (elapsed >= 10) {
+      renderSamples.push(renderMs);
+      workSamples.push(previousWork.totalMs);
+      phaseSamples.figures.push(field.frameProfile.figuresMs);
+      phaseSamples.effects.push(field.frameProfile.effectsMs);
+      phaseSamples.submission.push(field.frameProfile.submissionMs);
+    }
     if (elapsed >= 190) finishRun();
   }
   requestAnimationFrame(frame);
 }
-document.querySelector("#start")!.addEventListener("click", () => {
+function startRuns(count: number) {
+  runLimit = count;
   results.length = 0;
   run = 0;
   resetRun();
   running = true;
   last = performance.now();
   (document.querySelector("#start") as HTMLButtonElement).disabled = true;
-});
+  (document.querySelector("#diagnostic") as HTMLButtonElement).disabled = true;
+  (document.querySelector("#download") as HTMLButtonElement).disabled = true;
+}
+document.querySelector("#start")!.addEventListener("click", () => startRuns(3));
+document
+  .querySelector("#diagnostic")!
+  .addEventListener("click", () => startRuns(1));
 document.querySelector("#download")!.addEventListener("click", () => {
   const a = document.createElement("a");
   a.href = URL.createObjectURL(

@@ -1,0 +1,33 @@
+{
+  "version": 1,
+  "name": "approved-overhead-tower-cutout",
+  "camera": {
+    "elevationDegrees": 75,
+    "azimuth": 0,
+    "projection": "orthographic",
+    "screenAlignedTopEdges": true,
+    "visibleFacade": "shallow front only at bottom",
+    "forbidden": [
+      "diamond footprint",
+      "visible left/right sidewalls",
+      "45 degree isometric"
+    ]
+  },
+  "reference": "assets/source/reboot/bolt-overhead-proof.png",
+  "process": [
+    "Describe distinct stationary base, moving mechanism and operator/ambience parts",
+    "Nativegenerate separate transparentparts using approvedreference",
+    "Inspectactualprojectionandcompletepartisolation before technicalcrops",
+    "Keepnativealpha; extractexactrects losslessly; no repaint",
+    "Manuallyannotate rootfootprintpivot, attachments, mechanismjoint/releasepoints",
+    "Choosefixedpartassemblyscales once; never change scale perframe",
+    "Inspectassemblednormalplaying-size scene and record actualmotion beforeproductionapproval"
+  ],
+  "roles": {
+    "bolt": "unstrungbow + proceduralstring/bolt; fixedbase",
+    "stone": "rigidarm rotates ataxle, stoneposition followscup thenrelease",
+    "net": "launcherrecoil; drum/crank need separateasset or meshregion beforeindependentrotation",
+    "trade": "fixedlodge, flag/lanternambience andwavepayoutcue"
+  },
+  "units": "sourcepixelcoords localtoeachcrop; rootpivotcenterfootprint, restPositionYup"
+}

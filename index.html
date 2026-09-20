@@ -16,6 +16,23 @@
   </head>
   <body>
     <div id="app"></div>
+    <section
+      id="orientation-guide"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="orientation-title"
+      tabindex="-1"
+      hidden
+    >
+      <div>
+        <span aria-hidden="true">↻</span>
+        <h2 id="orientation-title">Turn to landscape</h2>
+        <p>
+          Your watch is paused. Turn your device sideways to see the whole
+          trail.
+        </p>
+      </div>
+    </section>
     <script type="module" src="/src/main.ts"></script>
   </body>
 </html>

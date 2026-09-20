@@ -1,0 +1,177 @@
+{
+  "version": 1,
+  "id": "skunk-rear-defender-v1",
+  "kind": "cutout-character",
+  "source": "assets/source/defenders-v1/skunk-rear-parts.png",
+  "prompt": "art/v2/skunk-rear-defender-v1/prompt.txt",
+  "view": "rear",
+  "width": 1536,
+  "height": 1024,
+  "units": "Native source pixels. Whole body scale1; all attachments flattened into body crop. Arm pivots and hand grips are crop-local.",
+  "parts": [
+    {
+      "id": "body",
+      "rect": [
+        40,
+        0,
+        880,
+        730
+      ],
+      "pivot": [
+        630,
+        715
+      ],
+      "scale": 1,
+      "z": 1,
+      "attachments": {
+        "holdShoulder": [
+          755,
+          315
+        ],
+        "drawShoulder": [
+          500,
+          315
+        ],
+        "payloadGrip": [
+          656,
+          272.75
+        ]
+      },
+      "texture": "art/v2/skunk-rear-defender-v1/body.webp",
+      "sha256": "6e77a0d806c9dd20ef21c332465b2400b7d3239d3d7f6ecdd86731fe9740f9f1",
+      "bytes": 161156
+    },
+    {
+      "id": "holdArm",
+      "rect": [
+        980,
+        265,
+        520,
+        280
+      ],
+      "pivot": [
+        115,
+        100
+      ],
+      "scale": 0.65,
+      "z": 0,
+      "attachTo": "body.holdShoulder",
+      "joints": {
+        "grip": [
+          435,
+          175
+        ],
+        "elbow": [
+          240,
+          185
+        ]
+      },
+      "texture": "art/v2/skunk-rear-defender-v1/holdArm.webp",
+      "sha256": "3a0e6b99263776a9cbf0f81b97e0052d3c5e90cd54752d07dc08ace1173c359d",
+      "bytes": 27222
+    },
+    {
+      "id": "drawArm",
+      "rect": [
+        320,
+        730,
+        440,
+        265
+      ],
+      "pivot": [
+        105,
+        140
+      ],
+      "scale": 0.65,
+      "z": 3,
+      "attachTo": "body.drawShoulder",
+      "joints": {
+        "grip": [
+          345,
+          75
+        ],
+        "elbow": [
+          195,
+          185
+        ]
+      },
+      "texture": "art/v2/skunk-rear-defender-v1/drawArm.webp",
+      "sha256": "24e0007d5086a97c78365dee544f9557cd942005cf088b62112645bfb0a274e4",
+      "bytes": 27652
+    },
+    {
+      "id": "payload",
+      "rect": [
+        1000,
+        760,
+        215,
+        190
+      ],
+      "pivot": [
+        110,
+        145
+      ],
+      "scale": 0.65,
+      "z": 4,
+      "attachTo": "body.payloadGrip",
+      "joints": {
+        "grip": [
+          110,
+          145
+        ],
+        "release": [
+          110,
+          95
+        ]
+      },
+      "texture": "art/v2/skunk-rear-defender-v1/payload.webp",
+      "sha256": "483ab2216c5adc0895d9a919d1065433c868b0177fd48c129f58f40912141cd7",
+      "bytes": 11160
+    }
+  ],
+  "sourceSha256": "608819c36154ed8a5f2f34de8ebab619f403fa3cf92c54c9d61e0e6b3c794402",
+  "review": {
+    "status": "candidate",
+    "notes": "Imported native separated parts. Assembly and motion gates pending."
+  },
+  "validation": {
+    "width": 1536,
+    "height": 1024,
+    "parts": [
+      {
+        "id": "body",
+        "visiblePixels": 361423,
+        "transparentFraction": 0.4160585305105853
+      },
+      {
+        "id": "holdArm",
+        "visiblePixels": 58439,
+        "transparentFraction": 0.5780013736263736
+      },
+      {
+        "id": "drawArm",
+        "visiblePixels": 57923,
+        "transparentFraction": 0.47726415094339625
+      },
+      {
+        "id": "payload",
+        "visiblePixels": 19021,
+        "transparentFraction": 0.5055079559363526
+      }
+    ],
+    "warnings": [
+      "Manual projection, silhouette, attachment, occlusion and motion review still required. Numeric checks do not approve artwork."
+    ]
+  },
+  "encoding": {
+    "format": "webp",
+    "quality": 92,
+    "alphaQuality": 100,
+    "effort": 6,
+    "source": "native source crop",
+    "alphaVerifiedExact": true
+  },
+  "animation": {
+    "action": "thrower"
+  }
+}

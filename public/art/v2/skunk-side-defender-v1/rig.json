@@ -1,0 +1,186 @@
+{
+  "version": 1,
+  "id": "skunk-side-defender-v1",
+  "kind": "cutout-character",
+  "source": "assets/source/defenders-v1/skunk-side-parts.png",
+  "prompt": "art/v2/skunk-side-defender-v1/prompt.txt",
+  "view": "side",
+  "width": 1536,
+  "height": 1024,
+  "units": "Native source pixels; body is whole at scale1, flat shoulder and payload anchors are body-crop-local. Pivots/joints are part-crop-local.",
+  "parts": [
+    {
+      "id": "body",
+      "rect": [
+        0,
+        0,
+        990,
+        745
+      ],
+      "pivot": [
+        655,
+        725
+      ],
+      "scale": 1,
+      "z": 1,
+      "attachments": {
+        "holdShoulder": [
+          760,
+          330
+        ],
+        "drawShoulder": [
+          550,
+          340
+        ],
+        "payloadGrip": [
+          699.5,
+          301
+        ]
+      },
+      "texture": "art/v2/skunk-side-defender-v1/body.webp",
+      "sha256": "f492d9f41f7df053a856c4feafe3bf36279e8a0c7586dff0ea931cef311113ad",
+      "bytes": 183092
+    },
+    {
+      "id": "holdArm",
+      "rect": [
+        1005,
+        280,
+        495,
+        250
+      ],
+      "pivot": [
+        100,
+        85
+      ],
+      "scale": 0.65,
+      "z": 0,
+      "attachTo": "body.holdShoulder",
+      "joints": {
+        "grip": [
+          410,
+          180
+        ],
+        "elbow": [
+          220,
+          170
+        ]
+      },
+      "texture": "art/v2/skunk-side-defender-v1/holdArm.webp",
+      "sha256": "bf1fedbd4ce4f1ee08ce346fa0fbc4b64dc704dbb87ac73bef943a3cf4ff964c",
+      "bytes": 26320
+    },
+    {
+      "id": "drawArm",
+      "rect": [
+        340,
+        740,
+        390,
+        270
+      ],
+      "pivot": [
+        80,
+        130
+      ],
+      "scale": 0.65,
+      "z": 3,
+      "attachTo": "body.drawShoulder",
+      "joints": {
+        "grip": [
+          310,
+          70
+        ],
+        "elbow": [
+          165,
+          190
+        ]
+      },
+      "texture": "art/v2/skunk-side-defender-v1/drawArm.webp",
+      "sha256": "00e9e362fb07efc1834f28f0194a603141965623ab564879651f94466bec433e",
+      "bytes": 23984
+    },
+    {
+      "id": "payload",
+      "rect": [
+        1130,
+        770,
+        220,
+        190
+      ],
+      "pivot": [
+        110,
+        150
+      ],
+      "scale": 0.65,
+      "z": 4,
+      "attachTo": "body.payloadGrip",
+      "joints": {
+        "grip": [
+          110,
+          150
+        ],
+        "release": [
+          110,
+          95
+        ]
+      },
+      "texture": "art/v2/skunk-side-defender-v1/payload.webp",
+      "sha256": "a08ac281974b6858c1fdffa151cf87d6c18e3e1ef3e529e0f219e0815358fd59",
+      "bytes": 12654
+    }
+  ],
+  "sourceSha256": "86d6ffc0a14e52cb8280d8701ec8b813a1ce93b897ea3aa7d155f373c821441f",
+  "review": {
+    "status": "candidate",
+    "notes": "Imported native separated parts. Assembly and motion gates pending."
+  },
+  "validation": {
+    "width": 1536,
+    "height": 1024,
+    "parts": [
+      {
+        "id": "body",
+        "visiblePixels": 367154,
+        "transparentFraction": 0.47726391431089416
+      },
+      {
+        "id": "holdArm",
+        "visiblePixels": 51679,
+        "transparentFraction": 0.5543191919191919
+      },
+      {
+        "id": "drawArm",
+        "visiblePixels": 47328,
+        "transparentFraction": 0.5224691358024691
+      },
+      {
+        "id": "payload",
+        "visiblePixels": 18786,
+        "transparentFraction": 0.5177033492822967
+      }
+    ],
+    "warnings": [
+      "Manual projection, silhouette, attachment, occlusion and motion review still required. Numeric checks do not approve artwork."
+    ]
+  },
+  "portrait": {
+    "texture": "art/v2/skunk-side-defender-v1/portrait.webp",
+    "bodyCrop": [
+      490,
+      0,
+      430,
+      380
+    ]
+  },
+  "encoding": {
+    "format": "webp",
+    "quality": 92,
+    "alphaQuality": 100,
+    "effort": 6,
+    "source": "native source crop",
+    "alphaVerifiedExact": true
+  },
+  "animation": {
+    "action": "thrower"
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "id":"rat-walk-v2",
+  "kind":"character",
+  "subject":"A sturdy small rat raider with rounded ears, a weathered slate iron helmet, crimson quilted tunic, leather belt, short boots and a compact round wooden shield on the far arm. Expressive determined face; no weapon hiding the legs.",
+  "sheet":{"columns":4,"rows":2},
+  "clips":{"walk":{"frames":[0,1,2,3,4,5,6,7],"fps":10,"loop":true}},
+  "frameInstructions":["Right foot forward contact, left foot back","Right leg takes weight, body low","Left leg passes planted right leg","Left leg swings forward, body high","Left foot forward contact, right foot back","Left leg takes weight, body low","Right leg passes planted left leg","Right leg swings forward, body high"],
+  "pivot":[0.5,0.92],
+  "worldHeight":1.1,
+  "review":{"status":"unreviewed","notes":"First motion proof. Do not integrate until normal-speed loop and in-game size reviewed."}
+}

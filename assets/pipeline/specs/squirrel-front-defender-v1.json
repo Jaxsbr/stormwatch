@@ -1,0 +1,153 @@
+{
+  "version": 1,
+  "id": "squirrel-front-defender-v1",
+  "kind": "cutout-character",
+  "source": "assets/source/defenders-v1/squirrel-front-parts.png",
+  "prompt": "art/v2/squirrel-front-defender-v1/prompt.txt",
+  "view": "front",
+  "parts": [
+    {
+      "id": "body",
+      "rect": [
+        20,
+        0,
+        760,
+        800
+      ],
+      "pivot": [
+        515,
+        770
+      ],
+      "scale": 1,
+      "z": 1,
+      "attachments": {
+        "holdShoulder": [
+          655,
+          385
+        ],
+        "drawShoulder": [
+          380,
+          385
+        ],
+        "bowGrip": [
+          515,
+          450
+        ]
+      }
+    },
+    {
+      "id": "holdArm",
+      "rect": [
+        855,
+        255,
+        430,
+        265
+      ],
+      "pivot": [
+        85,
+        80
+      ],
+      "scale": 0.7,
+      "z": 3,
+      "attachTo": "body.holdShoulder",
+      "joints": {
+        "shoulder": [
+          85,
+          80
+        ],
+        "elbow": [
+          220,
+          155
+        ],
+        "grip": [
+          355,
+          200
+        ]
+      }
+    },
+    {
+      "id": "drawArm",
+      "rect": [
+        275,
+        850,
+        410,
+        230
+      ],
+      "pivot": [
+        75,
+        110
+      ],
+      "scale": 0.7,
+      "z": 4,
+      "attachTo": "body.drawShoulder",
+      "joints": {
+        "shoulder": [
+          75,
+          110
+        ],
+        "elbow": [
+          190,
+          145
+        ],
+        "grip": [
+          340,
+          70
+        ]
+      }
+    },
+    {
+      "id": "bow",
+      "rect": [
+        915,
+        525,
+        230,
+        650
+      ],
+      "pivot": [
+        180,
+        325
+      ],
+      "scale": 0.7,
+      "z": 2,
+      "attachTo": "body.bowGrip",
+      "string": {
+        "tipNear": [
+          25,
+          20
+        ],
+        "tipFar": [
+          25,
+          625
+        ],
+        "braceCenter": [
+          25,
+          325
+        ],
+        "drawCenter": [
+          -40,
+          325
+        ]
+      },
+      "joints": {
+        "release": [
+          25,
+          325
+        ]
+      },
+      "rail": {
+        "rear": [
+          -40,
+          335
+        ],
+        "release": [
+          28,
+          335
+        ]
+      }
+    }
+  ],
+  "reviewNotes": "Native front body and separate full arms/bow. Anchors manually estimated; shoulder cap overlap and front bow foreshortening require runtime assembly review. Arms remain largely image-plane silhouettes; do not claim true frontal aiming before assembly.",
+  "animation": {
+    "action": "archer"
+  }
+}

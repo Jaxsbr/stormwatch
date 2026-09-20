@@ -1,0 +1,119 @@
+{
+  "version": 1,
+  "id": "turtle-side-defender-v1",
+  "kind": "cutout-character",
+  "source": "assets/source/defenders-v1/turtle-side-parts.png",
+  "prompt": "art/v2/turtle-side-defender-v1/prompt.txt",
+  "view": "side",
+  "parts": [
+    {
+      "id": "body",
+      "rect": [
+        90,
+        0,
+        660,
+        810
+      ],
+      "pivot": [
+        370,
+        775
+      ],
+      "scale": 1,
+      "z": 1,
+      "attachments": {
+        "holdShoulder": [
+          570,
+          345
+        ],
+        "drawShoulder": [
+          255,
+          340
+        ],
+        "payloadGrip": [
+          660,
+          400
+        ]
+      }
+    },
+    {
+      "id": "holdArm",
+      "rect": [
+        780,
+        295,
+        515,
+        300
+      ],
+      "pivot": [
+        90,
+        90
+      ],
+      "scale": 0.6,
+      "z": 0,
+      "attachTo": "body.holdShoulder",
+      "joints": {
+        "grip": [
+          435,
+          190
+        ],
+        "elbow": [
+          245,
+          180
+        ]
+      }
+    },
+    {
+      "id": "drawArm",
+      "rect": [
+        180,
+        835,
+        545,
+        325
+      ],
+      "pivot": [
+        95,
+        110
+      ],
+      "scale": 0.65,
+      "z": 3,
+      "attachTo": "body.drawShoulder",
+      "joints": {
+        "grip": [
+          440,
+          110
+        ],
+        "elbow": [
+          220,
+          265
+        ]
+      }
+    },
+    {
+      "id": "payload",
+      "rect": [
+        820,
+        800,
+        450,
+        380
+      ],
+      "pivot": [
+        200,
+        170
+      ],
+      "scale": 0.35,
+      "z": 4,
+      "attachTo": "body.payloadGrip"
+    }
+  ],
+  "animation": {
+    "action": "thrower"
+  },
+  "portrait": {
+    "texture": "art/v2/turtle-side-defender-v1/portrait.webp",
+    "bodyCrop": [
+      190,
+      0,
+      450,
+      370
+    ]
+  }
+}

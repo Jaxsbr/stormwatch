@@ -1,0 +1,27 @@
+{
+  "version": 1,
+  "id": "timber-ui-frame-v1",
+  "kind": "ui",
+  "subject": "One original illustrated game-interface frame: broad dark weathered timber panel border, sturdy hand-forged brass corner joins, and two small amber lantern motifs integrated at the outer left and right corners. Practical woodland craftsmanship, simple dignified construction, restrained moss touches. This is the reusable frame itself, not an interface mockup.",
+  "composition": "A single very wide horizontal rectangular frame, front-facing orthographic, prefer 1536x512. Border timber occupies about 12 percent of height, with thicker brass corners contained within 18 percent of height. Entire broad center is a genuinely transparent EMPTY opening, and outside silhouette is also actual transparent alpha. Straight continuous plain middle sections on each of four borders for reusable 9-slice stretching. Corners and lanterns remain within corner slices. No center fill, no backdrop, no shadow across transparent center, no lettering, symbols, icons, labels, numbers, buttons, handles or content. Entire frame inside canvas with 3 percent clear margin. Painted game prop, no website, no screenshot.",
+  "review": {
+    "status": "asset-reviewed-in-game-pending",
+    "notes": "Visual asset inspection passed; scaled UI review pending. Genuine alpha outside and through center; sampled center rectangle [280,200,1610,350] has 541073 pixels alpha 0 and 22427 pixels alpha 1/255, none higher. Native faint residual alpha retained unchanged. Suggested 9-slice inset [top,right,bottom,left]=[290,280,195,280], keeping lanterns within upper corner slices. Border is more detailed than icon-sized use permits; reserve for broad panels."
+  },
+  "texture": "art/v2/timber-ui-frame-v1/atlas.webp",
+  "width": 2172,
+  "height": 724,
+  "frames": [],
+  "sha256": "d28b9ab94a017f9d747c0bd131e3522e5eb8871616521b0e2495f92f75a0a7f0",
+  "bytes": 708924,
+  "provenance": "Native image generation; prompt and descriptor retained; imported without repainting or alpha substitution",
+  "validation": {
+    "id": "timber-ui-frame-v1",
+    "width": 2172,
+    "height": 724,
+    "hasAlpha": true,
+    "errors": [],
+    "warnings": [],
+    "frames": []
+  }
+}

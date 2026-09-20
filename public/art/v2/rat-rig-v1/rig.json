@@ -1,0 +1,151 @@
+{
+  "version": 1,
+  "id": "rat-rig-v1",
+  "kind": "cutout-character",
+  "source": "assets/source/reboot/rat-rig-parts-v1.png",
+  "width": 2172,
+  "height": 724,
+  "units": "source pixels; all points local to extracted part",
+  "parts": [
+    {
+      "id": "body",
+      "rect": [
+        40,
+        4,
+        750,
+        672
+      ],
+      "pivot": [
+        410,
+        530
+      ],
+      "scale": 1,
+      "z": 2,
+      "attachments": {
+        "nearHip": [
+          450,
+          525
+        ],
+        "farHip": [
+          360,
+          508
+        ]
+      },
+      "texture": "art/v2/rat-rig-v1/body.webp",
+      "restPosition": [
+        0,
+        0
+      ],
+      "sha256": "8d0807617563db800417c2dde542029c310e3cd5251b6c76375d4ab3097a66e4",
+      "bytes": 101822
+    },
+    {
+      "id": "nearLeg",
+      "rect": [
+        1040,
+        150,
+        345,
+        530
+      ],
+      "pivot": [
+        110,
+        53
+      ],
+      "scale": 0.55,
+      "z": 1,
+      "joints": {
+        "hip": [
+          110,
+          53
+        ],
+        "knee": [
+          180,
+          260
+        ],
+        "ankle": [
+          155,
+          415
+        ],
+        "sole": [
+          220,
+          500
+        ]
+      },
+      "attachTo": "body.nearHip",
+      "texture": "art/v2/rat-rig-v1/nearLeg.webp",
+      "restPosition": [
+        40,
+        5
+      ],
+      "sha256": "89ea1884d622bc79378dd3b8fd28d6905f38f06a0303e7adb9a351ebb8cacb2a",
+      "bytes": 29648
+    },
+    {
+      "id": "farLeg",
+      "rect": [
+        1715,
+        150,
+        330,
+        530
+      ],
+      "pivot": [
+        115,
+        55
+      ],
+      "scale": 0.55,
+      "z": 0,
+      "joints": {
+        "hip": [
+          115,
+          55
+        ],
+        "knee": [
+          155,
+          260
+        ],
+        "ankle": [
+          130,
+          415
+        ],
+        "sole": [
+          195,
+          500
+        ]
+      },
+      "attachTo": "body.farHip",
+      "texture": "art/v2/rat-rig-v1/farLeg.webp",
+      "restPosition": [
+        -50,
+        22
+      ],
+      "sha256": "61493a5a5f9aa29740c54ef67d9d78a0205d69e4563978aea02db6392dc6d858",
+      "bytes": 30074
+    }
+  ],
+  "review": {
+    "status": "candidate",
+    "notes": "Genuinely separated native parts. Leg fixedscale0.55 corrects generated part-size inconsistency; never vary scale byframe. Joint landmarks approximate manual annotations, require assembled review. Full rigid legs may need knee split if contact constraint cannot avoid skating."
+  },
+  "animation": {
+    "suggestedCycleSeconds": 0.8,
+    "nearPhase": 0,
+    "farPhase": 0.5,
+    "legAngleDegrees": [
+      -22,
+      22
+    ],
+    "maxBodyBobSourcePixels": 6,
+    "requirement": "alternate planted contacts, pin stance foot, do not substitute bodybob for limb movement"
+  },
+  "restPositionConvention": "assembled source pixels relative root pivot, Y up; attachTo remains authoritative",
+  "sourceSha256": "1e80869e172394ce7c0154914af7201e0a884df35178a104aafd7afbccf28951",
+  "encoding": {
+    "format": "webp",
+    "quality": 92,
+    "alphaQuality": 100,
+    "effort": 6,
+    "source": "native source crop",
+    "alphaVerifiedExact": true
+  },
+  "prompt": "art/v2/rat-rig-v1/prompt.txt"
+}

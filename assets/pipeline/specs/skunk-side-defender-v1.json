@@ -1,0 +1,132 @@
+{
+  "version": 1,
+  "id": "skunk-side-defender-v1",
+  "kind": "cutout-character",
+  "source": "assets/source/defenders-v1/skunk-side-parts.png",
+  "prompt": "art/v2/skunk-side-defender-v1/prompt.txt",
+  "view": "side",
+  "width": 1536,
+  "height": 1024,
+  "units": "Native source pixels; body is whole at scale1, flat shoulder and payload anchors are body-crop-local. Pivots/joints are part-crop-local.",
+  "parts": [
+    {
+      "id": "body",
+      "rect": [
+        0,
+        0,
+        990,
+        745
+      ],
+      "pivot": [
+        655,
+        725
+      ],
+      "scale": 1,
+      "z": 1,
+      "attachments": {
+        "holdShoulder": [
+          760,
+          330
+        ],
+        "drawShoulder": [
+          550,
+          340
+        ],
+        "payloadGrip": [
+          699.5,
+          301
+        ]
+      }
+    },
+    {
+      "id": "holdArm",
+      "rect": [
+        1005,
+        280,
+        495,
+        250
+      ],
+      "pivot": [
+        100,
+        85
+      ],
+      "scale": 0.65,
+      "z": 0,
+      "attachTo": "body.holdShoulder",
+      "joints": {
+        "grip": [
+          410,
+          180
+        ],
+        "elbow": [
+          220,
+          170
+        ]
+      }
+    },
+    {
+      "id": "drawArm",
+      "rect": [
+        340,
+        740,
+        390,
+        270
+      ],
+      "pivot": [
+        80,
+        130
+      ],
+      "scale": 0.65,
+      "z": 3,
+      "attachTo": "body.drawShoulder",
+      "joints": {
+        "grip": [
+          310,
+          70
+        ],
+        "elbow": [
+          165,
+          190
+        ]
+      }
+    },
+    {
+      "id": "payload",
+      "rect": [
+        1130,
+        770,
+        220,
+        190
+      ],
+      "pivot": [
+        110,
+        150
+      ],
+      "scale": 0.65,
+      "z": 4,
+      "attachTo": "body.payloadGrip",
+      "joints": {
+        "grip": [
+          110,
+          150
+        ],
+        "release": [
+          110,
+          95
+        ]
+      }
+    }
+  ],
+  "animation": {
+    "action": "thrower"
+  },
+  "portrait": {
+    "texture": "art/v2/skunk-side-defender-v1/portrait.webp",
+    "bodyCrop": [
+      490,
+      0,
+      430,
+      380
+    ]
+  }
+}

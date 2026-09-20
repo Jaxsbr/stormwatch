@@ -1,0 +1,130 @@
+{
+  "version": 1,
+  "id": "weasel-front-rig-v1",
+  "kind": "cutout-character",
+  "source": "assets/source/reboot/weasel-front-rig-parts-v1.png",
+  "width": 2172,
+  "height": 724,
+  "view": "front",
+  "units": "sourcepixels localtoeachcrop; restPositionrootrelativeYup",
+  "parts": [
+    {
+      "id": "body",
+      "rect": [
+        80,
+        0,
+        800,
+        700
+      ],
+      "pivot": [
+        525,
+        510
+      ],
+      "scale": 1,
+      "z": 2,
+      "attachments": {
+        "nearHip": [
+          460,
+          510
+        ],
+        "farHip": [
+          560,
+          510
+        ]
+      },
+      "restPosition": [
+        0,
+        0
+      ]
+    },
+    {
+      "id": "nearLeg",
+      "rect": [
+        1110,
+        100,
+        270,
+        610
+      ],
+      "pivot": [
+        135,
+        90
+      ],
+      "scale": 0.5,
+      "z": 1,
+      "joints": {
+        "hip": [
+          135,
+          90
+        ],
+        "knee": [
+          135,
+          300
+        ],
+        "ankle": [
+          135,
+          460
+        ],
+        "sole": [
+          135,
+          580
+        ]
+      },
+      "attachTo": "body.nearHip",
+      "restPosition": [
+        -65,
+        0
+      ]
+    },
+    {
+      "id": "farLeg",
+      "rect": [
+        1690,
+        100,
+        300,
+        610
+      ],
+      "pivot": [
+        150,
+        90
+      ],
+      "scale": 0.5,
+      "z": 0,
+      "joints": {
+        "hip": [
+          150,
+          90
+        ],
+        "knee": [
+          150,
+          300
+        ],
+        "ankle": [
+          150,
+          460
+        ],
+        "sole": [
+          150,
+          580
+        ]
+      },
+      "attachTo": "body.farHip",
+      "restPosition": [
+        35,
+        0
+      ]
+    }
+  ],
+  "animation": {
+    "hipHeight": 145,
+    "suggestedCycleSeconds": 0.58,
+    "nearPhase": 0,
+    "farPhase": 0.5,
+    "footTravelAxis": "screenY",
+    "nearLegAnatomy": "character right",
+    "farLegAnatomy": "character left"
+  },
+  "review": {
+    "status": "candidate",
+    "notes": "Directionalratonly, sameidentity, facingdownfront/uprear. Manualanchors requireassemblyreview; no perframescale."
+  }
+}

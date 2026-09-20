@@ -1,0 +1,18 @@
+Use case: stylized-concept. Production asset for Stormwatch.
+Subject: A sturdy small rat raider with rounded ears, a weathered slate iron helmet, crimson quilted tunic, leather belt, short boots and a compact round wooden shield on the far arm. Expressive determined face; no weapon hiding the legs.
+Style: Premium hand-painted 2D woodland strategy-game art. Broad expressive silhouettes, confidently painted forms, restrained brush texture, warm amber defenders against muted crimson raiders, deep moss and storm-teal surroundings. Dark and adventurous but child-friendly, practical armor and machinery, no occult themes or gore.
+Lighting: Soft upper-left key light, consistent across every frame; no changing cast shadow, no lighting flicker.
+Avoid: No text, labels, frame numbers, grid lines, watermark, painted checkerboard, cropped body parts, floating equipment, occult symbols, skulls or gore. Never change costume, proportions, equipment or camera between frames.
+Camera: Nearly side-on three-quarter view facing right, mildly elevated strategy-game camera. Show face, chest and two legs clearly. No isometric terrain platform.
+Create one genuine-transparent RGBA animation sheet: exactly 4 columns and 2 rows, equal cells, prefer2048x1024. Reading order left to right then next row. Every cell shows the SAME subject at the SAME scale/camera/light. Keep ground baseline at92percent of each cell height, horizontal center at50percent. Entire silhouette stays inside its cell with at least8percent clear margins. No backdrop or terrain; no contact shadow baked in.
+A complete seamless walk cycle with clearly alternating leg contacts, weight shifts and counter-swinging arms. The body translates nowhere within the cell. This is genuine pose animation, not a row of translated duplicates.
+Poses:
+Cell1: Right foot forward contact, left foot back
+Cell2: Right leg takes weight, body low
+Cell3: Left leg passes planted right leg
+Cell4: Left leg swings forward, body high
+Cell5: Left foot forward contact, right foot back
+Cell6: Left leg takes weight, body low
+Cell7: Right leg passes planted left leg
+Cell8: Right leg swings forward, body high
+

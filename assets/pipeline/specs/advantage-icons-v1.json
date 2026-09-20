@@ -1,0 +1,6 @@
+{
+"id":"advantage-icons-v1","kind":"ui",
+"subject":"Four distinct hand-painted woodland game advantage icons, one per equal cell: cell1 a brass spyglass with a little folded scouting map; cell2 a small practical wooden supplies wagon carrying canvas sacks and a covered crate; cell3 a coiled rope net with a simple wooden trapper gear bundle; cell4 a carpenter's sturdy timber-handled hammer with a short plank and two iron nails. Warm dark timber, worn brass and muted moss accents, clear chunky silhouettes, premium illustrated game props.",
+"composition":"One true transparent RGBA icon sheet, 2048x512 requested, exactly FOUR equal square cells in one horizontal row, reading left to right in the specified order. Each prop cluster centered inside its own cell, consistent scale and lighting, fills about65 percent of cell, with at least15 percent clear transparent margins all sides. Entire outside and between-icons background genuinely transparent alpha, no backdrop, no checkerboard painted in. Three-quarter overhead small prop view, broad simple forms legible at48px. No cell borders, circles, frames, ground planes, shadows outside silhouette, duplicate icons, labels, numbers, lettering, text, watermarks or UI mockup.",
+"review":{"status":"unreviewed","notes":"Four-cell alpha UI sheet; inspect true alpha, separation and small-scale readability."}
+}

@@ -1,0 +1,108 @@
+{
+  "version": 1,
+  "id": "net-winding-parts-v1",
+  "kind": "cutout-tower-components",
+  "source": "assets/source/reboot/net-winding-parts-v1.png",
+  "sourceSha256": "2eea623bdee53908f3bbdc5508ea5a4a85a1032365c96abe711cef49e5bd6ba7",
+  "width": 2172,
+  "height": 724,
+  "hasAlpha": true,
+  "camera": {
+    "elevationDegrees": 75,
+    "azimuth": 0,
+    "projection": "orthographic",
+    "screenAligned": true
+  },
+  "units": "Part pixel coordinates; image x right/y down. Frame-local assembly coordinates before runtime parent scale.",
+  "parts": [
+    {
+      "id": "launcherFrame",
+      "rect": [
+        0,
+        0,
+        1050,
+        724
+      ],
+      "pivot": [
+        620,
+        325
+      ],
+      "scale": 0.44,
+      "z": 3,
+      "texture": "art/v3/net-winding-parts/frame.webp",
+      "attachments": {
+        "drum": [
+          620,
+          325
+        ],
+        "crank": [
+          620,
+          490
+        ],
+        "release": [
+          45,
+          310
+        ]
+      },
+      "sha256": "6eb734624be8b6a3c216ea0627680904f929af934f21c296248d65f7a62c6ecb",
+      "bytes": 538418,
+      "assemblyBaseTarget": [
+        345,
+        360
+      ],
+      "assemblyRestPosition": [
+        5,
+        30
+      ]
+    },
+    {
+      "id": "ropeDrum",
+      "rect": [
+        1100,
+        0,
+        500,
+        724
+      ],
+      "pivot": [
+        255,
+        350
+      ],
+      "scale": 0.78,
+      "z": 2,
+      "texture": "art/v3/net-winding-parts/drum.webp",
+      "attachTo": "launcherFrame.drum",
+      "notes": "Refined after static assembly: scale0.78 relative frame pixels, overall0.3432. Render behind frame; stationary bearing supports occlude drum rims/spindle ends.",
+      "sha256": "204eac4216a10b94705156a7b167627ab05031c24416402bdba6d72be06b5480",
+      "bytes": 245934
+    },
+    {
+      "id": "crank",
+      "rect": [
+        1680,
+        180,
+        470,
+        470
+      ],
+      "pivot": [
+        105,
+        180
+      ],
+      "scale": 0.8,
+      "z": 4,
+      "texture": "art/v3/net-winding-parts/crank.webp",
+      "attachTo": "launcherFrame.crank",
+      "rotationPivot": [
+        105,
+        180
+      ],
+      "notes": "Refined after static assembly: scale0.80 relative frame pixels, overall0.352. Rotate around axle socket [105,180], not boundingboxcenter.",
+      "sha256": "c661041249233ebc605774be9db08cfcb3e9a0725ecedc7781b21cbea071e413",
+      "bytes": 58814
+    }
+  ],
+  "review": {
+    "status": "static-assembly-reviewed-runtime-motion-pending",
+    "notes": "Native generation one call, no repaint/alpha substitution. Inspected separate crops. Empty frame bay is actual alpha0 and no baked drum/crank remains. Not equal third cells; explicitrectsrequired. Existing wood/metal/green-net identity close, camera overhead preserved. Mechanical limitation: drum face depicts rope cylinder with side rims plus top/bottom spindle ends; not a physically exact projection. Do not spin the entire cylinder in screen plane as a wheel: use subtle wind texture/shaft motion or controlled compression while crank turns. Root must validate static assembly, bearing occlusion and scaled size before runtime. WebP decoder may leave arbitrary RGB under alpha0; sampled apparent olive preview strips have actualalpha0 and should not appear in browser.",
+    "assemblyEvidence": "review/2026-09-20-reboot/after/net-winding-assembly-refined-comparison.png"
+  }
+}

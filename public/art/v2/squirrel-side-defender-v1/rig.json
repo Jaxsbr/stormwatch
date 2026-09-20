@@ -1,0 +1,207 @@
+{
+  "version": 1,
+  "id": "squirrel-side-defender-v1",
+  "kind": "cutout-character",
+  "source": "assets/source/defenders-v1/squirrel-side-parts.png",
+  "prompt": "art/v2/squirrel-side-defender-v1/prompt.txt",
+  "view": "side",
+  "parts": [
+    {
+      "id": "body",
+      "rect": [
+        20,
+        0,
+        760,
+        750
+      ],
+      "pivot": [
+        490,
+        720
+      ],
+      "scale": 1,
+      "z": 1,
+      "attachments": {
+        "holdShoulder": [
+          535,
+          350
+        ],
+        "drawShoulder": [
+          420,
+          355
+        ],
+        "bowGrip": [
+          760,
+          390
+        ]
+      },
+      "texture": "art/v2/squirrel-side-defender-v1/body.webp",
+      "sha256": "3771dc01d812322ebb89aa897935fe4838b3762f8f7c219a95fd60f5619880ec",
+      "bytes": 157456
+    },
+    {
+      "id": "holdArm",
+      "rect": [
+        865,
+        275,
+        420,
+        220
+      ],
+      "pivot": [
+        70,
+        65
+      ],
+      "scale": 0.7,
+      "z": 0,
+      "attachTo": "body.holdShoulder",
+      "joints": {
+        "grip": [
+          345,
+          150
+        ],
+        "elbow": [
+          195,
+          135
+        ]
+      },
+      "texture": "art/v2/squirrel-side-defender-v1/holdArm.webp",
+      "sha256": "5a474f9846c9e5f6161ba3e9d9b3f4b9ed8369796655a03e11b27ce93a239e26",
+      "bytes": 24070
+    },
+    {
+      "id": "drawArm",
+      "rect": [
+        260,
+        815,
+        365,
+        250
+      ],
+      "pivot": [
+        75,
+        140
+      ],
+      "scale": 0.85,
+      "z": 3,
+      "attachTo": "body.drawShoulder",
+      "joints": {
+        "grip": [
+          280,
+          50
+        ],
+        "elbow": [
+          140,
+          185
+        ]
+      },
+      "texture": "art/v2/squirrel-side-defender-v1/drawArm.webp",
+      "sha256": "93537cd9d83f963d86923384db954fcd6df789efec4298ea974d8085b1b4dda8",
+      "bytes": 24420
+    },
+    {
+      "id": "bow",
+      "rect": [
+        960,
+        530,
+        215,
+        650
+      ],
+      "pivot": [
+        165,
+        335
+      ],
+      "scale": 0.7,
+      "z": 2,
+      "attachTo": "body.bowGrip",
+      "string": {
+        "tipNear": [
+          28,
+          28
+        ],
+        "tipFar": [
+          28,
+          635
+        ],
+        "braceCenter": [
+          28,
+          335
+        ],
+        "drawCenter": [
+          -140,
+          335
+        ]
+      },
+      "joints": {
+        "release": [
+          28,
+          335
+        ]
+      },
+      "texture": "art/v2/squirrel-side-defender-v1/bow.webp",
+      "sha256": "d7cdda1c47d02a48ffe8143e69f661622af0cceacbaa60c0bd1ff0e84965d5ff",
+      "rail": {
+        "rear": [
+          -140,
+          335
+        ],
+        "release": [
+          28,
+          335
+        ]
+      },
+      "bytes": 24764
+    }
+  ],
+  "sourceSha256": "69599954c448ee62182b0390c3edb5cc71bd1bc2796c6354cefa01795ff3e606",
+  "review": {
+    "status": "candidate",
+    "notes": "Imported native separated parts. Assembly and motion gates pending."
+  },
+  "validation": {
+    "width": 1312,
+    "height": 1199,
+    "parts": [
+      {
+        "id": "body",
+        "visiblePixels": 292247,
+        "transparentFraction": 0.4633421052631579
+      },
+      {
+        "id": "holdArm",
+        "visiblePixels": 39201,
+        "transparentFraction": 0.5449134199134199
+      },
+      {
+        "id": "drawArm",
+        "visiblePixels": 39503,
+        "transparentFraction": 0.5405260273972603
+      },
+      {
+        "id": "bow",
+        "visiblePixels": 24356,
+        "transparentFraction": 0.7996207513416815
+      }
+    ],
+    "warnings": [
+      "Manual projection, silhouette, attachment, occlusion and motion review still required. Numeric checks do not approve artwork."
+    ]
+  },
+  "portrait": {
+    "texture": "art/v2/squirrel-side-defender-v1/portrait.webp",
+    "bodyCrop": [
+      355,
+      0,
+      395,
+      390
+    ]
+  },
+  "encoding": {
+    "format": "webp",
+    "quality": 92,
+    "alphaQuality": 100,
+    "effort": 6,
+    "source": "native source crop",
+    "alphaVerifiedExact": true
+  },
+  "animation": {
+    "action": "archer"
+  }
+}

@@ -1,0 +1,27 @@
+{
+  "version": 1,
+  "id": "cobblestone-material-v1",
+  "kind": "texture",
+  "subject": "Seamless hand-painted old cobblestone trail material for a woodland strategy game. Many small irregular warm grey and muted tan worn stones bedded into packed dark earth, with a little moss in narrow joints. Broad painted stone planes with soft worn edges and subtle relief. Natural practical craftsmanship, muted overall contrast complementary to mossy woodland ground.",
+  "composition": "Square seamless tileable material, overhead orthographic view, opaque full bleed. Identical small stone scale throughout, roughly 18 to 25 stones across the image. Edge-to-edge continuous surface with opposite edges matching for seamless repetition. No road outline or isolated path; this is only the material that runtime clips into a road. No dominant large stones, large cracks, focal motifs, lighting gradient, vignette, borders, regular grid, labels, text, props, plants above ground, scenery or perspective convergence. Keep surface restrained and readable beneath tiny game units. Soft consistent upper-left stone-face lighting with minimal joint contrast. Prefer 1024x1024.",
+  "review": {
+    "status": "asset-reviewed-in-game-pending",
+    "notes": "Native square opaque material inspected. Irregular warm grey/tan worn stone with restrained moss joints; no road outline or perspective. Stones are larger than requested 18–25 across: roughly 12–16 prominent stones across, so runtime should reduce material scale. Seamless generation is approximate, not pixel-perfect; opposite-edge mean RGB difference 10.20/255 horizontally and 11.60/255 vertically. In-game clipped-path tiling review required; do not claim seamless certification."
+  },
+  "texture": "art/v2/cobblestone-material-v1/atlas.webp",
+  "width": 1254,
+  "height": 1254,
+  "frames": [],
+  "sha256": "744582467367f8ec3ad26ef4d2b6de7eab706a8a3be5d6240229f9f55f1a45f4",
+  "bytes": 450254,
+  "provenance": "Native image generation; prompt and descriptor retained; imported without repainting or alpha substitution",
+  "validation": {
+    "id": "cobblestone-material-v1",
+    "width": 1254,
+    "height": 1254,
+    "hasAlpha": false,
+    "errors": [],
+    "warnings": [],
+    "frames": []
+  }
+}

@@ -1,0 +1,10 @@
+{
+  "version": 1,
+  "style": "Premium hand-painted 2D woodland strategy-game art. Broad expressive silhouettes, confidently painted forms, restrained brush texture, warm amber defenders against muted crimson raiders, deep moss and storm-teal surroundings. Dark and adventurous but child-friendly, practical armor and machinery, no occult themes or gore.",
+  "characterCamera": "Nearly side-on three-quarter view facing right, mildly elevated strategy-game camera. Show face, chest and two legs clearly. No isometric terrain platform.",
+  "light": "Soft upper-left key light, consistent across every frame; no changing cast shadow, no lighting flicker.",
+  "avoid": "No text, labels, frame numbers, grid lines, watermark, painted checkerboard, cropped body parts, floating equipment, occult symbols, skulls or gore. Never change costume, proportions, equipment or camera between frames.",
+  "biomeCamera": "Elevated near-orthographic game battlefield, looking down at one consistently scaled ground plane. Ground fills the entire frame. Same-size objects remain the same size at top and bottom. Local raised edges may show top and front faces. No horizon, sky, vanishing point, distant scenery, atmospheric recession or oversized foreground props.",
+  "towerCamera": "Mostly top-down orthographic view, camera about 75 degrees above the ground, looking straight along the vertical screen axis with no diagonal azimuth. Platform top dominates. Rectangular platform edges align horizontally and vertically on screen. Show only a shallow front edge at the bottom. No diamond-shaped platform, no prominent left/right side walls, no isometric three-face cube view. Mechanism and operator share this overhead angle.",
+  "defenderCamera": "Match the approved upright enemy camera: mildly elevated, mostly side-on character standing on a separate low tile. Generate side facing right, front and rear consistently; mirror side for left. No overhead mechanical platform perspective. Planted body includes legs; arms and held object are separated for joints."
+}

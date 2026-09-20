@@ -1,0 +1,160 @@
+{
+  "version": 1,
+  "id": "bolt-rig-v1",
+  "kind": "cutout-tower",
+  "source": "assets/source/reboot/bolt-rig-parts-v1.png",
+  "width": 2172,
+  "height": 724,
+  "units": "source pixels; points local to extracted part",
+  "camera": {
+    "projection": "orthographic",
+    "elevationDegrees": 45,
+    "view": "front-right three-quarter",
+    "barrelScreenDirection": [
+      0.86,
+      0.5
+    ]
+  },
+  "parts": [
+    {
+      "id": "base",
+      "rect": [
+        48,
+        0,
+        662,
+        704
+      ],
+      "pivot": [
+        326,
+        676
+      ],
+      "scale": 1,
+      "z": 0,
+      "attachments": {
+        "mount": [
+          320,
+          275
+        ],
+        "operator": [
+          242,
+          232
+        ]
+      },
+      "texture": "art/v2/bolt-rig-v1/base.webp",
+      "restPosition": [
+        0,
+        0
+      ]
+    },
+    {
+      "id": "bow",
+      "rect": [
+        792,
+        80,
+        686,
+        488
+      ],
+      "pivot": [
+        315,
+        449
+      ],
+      "scale": 0.59,
+      "z": 2,
+      "attachTo": "base.mount",
+      "joints": {
+        "spindle": [
+          315,
+          449
+        ],
+        "release": [
+          644,
+          413
+        ],
+        "drawHandle": [
+          170,
+          210
+        ]
+      },
+      "recoilAxis": [
+        -0.86,
+        -0.5
+      ],
+      "texture": "art/v2/bolt-rig-v1/bow.webp",
+      "restPosition": [
+        -6,
+        401
+      ]
+    },
+    {
+      "id": "operator",
+      "rect": [
+        1572,
+        145,
+        556,
+        520
+      ],
+      "pivot": [
+        310,
+        480
+      ],
+      "scale": 0.39,
+      "z": 1,
+      "attachTo": "base.operator",
+      "joints": {
+        "seat": [
+          310,
+          480
+        ],
+        "hands": [
+          472,
+          274
+        ]
+      },
+      "texture": "art/v2/bolt-rig-v1/operator.webp",
+      "restPosition": [
+        -84,
+        444
+      ]
+    }
+  ],
+  "animation": {
+    "durationSeconds": 0.65,
+    "phases": [
+      {
+        "name": "windup",
+        "start": 0,
+        "end": 0.25
+      },
+      {
+        "name": "release",
+        "start": 0.25,
+        "end": 0.3
+      },
+      {
+        "name": "recoil",
+        "start": 0.3,
+        "end": 0.4
+      },
+      {
+        "name": "reload",
+        "start": 0.4,
+        "end": 0.58
+      },
+      {
+        "name": "recovery",
+        "start": 0.58,
+        "end": 0.65
+      }
+    ],
+    "recoilSourcePixels": 14,
+    "operatorLeanDegrees": 5,
+    "baseNeverMoves": true,
+    "notes": "Rigid mechanism supports recoil/aim; bowstring is baked and cannot truly draw independently. Separate string/carriage needed for final draw cycle. No architecture deformation."
+  },
+  "review": {
+    "status": "candidate",
+    "notes": "Base and bow clearly top-visible; operator somewhat less elevated, rendered small. Staticpart scales correct source size inconsistency, never scale perframe. Manualapprox anchors require assemblyreview. Entirefront railing may occlude bow if layered incorrectly; base is onepiece and bowdraws infront."
+  },
+  "restPositionConvention": "assembled source pixels relative root pivot, Y up; attachTo remains authoritative",
+  "sourceSha256": "f660b37e3d7ede66e5e638fb4c2196874a672e55bb8e97c39faf18cdd8070e02"
+}

@@ -1,0 +1,179 @@
+{
+  "version": 1,
+  "id": "donkey-front-defender-v1",
+  "kind": "cutout-character",
+  "source": "assets/source/defenders-v1/donkey-front-parts.png",
+  "prompt": "art/v2/donkey-front-defender-v1/prompt.txt",
+  "view": "front",
+  "parts": [
+    {
+      "id": "body",
+      "rect": [
+        145,
+        0,
+        570,
+        915
+      ],
+      "pivot": [
+        330,
+        890
+      ],
+      "scale": 1,
+      "z": 1,
+      "attachments": {
+        "holdShoulder": [
+          485,
+          475
+        ],
+        "drawShoulder": [
+          185,
+          475
+        ],
+        "payloadGrip": [
+          530,
+          530
+        ]
+      },
+      "texture": "art/v2/donkey-front-defender-v1/body.webp",
+      "sha256": "fd471e86bd16ec4f34b1f030f927eb3775941362f9a29f699a7b4f1fffd07c1a",
+      "bytes": 132514
+    },
+    {
+      "id": "holdArm",
+      "rect": [
+        790,
+        465,
+        505,
+        260
+      ],
+      "pivot": [
+        105,
+        80
+      ],
+      "scale": 0.65,
+      "z": 3,
+      "attachTo": "body.holdShoulder",
+      "joints": {
+        "shoulder": [
+          105,
+          80
+        ],
+        "elbow": [
+          265,
+          175
+        ],
+        "grip": [
+          405,
+          165
+        ]
+      },
+      "texture": "art/v2/donkey-front-defender-v1/holdArm.webp",
+      "sha256": "53ba82ddcb53c44f5ada5a97d5920a5af69970dbeaefef74003419a2460ebe9e",
+      "bytes": 32188
+    },
+    {
+      "id": "drawArm",
+      "rect": [
+        200,
+        930,
+        480,
+        250
+      ],
+      "pivot": [
+        105,
+        95
+      ],
+      "scale": 0.65,
+      "z": 3,
+      "attachTo": "body.drawShoulder",
+      "joints": {
+        "shoulder": [
+          105,
+          95
+        ],
+        "elbow": [
+          260,
+          170
+        ],
+        "grip": [
+          390,
+          100
+        ]
+      },
+      "texture": "art/v2/donkey-front-defender-v1/drawArm.webp",
+      "sha256": "43b868daa6e6dbb2b7edf4f0eb601c87d7c19b938556f226aef5ab6857a15a04",
+      "bytes": 34616
+    },
+    {
+      "id": "payload",
+      "rect": [
+        850,
+        885,
+        310,
+        285
+      ],
+      "pivot": [
+        125,
+        95
+      ],
+      "scale": 0.45,
+      "z": 4,
+      "attachTo": "body.payloadGrip",
+      "joints": {
+        "grip": [
+          115,
+          90
+        ]
+      },
+      "texture": "art/v2/donkey-front-defender-v1/payload.webp",
+      "sha256": "d9b60ad8ea1c4f92e1be31a0af31f004efe1a36e89a1a1d57948d2be4538cd6e",
+      "bytes": 29882
+    }
+  ],
+  "reviewNotes": "Front native body, two separate arms and purse. Manual crop-bounded anchors. Apparent scale/hand-purse alignment requires runtime review. Original generation blocked; simplified prompt retry produced this source.",
+  "sourceSha256": "b54d8a1421b8d8113a5bf6b795166f61c278d7f0da26ec0784677153e607e54e",
+  "review": {
+    "status": "candidate",
+    "notes": "Imported native separated parts. Assembly and motion gates pending."
+  },
+  "validation": {
+    "width": 1312,
+    "height": 1199,
+    "parts": [
+      {
+        "id": "body",
+        "visiblePixels": 246219,
+        "transparentFraction": 0.5074451155210431
+      },
+      {
+        "id": "holdArm",
+        "visiblePixels": 56711,
+        "transparentFraction": 0.5475628332063975
+      },
+      {
+        "id": "drawArm",
+        "visiblePixels": 61327,
+        "transparentFraction": 0.4629666666666667
+      },
+      {
+        "id": "payload",
+        "visiblePixels": 46144,
+        "transparentFraction": 0.44593095642331637
+      }
+    ],
+    "warnings": [
+      "Manual projection, silhouette, attachment, occlusion and motion review still required. Numeric checks do not approve artwork."
+    ]
+  },
+  "encoding": {
+    "format": "webp",
+    "quality": 92,
+    "alphaQuality": 100,
+    "effort": 6,
+    "source": "native source crop",
+    "alphaVerifiedExact": true
+  },
+  "animation": {
+    "action": "trader"
+  }
+}

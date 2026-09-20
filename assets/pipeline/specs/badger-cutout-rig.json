@@ -1,0 +1,128 @@
+{
+  "version": 1,
+  "id": "badger-rig-v1",
+  "kind": "cutout-character",
+  "source": "assets/source/reboot/badger-rig-parts-v1.png",
+  "width": 2172,
+  "height": 724,
+  "units": "sourcepixels localtoeachcrop; restPosition rootrelativeYup",
+  "parts": [
+    {
+      "id": "body",
+      "rect": [
+        10,
+        0,
+        910,
+        700
+      ],
+      "pivot": [
+        480,
+        600
+      ],
+      "scale": 1,
+      "z": 2,
+      "attachments": {
+        "nearHip": [
+          535,
+          600
+        ],
+        "farHip": [
+          420,
+          585
+        ]
+      },
+      "restPosition": [
+        0,
+        0
+      ]
+    },
+    {
+      "id": "nearLeg",
+      "rect": [
+        1070,
+        125,
+        400,
+        585
+      ],
+      "pivot": [
+        120,
+        70
+      ],
+      "scale": 0.58,
+      "z": 1,
+      "joints": {
+        "hip": [
+          120,
+          70
+        ],
+        "knee": [
+          195,
+          230
+        ],
+        "ankle": [
+          190,
+          430
+        ],
+        "sole": [
+          240,
+          550
+        ]
+      },
+      "attachTo": "body.nearHip",
+      "restPosition": [
+        55,
+        0
+      ]
+    },
+    {
+      "id": "farLeg",
+      "rect": [
+        1680,
+        125,
+        420,
+        585
+      ],
+      "pivot": [
+        135,
+        70
+      ],
+      "scale": 0.58,
+      "z": 0,
+      "joints": {
+        "hip": [
+          135,
+          70
+        ],
+        "knee": [
+          220,
+          230
+        ],
+        "ankle": [
+          215,
+          430
+        ],
+        "sole": [
+          270,
+          550
+        ]
+      },
+      "attachTo": "body.farHip",
+      "restPosition": [
+        -60,
+        15
+      ]
+    }
+  ],
+  "animation": {
+    "hipHeight": 155,
+    "suggestedCycleSeconds": 1.05,
+    "nearPhase": 0,
+    "farPhase": 0.5,
+    "maxBodyBobSourcePixels": 4,
+    "requirement": "worldpath anchored stance plus2boneIK; no perframescaling"
+  },
+  "review": {
+    "status": "candidate",
+    "notes": "Manualapproxjointanchors; same ratcamera/materialfamily, true separatednativeparts. Badgerhelmetpeak touches source topedge; inspect atnormalgame size. Assembly/motionnotyetapproved."
+  }
+}

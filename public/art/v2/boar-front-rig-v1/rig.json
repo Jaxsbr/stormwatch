@@ -1,0 +1,173 @@
+{
+  "version": 1,
+  "id": "boar-front-rig-v1",
+  "kind": "cutout-character",
+  "source": "assets/source/reboot/boar-front-rig-parts-v1.png",
+  "width": 2172,
+  "height": 724,
+  "view": "front",
+  "units": "sourcepixels localtoeachcrop; restPositionrootrelativeYup",
+  "parts": [
+    {
+      "id": "body",
+      "rect": [
+        140,
+        0,
+        880,
+        700
+      ],
+      "pivot": [
+        435,
+        580
+      ],
+      "scale": 1,
+      "z": 2,
+      "attachments": {
+        "nearHip": [
+          365,
+          580
+        ],
+        "farHip": [
+          495,
+          580
+        ]
+      },
+      "restPosition": [
+        0,
+        0
+      ],
+      "texture": "art/v2/boar-front-rig-v1/body.webp",
+      "sha256": "69a47fde06a7616abc4d3eabfb1176419f8c43d3151f599fd2def5830c3bfce7",
+      "bytes": 160040
+    },
+    {
+      "id": "nearLeg",
+      "rect": [
+        1080,
+        60,
+        320,
+        650
+      ],
+      "pivot": [
+        160,
+        70
+      ],
+      "scale": 0.46,
+      "z": 1,
+      "joints": {
+        "hip": [
+          160,
+          70
+        ],
+        "knee": [
+          160,
+          318
+        ],
+        "ankle": [
+          160,
+          514
+        ],
+        "sole": [
+          160,
+          625
+        ]
+      },
+      "attachTo": "body.nearHip",
+      "restPosition": [
+        -70,
+        0
+      ],
+      "texture": "art/v2/boar-front-rig-v1/nearLeg.webp",
+      "sha256": "ef35d8339e6b3420f406d1afffcd03b127d0880d97a9fca7ae3563d0f9b18eee",
+      "bytes": 42162
+    },
+    {
+      "id": "farLeg",
+      "rect": [
+        1670,
+        60,
+        320,
+        650
+      ],
+      "pivot": [
+        160,
+        70
+      ],
+      "scale": 0.46,
+      "z": 0,
+      "joints": {
+        "hip": [
+          160,
+          70
+        ],
+        "knee": [
+          160,
+          318
+        ],
+        "ankle": [
+          160,
+          514
+        ],
+        "sole": [
+          160,
+          625
+        ]
+      },
+      "attachTo": "body.farHip",
+      "restPosition": [
+        60,
+        0
+      ],
+      "texture": "art/v2/boar-front-rig-v1/farLeg.webp",
+      "sha256": "5385f7cbc5ff360c367dc0c95913db6baaf74de22c1902ae9e58880b7a79f67a",
+      "bytes": 39576
+    }
+  ],
+  "animation": {
+    "hipHeight": 130,
+    "suggestedCycleSeconds": 0.95,
+    "nearPhase": 0,
+    "farPhase": 0.5,
+    "footTravelAxis": "screenY",
+    "nearLegAnatomy": "character right",
+    "farLegAnatomy": "character left"
+  },
+  "review": {
+    "status": "candidate",
+    "notes": "Imported native separated parts. Assembly and motion gates pending."
+  },
+  "sourceSha256": "bdd97f8bfbfcc3e190277ba44b35c2200fb7bee63e3dc5bb5019a36940ccb508",
+  "validation": {
+    "width": 2172,
+    "height": 724,
+    "parts": [
+      {
+        "id": "body",
+        "visiblePixels": 361910,
+        "transparentFraction": 0.3977402597402597
+      },
+      {
+        "id": "nearLeg",
+        "visiblePixels": 123885,
+        "transparentFraction": 0.3862355769230769
+      },
+      {
+        "id": "farLeg",
+        "visiblePixels": 117414,
+        "transparentFraction": 0.42073076923076924
+      }
+    ],
+    "warnings": [
+      "Manual projection, silhouette, attachment, occlusion and motion review still required. Numeric checks do not approve artwork."
+    ]
+  },
+  "encoding": {
+    "format": "webp",
+    "quality": 92,
+    "alphaQuality": 100,
+    "effort": 6,
+    "source": "native source crop",
+    "alphaVerifiedExact": true
+  },
+  "prompt": "art/v2/boar-front-rig-v1/prompt.txt"
+}

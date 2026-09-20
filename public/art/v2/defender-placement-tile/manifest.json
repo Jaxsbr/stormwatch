@@ -1,0 +1,8 @@
+{
+  "source": "assets/source/defenders-v1/placement-tile.png",
+  "sourceSha256": "0858123a74fbe61c9cd53bec01c207179899a69f874a6415ce9744f4c405dab5",
+  "prompt": "art/v2/defender-placement-tile/prompt.txt",
+  "processing": "Transparent-margin crop and proportional downsample only; native alpha retained",
+  "width": 384,
+  "height": 168
+}

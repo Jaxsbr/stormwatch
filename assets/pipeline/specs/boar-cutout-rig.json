@@ -1,0 +1,128 @@
+{
+  "version": 1,
+  "id": "boar-rig-v1",
+  "kind": "cutout-character",
+  "source": "assets/source/reboot/boar-rig-parts-v1.png",
+  "width": 2172,
+  "height": 724,
+  "units": "sourcepixels localtoeachcrop; restPosition rootrelativeYup",
+  "parts": [
+    {
+      "id": "body",
+      "rect": [
+        60,
+        0,
+        850,
+        672
+      ],
+      "pivot": [
+        415,
+        550
+      ],
+      "scale": 1,
+      "z": 2,
+      "attachments": {
+        "nearHip": [
+          460,
+          555
+        ],
+        "farHip": [
+          360,
+          535
+        ]
+      },
+      "restPosition": [
+        0,
+        0
+      ]
+    },
+    {
+      "id": "nearLeg",
+      "rect": [
+        1030,
+        140,
+        380,
+        560
+      ],
+      "pivot": [
+        120,
+        60
+      ],
+      "scale": 0.55,
+      "z": 1,
+      "joints": {
+        "hip": [
+          120,
+          60
+        ],
+        "knee": [
+          200,
+          245
+        ],
+        "ankle": [
+          180,
+          420
+        ],
+        "sole": [
+          235,
+          530
+        ]
+      },
+      "attachTo": "body.nearHip",
+      "restPosition": [
+        45,
+        -5
+      ]
+    },
+    {
+      "id": "farLeg",
+      "rect": [
+        1670,
+        140,
+        380,
+        560
+      ],
+      "pivot": [
+        120,
+        60
+      ],
+      "scale": 0.55,
+      "z": 0,
+      "joints": {
+        "hip": [
+          120,
+          60
+        ],
+        "knee": [
+          190,
+          245
+        ],
+        "ankle": [
+          175,
+          420
+        ],
+        "sole": [
+          230,
+          530
+        ]
+      },
+      "attachTo": "body.farHip",
+      "restPosition": [
+        -55,
+        15
+      ]
+    }
+  ],
+  "animation": {
+    "hipHeight": 130,
+    "suggestedCycleSeconds": 0.95,
+    "nearPhase": 0,
+    "farPhase": 0.5,
+    "maxBodyBobSourcePixels": 4,
+    "requirement": "worldpath anchored stance plus2boneIK; no perframescaling"
+  },
+  "review": {
+    "status": "candidate",
+    "notes": "Manualapproxjointanchors; same ratcamera/materialfamily, true separatednativeparts. Badgerhelmetpeak touches source topedge; inspect atnormalgame size. Assembly/motionnotyetapproved."
+  }
+}

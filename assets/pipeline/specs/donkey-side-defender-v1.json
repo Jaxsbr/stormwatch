@@ -1,0 +1,134 @@
+{
+  "version": 1,
+  "id": "donkey-side-defender-v1",
+  "kind": "cutout-character",
+  "source": "assets/source/defenders-v1/donkey-side-parts.png",
+  "prompt": "art/v2/donkey-side-defender-v1/prompt.txt",
+  "view": "side",
+  "parts": [
+    {
+      "id": "body",
+      "rect": [
+        130,
+        0,
+        640,
+        890
+      ],
+      "pivot": [
+        385,
+        855
+      ],
+      "scale": 1,
+      "z": 1,
+      "attachments": {
+        "holdShoulder": [
+          515,
+          455
+        ],
+        "drawShoulder": [
+          290,
+          450
+        ],
+        "payloadGrip": [
+          385,
+          450
+        ]
+      }
+    },
+    {
+      "id": "holdArm",
+      "rect": [
+        825,
+        430,
+        470,
+        250
+      ],
+      "pivot": [
+        95,
+        85
+      ],
+      "scale": 0.7,
+      "z": 0,
+      "attachTo": "body.holdShoulder",
+      "joints": {
+        "shoulder": [
+          95,
+          85
+        ],
+        "elbow": [
+          230,
+          165
+        ],
+        "grip": [
+          385,
+          165
+        ]
+      }
+    },
+    {
+      "id": "drawArm",
+      "rect": [
+        235,
+        915,
+        440,
+        250
+      ],
+      "pivot": [
+        100,
+        105
+      ],
+      "scale": 0.7,
+      "z": 3,
+      "attachTo": "body.drawShoulder",
+      "joints": {
+        "shoulder": [
+          100,
+          105
+        ],
+        "elbow": [
+          225,
+          150
+        ],
+        "grip": [
+          355,
+          70
+        ]
+      }
+    },
+    {
+      "id": "payload",
+      "rect": [
+        885,
+        880,
+        295,
+        285
+      ],
+      "pivot": [
+        115,
+        90
+      ],
+      "scale": 0.45,
+      "z": 4,
+      "attachTo": "body.payloadGrip",
+      "joints": {
+        "grip": [
+          115,
+          90
+        ]
+      }
+    }
+  ],
+  "reviewNotes": "Native separated body, two full arms and coin purse. No baked full arms; open sleeve stump supplies overlap. Manual shoulder/elbow/grip anchors; runtime hand/purse placement still requires review. Long ears account for larger890px root crop; do not compare source pixel heights directly with squirrel.",
+  "animation": {
+    "action": "trader"
+  },
+  "portrait": {
+    "texture": "art/v2/donkey-side-defender-v1/portrait.webp",
+    "bodyCrop": [
+      200,
+      0,
+      420,
+      430
+    ]
+  }
+}

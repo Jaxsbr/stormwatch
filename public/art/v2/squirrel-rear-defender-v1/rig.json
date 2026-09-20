@@ -1,0 +1,207 @@
+{
+  "version": 1,
+  "id": "squirrel-rear-defender-v1",
+  "kind": "cutout-character",
+  "source": "assets/source/defenders-v1/squirrel-rear-parts.png",
+  "prompt": "art/v2/squirrel-rear-defender-v1/prompt.txt",
+  "view": "rear",
+  "parts": [
+    {
+      "id": "body",
+      "rect": [
+        15,
+        0,
+        745,
+        800
+      ],
+      "pivot": [
+        515,
+        765
+      ],
+      "scale": 1,
+      "z": 1,
+      "attachments": {
+        "holdShoulder": [
+          405,
+          360
+        ],
+        "drawShoulder": [
+          650,
+          360
+        ],
+        "bowGrip": [
+          515,
+          450
+        ]
+      },
+      "texture": "art/v2/squirrel-rear-defender-v1/body.webp",
+      "sha256": "75757aceeaf6fbbc54e7c8dce6310d36265d5ea1b56f687029655b1d929faa33",
+      "bytes": 156346
+    },
+    {
+      "id": "holdArm",
+      "rect": [
+        830,
+        285,
+        450,
+        245
+      ],
+      "pivot": [
+        85,
+        80
+      ],
+      "scale": 0.7,
+      "z": 0,
+      "attachTo": "body.holdShoulder",
+      "joints": {
+        "shoulder": [
+          85,
+          80
+        ],
+        "elbow": [
+          225,
+          165
+        ],
+        "grip": [
+          355,
+          175
+        ]
+      },
+      "texture": "art/v2/squirrel-rear-defender-v1/holdArm.webp",
+      "sha256": "fb09cbcca7683cb8614d42ac204c4561284e7e47549ee33121da9aff16e79eeb",
+      "bytes": 26582
+    },
+    {
+      "id": "drawArm",
+      "rect": [
+        320,
+        825,
+        365,
+        255
+      ],
+      "pivot": [
+        90,
+        125
+      ],
+      "scale": 0.7,
+      "z": 0,
+      "attachTo": "body.drawShoulder",
+      "joints": {
+        "shoulder": [
+          90,
+          125
+        ],
+        "elbow": [
+          185,
+          175
+        ],
+        "grip": [
+          285,
+          80
+        ]
+      },
+      "texture": "art/v2/squirrel-rear-defender-v1/drawArm.webp",
+      "sha256": "3b64c5842e0489d6d31862dcba8483e5fea2f7cc2767a8a7498b460def328211",
+      "bytes": 23868
+    },
+    {
+      "id": "bow",
+      "rect": [
+        940,
+        540,
+        215,
+        640
+      ],
+      "pivot": [
+        175,
+        310
+      ],
+      "scale": 0.7,
+      "z": 2,
+      "attachTo": "body.bowGrip",
+      "string": {
+        "tipNear": [
+          28,
+          20
+        ],
+        "tipFar": [
+          28,
+          620
+        ],
+        "braceCenter": [
+          28,
+          310
+        ],
+        "drawCenter": [
+          -40,
+          310
+        ]
+      },
+      "joints": {
+        "release": [
+          28,
+          310
+        ]
+      },
+      "rail": {
+        "rear": [
+          -40,
+          335
+        ],
+        "release": [
+          28,
+          335
+        ]
+      },
+      "texture": "art/v2/squirrel-rear-defender-v1/bow.webp",
+      "sha256": "d4c4a0bfda982f5459a1abaf44b2ce895788de4a2bac9cc70696590f1a00464f",
+      "bytes": 26536
+    }
+  ],
+  "reviewNotes": "Native rear body, separate arms and bow; true alpha. Empty sleeves visible, tail partly covers left hip. Manual anchors; arm orientation/occlusion and bow foreshortening require runtime assembly review. Fixed crop height800 matches front; side root750 requires consistent apparent character height.",
+  "sourceSha256": "8ecbc3fdbb91029c8e674c4faae7753221bd2a956f38881a5515648425d99fa0",
+  "review": {
+    "status": "candidate",
+    "notes": "Imported native separated parts. Assembly and motion gates pending."
+  },
+  "validation": {
+    "width": 1312,
+    "height": 1199,
+    "parts": [
+      {
+        "id": "body",
+        "visiblePixels": 312696,
+        "transparentFraction": 0.4559228187919463
+      },
+      {
+        "id": "holdArm",
+        "visiblePixels": 43545,
+        "transparentFraction": 0.5802267573696145
+      },
+      {
+        "id": "drawArm",
+        "visiblePixels": 38847,
+        "transparentFraction": 0.5573247381144238
+      },
+      {
+        "id": "bow",
+        "visiblePixels": 28227,
+        "transparentFraction": 0.7702688953488372
+      }
+    ],
+    "warnings": [
+      "Manual projection, silhouette, attachment, occlusion and motion review still required. Numeric checks do not approve artwork."
+    ]
+  },
+  "encoding": {
+    "format": "webp",
+    "quality": 92,
+    "alphaQuality": 100,
+    "effort": 6,
+    "source": "native source crop",
+    "alphaVerifiedExact": true
+  },
+  "animation": {
+    "action": "archer"
+  }
+}

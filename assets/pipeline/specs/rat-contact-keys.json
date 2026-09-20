@@ -1,0 +1,32 @@
+{
+  "id": "rat-contact-keys-v3",
+  "kind": "character",
+  "subject": "A sturdy small rat raider with rounded ears, a weathered slate iron helmet, crimson quilted tunic, leather belt, short boots and a compact round wooden shield on the far arm. Expressive determined face; no weapon hiding the legs.",
+  "sheet": {
+    "columns": 2,
+    "rows": 1
+  },
+  "clips": {
+    "contact_test": {
+      "frames": [
+        0,
+        1
+      ],
+      "fps": 2,
+      "loop": true
+    }
+  },
+  "frameInstructions": [
+    "CONTACT A: near visible leg extends FORWARD toward screen RIGHT, heel on ground; far leg extends BACK toward screen LEFT, toe on ground. Near bare arm swings backward; shield remains on FAR arm.",
+    "CONTACT B: near visible leg extends BACK toward screen LEFT, toe on ground; far leg extends FORWARD toward screen RIGHT, heel on ground. This must be the opposite leg crossing, NOT the same silhouette as A. Near bare arm swings forward; shield stays on FAR arm."
+  ],
+  "pivot": [
+    0.5,
+    0.92
+  ],
+  "worldHeight": 1.1,
+  "review": {
+    "status": "rejected",
+    "notes": "Native output repeats same near-leg-forward pose in both cells despite explicit opposite-contact instruction. Do not expand into passing poses."
+  }
+}

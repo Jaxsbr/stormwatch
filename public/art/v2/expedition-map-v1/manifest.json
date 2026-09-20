@@ -1,0 +1,37 @@
+{
+  "version": 1,
+  "id": "expedition-map-v1",
+  "kind": "biome",
+  "subject": "Painted overhead expedition map for a woodland strategy game's separate location-selection menu. A coherent local woodland region with two subtle clear destination landmarks: a sheltered pine woodland pass clearing at 30 percent image width and 55 percent image height, and a small slate river crossing at 60 percent image width and 50 percent image height. A readable gently winding narrow footpath connects the two destinations. Moss green woodland on the left transitions into cool slate and a narrow teal river on the right; tiny practical amber lanterns mark the destinations. Natural, adventurous, dark but child-friendly.",
+  "composition": "Horizontal 16:9, elevated orthographic overview with terrain filling all edges. Same physical object scale top to bottom, no horizon, sky, distant scenery, atmospheric recession, vanishing point or giant foreground. This is a menu expedition map, NOT a gameplay battle plate: include a narrow connected winding footpath between only TWO clear landmarks, but no grid. Landmark areas should be readable without becoming large buildings: left a small break in pine trees flanked by standing stones, right a modest timber footbridge over a narrow river edged with slate. Generous calm space on rightmost quarter and bottom for separately rendered menu controls. All scenery painted cohesively, no parchment, no physical frame, no baked labels, lettering, numbers, pins, circles, selection rings, UI or characters.",
+  "review": {
+    "status": "asset-reviewed-menu-pending",
+    "notes": "Cohesive overhead woodland/slate menu illustration, no horizon, connected readable path, two landmarks. Generated positions differ from prompt: woodland standing-stone clearing near[.18,.41], bridge[.59,.43]; align live controls to these actual landmarks. Rightmost quarter and lower ground quieter for controls. No baked labels/UI."
+  },
+  "texture": "art/v2/expedition-map-v1/atlas.webp",
+  "width": 1672,
+  "height": 941,
+  "frames": [],
+  "sha256": "662effe16b49335be5c2c7bb6e58a4d253d4ae8dc2936c078b4e17301fbe46d9",
+  "bytes": 561082,
+  "provenance": "Native image generation; prompt and descriptor retained; imported without repainting or alpha substitution",
+  "validation": {
+    "id": "expedition-map-v1",
+    "width": 1672,
+    "height": 941,
+    "hasAlpha": false,
+    "errors": [],
+    "warnings": [],
+    "frames": []
+  },
+  "landmarks": {
+    "woodland": [
+      0.18,
+      0.41
+    ],
+    "riverbank": [
+      0.59,
+      0.43
+    ]
+  }
+}

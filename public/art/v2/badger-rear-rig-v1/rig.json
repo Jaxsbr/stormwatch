@@ -1,0 +1,173 @@
+{
+  "version": 1,
+  "id": "badger-rear-rig-v1",
+  "kind": "cutout-character",
+  "source": "assets/source/reboot/badger-rear-rig-parts-v1.png",
+  "width": 2172,
+  "height": 724,
+  "view": "rear",
+  "units": "sourcepixels localtoeachcrop; restPositionrootrelativeYup",
+  "parts": [
+    {
+      "id": "body",
+      "rect": [
+        120,
+        0,
+        780,
+        700
+      ],
+      "pivot": [
+        410,
+        590
+      ],
+      "scale": 1,
+      "z": 2,
+      "attachments": {
+        "nearHip": [
+          480,
+          580
+        ],
+        "farHip": [
+          340,
+          580
+        ]
+      },
+      "restPosition": [
+        0,
+        0
+      ],
+      "texture": "art/v2/badger-rear-rig-v1/body.webp",
+      "sha256": "85779e424c76045a5aeb953cda1332799f7ebfea59453f582d7e5f7307b92a34",
+      "bytes": 115764
+    },
+    {
+      "id": "nearLeg",
+      "rect": [
+        1100,
+        90,
+        290,
+        620
+      ],
+      "pivot": [
+        145,
+        80
+      ],
+      "scale": 0.52,
+      "z": 1,
+      "joints": {
+        "hip": [
+          145,
+          80
+        ],
+        "knee": [
+          145,
+          270
+        ],
+        "ankle": [
+          145,
+          470
+        ],
+        "sole": [
+          145,
+          590
+        ]
+      },
+      "attachTo": "body.nearHip",
+      "restPosition": [
+        70,
+        10
+      ],
+      "texture": "art/v2/badger-rear-rig-v1/nearLeg.webp",
+      "sha256": "5444d0f37ef705dc264799e1ec8adef36cc94f6a3ccd0139f9580aef4d0f9bac",
+      "bytes": 39136
+    },
+    {
+      "id": "farLeg",
+      "rect": [
+        1700,
+        90,
+        280,
+        620
+      ],
+      "pivot": [
+        140,
+        80
+      ],
+      "scale": 0.52,
+      "z": 0,
+      "joints": {
+        "hip": [
+          140,
+          80
+        ],
+        "knee": [
+          140,
+          270
+        ],
+        "ankle": [
+          140,
+          470
+        ],
+        "sole": [
+          140,
+          590
+        ]
+      },
+      "attachTo": "body.farHip",
+      "restPosition": [
+        -70,
+        10
+      ],
+      "texture": "art/v2/badger-rear-rig-v1/farLeg.webp",
+      "sha256": "c3544f9291f705e9215c10d9e6830e6b551ecac76831facdc61bf7dea5d865b4",
+      "bytes": 38482
+    }
+  ],
+  "animation": {
+    "hipHeight": 155,
+    "suggestedCycleSeconds": 1.05,
+    "nearPhase": 0,
+    "farPhase": 0.5,
+    "footTravelAxis": "screenY",
+    "nearLegAnatomy": "character right",
+    "farLegAnatomy": "character left"
+  },
+  "review": {
+    "status": "candidate",
+    "notes": "Imported native separated parts. Assembly and motion gates pending."
+  },
+  "sourceSha256": "3474ec840a2ee84ab9a9168f82ce50eae13e8bf8cccf317afe4a62bbc72b4023",
+  "validation": {
+    "width": 2172,
+    "height": 724,
+    "parts": [
+      {
+        "id": "body",
+        "visiblePixels": 295981,
+        "transparentFraction": 0.4439230769230769
+      },
+      {
+        "id": "nearLeg",
+        "visiblePixels": 97979,
+        "transparentFraction": 0.4343548387096774
+      },
+      {
+        "id": "farLeg",
+        "visiblePixels": 97874,
+        "transparentFraction": 0.41726382488479263
+      }
+    ],
+    "warnings": [
+      "Manual projection, silhouette, attachment, occlusion and motion review still required. Numeric checks do not approve artwork."
+    ]
+  },
+  "encoding": {
+    "format": "webp",
+    "quality": 92,
+    "alphaQuality": 100,
+    "effort": 6,
+    "source": "native source crop",
+    "alphaVerifiedExact": true
+  },
+  "prompt": "art/v2/badger-rear-rig-v1/prompt.txt"
+}

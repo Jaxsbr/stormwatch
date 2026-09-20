@@ -1,0 +1,188 @@
+{
+  "version": 1,
+  "id": "donkey-side-defender-v1",
+  "kind": "cutout-character",
+  "source": "assets/source/defenders-v1/donkey-side-parts.png",
+  "prompt": "art/v2/donkey-side-defender-v1/prompt.txt",
+  "view": "side",
+  "parts": [
+    {
+      "id": "body",
+      "rect": [
+        130,
+        0,
+        640,
+        890
+      ],
+      "pivot": [
+        385,
+        855
+      ],
+      "scale": 1,
+      "z": 1,
+      "attachments": {
+        "holdShoulder": [
+          515,
+          455
+        ],
+        "drawShoulder": [
+          290,
+          450
+        ],
+        "payloadGrip": [
+          385,
+          450
+        ]
+      },
+      "texture": "art/v2/donkey-side-defender-v1/body.webp",
+      "sha256": "52f4ee8d3aae07cee9f492ff84d8d94f4786f7102f9f2d1f2cb8b15de0fc2f69",
+      "bytes": 130016
+    },
+    {
+      "id": "holdArm",
+      "rect": [
+        825,
+        430,
+        470,
+        250
+      ],
+      "pivot": [
+        95,
+        85
+      ],
+      "scale": 0.7,
+      "z": 0,
+      "attachTo": "body.holdShoulder",
+      "joints": {
+        "shoulder": [
+          95,
+          85
+        ],
+        "elbow": [
+          230,
+          165
+        ],
+        "grip": [
+          385,
+          165
+        ]
+      },
+      "texture": "art/v2/donkey-side-defender-v1/holdArm.webp",
+      "sha256": "b1257399d65da6d780de7dfa7232311b494820bda533d28999c1700e41bf0694",
+      "bytes": 30370
+    },
+    {
+      "id": "drawArm",
+      "rect": [
+        235,
+        915,
+        440,
+        250
+      ],
+      "pivot": [
+        100,
+        105
+      ],
+      "scale": 0.7,
+      "z": 3,
+      "attachTo": "body.drawShoulder",
+      "joints": {
+        "shoulder": [
+          100,
+          105
+        ],
+        "elbow": [
+          225,
+          150
+        ],
+        "grip": [
+          355,
+          70
+        ]
+      },
+      "texture": "art/v2/donkey-side-defender-v1/drawArm.webp",
+      "sha256": "f17053280d0ca76c7a6400baf7336cf05a4f7f6b366f59e54d92c8fec7da3200",
+      "bytes": 31268
+    },
+    {
+      "id": "payload",
+      "rect": [
+        885,
+        880,
+        295,
+        285
+      ],
+      "pivot": [
+        115,
+        90
+      ],
+      "scale": 0.45,
+      "z": 4,
+      "attachTo": "body.payloadGrip",
+      "joints": {
+        "grip": [
+          115,
+          90
+        ]
+      },
+      "texture": "art/v2/donkey-side-defender-v1/payload.webp",
+      "sha256": "a0791474c74261947b5a694c01ea67e9ed5625c3ab9342d12d5e5448f981a097",
+      "bytes": 27884
+    }
+  ],
+  "reviewNotes": "Native separated body, two full arms and coin purse. No baked full arms; open sleeve stump supplies overlap. Manual shoulder/elbow/grip anchors; runtime hand/purse placement still requires review. Long ears account for larger890px root crop; do not compare source pixel heights directly with squirrel.",
+  "sourceSha256": "926bf84ca7ef9de3510e4b4ff266b0ea8f03332bd29e45e93e111b44a52c7b56",
+  "review": {
+    "status": "candidate",
+    "notes": "Imported native separated parts. Assembly and motion gates pending."
+  },
+  "validation": {
+    "width": 1312,
+    "height": 1199,
+    "parts": [
+      {
+        "id": "body",
+        "visiblePixels": 238616,
+        "transparentFraction": 0.5605196629213484
+      },
+      {
+        "id": "holdArm",
+        "visiblePixels": 50566,
+        "transparentFraction": 0.545931914893617
+      },
+      {
+        "id": "drawArm",
+        "visiblePixels": 52059,
+        "transparentFraction": 0.5021
+      },
+      {
+        "id": "payload",
+        "visiblePixels": 40485,
+        "transparentFraction": 0.48111804936068986
+      }
+    ],
+    "warnings": [
+      "Manual projection, silhouette, attachment, occlusion and motion review still required. Numeric checks do not approve artwork."
+    ]
+  },
+  "portrait": {
+    "texture": "art/v2/donkey-side-defender-v1/portrait.webp",
+    "bodyCrop": [
+      200,
+      0,
+      420,
+      430
+    ]
+  },
+  "encoding": {
+    "format": "webp",
+    "quality": 92,
+    "alphaQuality": 100,
+    "effort": 6,
+    "source": "native source crop",
+    "alphaVerifiedExact": true
+  },
+  "animation": {
+    "action": "trader"
+  }
+}

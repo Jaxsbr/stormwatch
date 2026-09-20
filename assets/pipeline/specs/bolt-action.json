@@ -1,0 +1,11 @@
+{
+  "id":"bolt-action-v2",
+  "kind":"tower",
+  "subject":"A compact timber crossbow watchtower operated by a squirrel guardian, brass fittings, moss-dark wood, amber lantern, large visible horizontal bow and a sturdy timber pedestal. Broad readable mechanism and operator silhouette.",
+  "sheet":{"columns":4,"rows":2},
+  "clips":{"fire":{"frames":[0,1,2,3,4,5,6,7],"fps":14,"loop":false}},
+  "frameInstructions":["Rest: bow unloaded, operator alert","Anticipation: operator draws mechanism, bow begins flexing","Full draw: bow arms visibly flexed, operator braced","Release: bow snaps forward, no projectile baked into sprite","Recoil: bow assembly moves back slightly, operator recoils","Reload: operator pulls loading lever","Recovery: bow and operator settle","Rest: match first frame exactly"],
+  "pivot":[0.5,0.92],
+  "worldHeight":1.6,
+  "review":{"status":"unreviewed","notes":"Prove mechanical motion without tower base sliding or changing shape."}
+}

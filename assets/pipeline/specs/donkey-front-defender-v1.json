@@ -1,0 +1,125 @@
+{
+  "version": 1,
+  "id": "donkey-front-defender-v1",
+  "kind": "cutout-character",
+  "source": "assets/source/defenders-v1/donkey-front-parts.png",
+  "prompt": "art/v2/donkey-front-defender-v1/prompt.txt",
+  "view": "front",
+  "parts": [
+    {
+      "id": "body",
+      "rect": [
+        145,
+        0,
+        570,
+        915
+      ],
+      "pivot": [
+        330,
+        890
+      ],
+      "scale": 1,
+      "z": 1,
+      "attachments": {
+        "holdShoulder": [
+          485,
+          475
+        ],
+        "drawShoulder": [
+          185,
+          475
+        ],
+        "payloadGrip": [
+          530,
+          530
+        ]
+      }
+    },
+    {
+      "id": "holdArm",
+      "rect": [
+        790,
+        465,
+        505,
+        260
+      ],
+      "pivot": [
+        105,
+        80
+      ],
+      "scale": 0.65,
+      "z": 3,
+      "attachTo": "body.holdShoulder",
+      "joints": {
+        "shoulder": [
+          105,
+          80
+        ],
+        "elbow": [
+          265,
+          175
+        ],
+        "grip": [
+          405,
+          165
+        ]
+      }
+    },
+    {
+      "id": "drawArm",
+      "rect": [
+        200,
+        930,
+        480,
+        250
+      ],
+      "pivot": [
+        105,
+        95
+      ],
+      "scale": 0.65,
+      "z": 3,
+      "attachTo": "body.drawShoulder",
+      "joints": {
+        "shoulder": [
+          105,
+          95
+        ],
+        "elbow": [
+          260,
+          170
+        ],
+        "grip": [
+          390,
+          100
+        ]
+      }
+    },
+    {
+      "id": "payload",
+      "rect": [
+        850,
+        885,
+        310,
+        285
+      ],
+      "pivot": [
+        125,
+        95
+      ],
+      "scale": 0.45,
+      "z": 4,
+      "attachTo": "body.payloadGrip",
+      "joints": {
+        "grip": [
+          115,
+          90
+        ]
+      }
+    }
+  ],
+  "reviewNotes": "Front native body, two separate arms and purse. Manual crop-bounded anchors. Apparent scale/hand-purse alignment requires runtime review. Original generation blocked; simplified prompt retry produced this source.",
+  "animation": {
+    "action": "trader"
+  }
+}

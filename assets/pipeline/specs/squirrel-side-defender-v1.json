@@ -1,0 +1,153 @@
+{
+  "version": 1,
+  "id": "squirrel-side-defender-v1",
+  "kind": "cutout-character",
+  "source": "assets/source/defenders-v1/squirrel-side-parts.png",
+  "prompt": "art/v2/squirrel-side-defender-v1/prompt.txt",
+  "view": "side",
+  "parts": [
+    {
+      "id": "body",
+      "rect": [
+        20,
+        0,
+        760,
+        750
+      ],
+      "pivot": [
+        490,
+        720
+      ],
+      "scale": 1,
+      "z": 1,
+      "attachments": {
+        "holdShoulder": [
+          535,
+          350
+        ],
+        "drawShoulder": [
+          420,
+          355
+        ],
+        "bowGrip": [
+          760,
+          390
+        ]
+      }
+    },
+    {
+      "id": "holdArm",
+      "rect": [
+        865,
+        275,
+        420,
+        220
+      ],
+      "pivot": [
+        70,
+        65
+      ],
+      "scale": 0.7,
+      "z": 0,
+      "attachTo": "body.holdShoulder",
+      "joints": {
+        "grip": [
+          345,
+          150
+        ],
+        "elbow": [
+          195,
+          135
+        ]
+      }
+    },
+    {
+      "id": "drawArm",
+      "rect": [
+        260,
+        815,
+        365,
+        250
+      ],
+      "pivot": [
+        75,
+        140
+      ],
+      "scale": 0.85,
+      "z": 3,
+      "attachTo": "body.drawShoulder",
+      "joints": {
+        "grip": [
+          280,
+          50
+        ],
+        "elbow": [
+          140,
+          185
+        ]
+      }
+    },
+    {
+      "id": "bow",
+      "rect": [
+        960,
+        530,
+        215,
+        650
+      ],
+      "pivot": [
+        165,
+        335
+      ],
+      "scale": 0.7,
+      "z": 2,
+      "attachTo": "body.bowGrip",
+      "string": {
+        "tipNear": [
+          28,
+          28
+        ],
+        "tipFar": [
+          28,
+          635
+        ],
+        "braceCenter": [
+          28,
+          335
+        ],
+        "drawCenter": [
+          -140,
+          335
+        ]
+      },
+      "joints": {
+        "release": [
+          28,
+          335
+        ]
+      },
+      "rail": {
+        "rear": [
+          -140,
+          335
+        ],
+        "release": [
+          28,
+          335
+        ]
+      }
+    }
+  ],
+  "animation": {
+    "action": "archer"
+  },
+  "portrait": {
+    "texture": "art/v2/squirrel-side-defender-v1/portrait.webp",
+    "bodyCrop": [
+      355,
+      0,
+      395,
+      390
+    ]
+  }
+}

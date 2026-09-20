@@ -1,0 +1,27 @@
+{
+  "version": 1,
+  "id": "woodland-clearing-v3",
+  "kind": "biome",
+  "subject": "A woodland tower-defense BATTLE MAP: a continuous moss-and-earth ground plane bordered with small pine trees, mossy rocks, ferns, roots and a few tiny amber lanterns. Dark child-friendly woodland adventure. All environment props belong to the same local map, at the SAME object scale everywhere.",
+  "composition": "Wide horizontal 16:9 game map. FIXED ORTHOGRAPHIC elevated 3/4 projection, looking down onto the whole ground plane. This is a flat overhead strategy map with upright illustrated props, NOT a landscape painting or eye-level view. Ground fills the entire image to all four edges. Identical-sized rocks, tree crowns and ground texture at the top and bottom: ZERO distance-based scaling, ZERO perspective convergence, ZERO atmospheric recession. Upper and lower edge scenery are local same-scale raised banks showing a little front face; small trees/rocks at edges can be cropped but NEVER oversized foreground trunks. Keep central 70 percent width and middle 65 percent height open low-contrast earth/moss. Sparse perimeter objects, shallow perimeter band. No sky, horizon, skyline, mountains, distant forest, valley, distant landmarks, buildings, fort, waterfall, vanishing point, road, path, grid, checkerboard, characters, towers, UI or text. The top edge is as close to the camera as the bottom edge in scale. Every stone is painted at consistent physical map scale.",
+  "review": {
+    "status": "user-approved-projection",
+    "notes": "User explicitly said background is great now after corrected woodland projection was integrated. Approval covers background projection; broader gameplay/tower animation acceptance remains separate."
+  },
+  "texture": "art/v2/woodland-clearing-v3/atlas.webp",
+  "width": 1672,
+  "height": 941,
+  "frames": [],
+  "sha256": "15c3b06c2a36f192ce545a3b1264af1f2049214fa4fb2212fa5383e766a106cd",
+  "bytes": 491546,
+  "provenance": "Native image generation; prompt and descriptor retained; imported without repainting or alpha substitution",
+  "validation": {
+    "id": "woodland-clearing-v3",
+    "width": 1672,
+    "height": 941,
+    "hasAlpha": false,
+    "errors": [],
+    "warnings": [],
+    "frames": []
+  }
+}

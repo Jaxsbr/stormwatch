@@ -1,0 +1,119 @@
+{
+  "version": 1,
+  "id": "turtle-rear-defender-v1",
+  "kind": "cutout-character",
+  "source": "assets/source/defenders-v1/turtle-rear-parts.png",
+  "prompt": "art/v2/turtle-rear-defender-v1/prompt.txt",
+  "view": "rear",
+  "parts": [
+    {
+      "id": "body",
+      "rect": [
+        80,
+        0,
+        660,
+        790
+      ],
+      "pivot": [
+        330,
+        755
+      ],
+      "scale": 1,
+      "z": 1,
+      "attachments": {
+        "holdShoulder": [
+          115,
+          285
+        ],
+        "drawShoulder": [
+          545,
+          285
+        ],
+        "payloadGrip": [
+          600,
+          385
+        ]
+      }
+    },
+    {
+      "id": "holdArm",
+      "rect": [
+        765,
+        290,
+        540,
+        315
+      ],
+      "pivot": [
+        110,
+        95
+      ],
+      "scale": 0.6,
+      "z": 0,
+      "attachTo": "body.holdShoulder",
+      "joints": {
+        "shoulder": [
+          110,
+          95
+        ],
+        "elbow": [
+          275,
+          165
+        ],
+        "grip": [
+          450,
+          195
+        ]
+      }
+    },
+    {
+      "id": "drawArm",
+      "rect": [
+        140,
+        810,
+        595,
+        340
+      ],
+      "pivot": [
+        120,
+        125
+      ],
+      "scale": 0.6,
+      "z": 0,
+      "attachTo": "body.drawShoulder",
+      "joints": {
+        "shoulder": [
+          120,
+          125
+        ],
+        "elbow": [
+          295,
+          230
+        ],
+        "grip": [
+          490,
+          130
+        ]
+      }
+    },
+    {
+      "id": "payload",
+      "rect": [
+        795,
+        785,
+        480,
+        390
+      ],
+      "pivot": [
+        225,
+        175
+      ],
+      "scale": 0.35,
+      "z": 4,
+      "attachTo": "body.payloadGrip"
+    }
+  ],
+  "reviewNotes": "Native rear shell-facing body, no face/chest and no baked full arms. Small claws remain visible at outer edges of feet. All body anchors within crop. Manual joints; rear arm occlusion and payload handoff pending assembly.",
+  "animation": {
+    "action": "thrower"
+  }
+}
