@@ -1,0 +1,28 @@
+# Consecutive normal-combat motion review
+
+Reviewed actual saved Lantern clips, without new play or source edits. Contact sheets run left-to-right, then top-to-bottom. Their resizing is disclosed below; original recordings retain normal playing size. This is consecutive-pose evidence, not a claim of continuous audiovisual playback or measured smoothness.
+
+## Windows inspected
+
+- Wave 8 `gameplay-1789874673050-c912f669.webm`, 2–4 s, 6 fps: `after/lantern-impact-sequence.png`. Crop480×370 displayed384×296 per pose. Front badger, front/side rats, arrow/stone/net attacks, hit and recovery.
+- Same clip, 5–8 s, 8 fps: `after/lantern-rat-hit-sequence.png`. Crop480×300 displayed360×225. Rat corner transition and vertical procession, badger hit/slow sequence.
+- Same clip, 10–13 s, 6 fps: `after/lantern-removal-sequence.png`. Crop600×420 displayed420×294. Badger front→side lower corner; trailing rats disappear from combat while projectile impacts continue. The filename denotes the investigation, not proof of a bespoke death animation.
+- Wave 6 `gameplay-1789874505143-6dff8522.webm`, 8–10 s, 6 fps: `after/lantern-roadwarden-sequence.png`. Crop520×300 displayed416×240. Badger rear→side and rat rear gait, successive hits.
+
+## Findings and scores
+
+**Character animation: 4/5, medium confidence**, combining these normal-combat windows with the corrected frontal-gait follow-up in `directional-roster-review.md`. The earlier provisional3 was explicitly held for missing action/impact evidence. That gap is now materially addressed: badger torso tilts/offsets briefly and warms on impact, then returns; boots continue their alternating progression without detaching. Rear and front boots stay upright. Rear→side and front→side changes preserve recognizable size/identity. Rat legs alternate on the horizontal route and select front/rear at bends. Earlier roster coverage establishes weasel/boar directional movement; this pass does not pretend to add isolated weasel/boar hit closeups.
+
+The pose sequence shows no repeated whole-sprite scale pumping, diagonal paired-boot slant, or hip separation. View swaps remain abrupt, heavy torsos restrained, and removal simple; these limit polish toward5 but are not a demonstrated broken4. Several trailing rats disappear between adjacent samples while attacks continue. Their exact terminal frames are occluded by the boss, so I cannot certify the timing or appearance of a distinct death animation. The rubric does not require a unique death animation for every role, and no such new requirement is introduced here.
+
+**Combat feel: 4/5, medium confidence.** Arrow streak, pale stone, rope/net overlay and warm hit flash are visually distinguishable across successive poses. The netted badger retains a cool tint between warm damage flashes, giving slow/damage separate signals. Attack→hit→recovery changes are visible instead of inert targets. Normal full-run evidence establishes spending/interest/trade, eight waves and successful completion; late clips establish actual mixed crowds and bosses. The 1552-crown reserve reflects this particular upgraded five-defender strategy, not a validated overall difficulty balance. Audio, continuous perceived cadence and physical input latency remain unassessed.
+
+**Framing/readability: 4/5 qualified, medium confidence for reviewed layouts.** The independent `selection-chevron-review.md` supplies the previously missing desktop/844×390 adjacent selection agreement: head marker, tray and floor/range all identify the same selected animal. Therefore my previous selection-based provisional3 is no longer current. Enemy overlap at a narrow vertical path hides feet/bars, but ordering remains consistent, boss scale and silhouettes read, route and attack origins remain clear, and no enemies require individual selection. This is expected crowd occlusion rather than sufficient evidence of a material usability failure. It remains a minor clarity limit. This verdict does not independently validate the just-changed cameraY410/minspan680 top-row fix; its boundary evidence is owned by the separate check, and these clips predate it.
+
+No score5 claim. No smoothness inference from container frame-rate metadata. All frame processing for this pass is complete; no browser or animated tabs were opened.
+
+## Revised demo artifact
+
+Reviewed `demo/shots.json` and `demo/review-contact.png`, together with the actual source stills/normal-run footage reviewed above. `demo/stormwatch-demo-review.mp4` now includes title/map/selection, both encounter environments, actual roadwarden/mixed-wave/final-crowd fighting and the verified Lantern result. The manifest explicitly discloses held screenshots, canvas-only combat, silent montage, captured1× playback and the later camera correction. The result crop retains the complete outcome panel and does not remove an active-play defect.
+
+**demo_coherence: 4/5, medium confidence.** The previous material omission—saved busy ordinary combat—is resolved by real clips whose route/actions and source files were independently verified. This is a coherent review demo, not a certified polished promotional trailer or an uninterrupted run. Combat canvas letterboxing and still/live transitions remain visible presentation compromises. The contact sheet samples only portions of the sequence; this pass does not claim continuous playback of all50seconds, auditory quality, or independent frame-by-frame validation of every edit. The source manifest and prior individual source review support the content judgment. Later camera-edge verification remains separately required for final-build regression evidence, rather than being silently inferred from this older montage.

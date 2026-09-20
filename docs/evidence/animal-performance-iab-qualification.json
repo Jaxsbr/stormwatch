@@ -1,0 +1,170 @@
+[
+  {
+    "run": 1,
+    "seed": 42,
+    "sampleCount": 10796,
+    "renderedCadence": {
+      "sampleCount": 10796,
+      "medianFps": 59.880239520968516,
+      "p95Ms": 17.599999999998545,
+      "worstMs": 17.800000000017462,
+      "framesOver100Ms": 0
+    },
+    "medianFps": 59.880239520968516,
+    "p95Ms": 17.599999999998545,
+    "worstMs": 17.800000000017462,
+    "framesOver100Ms": 0,
+    "renderCpuP95Ms": 4.399999976158142,
+    "frameWorkCpuP95Ms": 4.5,
+    "phaseCpuP95Ms": {
+      "figures": 1.2000000476837158,
+      "effects": 0.2999999523162842,
+      "submission": 3
+    },
+    "longFrames": [],
+    "cpuTimingNote": "Wall-clock elapsed time inside callbacks and render phases, not CPU execution time or asynchronous GPU completion. Long intervals include preceding work and browser scheduling.",
+    "peakEnemies": 60,
+    "defenses": 12,
+    "lodges": 3,
+    "peakCombinedShotsEffects": 150,
+    "rescueUses": 13,
+    "transitions": [
+      {
+        "time": 58.51030000000134,
+        "phase": "won",
+        "payout": true
+      },
+      {
+        "time": 118.50460000000636,
+        "phase": "won",
+        "payout": true
+      },
+      {
+        "time": 178.5156000000147,
+        "phase": "won",
+        "payout": true
+      }
+    ],
+    "invalidatedByHiddenTab": false,
+    "viewport": [
+      1280,
+      720
+    ],
+    "pixelRatio": 1,
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/152.0.0.0 Safari/537.36",
+    "renderer": "WebGL 2.0 (OpenGL ES 3.0 Chromium)",
+    "timestamp": "2026-09-20T06:20:37.582Z"
+  },
+  {
+    "run": 2,
+    "seed": 42,
+    "sampleCount": 10796,
+    "renderedCadence": {
+      "sampleCount": 10796,
+      "medianFps": 59.88023952091634,
+      "p95Ms": 17.599999999976717,
+      "worstMs": 17.800000000046566,
+      "framesOver100Ms": 0
+    },
+    "medianFps": 59.88023952091634,
+    "p95Ms": 17.599999999976717,
+    "worstMs": 17.800000000046566,
+    "framesOver100Ms": 0,
+    "renderCpuP95Ms": 4.199999928474426,
+    "frameWorkCpuP95Ms": 4.299999952316284,
+    "phaseCpuP95Ms": {
+      "figures": 1.1999999284744263,
+      "effects": 0.2999999523162842,
+      "submission": 2.899999976158142
+    },
+    "longFrames": [],
+    "cpuTimingNote": "Wall-clock elapsed time inside callbacks and render phases, not CPU execution time or asynchronous GPU completion. Long intervals include preceding work and browser scheduling.",
+    "peakEnemies": 60,
+    "defenses": 12,
+    "lodges": 3,
+    "peakCombinedShotsEffects": 150,
+    "rescueUses": 13,
+    "transitions": [
+      {
+        "time": 58.51010000000162,
+        "phase": "won",
+        "payout": true
+      },
+      {
+        "time": 118.50470000000465,
+        "phase": "won",
+        "payout": true
+      },
+      {
+        "time": 178.51560000001203,
+        "phase": "won",
+        "payout": true
+      }
+    ],
+    "invalidatedByHiddenTab": false,
+    "viewport": [
+      1280,
+      720
+    ],
+    "pixelRatio": 1,
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/152.0.0.0 Safari/537.36",
+    "renderer": "WebGL 2.0 (OpenGL ES 3.0 Chromium)",
+    "timestamp": "2026-09-20T06:23:47.576Z"
+  },
+  {
+    "run": 3,
+    "seed": 42,
+    "sampleCount": 10796,
+    "renderedCadence": {
+      "sampleCount": 10796,
+      "medianFps": 59.880239521125056,
+      "p95Ms": 17.599999999976717,
+      "worstMs": 17.800000000046566,
+      "framesOver100Ms": 0
+    },
+    "medianFps": 59.880239521125056,
+    "p95Ms": 17.599999999976717,
+    "worstMs": 17.800000000046566,
+    "framesOver100Ms": 0,
+    "renderCpuP95Ms": 1.9000000953674316,
+    "frameWorkCpuP95Ms": 2,
+    "phaseCpuP95Ms": {
+      "figures": 0.6000000238418579,
+      "effects": 0.20000004768371582,
+      "submission": 1.2999999523162842
+    },
+    "longFrames": [],
+    "cpuTimingNote": "Wall-clock elapsed time inside callbacks and render phases, not CPU execution time or asynchronous GPU completion. Long intervals include preceding work and browser scheduling.",
+    "peakEnemies": 60,
+    "defenses": 12,
+    "lodges": 3,
+    "peakCombinedShotsEffects": 150,
+    "rescueUses": 13,
+    "transitions": [
+      {
+        "time": 58.51120000000016,
+        "phase": "won",
+        "payout": true
+      },
+      {
+        "time": 118.50550000000413,
+        "phase": "won",
+        "payout": true
+      },
+      {
+        "time": 178.5165000000116,
+        "phase": "won",
+        "payout": true
+      }
+    ],
+    "invalidatedByHiddenTab": false,
+    "viewport": [
+      1280,
+      720
+    ],
+    "pixelRatio": 1,
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/152.0.0.0 Safari/537.36",
+    "renderer": "WebGL 2.0 (OpenGL ES 3.0 Chromium)",
+    "timestamp": "2026-09-20T06:26:57.577Z"
+  }
+]

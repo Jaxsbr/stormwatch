@@ -1,6 +1,6 @@
 # Stormwatch
 
-Read docs/SCOPE.md and docs/ARCHITECTURE.md before changing gameplay or boundaries. The owner confirmed the scope on 20 September 2026. Preserve dark, child-friendly, non-occult, gore-free woodland art, fixed isometric 2.5D camera, touch-first input, and meaningful wave-end saving/investment choices.
+Read docs/SCOPE.md and docs/ARCHITECTURE.md before changing gameplay or boundaries. The owner confirmed the scope on 20 September 2026. Preserve dark, child-friendly, non-occult, gore-free woodland art, touch-first input, and meaningful wave-end saving/investment choices. The owner subsequently authorized a close horizontal landscape presentation and a reusable properly animated 2D art pipeline; see docs/decisions/004-visual-course-correction.md and review/rubric.json. The old fixed isometric/tiled presentation is superseded.
 
 Keep simulation deterministic and browser-independent. Content is data; rendering, UI, audio and persistence are adapters. New rules need focused tests; cosmetic adjustments need visual verification. Use npm run check, npm test and npm run build. Never report physical mobile performance from emulation.
 

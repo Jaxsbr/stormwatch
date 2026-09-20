@@ -1,0 +1,311 @@
+{
+  "protocol": {
+    "browserTabId": "217889709",
+    "url": "http://127.0.0.1:4174/qa.html",
+    "startUtc": "2026-09-20T04:59:18.513Z",
+    "earliestReobserveUtc": "2026-09-20T05:09:03Z",
+    "reobservedUtc": "2026-09-20T05:09:13.897Z",
+    "viewport": [
+      1280,
+      720
+    ],
+    "pixelRatio": 1,
+    "initialWarmupScreenshotCaptured": true,
+    "warmupVisualCheck": {
+      "feetAndLimbs": "coherent in warmup scene",
+      "defectObserved": false
+    },
+    "observerPolicy": "After the warmup inspection window, no DOM, AX, screenshot, viewport, reload, tab, or browser observation until at least 585 seconds elapsed; only wall-clock checkpoint sleeps and status-file writes were used.",
+    "estimatedElapsedAtReobserveSeconds": 595.4,
+    "foregroundOnly": true
+  },
+  "scenario": "Artificial stress; raw requestAnimationFrame intervals, foreground tab, no CPU throttling",
+  "results": [
+    {
+      "run": 1,
+      "seed": 42,
+      "sampleCount": 21112,
+      "medianFps": 120.48192771080113,
+      "p95Ms": 9.10000000000582,
+      "worstMs": 133.39999999999418,
+      "framesOver100Ms": 2,
+      "renderCpuP95Ms": 8.700000047683716,
+      "frameWorkCpuP95Ms": 9.100000023841858,
+      "phaseCpuP95Ms": {
+        "figures": 3,
+        "effects": 0.5,
+        "submission": 6.300000071525574
+      },
+      "longFrames": [
+        {
+          "intervalMs": 133.39999999999418,
+          "elapsed": 148.63529999994688,
+          "previousWork": {
+            "totalMs": 3,
+            "renderMs": 2.899999976158142,
+            "rebuiltScene": false,
+            "phase": "wave",
+            "renderer": {
+              "figuresMs": 1.100000023841858,
+              "effectsMs": 0.10000002384185791,
+              "submissionMs": 1.6999999284744263,
+              "createdRigs": 0,
+              "drawCalls": 277
+            }
+          }
+        },
+        {
+          "intervalMs": 100.60000000000582,
+          "elapsed": 162.6142999999492,
+          "previousWork": {
+            "totalMs": 43.90000009536743,
+            "renderMs": 43.5,
+            "rebuiltScene": false,
+            "phase": "wave",
+            "renderer": {
+              "figuresMs": 2.700000047683716,
+              "effectsMs": 0.8999999761581421,
+              "submissionMs": 39.89999997615814,
+              "createdRigs": 0,
+              "drawCalls": 277
+            }
+          }
+        }
+      ],
+      "cpuTimingNote": "Synchronous JavaScript work only; does not measure asynchronous GPU completion. Long intervals include preceding frame work and browser scheduling.",
+      "peakEnemies": 60,
+      "defenses": 12,
+      "lodges": 3,
+      "peakCombinedShotsEffects": 150,
+      "rescueUses": 13,
+      "transitions": [
+        {
+          "time": 58.50129999993195,
+          "phase": "won",
+          "payout": true
+        },
+        {
+          "time": 118.50489999994141,
+          "phase": "won",
+          "payout": true
+        },
+        {
+          "time": 178.50119999995172,
+          "phase": "won",
+          "payout": true
+        }
+      ],
+      "invalidatedByHiddenTab": false,
+      "viewport": [
+        1280,
+        720
+      ],
+      "pixelRatio": 1,
+      "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/153.0.0.0 Safari/537.36",
+      "renderer": "WebGL 2.0 (OpenGL ES 3.0 Chromium)",
+      "timestamp": "2026-09-20T05:02:28.618Z"
+    },
+    {
+      "run": 2,
+      "seed": 42,
+      "sampleCount": 20668,
+      "medianFps": 120.48192771101236,
+      "p95Ms": 9.200000000011642,
+      "worstMs": 250,
+      "framesOver100Ms": 3,
+      "renderCpuP95Ms": 9.200000047683716,
+      "frameWorkCpuP95Ms": 9.5,
+      "phaseCpuP95Ms": {
+        "figures": 3.1999999284744263,
+        "effects": 0.5,
+        "submission": 6.699999928474426
+      },
+      "longFrames": [
+        {
+          "intervalMs": 149.89999999999418,
+          "elapsed": 29.091799999999466,
+          "previousWork": {
+            "totalMs": 3.5,
+            "renderMs": 3.399999976158142,
+            "rebuiltScene": false,
+            "phase": "wave",
+            "renderer": {
+              "figuresMs": 1,
+              "effectsMs": 0.2999999523162842,
+              "submissionMs": 2.100000023841858,
+              "createdRigs": 0,
+              "drawCalls": 277
+            }
+          }
+        },
+        {
+          "intervalMs": 250,
+          "elapsed": 29.383499999999447,
+          "previousWork": {
+            "totalMs": 3.799999952316284,
+            "renderMs": 3.799999952316284,
+            "rebuiltScene": false,
+            "phase": "wave",
+            "renderer": {
+              "figuresMs": 1.2999999523162842,
+              "effectsMs": 0.30000007152557373,
+              "submissionMs": 2.1999999284744263,
+              "createdRigs": 0,
+              "drawCalls": 277
+            }
+          }
+        },
+        {
+          "intervalMs": 158.29999999998836,
+          "elapsed": 29.550099999999453,
+          "previousWork": {
+            "totalMs": 3.200000047683716,
+            "renderMs": 3.200000047683716,
+            "rebuiltScene": false,
+            "phase": "wave",
+            "renderer": {
+              "figuresMs": 0.9000000953674316,
+              "effectsMs": 0.09999990463256836,
+              "submissionMs": 2.200000047683716,
+              "createdRigs": 0,
+              "drawCalls": 277
+            }
+          }
+        }
+      ],
+      "cpuTimingNote": "Synchronous JavaScript work only; does not measure asynchronous GPU completion. Long intervals include preceding frame work and browser scheduling.",
+      "peakEnemies": 60,
+      "defenses": 12,
+      "lodges": 3,
+      "peakCombinedShotsEffects": 150,
+      "rescueUses": 13,
+      "transitions": [
+        {
+          "time": 58.50430000000278,
+          "phase": "won",
+          "payout": true
+        },
+        {
+          "time": 118.50000000001165,
+          "phase": "won",
+          "payout": true
+        },
+        {
+          "time": 178.5085000000212,
+          "phase": "won",
+          "payout": true
+        }
+      ],
+      "invalidatedByHiddenTab": false,
+      "viewport": [
+        1280,
+        720
+      ],
+      "pixelRatio": 1,
+      "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/153.0.0.0 Safari/537.36",
+      "renderer": "WebGL 2.0 (OpenGL ES 3.0 Chromium)",
+      "timestamp": "2026-09-20T05:05:38.620Z"
+    },
+    {
+      "run": 3,
+      "seed": 42,
+      "sampleCount": 21298,
+      "medianFps": 120.48192771016743,
+      "p95Ms": 9.099999999976717,
+      "worstMs": 266.79999999998836,
+      "framesOver100Ms": 3,
+      "renderCpuP95Ms": 8.5,
+      "frameWorkCpuP95Ms": 8.799999952316284,
+      "phaseCpuP95Ms": {
+        "figures": 2.899999976158142,
+        "effects": 0.5,
+        "submission": 6.199999928474426
+      },
+      "longFrames": [
+        {
+          "intervalMs": 149.89999999996508,
+          "elapsed": 21.624899999999666,
+          "previousWork": {
+            "totalMs": 144.39999997615814,
+            "renderMs": 144.29999995231628,
+            "rebuiltScene": false,
+            "phase": "wave",
+            "renderer": {
+              "figuresMs": 1,
+              "effectsMs": 3.5,
+              "submissionMs": 139.79999995231628,
+              "createdRigs": 0,
+              "drawCalls": 277
+            }
+          }
+        },
+        {
+          "intervalMs": 266.79999999998836,
+          "elapsed": 80.15770000000632,
+          "previousWork": {
+            "totalMs": 251.5,
+            "renderMs": 251.39999997615814,
+            "rebuiltScene": false,
+            "phase": "wave",
+            "renderer": {
+              "figuresMs": 248.69999992847443,
+              "effectsMs": 0,
+              "submissionMs": 2.700000047683716,
+              "createdRigs": 0,
+              "drawCalls": 280
+            }
+          }
+        },
+        {
+          "intervalMs": 106.90000000002328,
+          "elapsed": 119.40350000001214,
+          "previousWork": {
+            "totalMs": 43.10000002384186,
+            "renderMs": 43,
+            "rebuiltScene": false,
+            "phase": "won",
+            "renderer": {
+              "figuresMs": 2.5,
+              "effectsMs": 0,
+              "submissionMs": 40.5,
+              "createdRigs": 0,
+              "drawCalls": 90
+            }
+          }
+        }
+      ],
+      "cpuTimingNote": "Synchronous JavaScript work only; does not measure asynchronous GPU completion. Long intervals include preceding frame work and browser scheduling.",
+      "peakEnemies": 60,
+      "defenses": 12,
+      "lodges": 3,
+      "peakCombinedShotsEffects": 150,
+      "rescueUses": 13,
+      "transitions": [
+        {
+          "time": 58.508300000002976,
+          "phase": "won",
+          "payout": true
+        },
+        {
+          "time": 118.50420000001205,
+          "phase": "won",
+          "payout": true
+        },
+        {
+          "time": 178.50150000001796,
+          "phase": "won",
+          "payout": true
+        }
+      ],
+      "invalidatedByHiddenTab": false,
+      "viewport": [
+        1280,
+        720
+      ],
+      "pixelRatio": 1,
+      "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/153.0.0.0 Safari/537.36",
+      "renderer": "WebGL 2.0 (OpenGL ES 3.0 Chromium)",
+      "timestamp": "2026-09-20T05:08:48.705Z"
+    }
+  ]
+}

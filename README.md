@@ -2,9 +2,9 @@
 
 A small, atmospheric woodland tower-defense game: protect the lantern line, build defenses, and choose between spending now and saving for wave-end interest. Dark, child-friendly art; no occult themes or gore.
 
-Two encounters, three defense roles, a trading lodge, support cards, a targeted supply drop, upgrades, local progress and optional assistance. Three.js draws 3D terrain with illustrated camera-facing sprites from a fixed isometric camera. Landscape phones/tablets and desktop are supported layouts; see the acceptance report for what has actually been verified.
+Two encounters, squirrel archers, skunk slingers, turtle trappers and donkey traders, plus support cards, a targeted supply drop, upgrades, local progress and optional assistance. Three.js draws a close orthographic battlefield with cohesive painted scenery and articulated directional characters. Landscape phones/tablets and desktop are supported layouts. The visual reboot passes its original desktop performance profile; Chrome 153 stress stalls and unverified physical-device/audio checks are documented in the current review. The published link below still serves the earlier foundation build.
 
-[Play Stormwatch](https://jaxsbr.github.io/stormwatch/) · [Source repository](https://github.com/Jaxsbr/stormwatch)
+[Published foundation build](https://jaxsbr.github.io/stormwatch/) · [Source repository](https://github.com/Jaxsbr/stormwatch)
 
 ## Run
 
@@ -15,7 +15,7 @@ npm ci
 npm run dev
 ```
 
-Open the localhost URL printed by Vite (normally http://127.0.0.1:4173). No account, API keys or generation service are needed. All runtime art, fonts and music are committed.
+Open the localhost URL printed by Vite (normally http://127.0.0.1:4173). No account, API keys or generation service are needed. Runtime art, fonts and music are supplied locally; running the game does not require regenerating assets.
 
 ```sh
 npm run check       # TypeScript
@@ -31,10 +31,12 @@ Serve `dist/` over HTTP; opening its HTML as a filesystem URL is unsupported. Th
 
 Choose an encounter and one support card. Select a structure, then click/tap clear ground beside the trail. Placement stays active until **Cancel**. Cancel and select an existing structure to inspect its range, upgrade or sell. Start each wave when ready. During a wave, choose **Supply drop** and tap the trail. Pause and sound settings are always available. Defeat offers a free retry or assistance.
 
-Interest pays 10% of your unspent crowns, rounded down and capped at 20, when a wave ends. Trading lodges pay 12 crowns per wave, or 22 when upgraded. Interest is calculated before any wave payout. Waiting and pausing earn nothing. Progress and settings stay in this browser's local storage; clearing site data removes them.
+Interest pays 10% of your unspent crowns, rounded down and capped at 20, when a wave ends. Donkey traders pay 12 crowns per wave, or 22 when upgraded. Interest is calculated before any wave payout. Waiting and pausing earn nothing. Progress and settings stay in this browser's local storage; clearing site data removes them.
 
 ## Project guide
 
+- [Current visual reboot assessment](review/2026-09-20-reboot/current-rubric-audit.md) and [demo provenance](review/2026-09-20-reboot/demo/README.md).
+- [Reusable animated art pipeline](docs/ART-PIPELINE.md).
 - [Reference research and design tree](docs/RESEARCH.md).
 - [Acceptance and evidence](docs/ACCEPTANCE.md) — measured results and unverified checks.
 - [Architecture and extensions](docs/ARCHITECTURE.md) — where rules, content and adapters live.

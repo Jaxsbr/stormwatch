@@ -1,0 +1,266 @@
+{
+  "scenario": "Artificial stress; raw requestAnimationFrame intervals, foreground tab, no CPU throttling",
+  "results": [
+    {
+      "run": 1,
+      "seed": 42,
+      "sampleCount": 14544,
+      "renderedCadence": {
+        "sampleCount": 14544,
+        "medianFps": 108.69565217394742,
+        "p95Ms": 17.10000000000582,
+        "worstMs": 143.59999999999127,
+        "framesOver100Ms": 2
+      },
+      "medianFps": 108.69565217394742,
+      "p95Ms": 17.10000000000582,
+      "worstMs": 143.59999999999127,
+      "framesOver100Ms": 2,
+      "renderCpuP95Ms": 6.600000023841858,
+      "frameWorkCpuP95Ms": 6.799999952316284,
+      "phaseCpuP95Ms": {
+        "figures": 1.7000000476837158,
+        "effects": 0.3999999761581421,
+        "submission": 4.799999952316284
+      },
+      "longFrames": [
+        {
+          "intervalMs": 143.59999999999127,
+          "elapsed": 63.05560000000199,
+          "previousWork": {
+            "totalMs": 142.79999995231628,
+            "renderMs": 142.79999995231628,
+            "rendered": true,
+            "rebuiltScene": false,
+            "phase": "wave",
+            "renderer": {
+              "figuresMs": 1.6999999284744263,
+              "effectsMs": 0.30000007152557373,
+              "submissionMs": 140.79999995231628,
+              "createdRigs": 0,
+              "drawCalls": 277
+            }
+          }
+        },
+        {
+          "intervalMs": 116.60000000000582,
+          "elapsed": 174.58730000001594,
+          "previousWork": {
+            "totalMs": 180.10000002384186,
+            "renderMs": 178.29999995231628,
+            "rendered": true,
+            "rebuiltScene": false,
+            "phase": "wave",
+            "renderer": {
+              "figuresMs": 1.4000000953674316,
+              "effectsMs": 0.2999999523162842,
+              "submissionMs": 176.5,
+              "createdRigs": 0,
+              "drawCalls": 281
+            }
+          }
+        }
+      ],
+      "cpuTimingNote": "Wall-clock elapsed time inside callbacks and render phases, not CPU execution time or asynchronous GPU completion. Long intervals include preceding work and browser scheduling.",
+      "peakEnemies": 60,
+      "defenses": 12,
+      "lodges": 3,
+      "peakCombinedShotsEffects": 150,
+      "rescueUses": 13,
+      "transitions": [
+        {
+          "time": 58.504500000002096,
+          "phase": "won",
+          "payout": true
+        },
+        {
+          "time": 118.51160000000817,
+          "phase": "won",
+          "payout": true
+        },
+        {
+          "time": 178.50580000001614,
+          "phase": "won",
+          "payout": true
+        }
+      ],
+      "invalidatedByHiddenTab": false,
+      "viewport": [
+        1280,
+        720
+      ],
+      "pixelRatio": 1,
+      "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/153.0.0.0 Safari/537.36",
+      "renderer": "WebGL 2.0 (OpenGL ES 3.0 Chromium)",
+      "timestamp": "2026-09-20T05:59:48.482Z"
+    },
+    {
+      "run": 2,
+      "seed": 42,
+      "sampleCount": 10754,
+      "renderedCadence": {
+        "sampleCount": 10754,
+        "medianFps": 59.88023952091634,
+        "p95Ms": 17.5,
+        "worstMs": 133.5,
+        "framesOver100Ms": 2
+      },
+      "medianFps": 59.88023952091634,
+      "p95Ms": 17.5,
+      "worstMs": 133.5,
+      "framesOver100Ms": 2,
+      "renderCpuP95Ms": 8.899999976158142,
+      "frameWorkCpuP95Ms": 9.399999976158142,
+      "phaseCpuP95Ms": {
+        "figures": 3.100000023841858,
+        "effects": 0.5,
+        "submission": 6
+      },
+      "longFrames": [
+        {
+          "intervalMs": 133.5,
+          "elapsed": 22.81059999999983,
+          "previousWork": {
+            "totalMs": 121.5,
+            "renderMs": 121.30000007152557,
+            "rendered": true,
+            "rebuiltScene": false,
+            "phase": "wave",
+            "renderer": {
+              "figuresMs": 14.600000023841858,
+              "effectsMs": 0.20000004768371582,
+              "submissionMs": 106.5,
+              "createdRigs": 0,
+              "drawCalls": 280
+            }
+          }
+        },
+        {
+          "intervalMs": 116.09999999997672,
+          "elapsed": 50.33920000000014,
+          "previousWork": {
+            "totalMs": 39.200000047683716,
+            "renderMs": 39.200000047683716,
+            "rendered": true,
+            "rebuiltScene": false,
+            "phase": "wave",
+            "renderer": {
+              "figuresMs": 1.2999999523162842,
+              "effectsMs": 0.5,
+              "submissionMs": 37.40000009536743,
+              "createdRigs": 0,
+              "drawCalls": 277
+            }
+          }
+        }
+      ],
+      "cpuTimingNote": "Wall-clock elapsed time inside callbacks and render phases, not CPU execution time or asynchronous GPU completion. Long intervals include preceding work and browser scheduling.",
+      "peakEnemies": 60,
+      "defenses": 12,
+      "lodges": 3,
+      "peakCombinedShotsEffects": 150,
+      "rescueUses": 13,
+      "transitions": [
+        {
+          "time": 58.51000000000033,
+          "phase": "won",
+          "payout": true
+        },
+        {
+          "time": 118.50400000000481,
+          "phase": "won",
+          "payout": true
+        },
+        {
+          "time": 178.51560000000833,
+          "phase": "won",
+          "payout": true
+        }
+      ],
+      "invalidatedByHiddenTab": false,
+      "viewport": [
+        1280,
+        720
+      ],
+      "pixelRatio": 1,
+      "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/153.0.0.0 Safari/537.36",
+      "renderer": "WebGL 2.0 (OpenGL ES 3.0 Chromium)",
+      "timestamp": "2026-09-20T06:02:58.516Z"
+    },
+    {
+      "run": 3,
+      "seed": 42,
+      "sampleCount": 10747,
+      "renderedCadence": {
+        "sampleCount": 10747,
+        "medianFps": 59.880239521125056,
+        "p95Ms": 17.599999999976717,
+        "worstMs": 100.90000000002328,
+        "framesOver100Ms": 1
+      },
+      "medianFps": 59.880239521125056,
+      "p95Ms": 17.599999999976717,
+      "worstMs": 100.90000000002328,
+      "framesOver100Ms": 1,
+      "renderCpuP95Ms": 9,
+      "frameWorkCpuP95Ms": 9.600000023841858,
+      "phaseCpuP95Ms": {
+        "figures": 3,
+        "effects": 0.5,
+        "submission": 6.400000095367432
+      },
+      "longFrames": [
+        {
+          "intervalMs": 100.90000000002328,
+          "elapsed": 136.82970000000418,
+          "previousWork": {
+            "totalMs": 62.39999997615814,
+            "renderMs": 62.200000047683716,
+            "rendered": true,
+            "rebuiltScene": false,
+            "phase": "wave",
+            "renderer": {
+              "figuresMs": 12.5,
+              "effectsMs": 17.399999976158142,
+              "submissionMs": 32.200000047683716,
+              "createdRigs": 0,
+              "drawCalls": 277
+            }
+          }
+        }
+      ],
+      "cpuTimingNote": "Wall-clock elapsed time inside callbacks and render phases, not CPU execution time or asynchronous GPU completion. Long intervals include preceding work and browser scheduling.",
+      "peakEnemies": 60,
+      "defenses": 12,
+      "lodges": 3,
+      "peakCombinedShotsEffects": 150,
+      "rescueUses": 13,
+      "transitions": [
+        {
+          "time": 58.509400000000014,
+          "phase": "won",
+          "payout": true
+        },
+        {
+          "time": 118.50460000000221,
+          "phase": "won",
+          "payout": true
+        },
+        {
+          "time": 178.51560000000754,
+          "phase": "won",
+          "payout": true
+        }
+      ],
+      "invalidatedByHiddenTab": false,
+      "viewport": [
+        1280,
+        720
+      ],
+      "pixelRatio": 1,
+      "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/153.0.0.0 Safari/537.36",
+      "renderer": "WebGL 2.0 (OpenGL ES 3.0 Chromium)",
+      "timestamp": "2026-09-20T06:06:08.513Z"
+    }
+  ]
+}

@@ -1,3 +1,5 @@
+> Historical foundation report: the renderer/art/UI reboot supersedes the build assessed below. Current reboot acceptance is tracked in [the rubric audit](../review/2026-09-20-reboot/current-rubric-audit.md). The published site and older performance/byte results below do not certify the current animal build.
+
 # Acceptance report — Stormwatch MVP candidate
 
 Recorded20 September 2026. **Playable desktop-verified candidate, publicly deployed.** Both encounters were completed through normal browser UI. The approved scope permits delivery with unavailable physical-mobile checks clearly reported. Physical touch/device performance and actual listening remain **unverified**; this is not a claim of full device/audio sign-off.

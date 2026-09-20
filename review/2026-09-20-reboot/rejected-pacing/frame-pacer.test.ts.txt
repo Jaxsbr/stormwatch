@@ -1,0 +1,41 @@
+import { expect, it } from "vitest";
+import { FramePacer } from "../src/render/frame-pacer";
+
+it("draws at 60 Hz on 60/120 Hz displays without slowing 30 Hz devices", () => {
+  for (const rate of [30, 60, 120]) {
+    const pacer = new FramePacer();
+    const frames: number[] = [];
+    for (let i = 0; i <= rate * 10; i++) {
+      const now = (i * 1000) / rate;
+      if (pacer.shouldRender(now)) frames.push(now);
+    }
+    expect(frames.length).toBe(Math.min(rate, 60) * 10 + 1);
+    for (let i = 1; i < frames.length; i++)
+      expect(frames[i] - frames[i - 1]).toBeCloseTo(
+        1000 / Math.min(rate, 60),
+        6,
+      );
+  }
+});
+
+it("keeps fractional refresh jitter from halving the intended cadence", () => {
+  const pacer = new FramePacer();
+  const frames: number[] = [];
+  for (let i = 0; i < 1200; i++) {
+    const now = i * (1000 / 120) + (i % 3) * 0.1;
+    if (pacer.shouldRender(now)) frames.push(now);
+  }
+  expect(frames.length).toBe(600);
+  for (let i = 1; i < frames.length; i++)
+    expect(frames[i] - frames[i - 1]).toBeLessThan(18);
+});
+
+it("does not accumulate a rendering burst after a stall or reset", () => {
+  const pacer = new FramePacer();
+  expect(pacer.shouldRender(0)).toBe(true);
+  expect(pacer.shouldRender(250)).toBe(true);
+  expect(pacer.shouldRender(251)).toBe(false);
+  expect(pacer.shouldRender(252)).toBe(false);
+  pacer.reset();
+  expect(pacer.shouldRender(253)).toBe(true);
+});

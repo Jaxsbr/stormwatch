@@ -1,0 +1,140 @@
+{
+  "environment": {
+    "host": "Apple MacBook Pro, Apple M4 Pro, 12 cores, 48 GB, macOS 26.6.2",
+    "browser": "Chrome 153 via CUA Chrome extension",
+    "url": "http://127.0.0.1:4174/qa.html",
+    "tabId": "217889642",
+    "viewport": [
+      1480,
+      1273
+    ],
+    "devicePixelRatio": 2,
+    "cpuThrottling": "none",
+    "tabVisibility": "foreground; all runs invalidatedByHiddenTab=false",
+    "physicalDeviceClaim": false,
+    "note": "Fixed production preview tab; no reload after benchmark start. This is a desktop host result and makes no physical mobile performance claim."
+  },
+  "scenario": "Artificial stress; raw requestAnimationFrame intervals, foreground tab, no CPU throttling",
+  "results": [
+    {
+      "run": 1,
+      "seed": 42,
+      "sampleCount": 9759,
+      "medianFps": 59.88023952091634,
+      "p95Ms": 25.39999999999418,
+      "worstMs": 117.39999999999418,
+      "framesOver100Ms": 2,
+      "peakEnemies": 60,
+      "defenses": 12,
+      "lodges": 3,
+      "peakCombinedShotsEffects": 150,
+      "rescueUses": 13,
+      "transitions": [
+        {
+          "time": 58.504100000024444,
+          "phase": "won",
+          "payout": true
+        },
+        {
+          "time": 118.50410000002822,
+          "phase": "won",
+          "payout": true
+        },
+        {
+          "time": 178.51560000003252,
+          "phase": "won",
+          "payout": true
+        }
+      ],
+      "invalidatedByHiddenTab": false,
+      "viewport": [
+        1480,
+        1273
+      ],
+      "pixelRatio": 2,
+      "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/153.0.0.0 Safari/537.36",
+      "renderer": "WebGL 2.0 (OpenGL ES 3.0 Chromium)",
+      "timestamp": "2026-09-20T01:44:40.971Z"
+    },
+    {
+      "run": 2,
+      "seed": 42,
+      "sampleCount": 8602,
+      "medianFps": 59.17159763325837,
+      "p95Ms": 33.100000000034925,
+      "worstMs": 1184.1999999999534,
+      "framesOver100Ms": 54,
+      "peakEnemies": 60,
+      "defenses": 12,
+      "lodges": 3,
+      "peakCombinedShotsEffects": 150,
+      "rescueUses": 13,
+      "transitions": [
+        {
+          "time": 58.52909999999987,
+          "phase": "won",
+          "payout": true
+        },
+        {
+          "time": 118.50090000000061,
+          "phase": "won",
+          "payout": true
+        },
+        {
+          "time": 178.51170000000468,
+          "phase": "won",
+          "payout": true
+        }
+      ],
+      "invalidatedByHiddenTab": false,
+      "viewport": [
+        1480,
+        1273
+      ],
+      "pixelRatio": 2,
+      "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/153.0.0.0 Safari/537.36",
+      "renderer": "WebGL 2.0 (OpenGL ES 3.0 Chromium)",
+      "timestamp": "2026-09-20T01:47:50.969Z"
+    },
+    {
+      "run": 3,
+      "seed": 42,
+      "sampleCount": 9596,
+      "medianFps": 59.171597633054574,
+      "p95Ms": 25.900000000023283,
+      "worstMs": 109.29999999998836,
+      "framesOver100Ms": 4,
+      "peakEnemies": 60,
+      "defenses": 12,
+      "lodges": 3,
+      "peakCombinedShotsEffects": 150,
+      "rescueUses": 13,
+      "transitions": [
+        {
+          "time": 58.51160000000014,
+          "phase": "won",
+          "payout": true
+        },
+        {
+          "time": 118.51090000000046,
+          "phase": "won",
+          "payout": true
+        },
+        {
+          "time": 178.51140000000456,
+          "phase": "won",
+          "payout": true
+        }
+      ],
+      "invalidatedByHiddenTab": false,
+      "viewport": [
+        1480,
+        1273
+      ],
+      "pixelRatio": 2,
+      "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/153.0.0.0 Safari/537.36",
+      "renderer": "WebGL 2.0 (OpenGL ES 3.0 Chromium)",
+      "timestamp": "2026-09-20T01:51:01.000Z"
+    }
+  ]
+}

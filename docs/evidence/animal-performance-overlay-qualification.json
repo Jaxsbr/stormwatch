@@ -1,0 +1,193 @@
+{
+  "protocol": {
+    "browserTabId": "217889702",
+    "url": "http://127.0.0.1:4174/qa.html",
+    "startUtc": "2026-09-20T04:35:18.489Z",
+    "warmupInspectionWindowSeconds": 10,
+    "earliestReobserveUtc": "2026-09-20T04:45:03Z",
+    "reobservedUtc": "2026-09-20T04:45:14.904Z",
+    "viewport": [
+      1280,
+      720
+    ],
+    "pixelRatio": 1,
+    "initialWarmupScreenshotCaptured": true,
+    "warmupVisualCheck": {
+      "shadows": "visible and aligned beneath units",
+      "healthBars": "visible per enemy and aligned above units",
+      "selectionVisibility": "no unit disappeared during warmup inspection",
+      "defectObserved": false
+    },
+    "observerPolicy": "After the warmup inspection window, no DOM, AX, screenshot, viewport, reload, tab, or browser observation until at least 585 seconds elapsed; only wall-clock checkpoint sleeps and status-file writes were used.",
+    "estimatedElapsedAtReobserveSeconds": 596.4,
+    "foregroundOnly": true
+  },
+  "scenario": "Artificial stress; raw requestAnimationFrame intervals, foreground tab, no CPU throttling",
+  "results": [
+    {
+      "run": 1,
+      "seed": 42,
+      "sampleCount": 10763,
+      "medianFps": 59.880239520968516,
+      "p95Ms": 17.599999999998545,
+      "worstMs": 133.5,
+      "framesOver100Ms": 1,
+      "renderCpuP95Ms": 9.700000047683716,
+      "frameWorkCpuP95Ms": 10.600000023841858,
+      "phaseCpuP95Ms": {
+        "figures": 4.299999952316284,
+        "effects": 0.5,
+        "submission": 5.799999952316284
+      },
+      "longFrames": [
+        {
+          "intervalMs": 133.5,
+          "elapsed": 41.653900000000135,
+          "previousWork": {
+            "totalMs": 119.69999992847443,
+            "renderMs": 113.90000009536743,
+            "rebuiltScene": false,
+            "phase": "wave",
+            "renderer": {
+              "figuresMs": 98.40000009536743,
+              "effectsMs": 0.3999999761581421,
+              "submissionMs": 15.100000023841858,
+              "createdRigs": 0,
+              "drawCalls": 277
+            }
+          }
+        }
+      ],
+      "cpuTimingNote": "Synchronous JavaScript work only; does not measure asynchronous GPU completion. Long intervals include preceding frame work and browser scheduling.",
+      "peakEnemies": 60,
+      "defenses": 12,
+      "lodges": 3,
+      "peakCombinedShotsEffects": 150,
+      "rescueUses": 13,
+      "transitions": [
+        {
+          "time": 58.51160000000117,
+          "phase": "won",
+          "payout": true
+        },
+        {
+          "time": 118.50500000000714,
+          "phase": "won",
+          "payout": true
+        },
+        {
+          "time": 178.50020000001416,
+          "phase": "won",
+          "payout": true
+        }
+      ],
+      "invalidatedByHiddenTab": false,
+      "viewport": [
+        1280,
+        720
+      ],
+      "pixelRatio": 1,
+      "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/153.0.0.0 Safari/537.36",
+      "renderer": "WebGL 2.0 (OpenGL ES 3.0 Chromium)",
+      "timestamp": "2026-09-20T04:38:28.578Z"
+    },
+    {
+      "run": 2,
+      "seed": 42,
+      "sampleCount": 10751,
+      "medianFps": 59.88023952091634,
+      "p95Ms": 17.599999999976717,
+      "worstMs": 84,
+      "framesOver100Ms": 0,
+      "renderCpuP95Ms": 9.100000023841858,
+      "frameWorkCpuP95Ms": 10,
+      "phaseCpuP95Ms": {
+        "figures": 4.5,
+        "effects": 0.5,
+        "submission": 5.399999976158142
+      },
+      "longFrames": [],
+      "cpuTimingNote": "Synchronous JavaScript work only; does not measure asynchronous GPU completion. Long intervals include preceding frame work and browser scheduling.",
+      "peakEnemies": 60,
+      "defenses": 12,
+      "lodges": 3,
+      "peakCombinedShotsEffects": 150,
+      "rescueUses": 13,
+      "transitions": [
+        {
+          "time": 58.50990000000128,
+          "phase": "won",
+          "payout": true
+        },
+        {
+          "time": 118.50460000000565,
+          "phase": "won",
+          "payout": true
+        },
+        {
+          "time": 178.51550000001208,
+          "phase": "won",
+          "payout": true
+        }
+      ],
+      "invalidatedByHiddenTab": false,
+      "viewport": [
+        1280,
+        720
+      ],
+      "pixelRatio": 1,
+      "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/153.0.0.0 Safari/537.36",
+      "renderer": "WebGL 2.0 (OpenGL ES 3.0 Chromium)",
+      "timestamp": "2026-09-20T04:41:38.590Z"
+    },
+    {
+      "run": 3,
+      "seed": 42,
+      "sampleCount": 10773,
+      "medianFps": 59.880239521125056,
+      "p95Ms": 17.70000000001164,
+      "worstMs": 50.09999999997672,
+      "framesOver100Ms": 0,
+      "renderCpuP95Ms": 9.300000071525574,
+      "frameWorkCpuP95Ms": 10.100000023841858,
+      "phaseCpuP95Ms": {
+        "figures": 4.800000071525574,
+        "effects": 0.5,
+        "submission": 5.200000047683716
+      },
+      "longFrames": [],
+      "cpuTimingNote": "Synchronous JavaScript work only; does not measure asynchronous GPU completion. Long intervals include preceding frame work and browser scheduling.",
+      "peakEnemies": 60,
+      "defenses": 12,
+      "lodges": 3,
+      "peakCombinedShotsEffects": 150,
+      "rescueUses": 13,
+      "transitions": [
+        {
+          "time": 58.51070000000021,
+          "phase": "won",
+          "payout": true
+        },
+        {
+          "time": 118.50500000000552,
+          "phase": "won",
+          "payout": true
+        },
+        {
+          "time": 178.50030000000956,
+          "phase": "won",
+          "payout": true
+        }
+      ],
+      "invalidatedByHiddenTab": false,
+      "viewport": [
+        1280,
+        720
+      ],
+      "pixelRatio": 1,
+      "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/153.0.0.0 Safari/537.36",
+      "renderer": "WebGL 2.0 (OpenGL ES 3.0 Chromium)",
+      "timestamp": "2026-09-20T04:44:48.542Z"
+    }
+  ]
+}

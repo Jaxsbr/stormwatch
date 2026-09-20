@@ -1,0 +1,72 @@
+{
+  "scenario": "Artificial stress; raw requestAnimationFrame intervals, foreground tab, no CPU throttling",
+  "results": [
+    {
+      "run": 1,
+      "seed": 42,
+      "sampleCount": 17479,
+      "medianFps": 119.04761904770155,
+      "p95Ms": 16.80000000000291,
+      "worstMs": 283.40000000000146,
+      "framesOver100Ms": 1,
+      "renderCpuP95Ms": 12.600000023841858,
+      "frameWorkCpuP95Ms": 12.900000095367432,
+      "phaseCpuP95Ms": {
+        "figures": 3.600000023841858,
+        "effects": 0.5,
+        "submission": 9.700000047683716
+      },
+      "longFrames": [
+        {
+          "intervalMs": 283.40000000000146,
+          "elapsed": 51.86340000007266,
+          "previousWork": {
+            "totalMs": 158,
+            "renderMs": 157.5,
+            "rebuiltScene": false,
+            "phase": "wave",
+            "renderer": {
+              "figuresMs": 1.7000000476837158,
+              "effectsMs": 0.6999999284744263,
+              "submissionMs": 155.10000002384186,
+              "createdRigs": 0,
+              "drawCalls": 447
+            }
+          }
+        }
+      ],
+      "cpuTimingNote": "Synchronous JavaScript work only; does not measure asynchronous GPU completion. Long intervals include preceding frame work and browser scheduling.",
+      "peakEnemies": 60,
+      "defenses": 12,
+      "lodges": 3,
+      "peakCombinedShotsEffects": 150,
+      "rescueUses": 13,
+      "transitions": [
+        {
+          "time": 58.50510000007321,
+          "phase": "won",
+          "payout": true
+        },
+        {
+          "time": 118.50090000007903,
+          "phase": "won",
+          "payout": true
+        },
+        {
+          "time": 178.50090000008734,
+          "phase": "won",
+          "payout": true
+        }
+      ],
+      "invalidatedByHiddenTab": false,
+      "viewport": [
+        1280,
+        720
+      ],
+      "pixelRatio": 1,
+      "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/153.0.0.0 Safari/537.36",
+      "renderer": "WebGL 2.0 (OpenGL ES 3.0 Chromium)",
+      "timestamp": "2026-09-20T04:18:10.891Z"
+    }
+  ]
+}

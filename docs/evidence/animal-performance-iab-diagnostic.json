@@ -1,0 +1,58 @@
+[
+  {
+    "run": 1,
+    "seed": 42,
+    "sampleCount": 10796,
+    "renderedCadence": {
+      "sampleCount": 10796,
+      "medianFps": 59.880239520968516,
+      "p95Ms": 17.5,
+      "worstMs": 17.80000000000291,
+      "framesOver100Ms": 0
+    },
+    "medianFps": 59.880239520968516,
+    "p95Ms": 17.5,
+    "worstMs": 17.80000000000291,
+    "framesOver100Ms": 0,
+    "renderCpuP95Ms": 4.5,
+    "frameWorkCpuP95Ms": 4.699999928474426,
+    "phaseCpuP95Ms": {
+      "figures": 1.2000000476837158,
+      "effects": 0.30000007152557373,
+      "submission": 3.1999999284744263
+    },
+    "longFrames": [],
+    "cpuTimingNote": "Wall-clock elapsed time inside callbacks and render phases, not CPU execution time or asynchronous GPU completion. Long intervals include preceding work and browser scheduling.",
+    "peakEnemies": 60,
+    "defenses": 12,
+    "lodges": 3,
+    "peakCombinedShotsEffects": 150,
+    "rescueUses": 13,
+    "transitions": [
+      {
+        "time": 58.51080000000116,
+        "phase": "won",
+        "payout": true
+      },
+      {
+        "time": 118.50500000000822,
+        "phase": "won",
+        "payout": true
+      },
+      {
+        "time": 178.5161000000153,
+        "phase": "won",
+        "payout": true
+      }
+    ],
+    "invalidatedByHiddenTab": false,
+    "viewport": [
+      1280,
+      720
+    ],
+    "pixelRatio": 1,
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/152.0.0.0 Safari/537.36",
+    "renderer": "WebGL 2.0 (OpenGL ES 3.0 Chromium)",
+    "timestamp": "2026-09-20T06:11:39.032Z"
+  }
+]

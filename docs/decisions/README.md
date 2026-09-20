@@ -5,3 +5,6 @@ Read the accepted records before changing consequential behavior. For a new deci
 - [001: Hybrid browser rendering](001-hybrid-rendering.md)
 - [002: Simulation, economy and local progress](002-simulation-economy.md)
 - [003: Assets and reproducibility](003-assets.md)
+
+- [004: Horizontal animated presentation](004-visual-course-correction.md)
+- [005: Animal defenders](005-animal-defenders.md)

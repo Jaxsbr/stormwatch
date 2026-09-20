@@ -1,0 +1,149 @@
+{
+  "environment": {
+    "host": "Apple MacBook Pro, Apple M4 Pro, 12 cores, 48 GB, macOS 26.6.2",
+    "browser": "Chrome 153 via CUA Chrome extension",
+    "url": "http://127.0.0.1:4174/qa.html",
+    "tabId": "217889648",
+    "viewport": [
+      1280,
+      720
+    ],
+    "devicePixelRatio": 1,
+    "cpuThrottling": "none",
+    "tabVisibility": "foreground; all runs invalidatedByHiddenTab=false",
+    "physicalDeviceClaim": false,
+    "note": "Fixed optimized production preview tab; exact document viewport verified before start; no reload after benchmark start. This is a desktop host result and makes no physical mobile performance claim.",
+    "timing": {
+      "runCompletionUtc": [
+        "2026-09-20T02:03:49.704Z",
+        "2026-09-20T02:06:59.711Z",
+        "2026-09-20T02:10:09.726Z"
+      ],
+      "runCompletionLocal": "NZST (UTC+12): 14:03:49.704, 14:06:59.711, 14:10:09.726"
+    },
+    "measurementCaveat": "Run 3 was still measuring after approximately 14:09 NZST and finished at 14:10:09.726 NZST, overlapping root build/dev-WebGL activity. The QA tab was never reloaded, remained foreground, and the raw fixture reported invalidatedByHiddenTab=false; possible host contention during that overlap is not excluded."
+  },
+  "scenario": "Artificial stress; raw requestAnimationFrame intervals, foreground tab, no CPU throttling",
+  "results": [
+    {
+      "run": 1,
+      "seed": 42,
+      "sampleCount": 13026,
+      "medianFps": 60.975609756119205,
+      "p95Ms": 17.60000000000582,
+      "worstMs": 266.8000000000029,
+      "framesOver100Ms": 5,
+      "peakEnemies": 60,
+      "defenses": 12,
+      "lodges": 3,
+      "peakCombinedShotsEffects": 150,
+      "rescueUses": 13,
+      "transitions": [
+        {
+          "time": 58.50670000002541,
+          "phase": "won",
+          "payout": true
+        },
+        {
+          "time": 118.50640000003035,
+          "phase": "won",
+          "payout": true
+        },
+        {
+          "time": 178.50270000003616,
+          "phase": "won",
+          "payout": true
+        }
+      ],
+      "invalidatedByHiddenTab": false,
+      "viewport": [
+        1280,
+        720
+      ],
+      "pixelRatio": 1,
+      "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/153.0.0.0 Safari/537.36",
+      "renderer": "WebGL 2.0 (OpenGL ES 3.0 Chromium)",
+      "timestamp": "2026-09-20T02:03:49.704Z"
+    },
+    {
+      "run": 2,
+      "seed": 42,
+      "sampleCount": 13115,
+      "medianFps": 60.97560975622741,
+      "p95Ms": 17.5,
+      "worstMs": 216.60000000000582,
+      "framesOver100Ms": 6,
+      "peakEnemies": 60,
+      "defenses": 12,
+      "lodges": 3,
+      "peakCombinedShotsEffects": 150,
+      "rescueUses": 13,
+      "transitions": [
+        {
+          "time": 58.51250000000036,
+          "phase": "won",
+          "payout": true
+        },
+        {
+          "time": 118.51250000000628,
+          "phase": "won",
+          "payout": true
+        },
+        {
+          "time": 178.50410000001193,
+          "phase": "won",
+          "payout": true
+        }
+      ],
+      "invalidatedByHiddenTab": false,
+      "viewport": [
+        1280,
+        720
+      ],
+      "pixelRatio": 1,
+      "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/153.0.0.0 Safari/537.36",
+      "renderer": "WebGL 2.0 (OpenGL ES 3.0 Chromium)",
+      "timestamp": "2026-09-20T02:06:59.711Z"
+    },
+    {
+      "run": 3,
+      "seed": 42,
+      "sampleCount": 11158,
+      "medianFps": 60.24096385529494,
+      "p95Ms": 25.100000000093132,
+      "worstMs": 867.2000000000698,
+      "framesOver100Ms": 8,
+      "peakEnemies": 60,
+      "defenses": 12,
+      "lodges": 3,
+      "peakCombinedShotsEffects": 150,
+      "rescueUses": 13,
+      "transitions": [
+        {
+          "time": 58.50069999999986,
+          "phase": "won",
+          "payout": true
+        },
+        {
+          "time": 118.51300000000441,
+          "phase": "won",
+          "payout": true
+        },
+        {
+          "time": 178.50480000001002,
+          "phase": "won",
+          "payout": true
+        }
+      ],
+      "invalidatedByHiddenTab": false,
+      "viewport": [
+        1280,
+        720
+      ],
+      "pixelRatio": 1,
+      "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/153.0.0.0 Safari/537.36",
+      "renderer": "WebGL 2.0 (OpenGL ES 3.0 Chromium)",
+      "timestamp": "2026-09-20T02:10:09.726Z"
+    }
+  ]
+}

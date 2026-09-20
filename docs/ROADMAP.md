@@ -2,7 +2,7 @@
 
 ## Current state
 
-Playable two-encounter candidate with generated painterly art, hybrid Three.js battlefield, three defenses plus economy building, upgrades/sell, targeted rescue, support choice/unlock, local stars/settings, retry/assistance, orchestral loop and effect cues. Fixed-step rules and both encounter strategies have focused tests. See [acceptance](ACCEPTANCE.md) for exact evidence and gaps; implementation does not imply every device/audio check passed.
+Playable two-encounter visual reboot with generated painterly scenery, an orthographic Three.js battlefield, articulated animal defenders and directional enemies, upgrades/sell, targeted rescue, support choice/unlock, local stars/settings, retry/assistance, orchestral loop and effect cues. Fixed-step rules and both encounter strategies have focused tests. See the [current visual audit](../review/2026-09-20-reboot/current-rubric-audit.md) and [historical foundation acceptance](ACCEPTANCE.md) for exact evidence and gaps; implementation does not imply every device/audio check passed.
 
 ## Prioritized next work
 
@@ -22,7 +22,7 @@ Battlefield textures stream in after entering the scene; a dedicated asset-ready
 
 The first encounter is intentionally forgiving and can leave a large late wallet; deterministic viable strategies are not a substitute for children's playtesting. Combat simulation duration is roughly 4.3–4.6 minutes for tested lines, plus planning; the 5–8 minute target includes player preparation. The 2× convenience speed shortens wall time.
 
-Sprites are single-view cutouts with subtle motion, not rigged animation. Terrain relief is decorative. Map layout is designed for two nodes. Ground borders are visually similar but not exact mathematical tiles. Main screen orchestration remains one module. Local progress has no cloud sync; clearing browser storage removes it. Full keyboard-only battlefield placement, screen-reader gameplay, localization and portrait-first layout are not implemented.
+Characters use separated native parts and articulated limb rigs, with front/rear/side views. Direction swaps are abrupt and removal is simple. Painted biome plates use consistent scale and the route has rounded continuous corners. Map layout is designed for two nodes. Main screen orchestration remains one module. Local progress has no cloud sync; clearing browser storage removes it. Full keyboard-only battlefield placement, screen-reader gameplay, localization and portrait-first layout are not implemented.
 
 Artificial stress is separate from real gameplay and excludes the normal HUD/audio workload. Physical-device and actual listening evidence must be reported independently. Asset source PNGs are locally retained and ignored; committed runtime WebP/audio/font files are sufficient for a clean build.
 

@@ -1,0 +1,89 @@
+{
+  "scenario": "Artificial stress; raw requestAnimationFrame intervals, foreground tab, no CPU throttling",
+  "results": [
+    {
+      "run": 1,
+      "seed": 42,
+      "sampleCount": 16452,
+      "medianFps": 119.04761904770155,
+      "p95Ms": 16.89999999999418,
+      "worstMs": 159.10000000000582,
+      "framesOver100Ms": 2,
+      "renderCpuP95Ms": 13.799999952316284,
+      "frameWorkCpuP95Ms": 14.199999928474426,
+      "phaseCpuP95Ms": {
+        "figures": 4,
+        "effects": 0.5,
+        "submission": 10.600000023841858
+      },
+      "longFrames": [
+        {
+          "intervalMs": 116.70000000001164,
+          "elapsed": 111.52129999996018,
+          "previousWork": {
+            "totalMs": 96.80000007152557,
+            "renderMs": 96,
+            "rebuiltScene": false,
+            "phase": "wave",
+            "renderer": {
+              "figuresMs": 14.5,
+              "effectsMs": 13.799999952316284,
+              "submissionMs": 67.70000004768372,
+              "createdRigs": 1,
+              "drawCalls": 449
+            }
+          }
+        },
+        {
+          "intervalMs": 159.10000000000582,
+          "elapsed": 171.70469999996746,
+          "previousWork": {
+            "totalMs": 151.89999997615814,
+            "renderMs": 150.80000007152557,
+            "rebuiltScene": false,
+            "phase": "wave",
+            "renderer": {
+              "figuresMs": 5,
+              "effectsMs": 0.20000004768371582,
+              "submissionMs": 145.60000002384186,
+              "createdRigs": 0,
+              "drawCalls": 450
+            }
+          }
+        }
+      ],
+      "cpuTimingNote": "Synchronous JavaScript work only; does not measure asynchronous GPU completion. Long intervals include preceding frame work and browser scheduling.",
+      "peakEnemies": 60,
+      "defenses": 12,
+      "lodges": 3,
+      "peakCombinedShotsEffects": 150,
+      "rescueUses": 13,
+      "transitions": [
+        {
+          "time": 58.50459999995477,
+          "phase": "won",
+          "payout": true
+        },
+        {
+          "time": 118.50459999996059,
+          "phase": "won",
+          "payout": true
+        },
+        {
+          "time": 178.50469999996832,
+          "phase": "won",
+          "payout": true
+        }
+      ],
+      "invalidatedByHiddenTab": false,
+      "viewport": [
+        1280,
+        720
+      ],
+      "pixelRatio": 1,
+      "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/153.0.0.0 Safari/537.36",
+      "renderer": "WebGL 2.0 (OpenGL ES 3.0 Chromium)",
+      "timestamp": "2026-09-20T04:11:36.725Z"
+    }
+  ]
+}

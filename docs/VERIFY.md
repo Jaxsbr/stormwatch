@@ -29,3 +29,12 @@ Cold-load check: empty HTTP/browser cache, 10Mbps downlink and100ms latency, mea
 Clone the public repository into a new temporary directory. Run only the README commands (`npm ci`, check, test, build); serve and open the production output. No ignored sources, local environment files or generation access may be needed. Preserve command results in the acceptance report.
 
 For the controlled local delivery profile, run `python3 tools/throttled-preview.py dist 4176` and open the printed `?measure=1` URL on a fresh origin. The server enforces aggregate10Mbps response-body delivery and100ms request delay with no-store responses, and logs body/header bytes for successful file responses. This is application-level shaping, not a simulation of a physical radio or all TCP latency effects. The opt-in diagnostic waits for title-image decode, fonts and two animation frames. If browser resource timing omits an image, retain server accounting rather than calling the incomplete timing sum total transfer.
+
+
+## Local review recording
+
+Build, then run `node tools/review-preview.mjs` and open `http://127.0.0.1:4176/?record`. Use the visible recorder during normal play. After20seconds, **Save clip to review folder** writes the actual captured WebM into `review/recordings/` and displays its path. This explicit loopback-only server is separate from the published game; no recording service is deployed. It accepts same-origin WebM writes capped at32MiB and chooses unique output names server-side. Standard browser download remains available.
+
+Verify the saved file's timestamp, dimensions, duration and actual frames before describing it. Capture at1× for motion review; disclose any preparation/play segments run at2×. Canvas footage excludes HTML HUD and sound. Retain corresponding full-page screenshots for menus, selected controls and results. A successful save does not certify smoothness or sound quality.
+
+The stress fixture now logs synchronous render/frame work and preceding-frame scene rebuilds for intervals over100ms. These timings help attribution but do not measure asynchronous GPU completion or excuse long frames.

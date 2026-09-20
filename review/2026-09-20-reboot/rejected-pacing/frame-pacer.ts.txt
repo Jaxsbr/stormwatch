@@ -1,0 +1,25 @@
+/** Bound drawing work to 60 Hz while simulation/input keep their own cadence. */
+export class FramePacer {
+  private last: number | undefined;
+  private credit = 0;
+  private readonly period = 1000 / 60;
+  shouldRender(now: number): boolean {
+    if (this.last === undefined) {
+      this.last = now;
+      return true;
+    }
+    this.credit += Math.max(0, now - this.last);
+    this.last = now;
+    // RAF timestamps can straddle a nominal refresh boundary by fractions of a
+    // millisecond. Keep the remainder, including a small negative remainder.
+    if (this.credit < this.period - 0.5) return false;
+    this.credit -= this.period;
+    // A missed frame is dropped, never repaid with a burst of extra draws.
+    if (this.credit >= this.period - 0.5) this.credit = 0;
+    return true;
+  }
+  reset() {
+    this.last = undefined;
+    this.credit = 0;
+  }
+}

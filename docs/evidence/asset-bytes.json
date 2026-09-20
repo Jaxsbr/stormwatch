@@ -1,82 +1,885 @@
 {
   "date": "2026-09-20",
-  "publicAssetBytes": 6183531,
-  "productionDirectoryBytes": 6805031,
+  "publicAssetBytes": 15335917,
+  "productionDirectoryBytes": 17298067,
   "fullAssetBudgetBytes": 20000000,
   "withinFullAssetBudget": true,
-  "note": "Disk bytes, not a cold network transfer measurement. Production includes the optional QA entry.",
+  "note": "Current animal build disk inventory, including optional QA entry. Not a cold network measurement. Renderer source checkpoint: 4961b03.",
   "files": [
     {
       "file": "public/art/atlas-layout.json",
-      "bytes": 1733
+      "bytes": 1733,
+      "sha256": "ae91faca2993b161c6853c3371b8c3a2fb612c77a58e60b9f613e46cb7abc7c5"
     },
     {
       "file": "public/art/expedition-map.webp",
-      "bytes": 462484
+      "bytes": 462484,
+      "sha256": "8fc6425a87de63f44a77d903dcce5771c3e5e3f77b45ac4de73e03c5d83ae692"
     },
     {
       "file": "public/art/forest-prop.webp",
-      "bytes": 871122
+      "bytes": 871122,
+      "sha256": "f2fac43ef6e98f26be1d2b6364a04a49058a37a4808949a53aaeb65c3baa721f"
     },
     {
       "file": "public/art/ground.webp",
-      "bytes": 291132
+      "bytes": 291132,
+      "sha256": "51eec1d43d6787495623652537723fb349145ec62705152bba8be1e34d345ed5"
     },
     {
       "file": "public/art/manifest.json",
-      "bytes": 1654
+      "bytes": 1654,
+      "sha256": "999c4de227048caafb0a38aa01369568e494dec7a9db083440f3545e9065d455"
     },
     {
       "file": "public/art/sprite-atlas.webp",
-      "bytes": 1182472
+      "bytes": 1182472,
+      "sha256": "762334fcc6526db8afb7acae65993753c84cee337cb2b5f69c42410f94cb425e"
     },
     {
       "file": "public/art/title-background.webp",
-      "bytes": 212612
+      "bytes": 212612,
+      "sha256": "4ce05791ff4d4df747d2273a0f592928c85b3b87345ea8c0a52bda5ac1d5fee7"
+    },
+    {
+      "file": "public/art/v2/advantage-icons-v1/atlas.webp",
+      "bytes": 1086722,
+      "sha256": "03e0bd35bb66625810825a41600673958dd73c520172f3c9e00cb1bd59ad6206"
+    },
+    {
+      "file": "public/art/v2/advantage-icons-v1/manifest.json",
+      "bytes": 2510,
+      "sha256": "631bacb8b53208d0a6bead7dd53df7f872e212962e82a2bd95ba2e19a1197157"
+    },
+    {
+      "file": "public/art/v2/advantage-icons-v1/prompt.txt",
+      "bytes": 1971,
+      "sha256": "5eacf889194ce9612af46a1d427a4d0bec54904ebe470fa42390a57becc2db01"
+    },
+    {
+      "file": "public/art/v2/badger-front-rig-v1/body.webp",
+      "bytes": 130134,
+      "sha256": "936b3355815400a651b50fb679ca4f0381b032d594e1109c739fac53ed844260"
+    },
+    {
+      "file": "public/art/v2/badger-front-rig-v1/farLeg.webp",
+      "bytes": 40610,
+      "sha256": "68c77c509e186e00a6826047cef71cb3aa82f64cd8a6684ac93ff20d0285883d"
+    },
+    {
+      "file": "public/art/v2/badger-front-rig-v1/nearLeg.webp",
+      "bytes": 40676,
+      "sha256": "2dd323c692e76b627e124b39e97fca4f8f7d5fa958adfe6bbe4006730856b76b"
+    },
+    {
+      "file": "public/art/v2/badger-front-rig-v1/prompt.txt",
+      "bytes": 969,
+      "sha256": "aa4ce88832279974aa87b796758c17c0e03a30564377a4c935bdaff4d684b3fd"
+    },
+    {
+      "file": "public/art/v2/badger-front-rig-v1/rig.json",
+      "bytes": 3542,
+      "sha256": "970b21650dfdea523810bdb3707a9a74a73dc81fe0da8374fa851bbd591941e9"
+    },
+    {
+      "file": "public/art/v2/badger-rear-rig-v1/body.webp",
+      "bytes": 115764,
+      "sha256": "85779e424c76045a5aeb953cda1332799f7ebfea59453f582d7e5f7307b92a34"
+    },
+    {
+      "file": "public/art/v2/badger-rear-rig-v1/farLeg.webp",
+      "bytes": 38482,
+      "sha256": "c3544f9291f705e9215c10d9e6830e6b551ecac76831facdc61bf7dea5d865b4"
+    },
+    {
+      "file": "public/art/v2/badger-rear-rig-v1/nearLeg.webp",
+      "bytes": 39136,
+      "sha256": "5444d0f37ef705dc264799e1ec8adef36cc94f6a3ccd0139f9580aef4d0f9bac"
+    },
+    {
+      "file": "public/art/v2/badger-rear-rig-v1/prompt.txt",
+      "bytes": 928,
+      "sha256": "de44e869122bfe6e2faf4421347a94e3ebe6d360246a7b3453e396e89f6026ad"
+    },
+    {
+      "file": "public/art/v2/badger-rear-rig-v1/rig.json",
+      "bytes": 3537,
+      "sha256": "c8623021fa22961cad3eda20de009fc2e46d176b930df5005599840559730447"
+    },
+    {
+      "file": "public/art/v2/badger-rig-v1/body.webp",
+      "bytes": 155626,
+      "sha256": "2b5f93d4c5e1a7113b57f606b3abd69593d799584b9e0f6b762cc39de979bbb0"
+    },
+    {
+      "file": "public/art/v2/badger-rig-v1/farLeg.webp",
+      "bytes": 38978,
+      "sha256": "d44cfcc22ad94760e32ecbe535a332cb872c29dd9985d6bfd364147b62f722a4"
+    },
+    {
+      "file": "public/art/v2/badger-rig-v1/nearLeg.webp",
+      "bytes": 47382,
+      "sha256": "2e0d878594fee376773c79971eaae497fc5928624c076c4f39f2caf0a8f7692c"
+    },
+    {
+      "file": "public/art/v2/badger-rig-v1/prompt.txt",
+      "bytes": 1392,
+      "sha256": "b3999c218336f7c0db350c6562afb0e65da45269071bcd1c49e7ac7b4da18a3e"
+    },
+    {
+      "file": "public/art/v2/badger-rig-v1/rig.json",
+      "bytes": 3491,
+      "sha256": "5f18f340d902321496029eddd00f8cacdd349aaba26738113b83cda5f416536a"
+    },
+    {
+      "file": "public/art/v2/boar-front-rig-v1/body.webp",
+      "bytes": 160040,
+      "sha256": "69a47fde06a7616abc4d3eabfb1176419f8c43d3151f599fd2def5830c3bfce7"
+    },
+    {
+      "file": "public/art/v2/boar-front-rig-v1/farLeg.webp",
+      "bytes": 39576,
+      "sha256": "5385f7cbc5ff360c367dc0c95913db6baaf74de22c1902ae9e58880b7a79f67a"
+    },
+    {
+      "file": "public/art/v2/boar-front-rig-v1/nearLeg.webp",
+      "bytes": 42162,
+      "sha256": "ef35d8339e6b3420f406d1afffcd03b127d0880d97a9fca7ae3563d0f9b18eee"
+    },
+    {
+      "file": "public/art/v2/boar-front-rig-v1/prompt.txt",
+      "bytes": 892,
+      "sha256": "c04851dc5bf33fd5b5be1e01e789aaa20ffa6112a4bbff95925b5a595321296f"
+    },
+    {
+      "file": "public/art/v2/boar-front-rig-v1/rig.json",
+      "bytes": 3532,
+      "sha256": "556ed97bda9aa7c179c3a1c2341313817c2814b155ef87c3ca1a827a8e565799"
+    },
+    {
+      "file": "public/art/v2/boar-rear-rig-v1/body.webp",
+      "bytes": 133990,
+      "sha256": "e1e9b6e6dae29b4764ebb2f934313a2a76c339143187373a99d6909c6c24563b"
+    },
+    {
+      "file": "public/art/v2/boar-rear-rig-v1/farLeg.webp",
+      "bytes": 36582,
+      "sha256": "5de35e490a5bd1f6164382f58657019a84f615b78a3656af41956c87cc74c537"
+    },
+    {
+      "file": "public/art/v2/boar-rear-rig-v1/nearLeg.webp",
+      "bytes": 37802,
+      "sha256": "133d29add53092af9f1faeeca02fd19473e625ca5d610246b1788bfdc861a86f"
+    },
+    {
+      "file": "public/art/v2/boar-rear-rig-v1/prompt.txt",
+      "bytes": 882,
+      "sha256": "87c5b78f53c0f897f8b989ddc8609c9be8fcf18e75526eac36f64ad6b37bc9fd"
+    },
+    {
+      "file": "public/art/v2/boar-rear-rig-v1/rig.json",
+      "bytes": 3526,
+      "sha256": "4238c931c2cbd731999238b1c8f9cca9796737e177e9aee40780852eacc742d9"
+    },
+    {
+      "file": "public/art/v2/boar-rig-v1/body.webp",
+      "bytes": 139584,
+      "sha256": "87c010c63f2416492709f8ea48e2519961abac41fe31ca211f8521437778f8f7"
+    },
+    {
+      "file": "public/art/v2/boar-rig-v1/farLeg.webp",
+      "bytes": 32178,
+      "sha256": "0b3b1260a9085f3c9d360de446175f3a47ed0f17cf40ba01daf51863e080f566"
+    },
+    {
+      "file": "public/art/v2/boar-rig-v1/nearLeg.webp",
+      "bytes": 34266,
+      "sha256": "fe10637278467f68d5586c722677e19dc2074af977cdce96c2792191d3fa3c22"
+    },
+    {
+      "file": "public/art/v2/boar-rig-v1/prompt.txt",
+      "bytes": 1188,
+      "sha256": "dba7a264872ad1472de4125e8a0076e076abc94ae2b623f13584b735ae62783d"
+    },
+    {
+      "file": "public/art/v2/boar-rig-v1/rig.json",
+      "bytes": 3483,
+      "sha256": "ea9ec496082092fc0ddf906c4cfa76c463c7bd2ad59d4ff360461bb30c090a2e"
+    },
+    {
+      "file": "public/art/v2/cobblestone-material-v1/atlas.webp",
+      "bytes": 450254,
+      "sha256": "744582467367f8ec3ad26ef4d2b6de7eab706a8a3be5d6240229f9f55f1a45f4"
+    },
+    {
+      "file": "public/art/v2/cobblestone-material-v1/manifest.json",
+      "bytes": 2245,
+      "sha256": "f66e98bb96d6e77443f6d16ff2ee425c45329eef8e1bcbac9a3074f7841f44df"
+    },
+    {
+      "file": "public/art/v2/cobblestone-material-v1/prompt.txt",
+      "bytes": 1926,
+      "sha256": "b6f7409233457d1fbf05074f0ee6fd295551d866ddfb49f838da7b702af8937f"
+    },
+    {
+      "file": "public/art/v2/defender-placement-tile/manifest.json",
+      "bytes": 339,
+      "sha256": "d7de5ddbe7f06b0f95c4b7168a5a54a914cdb5d61ec8c2872ca346a8ecfefa90"
+    },
+    {
+      "file": "public/art/v2/defender-placement-tile/prompt.txt",
+      "bytes": 984,
+      "sha256": "af20697912e80e307ddd29f36542320fecc14e9edcbd2650a1010dca9251bc3f"
+    },
+    {
+      "file": "public/art/v2/defender-placement-tile/tile.webp",
+      "bytes": 39496,
+      "sha256": "a8615bad831f9a4a5bd6c41701414747b0ff898f20a29abcbe9fa7c6504c0557"
+    },
+    {
+      "file": "public/art/v2/donkey-front-defender-v1/body.webp",
+      "bytes": 132514,
+      "sha256": "fd471e86bd16ec4f34b1f030f927eb3775941362f9a29f699a7b4f1fffd07c1a"
+    },
+    {
+      "file": "public/art/v2/donkey-front-defender-v1/drawArm.webp",
+      "bytes": 34616,
+      "sha256": "43b868daa6e6dbb2b7edf4f0eb601c87d7c19b938556f226aef5ab6857a15a04"
+    },
+    {
+      "file": "public/art/v2/donkey-front-defender-v1/holdArm.webp",
+      "bytes": 32188,
+      "sha256": "53ba82ddcb53c44f5ada5a97d5920a5af69970dbeaefef74003419a2460ebe9e"
+    },
+    {
+      "file": "public/art/v2/donkey-front-defender-v1/payload.webp",
+      "bytes": 29882,
+      "sha256": "d9b60ad8ea1c4f92e1be31a0af31f004efe1a36e89a1a1d57948d2be4538cd6e"
+    },
+    {
+      "file": "public/art/v2/donkey-front-defender-v1/prompt.txt",
+      "bytes": 1082,
+      "sha256": "e71a6fa8a04100b4ff385a77328e4bf9132a8b086282a335c88569adbb457017"
+    },
+    {
+      "file": "public/art/v2/donkey-front-defender-v1/rig.json",
+      "bytes": 3938,
+      "sha256": "f8d87436ff4fec587c3458c4e3aaab1d513f2f6e2793e9c02ee10bfb2123cca6"
+    },
+    {
+      "file": "public/art/v2/donkey-rear-defender-v1/body.webp",
+      "bytes": 117850,
+      "sha256": "a2bce7c0c77ef6eaf7b9c66b9a857df3de80ed2404eeb7ed09005e6419cb1065"
+    },
+    {
+      "file": "public/art/v2/donkey-rear-defender-v1/drawArm.webp",
+      "bytes": 32430,
+      "sha256": "8665213bf7ed19100a57cbf84b0c060e5fc5ffb7291ea104ec60896d6c2d530f"
+    },
+    {
+      "file": "public/art/v2/donkey-rear-defender-v1/holdArm.webp",
+      "bytes": 33140,
+      "sha256": "d0f4b5c978d82d6444a1e72f95eac9580224e072689504266707420538a740cd"
+    },
+    {
+      "file": "public/art/v2/donkey-rear-defender-v1/payload.webp",
+      "bytes": 28060,
+      "sha256": "96e3455ae1b3068c2c8295cc628157cb80172ccdd0bcab477d5fbdd7db0c1936"
+    },
+    {
+      "file": "public/art/v2/donkey-rear-defender-v1/prompt.txt",
+      "bytes": 1240,
+      "sha256": "d1d573db93460ac6037cfbf7846393fc9bd8cf469a728aa73ee23803e39dc78f"
+    },
+    {
+      "file": "public/art/v2/donkey-rear-defender-v1/rig.json",
+      "bytes": 3908,
+      "sha256": "b898dcf87d3b1cfb89f99d6cae62e7579c8a01d2fa402316064bb15b9efaf295"
+    },
+    {
+      "file": "public/art/v2/donkey-side-defender-v1/body.webp",
+      "bytes": 130016,
+      "sha256": "52f4ee8d3aae07cee9f492ff84d8d94f4786f7102f9f2d1f2cb8b15de0fc2f69"
+    },
+    {
+      "file": "public/art/v2/donkey-side-defender-v1/drawArm.webp",
+      "bytes": 31268,
+      "sha256": "f17053280d0ca76c7a6400baf7336cf05a4f7f6b366f59e54d92c8fec7da3200"
+    },
+    {
+      "file": "public/art/v2/donkey-side-defender-v1/holdArm.webp",
+      "bytes": 30370,
+      "sha256": "b1257399d65da6d780de7dfa7232311b494820bda533d28999c1700e41bf0694"
+    },
+    {
+      "file": "public/art/v2/donkey-side-defender-v1/payload.webp",
+      "bytes": 27884,
+      "sha256": "a0791474c74261947b5a694c01ea67e9ed5625c3ab9342d12d5e5448f981a097"
+    },
+    {
+      "file": "public/art/v2/donkey-side-defender-v1/portrait.webp",
+      "bytes": 8132,
+      "sha256": "6d5bf58cb3acf04f31fb9edf3368d4c95342ab8f520a04c0ecf8f4086587df1c"
+    },
+    {
+      "file": "public/art/v2/donkey-side-defender-v1/prompt.txt",
+      "bytes": 1724,
+      "sha256": "13191aa176a7c038247f671874d54e7868254099ee6c4b837121abce78f54678"
+    },
+    {
+      "file": "public/art/v2/donkey-side-defender-v1/rig.json",
+      "bytes": 4152,
+      "sha256": "915b1c23df9e9707f2b36267a7a2673367ccad8bec5e17db4401b335639d680e"
+    },
+    {
+      "file": "public/art/v2/expedition-map-v1/atlas.webp",
+      "bytes": 561082,
+      "sha256": "662effe16b49335be5c2c7bb6e58a4d253d4ae8dc2936c078b4e17301fbe46d9"
+    },
+    {
+      "file": "public/art/v2/expedition-map-v1/manifest.json",
+      "bytes": 2569,
+      "sha256": "9d13a0dd57198d6f55aada586b6a36a0830785dc315f20e29f9727caebb92576"
+    },
+    {
+      "file": "public/art/v2/expedition-map-v1/prompt.txt",
+      "bytes": 2616,
+      "sha256": "fcc41d3f6b5dfa0c12fa0b21613c5ac0f881f3b27aec2d935af7795096a9a3dc"
+    },
+    {
+      "file": "public/art/v2/rainstone-riverbank-v2/atlas.webp",
+      "bytes": 384930,
+      "sha256": "8c5fddf4863ae819fbb16be0489428db7298e1f57a5eb9da1416b3ddea353db8"
+    },
+    {
+      "file": "public/art/v2/rainstone-riverbank-v2/manifest.json",
+      "bytes": 2677,
+      "sha256": "38f5ee489929dd433b70658aa48d865154d76aca7ee61ee87dc15b5c3146f805"
+    },
+    {
+      "file": "public/art/v2/rainstone-riverbank-v2/prompt.txt",
+      "bytes": 2889,
+      "sha256": "c12d057d1bf351ac6f620ba5ecc330d677ec187c569f207078d36e878cad74bf"
+    },
+    {
+      "file": "public/art/v2/rat-front-rig-v1/body.webp",
+      "bytes": 108026,
+      "sha256": "8866709e2e0aa1110fe18e5af489489195368ddd9e07954a892869f4cc9ba65b"
+    },
+    {
+      "file": "public/art/v2/rat-front-rig-v1/farLeg.webp",
+      "bytes": 28620,
+      "sha256": "e7094dbf01556e16d2374a8bfaf630ec6f881e863b3ef2f06e89e635644ddd9c"
+    },
+    {
+      "file": "public/art/v2/rat-front-rig-v1/nearLeg.webp",
+      "bytes": 29498,
+      "sha256": "115c15baf36a5f920e6f2b923555805822d11519d1878be73cee5e4f3b30af44"
+    },
+    {
+      "file": "public/art/v2/rat-front-rig-v1/prompt.txt",
+      "bytes": 1086,
+      "sha256": "4678dbd38ee15141857039d5bb0e3e63d640491ec27f16bc636cd8f4aebd0198"
+    },
+    {
+      "file": "public/art/v2/rat-front-rig-v1/rig.json",
+      "bytes": 3524,
+      "sha256": "88719cf1f9e2c1b6d3f3aadf300fb69f8012e3f0c9aa22ba8f043538322fc158"
+    },
+    {
+      "file": "public/art/v2/rat-rear-rig-v1/body.webp",
+      "bytes": 103374,
+      "sha256": "f3cfa09bd7196a840c408931712d64257e23202038aa8088b74b4d3ed61c7b44"
+    },
+    {
+      "file": "public/art/v2/rat-rear-rig-v1/farLeg.webp",
+      "bytes": 24980,
+      "sha256": "8bf858f6e2faa77302c75208010d4634b9f0633c3cc887cc1d00aa4365ca600f"
+    },
+    {
+      "file": "public/art/v2/rat-rear-rig-v1/nearLeg.webp",
+      "bytes": 26670,
+      "sha256": "7731ebd43593d0b6276d935da17ed64a6d3f1879ad8963604ad9e5a5f76d720f"
+    },
+    {
+      "file": "public/art/v2/rat-rear-rig-v1/prompt.txt",
+      "bytes": 1102,
+      "sha256": "0e7eb3a6029b8d9142ad6cefc35e3213629e101366e7ed7034f876aef8a2867b"
+    },
+    {
+      "file": "public/art/v2/rat-rear-rig-v1/rig.json",
+      "bytes": 3519,
+      "sha256": "46fc544f077504bec4f01ceee876ec8a6c83814885e11670cab2d176771fb3ae"
+    },
+    {
+      "file": "public/art/v2/rat-rig-v1/body.webp",
+      "bytes": 101822,
+      "sha256": "8d0807617563db800417c2dde542029c310e3cd5251b6c76375d4ab3097a66e4"
+    },
+    {
+      "file": "public/art/v2/rat-rig-v1/farLeg.webp",
+      "bytes": 30074,
+      "sha256": "61493a5a5f9aa29740c54ef67d9d78a0205d69e4563978aea02db6392dc6d858"
+    },
+    {
+      "file": "public/art/v2/rat-rig-v1/nearLeg.webp",
+      "bytes": 29648,
+      "sha256": "89ea1884d622bc79378dd3b8fd28d6905f38f06a0303e7adb9a351ebb8cacb2a"
+    },
+    {
+      "file": "public/art/v2/rat-rig-v1/prompt.txt",
+      "bytes": 1699,
+      "sha256": "c6dbcfe262afc18c52f95a79b76895c9b529637e6aec52a981bb5b7c1bae4390"
+    },
+    {
+      "file": "public/art/v2/rat-rig-v1/rig.json",
+      "bytes": 3235,
+      "sha256": "ab6822af34d9e9d62c0c3f69dd47fcff2f6466adb6bc9a5caf8bc598201dfa7a"
+    },
+    {
+      "file": "public/art/v2/skunk-front-defender-v1/body.webp",
+      "bytes": 156672,
+      "sha256": "bffed01754af30c10ccecb34185fb2979e1e81c09732b343b5fd8e204642a7ad"
+    },
+    {
+      "file": "public/art/v2/skunk-front-defender-v1/drawArm.webp",
+      "bytes": 34860,
+      "sha256": "93b58bb732a35da7de48c232b5272357520b4cdf223ef9431eb13d32adf47948"
+    },
+    {
+      "file": "public/art/v2/skunk-front-defender-v1/holdArm.webp",
+      "bytes": 32046,
+      "sha256": "0531a8c4585fd5e45c7d8cb9ba3d5e6e166c768ddb1aec28a09c2085a6b0e48f"
+    },
+    {
+      "file": "public/art/v2/skunk-front-defender-v1/payload.webp",
+      "bytes": 14862,
+      "sha256": "43f7a4bbbcb1afa40b00ede8883096e4796a89d03609b9fc09d0c97d03c6ea90"
+    },
+    {
+      "file": "public/art/v2/skunk-front-defender-v1/prompt.txt",
+      "bytes": 1467,
+      "sha256": "850eb97b7256f139aed85c66a7b47c4fe768e48f29b849b4161a778091ce6129"
+    },
+    {
+      "file": "public/art/v2/skunk-front-defender-v1/rig.json",
+      "bytes": 3820,
+      "sha256": "af0d340df3cd114fd564cb58f372fe5959d0a73d756fce0a71bfa0008b35713e"
+    },
+    {
+      "file": "public/art/v2/skunk-rear-defender-v1/body.webp",
+      "bytes": 161156,
+      "sha256": "6e77a0d806c9dd20ef21c332465b2400b7d3239d3d7f6ecdd86731fe9740f9f1"
+    },
+    {
+      "file": "public/art/v2/skunk-rear-defender-v1/drawArm.webp",
+      "bytes": 27652,
+      "sha256": "24e0007d5086a97c78365dee544f9557cd942005cf088b62112645bfb0a274e4"
+    },
+    {
+      "file": "public/art/v2/skunk-rear-defender-v1/holdArm.webp",
+      "bytes": 27222,
+      "sha256": "3a0e6b99263776a9cbf0f81b97e0052d3c5e90cd54752d07dc08ace1173c359d"
+    },
+    {
+      "file": "public/art/v2/skunk-rear-defender-v1/payload.webp",
+      "bytes": 11160,
+      "sha256": "483ab2216c5adc0895d9a919d1065433c868b0177fd48c129f58f40912141cd7"
+    },
+    {
+      "file": "public/art/v2/skunk-rear-defender-v1/prompt.txt",
+      "bytes": 1498,
+      "sha256": "c2d6d146ef034af56178af783422d0ecbe5b5e42337ba21402bc8bb622aa0ba4"
+    },
+    {
+      "file": "public/art/v2/skunk-rear-defender-v1/rig.json",
+      "bytes": 3809,
+      "sha256": "4a10108da3dac980a797e749baeb24ba4a4f139703dcd15b0a011ed518bb7dfb"
+    },
+    {
+      "file": "public/art/v2/skunk-side-defender-v1/body.webp",
+      "bytes": 183092,
+      "sha256": "f492d9f41f7df053a856c4feafe3bf36279e8a0c7586dff0ea931cef311113ad"
+    },
+    {
+      "file": "public/art/v2/skunk-side-defender-v1/drawArm.webp",
+      "bytes": 23984,
+      "sha256": "00e9e362fb07efc1834f28f0194a603141965623ab564879651f94466bec433e"
+    },
+    {
+      "file": "public/art/v2/skunk-side-defender-v1/holdArm.webp",
+      "bytes": 26320,
+      "sha256": "bf1fedbd4ce4f1ee08ce346fa0fbc4b64dc704dbb87ac73bef943a3cf4ff964c"
+    },
+    {
+      "file": "public/art/v2/skunk-side-defender-v1/payload.webp",
+      "bytes": 12654,
+      "sha256": "a08ac281974b6858c1fdffa151cf87d6c18e3e1ef3e529e0f219e0815358fd59"
+    },
+    {
+      "file": "public/art/v2/skunk-side-defender-v1/portrait.webp",
+      "bytes": 8456,
+      "sha256": "3dee2ad54dfef2fc33ada370b3e032232eace590da090b262c67d4ceae278cf3"
+    },
+    {
+      "file": "public/art/v2/skunk-side-defender-v1/prompt.txt",
+      "bytes": 1907,
+      "sha256": "1caa9f17d1ab81e37383e587bd886c553c0a24579eff6a656d23547072473112"
+    },
+    {
+      "file": "public/art/v2/skunk-side-defender-v1/rig.json",
+      "bytes": 3966,
+      "sha256": "e5e700d0ff0f1f68250b732206241b3f262d0b5b2271433612b12a21a1a16bf7"
+    },
+    {
+      "file": "public/art/v2/squirrel-front-defender-v1/body.webp",
+      "bytes": 172794,
+      "sha256": "3d81bae1e75b0ad2df55c24afeabb2495176d77cbb535a61c0980a35a82f1240"
+    },
+    {
+      "file": "public/art/v2/squirrel-front-defender-v1/bow.webp",
+      "bytes": 28488,
+      "sha256": "cebc5080368e88451df535454741dd51067f062c1ebf0b0b6fca365a4f9c8c9f"
+    },
+    {
+      "file": "public/art/v2/squirrel-front-defender-v1/drawArm.webp",
+      "bytes": 26950,
+      "sha256": "2c9af69d81cc0eb0fee9428e394b647f2d818c064411eafe5bd3d9920a113543"
+    },
+    {
+      "file": "public/art/v2/squirrel-front-defender-v1/holdArm.webp",
+      "bytes": 25840,
+      "sha256": "dc20ee20bf34f2f41de18746c9e4f7eba67a0d59a6a4c87f63e86c8ccdb0c1a8"
+    },
+    {
+      "file": "public/art/v2/squirrel-front-defender-v1/prompt.txt",
+      "bytes": 1616,
+      "sha256": "2c584637f79b54bf92f6fba25744aa79f557976a020fc68b8c11711b83984f8c"
+    },
+    {
+      "file": "public/art/v2/squirrel-front-defender-v1/rig.json",
+      "bytes": 4382,
+      "sha256": "c4381f6cdf83294abd6e8dc4869633e97e2e1281bf08a45c4445e0aa8ed55f86"
+    },
+    {
+      "file": "public/art/v2/squirrel-rear-defender-v1/body.webp",
+      "bytes": 156346,
+      "sha256": "75757aceeaf6fbbc54e7c8dce6310d36265d5ea1b56f687029655b1d929faa33"
+    },
+    {
+      "file": "public/art/v2/squirrel-rear-defender-v1/bow.webp",
+      "bytes": 26536,
+      "sha256": "d4c4a0bfda982f5459a1abaf44b2ce895788de4a2bac9cc70696590f1a00464f"
+    },
+    {
+      "file": "public/art/v2/squirrel-rear-defender-v1/drawArm.webp",
+      "bytes": 23868,
+      "sha256": "3b64c5842e0489d6d31862dcba8483e5fea2f7cc2767a8a7498b460def328211"
+    },
+    {
+      "file": "public/art/v2/squirrel-rear-defender-v1/holdArm.webp",
+      "bytes": 26582,
+      "sha256": "fb09cbcca7683cb8614d42ac204c4561284e7e47549ee33121da9aff16e79eeb"
+    },
+    {
+      "file": "public/art/v2/squirrel-rear-defender-v1/prompt.txt",
+      "bytes": 10,
+      "sha256": "770c2d18aa4ec3159f46da461ef452972949942ff4f6a9771044485faa146398"
+    },
+    {
+      "file": "public/art/v2/squirrel-rear-defender-v1/rig.json",
+      "bytes": 4420,
+      "sha256": "cd330ea07103395844359f222562761b365ba606f77e110197388af465982964"
+    },
+    {
+      "file": "public/art/v2/squirrel-side-defender-v1/body.webp",
+      "bytes": 157456,
+      "sha256": "3771dc01d812322ebb89aa897935fe4838b3762f8f7c219a95fd60f5619880ec"
+    },
+    {
+      "file": "public/art/v2/squirrel-side-defender-v1/bow.webp",
+      "bytes": 24764,
+      "sha256": "d7cdda1c47d02a48ffe8143e69f661622af0cceacbaa60c0bd1ff0e84965d5ff"
+    },
+    {
+      "file": "public/art/v2/squirrel-side-defender-v1/drawArm.webp",
+      "bytes": 24420,
+      "sha256": "93537cd9d83f963d86923384db954fcd6df789efec4298ea974d8085b1b4dda8"
+    },
+    {
+      "file": "public/art/v2/squirrel-side-defender-v1/holdArm.webp",
+      "bytes": 24070,
+      "sha256": "5a474f9846c9e5f6161ba3e9d9b3f4b9ed8369796655a03e11b27ce93a239e26"
+    },
+    {
+      "file": "public/art/v2/squirrel-side-defender-v1/portrait.webp",
+      "bytes": 9624,
+      "sha256": "bdbc8ef7b266621951e49d25eab2192c66c6f0cf6b4ecfbf1f7b207c34fe6911"
+    },
+    {
+      "file": "public/art/v2/squirrel-side-defender-v1/prompt.txt",
+      "bytes": 2201,
+      "sha256": "5a4c9cc38453a20a0e0b1b55ab623b9e3e615202451fd4f1ef51b152caaff1f2"
+    },
+    {
+      "file": "public/art/v2/squirrel-side-defender-v1/rig.json",
+      "bytes": 4134,
+      "sha256": "7e881d28255950e790b600d70702c270adf7778bd342a615167e9d5ac2aab1ca"
+    },
+    {
+      "file": "public/art/v2/timber-ui-frame-v1/atlas.webp",
+      "bytes": 708924,
+      "sha256": "d28b9ab94a017f9d747c0bd131e3522e5eb8871616521b0e2495f92f75a0a7f0"
+    },
+    {
+      "file": "public/art/v2/timber-ui-frame-v1/manifest.json",
+      "bytes": 2216,
+      "sha256": "926d13b95c2a19091c7a831509b24fb70591ed05460a0b8c6abef1fd755a999a"
+    },
+    {
+      "file": "public/art/v2/timber-ui-frame-v1/prompt.txt",
+      "bytes": 1892,
+      "sha256": "f6989607d20dc3bd7f4ec0a8f190b13faabc2664aa470311e4035fab9f955252"
+    },
+    {
+      "file": "public/art/v2/turtle-front-defender-v1/body.webp",
+      "bytes": 152896,
+      "sha256": "aebcacf46ab3c44106e670515367ae75074ef20fafc4266af9995f6f11424c28"
+    },
+    {
+      "file": "public/art/v2/turtle-front-defender-v1/drawArm.webp",
+      "bytes": 44160,
+      "sha256": "f5a000c2b42ba8af52702ef89a78259ee5ff700e3103bca9125c0e11a0f15488"
+    },
+    {
+      "file": "public/art/v2/turtle-front-defender-v1/holdArm.webp",
+      "bytes": 39842,
+      "sha256": "f69c14487c6005d18b37ea63506bd5f14f95ef2c59aeaae1fa87f3aaf317e20e"
+    },
+    {
+      "file": "public/art/v2/turtle-front-defender-v1/payload.webp",
+      "bytes": 63160,
+      "sha256": "a3d026c9f7f9225a68687d2e708312170c1223e8c6f5aec93d753acc68d99df9"
+    },
+    {
+      "file": "public/art/v2/turtle-front-defender-v1/prompt.txt",
+      "bytes": 1386,
+      "sha256": "2a487231a61c38ebb97e4afecc03c22c99363ba38c90ccd45fcc514405a40c9d"
+    },
+    {
+      "file": "public/art/v2/turtle-front-defender-v1/rig.json",
+      "bytes": 3855,
+      "sha256": "db4377d1bcd6941333283a93be3ac39f49fce24e02d2e56c791006943e584815"
+    },
+    {
+      "file": "public/art/v2/turtle-rear-defender-v1/body.webp",
+      "bytes": 144146,
+      "sha256": "b1b4e4a057780189f429d6ba9fffb5d8d83ba627629c255b5f056688e9b83c9f"
+    },
+    {
+      "file": "public/art/v2/turtle-rear-defender-v1/drawArm.webp",
+      "bytes": 51012,
+      "sha256": "52c1e2c89c965f5c076952238882d99350adc6a5d7f2662371314eda1617d00a"
+    },
+    {
+      "file": "public/art/v2/turtle-rear-defender-v1/holdArm.webp",
+      "bytes": 41418,
+      "sha256": "02ccc244c109bc5cc0884c5643a110868f8bc7dd1de92c3f5fc33ecd3bafa7c6"
+    },
+    {
+      "file": "public/art/v2/turtle-rear-defender-v1/payload.webp",
+      "bytes": 65124,
+      "sha256": "bb5e5c9e149170b22df21e3538397bb9435540b9987648cf5f9fa14ef3da0e20"
+    },
+    {
+      "file": "public/art/v2/turtle-rear-defender-v1/prompt.txt",
+      "bytes": 1520,
+      "sha256": "54ad86133210c38f25eb344655a9b2d4a5f51eca9d56a32e3e8debd53b199918"
+    },
+    {
+      "file": "public/art/v2/turtle-rear-defender-v1/rig.json",
+      "bytes": 3858,
+      "sha256": "a900c98b307568e481758b59a4814e233b49a650bd3fe3fc6737a06cf629431c"
+    },
+    {
+      "file": "public/art/v2/turtle-side-defender-v1/body.webp",
+      "bytes": 153450,
+      "sha256": "09532419bfd48ddf44be6ebf707ee6b764c7574fd010dc82772ab5c0fc1e62cc"
+    },
+    {
+      "file": "public/art/v2/turtle-side-defender-v1/drawArm.webp",
+      "bytes": 43092,
+      "sha256": "ce24ef8395df39f80c9d04f2c76901f0d15616bfee8ffa40c9405eb1498ab8eb"
+    },
+    {
+      "file": "public/art/v2/turtle-side-defender-v1/holdArm.webp",
+      "bytes": 38508,
+      "sha256": "d4359481689e5f3b946e37eb2f6533046a0ed2f587c5f3d21b28633c0bc2b18b"
+    },
+    {
+      "file": "public/art/v2/turtle-side-defender-v1/payload.webp",
+      "bytes": 57836,
+      "sha256": "cf798e21297e90b47be16634c98294053a49c88b89846660cfb78ac5d44afd71"
+    },
+    {
+      "file": "public/art/v2/turtle-side-defender-v1/portrait.webp",
+      "bytes": 7840,
+      "sha256": "319855d5c86303c88061839fda5d85ae50b639d379a4c650a5e5651b0ba43925"
+    },
+    {
+      "file": "public/art/v2/turtle-side-defender-v1/prompt.txt",
+      "bytes": 1878,
+      "sha256": "b1172e515df80633830ab0e9bda04b9fbe6af9c18668f9fe8ad9fb0ccf905f54"
+    },
+    {
+      "file": "public/art/v2/turtle-side-defender-v1/rig.json",
+      "bytes": 3640,
+      "sha256": "5f805b384f584bf094ea05f356022462ec48ffbaa6b3a80e416bd8601ea1fd46"
+    },
+    {
+      "file": "public/art/v2/weasel-front-rig-v1/body.webp",
+      "bytes": 96468,
+      "sha256": "f0c3204a7b77df54a2e005d2a65f65e19ffce13a2b2277403ed7a4f2f756a5fe"
+    },
+    {
+      "file": "public/art/v2/weasel-front-rig-v1/farLeg.webp",
+      "bytes": 30732,
+      "sha256": "7c3e41d527fc41e92d7729c8ce07e2f6ca24abde3cf97726210ed490ab8c4348"
+    },
+    {
+      "file": "public/art/v2/weasel-front-rig-v1/nearLeg.webp",
+      "bytes": 31856,
+      "sha256": "7b286ad5b43b05e3789d2cbb117da336753458d7e17e6a06261b809f0ef9c0fa"
+    },
+    {
+      "file": "public/art/v2/weasel-front-rig-v1/prompt.txt",
+      "bytes": 897,
+      "sha256": "eddaa9ae06deadfcafce12828160377b4a0457eacd85cd1a4b91ad128e88c0a7"
+    },
+    {
+      "file": "public/art/v2/weasel-front-rig-v1/rig.json",
+      "bytes": 3539,
+      "sha256": "0269801140dffa1aad970b0cb977786e0a28110df9cc94615cd7fa4fb0189427"
+    },
+    {
+      "file": "public/art/v2/weasel-rear-rig-v1/body.webp",
+      "bytes": 89208,
+      "sha256": "5c2c5e627a9d0c4a95b918587d5646dda66e54d1014a477ae1b7416c86ce5098"
+    },
+    {
+      "file": "public/art/v2/weasel-rear-rig-v1/farLeg.webp",
+      "bytes": 30472,
+      "sha256": "ff5b4064e045ede17bc6e1e25f4dc5a18d16195e41c56e5d46d9001c3f3d35ae"
+    },
+    {
+      "file": "public/art/v2/weasel-rear-rig-v1/nearLeg.webp",
+      "bytes": 30958,
+      "sha256": "9f1ac320fb09d2b20df8c30b866a2fa6578ab12bb693a2a6405af8f2ba9be3e7"
+    },
+    {
+      "file": "public/art/v2/weasel-rear-rig-v1/prompt.txt",
+      "bytes": 888,
+      "sha256": "90da5f13369d291f029b617fa6fbe4b6f34b40ff6ef5f3dfa6644f5d0f6f3167"
+    },
+    {
+      "file": "public/art/v2/weasel-rear-rig-v1/rig.json",
+      "bytes": 3532,
+      "sha256": "a1d282e3b47e9a00f69a74a33699a722e46edb61eb51465c250e477101115671"
+    },
+    {
+      "file": "public/art/v2/weasel-rig-v1/body.webp",
+      "bytes": 102018,
+      "sha256": "6cb003cf48273320f36fbbba775c24243e4a2fc3c33389727659b6a9c33011b3"
+    },
+    {
+      "file": "public/art/v2/weasel-rig-v1/farLeg.webp",
+      "bytes": 28454,
+      "sha256": "9a0d832f43c1d51d47adef5af06e9a6cc5d4e178777cba0a1c09a887009e5963"
+    },
+    {
+      "file": "public/art/v2/weasel-rig-v1/nearLeg.webp",
+      "bytes": 35204,
+      "sha256": "84bcfcae4cd69c19dcbc56241e6a49d8fa5aa12ac034740c8131a888454928d3"
+    },
+    {
+      "file": "public/art/v2/weasel-rig-v1/prompt.txt",
+      "bytes": 1132,
+      "sha256": "61bf25315b234244977ace376a5d05c9b8ce3446ab603c214c520c5013432aa8"
+    },
+    {
+      "file": "public/art/v2/weasel-rig-v1/rig.json",
+      "bytes": 3473,
+      "sha256": "ed1862653e6f3ab177d0fe98c4e5511635ce71209ff2b3fe65641fe347fb7d6b"
+    },
+    {
+      "file": "public/art/v2/woodland-clearing-v3/atlas.webp",
+      "bytes": 491546,
+      "sha256": "15c3b06c2a36f192ce545a3b1264af1f2049214fa4fb2212fa5383e766a106cd"
+    },
+    {
+      "file": "public/art/v2/woodland-clearing-v3/manifest.json",
+      "bytes": 2248,
+      "sha256": "bc7898b5e7716a51d1aa622000f6e26811e6fac8003b880a36411bebe4924193"
+    },
+    {
+      "file": "public/art/v2/woodland-clearing-v3/prompt.txt",
+      "bytes": 2193,
+      "sha256": "37ab75fe1b5bf820d9ae6d3e4da228f4dae31e885fb683e08a52680896a10082"
     },
     {
       "file": "public/audio/expedition.mp3",
-      "bytes": 2086369
+      "bytes": 2086369,
+      "sha256": "379f3f2c6f967afaf4f2bd95027cf123cf6770b8d1f35acea0eb32fbeb6798c2"
     },
     {
       "file": "public/fonts/cormorant-garamond-0.ttf",
-      "bytes": 290496
+      "bytes": 290496,
+      "sha256": "1724047c8988ca5155bff667bc48fa52e97d57aabc6b42eebbf986f21a4be20b"
     },
     {
       "file": "public/fonts/cormorant-garamond-1.ttf",
-      "bytes": 290392
+      "bytes": 290392,
+      "sha256": "69e7ae35cba23d962227b86f99217c250e642e4c6f6104b4f3ec465039e4e2d8"
     },
     {
       "file": "public/fonts/cormorant-garamond-2.ttf",
-      "bytes": 289992
+      "bytes": 289992,
+      "sha256": "440daf036a35abd6d2bdfa92b14ab0f150cce690fe6d767ee5cab15a1a10a87f"
     },
     {
       "file": "public/fonts/cormorantgaramond-OFL.txt",
-      "bytes": 4387
+      "bytes": 4387,
+      "sha256": "60700d351cac4650c51f3f9db318d2a420f8b45052dba2715eb5fec41f0f6956"
     },
     {
       "file": "public/fonts/dm-sans-3.ttf",
-      "bytes": 48280
+      "bytes": 48280,
+      "sha256": "b0ae3e89a7d3ef2b1838bb4b1ceb0b17cc3435af061eee809d76aa623ff116e9"
     },
     {
       "file": "public/fonts/dm-sans-4.ttf",
-      "bytes": 48308
+      "bytes": 48308,
+      "sha256": "376427b5322148d8de1e03f263bcca4935a2d60ba71d9f94f4947ab664c711ae"
     },
     {
       "file": "public/fonts/dm-sans-5.ttf",
-      "bytes": 48280
+      "bytes": 48280,
+      "sha256": "b79a2ea7a38f33fd96a282fadb9ce97626bb0724a44d21075859f0e50239993a"
     },
     {
       "file": "public/fonts/dm-sans-6.ttf",
-      "bytes": 48200
+      "bytes": 48200,
+      "sha256": "2a8e7f713ee79fbccdef3cef5c787aff47580299f7da60144961e7db2ec08211"
     },
     {
       "file": "public/fonts/dmsans-OFL.txt",
-      "bytes": 4482
+      "bytes": 4482,
+      "sha256": "9af36190332437f5ecd09974de43c1f7c77a310a996cdd8ceb25628b458840e1"
     },
     {
       "file": "public/fonts/fonts.css",
-      "bytes": 1136
+      "bytes": 1136,
+      "sha256": "aaded6af522207075d178b316bc836655fb96721c844fe00915120ca2e25995b"
     }
   ]
 }

@@ -1,0 +1,67 @@
+{
+  "rubric": "../rubric.json",
+  "source_revision": "f7786711d3ee9e0cc2691a0dd94260aa60a232f3",
+  "viewport": [
+    1280,
+    720
+  ],
+  "browser": "Chrome extension browser 1; exact version uncollected",
+  "scores": [
+    {
+      "id": "title_map_menus",
+      "score": 2,
+      "confidence": "high",
+      "reason": "Strong title illustration; map and flat card panels lose the material identity. Card CTA requires scrolling at 1280\u00d7720. Result was not recaptured."
+    },
+    {
+      "id": "biome_path",
+      "score": 1,
+      "confidence": "high",
+      "reason": "Diamond slab, exposed grid, square beige path elbows, repeating pine border and low-poly props against painted sprites."
+    },
+    {
+      "id": "framing_readability",
+      "score": 2,
+      "confidence": "high",
+      "reason": "Battle occupies a tilted board inside a restricted stage; sidebar and tray consume substantial area. Detailed characters remain small. 844\u00d7390 not reassessed this pass."
+    },
+    {
+      "id": "character_animation",
+      "score": 1,
+      "confidence": "high",
+      "reason": "Source confirms one atlas image per role, sine vertical bob and hit/slow tint; no articulated gait or pose sequence. Smoothness unassessed."
+    },
+    {
+      "id": "tower_animation",
+      "score": 1,
+      "confidence": "high",
+      "reason": "Source confirms one sprite with a 2.5% height pulse on cooldown, without mechanical aim/windup/recovery. Smoothness unassessed."
+    },
+    {
+      "id": "ui_identity",
+      "score": 2,
+      "confidence": "high",
+      "reason": "Functional hierarchy and selected/disabled states, but rectangular translucent panels, generic glyphs, thin serif headings and decorative copy read as a website."
+    },
+    {
+      "id": "combat_feel",
+      "score": 2,
+      "confidence": "medium",
+      "reason": "Normal UI play shows wave pacing, enemy health, range and economy changes. Brief sample only; projectile/impact rhythm, slow readability and audio unassessed."
+    },
+    {
+      "id": "content_pipeline",
+      "score": 1,
+      "confidence": "medium",
+      "reason": "Current catalog chooses a single sprite index per role and renderer owns animation behavior. Existing assets/provenance are useful, but reusable animated import and second-example proof are absent in this baseline."
+    },
+    {
+      "id": "demo_coherence",
+      "score": 1,
+      "confidence": "high",
+      "reason": "Menu/battle material and framing mismatch remains visible. No actual demo recording produced; screenshots cannot satisfy the completion gate."
+    }
+  ],
+  "temporal_quality": "unassessed; playback and sampled frames only, not continuous recording",
+  "audio": "unassessed"
+}

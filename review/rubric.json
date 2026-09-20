@@ -1,0 +1,17 @@
+{
+  "version": 1,
+  "scale": {"0":"Missing or broken","1":"Obvious prototype","2":"Functional but visibly inconsistent or inert","3":"Cohesive but with distracting weaknesses","4":"Convincing game-demo quality at normal playing size","5":"Distinctive, polished, consistently expressive"},
+  "dimensions": [
+    {"id":"title_map_menus","weight":1,"minimum":4,"evidence":"Title, map, card selection and result captures; real navigation"},
+    {"id":"biome_path","weight":2,"minimum":4,"evidence":"Continuous scenery with framed foreground/background and cohesive rounded path in two encounter layouts; no visible grid in normal play"},
+    {"id":"framing_readability","weight":2,"minimum":4,"evidence":"Close horizontal stage; silhouettes and path readable at1280x720 and844x390 landscape"},
+    {"id":"character_animation","weight":2,"minimum":4,"evidence":"Recorded walk/action/impact transitions at normal playback speed, grounded feet and stable identity; all enemy roles implemented"},
+    {"id":"tower_animation","weight":2,"minimum":4,"evidence":"Readable aim/windup/fire/recovery, mechanically appropriate to each attack; recorded live combat"},
+    {"id":"ui_identity","weight":2,"minimum":4,"evidence":"Game-specific materials, shapes and icon hierarchy; useful text only; selected/disabled/pause/result states"},
+    {"id":"combat_feel","weight":2,"minimum":4,"evidence":"Live encounter, readable impacts/projectiles/slows and pacing; maintain meaningful economy"},
+    {"id":"content_pipeline","weight":2,"minimum":4,"evidence":"Reusable descriptions/templates/import validation; demonstrate a second distinct character/tower/biome without rewriting runtime"},
+    {"id":"demo_coherence","weight":2,"minimum":4,"evidence":"Recorded sequence of actual game footage spanning menus and busy combat; no placeholder shots or staging that hides normal-play problems"}
+  ],
+  "completion":"Every minimum met with linked evidence and independent review, no critical usability or animation defect, regression checks pass, and an actual demo footage artifact exists. A composite never overrides a failed dimension.",
+  "audio":"Assess when listening is available; otherwise explicitly unassessed. Do not infer audio quality from screenshots or decoding."
+}

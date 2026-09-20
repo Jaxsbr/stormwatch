@@ -1,0 +1,430 @@
+{
+  "scenario": "Artificial stress; raw requestAnimationFrame intervals, foreground tab, no CPU throttling",
+  "results": [
+    {
+      "run": 1,
+      "seed": 42,
+      "sampleCount": 10742,
+      "medianFps": 59.880239520968516,
+      "p95Ms": 17.5,
+      "worstMs": 83.69999999999709,
+      "framesOver100Ms": 0,
+      "renderCpuP95Ms": 9.299999952316284,
+      "frameWorkCpuP95Ms": 10,
+      "phaseCpuP95Ms": {
+        "figures": 3.5,
+        "effects": 0.5,
+        "submission": 6
+      },
+      "longFrames": [],
+      "attribution": {
+        "started": {
+          "timestamp": 1789881687460.2,
+          "visibility": "visible",
+          "focused": true
+        },
+        "ended": {
+          "timestamp": 1789881877516.7,
+          "visibility": "visible",
+          "focused": true
+        },
+        "note": "Diagnostic only. Frame records retain gaps/work over 50 ms; worker records retain self intervals or delivery delays over 75 ms. All raw RAF samples remain in the usual metrics. Wall elapsed time is not CPU execution time. Worker pauses suggest shared scheduling pressure but do not identify its cause. GC is observed only if supported. Final in-flight worker messages may not be delivered before stop.",
+        "observedTypes": [
+          "longtask"
+        ],
+        "workerSamples": 3782,
+        "workerGaps": [],
+        "frames": [
+          {
+            "timestamp": 1789881687466.7998,
+            "rafGapMs": -3.600000023841858,
+            "entryGapMs": 0,
+            "callbackWorkMs": 736.9000000953674
+          },
+          {
+            "timestamp": 1789881688217.2998,
+            "rafGapMs": 733.5999999999985,
+            "entryGapMs": 13.599999904632568,
+            "callbackWorkMs": 63.5
+          },
+          {
+            "timestamp": 1789881688360.7998,
+            "rafGapMs": 83.30000000000291,
+            "entryGapMs": 80,
+            "callbackWorkMs": 89.20000004768372
+          },
+          {
+            "timestamp": 1789881688451.7,
+            "rafGapMs": 166.79999999999563,
+            "entryGapMs": 1.7000000476837158,
+            "callbackWorkMs": 14.5
+          },
+          {
+            "timestamp": 1789881688929.0999,
+            "rafGapMs": 17.30000000000291,
+            "entryGapMs": 12.5,
+            "callbackWorkMs": 56.60000002384186
+          },
+          {
+            "timestamp": 1789881697762.5,
+            "rafGapMs": 16.5,
+            "entryGapMs": 8.100000023841858,
+            "callbackWorkMs": 90
+          },
+          {
+            "timestamp": 1789881697854.7,
+            "rafGapMs": 83.69999999999709,
+            "entryGapMs": 2.200000047683716,
+            "callbackWorkMs": 7.299999952316284
+          },
+          {
+            "timestamp": 1789881725559.5,
+            "rafGapMs": 17.60000000000582,
+            "entryGapMs": 10.200000047683716,
+            "callbackWorkMs": 60.39999997615814
+          },
+          {
+            "timestamp": 1789881735107.0999,
+            "rafGapMs": 66.69999999999709,
+            "entryGapMs": 4.600000023841858,
+            "callbackWorkMs": 18.199999928474426
+          },
+          {
+            "timestamp": 1789881785754.5,
+            "rafGapMs": 50.10000000000582,
+            "entryGapMs": 4.399999976158142,
+            "callbackWorkMs": 7.799999952316284
+          },
+          {
+            "timestamp": 1789881795115.4,
+            "rafGapMs": 34.10000000000582,
+            "entryGapMs": 2,
+            "callbackWorkMs": 70
+          },
+          {
+            "timestamp": 1789881795192.0999,
+            "rafGapMs": 65.70000000001164,
+            "entryGapMs": 6.700000047683716,
+            "callbackWorkMs": 7.5
+          },
+          {
+            "timestamp": 1789881829037.9,
+            "rafGapMs": 16.60000000000582,
+            "entryGapMs": 5.399999976158142,
+            "callbackWorkMs": 72.30000007152557
+          },
+          {
+            "timestamp": 1789881829117.5,
+            "rafGapMs": 83,
+            "entryGapMs": 7.299999952316284,
+            "callbackWorkMs": 15.299999952316284
+          },
+          {
+            "timestamp": 1789881855030.7998,
+            "rafGapMs": 16.699999999982538,
+            "entryGapMs": 21.899999976158142,
+            "callbackWorkMs": 57
+          },
+          {
+            "timestamp": 1789881855103.5,
+            "rafGapMs": 66.30000000001746,
+            "entryGapMs": 15.700000047683716,
+            "callbackWorkMs": 64.60000002384186
+          },
+          {
+            "timestamp": 1789881855176.7998,
+            "rafGapMs": 83.69999999998254,
+            "entryGapMs": 8.699999928474426,
+            "callbackWorkMs": 17.40000009536743
+          }
+        ],
+        "tasks": [
+          {
+            "name": "self",
+            "entryType": "longtask",
+            "startTime": 62154.700000047684,
+            "duration": 744,
+            "navigationId": 8603,
+            "attribution": [
+              {
+                "name": "unknown",
+                "entryType": "taskattribution",
+                "startTime": 0,
+                "duration": 0,
+                "navigationId": 8603,
+                "containerType": "window",
+                "containerSrc": "",
+                "containerId": "",
+                "containerName": ""
+              }
+            ],
+            "timestamp": 1789881687462.0999
+          },
+          {
+            "name": "self",
+            "entryType": "longtask",
+            "startTime": 62909.5,
+            "duration": 65,
+            "navigationId": 8603,
+            "attribution": [
+              {
+                "name": "unknown",
+                "entryType": "taskattribution",
+                "startTime": 0,
+                "duration": 0,
+                "navigationId": 8603,
+                "containerType": "window",
+                "containerSrc": "",
+                "containerId": "",
+                "containerName": ""
+              }
+            ],
+            "timestamp": 1789881688216.9
+          },
+          {
+            "name": "self",
+            "entryType": "longtask",
+            "startTime": 63053.10000002384,
+            "duration": 90,
+            "navigationId": 8603,
+            "attribution": [
+              {
+                "name": "unknown",
+                "entryType": "taskattribution",
+                "startTime": 0,
+                "duration": 0,
+                "navigationId": 8603,
+                "containerType": "window",
+                "containerSrc": "",
+                "containerId": "",
+                "containerName": ""
+              }
+            ],
+            "timestamp": 1789881688360.5
+          },
+          {
+            "name": "self",
+            "entryType": "longtask",
+            "startTime": 63620.60000002384,
+            "duration": 61,
+            "navigationId": 8603,
+            "attribution": [
+              {
+                "name": "unknown",
+                "entryType": "taskattribution",
+                "startTime": 0,
+                "duration": 0,
+                "navigationId": 8603,
+                "containerType": "window",
+                "containerSrc": "",
+                "containerId": "",
+                "containerName": ""
+              }
+            ],
+            "timestamp": 1789881688928
+          },
+          {
+            "name": "self",
+            "entryType": "longtask",
+            "startTime": 69636.5,
+            "duration": 55,
+            "navigationId": 8603,
+            "attribution": [
+              {
+                "name": "unknown",
+                "entryType": "taskattribution",
+                "startTime": 0,
+                "duration": 0,
+                "navigationId": 8603,
+                "containerType": "window",
+                "containerSrc": "",
+                "containerId": "",
+                "containerName": ""
+              }
+            ],
+            "timestamp": 1789881694943.9
+          },
+          {
+            "name": "self",
+            "entryType": "longtask",
+            "startTime": 72454,
+            "duration": 92,
+            "navigationId": 8603,
+            "attribution": [
+              {
+                "name": "unknown",
+                "entryType": "taskattribution",
+                "startTime": 0,
+                "duration": 0,
+                "navigationId": 8603,
+                "containerType": "window",
+                "containerSrc": "",
+                "containerId": "",
+                "containerName": ""
+              }
+            ],
+            "timestamp": 1789881697761.4
+          },
+          {
+            "name": "self",
+            "entryType": "longtask",
+            "startTime": 100251,
+            "duration": 63,
+            "navigationId": 8603,
+            "attribution": [
+              {
+                "name": "unknown",
+                "entryType": "taskattribution",
+                "startTime": 0,
+                "duration": 0,
+                "navigationId": 8603,
+                "containerType": "window",
+                "containerSrc": "",
+                "containerId": "",
+                "containerName": ""
+              }
+            ],
+            "timestamp": 1789881725558.4
+          },
+          {
+            "name": "self",
+            "entryType": "longtask",
+            "startTime": 169807.80000007153,
+            "duration": 73,
+            "navigationId": 8603,
+            "attribution": [
+              {
+                "name": "unknown",
+                "entryType": "taskattribution",
+                "startTime": 0,
+                "duration": 0,
+                "navigationId": 8603,
+                "containerType": "window",
+                "containerSrc": "",
+                "containerId": "",
+                "containerName": ""
+              }
+            ],
+            "timestamp": 1789881795115.2
+          },
+          {
+            "name": "self",
+            "entryType": "longtask",
+            "startTime": 202190.10000002384,
+            "duration": 50,
+            "navigationId": 8603,
+            "attribution": [
+              {
+                "name": "unknown",
+                "entryType": "taskattribution",
+                "startTime": 0,
+                "duration": 0,
+                "navigationId": 8603,
+                "containerType": "window",
+                "containerSrc": "",
+                "containerId": "",
+                "containerName": ""
+              }
+            ],
+            "timestamp": 1789881827497.5
+          },
+          {
+            "name": "self",
+            "entryType": "longtask",
+            "startTime": 203730.39999997616,
+            "duration": 76,
+            "navigationId": 8603,
+            "attribution": [
+              {
+                "name": "unknown",
+                "entryType": "taskattribution",
+                "startTime": 0,
+                "duration": 0,
+                "navigationId": 8603,
+                "containerType": "window",
+                "containerSrc": "",
+                "containerId": "",
+                "containerName": ""
+              }
+            ],
+            "timestamp": 1789881829037.7998
+          },
+          {
+            "name": "self",
+            "entryType": "longtask",
+            "startTime": 229723.20000004768,
+            "duration": 61,
+            "navigationId": 8603,
+            "attribution": [
+              {
+                "name": "unknown",
+                "entryType": "taskattribution",
+                "startTime": 0,
+                "duration": 0,
+                "navigationId": 8603,
+                "containerType": "window",
+                "containerSrc": "",
+                "containerId": "",
+                "containerName": ""
+              }
+            ],
+            "timestamp": 1789881855030.5999
+          },
+          {
+            "name": "self",
+            "entryType": "longtask",
+            "startTime": 229796,
+            "duration": 71,
+            "navigationId": 8603,
+            "attribution": [
+              {
+                "name": "unknown",
+                "entryType": "taskattribution",
+                "startTime": 0,
+                "duration": 0,
+                "navigationId": 8603,
+                "containerType": "window",
+                "containerSrc": "",
+                "containerId": "",
+                "containerName": ""
+              }
+            ],
+            "timestamp": 1789881855103.4
+          }
+        ]
+      },
+      "cpuTimingNote": "Synchronous JavaScript work only; does not measure asynchronous GPU completion. Long intervals include preceding frame work and browser scheduling.",
+      "peakEnemies": 60,
+      "defenses": 12,
+      "lodges": 3,
+      "peakCombinedShotsEffects": 150,
+      "rescueUses": 13,
+      "transitions": [
+        {
+          "time": 58.505799999977455,
+          "phase": "won",
+          "payout": true
+        },
+        {
+          "time": 118.51749999998162,
+          "phase": "won",
+          "payout": true
+        },
+        {
+          "time": 178.51189999998613,
+          "phase": "won",
+          "payout": true
+        }
+      ],
+      "invalidatedByHiddenTab": false,
+      "viewport": [
+        1280,
+        720
+      ],
+      "pixelRatio": 1,
+      "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/153.0.0.0 Safari/537.36",
+      "renderer": "WebGL 2.0 (OpenGL ES 3.0 Chromium)",
+      "timestamp": "2026-09-20T05:24:37.520Z"
+    }
+  ]
+}

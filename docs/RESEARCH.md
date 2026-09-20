@@ -1,5 +1,7 @@
 # Reference research and product decisions
 
+> Presentation update: the owner subsequently approved the horizontal visual reboot and animal defenders. [ADR 004](decisions/004-visual-course-correction.md) and [ADR 005](decisions/005-animal-defenders.md) supersede the original isometric/single-view presentation below. Gameplay and economy commitments remain in force. Current verification is tracked in the [reboot audit](../review/2026-09-20-reboot/current-rubric-audit.md).
+
 Research was performed before implementation on20 September 2026. Direct observations, source claims and design interpretations are separated below. Reference screenshots remain in the local research folder; no reference-game artwork was incorporated into Stormwatch.
 
 | Reference | Directly inspected | Lessons retained |

@@ -1,10 +1,12 @@
 # Asset production and review
 
+The active animal/biome pipeline is documented in [ART-PIPELINE](ART-PIPELINE.md). The original atlas recipe below is retained as foundation history; it no longer describes the primary gameplay figures. Current delivery bytes and hashes are in [asset-bytes.json](evidence/asset-bytes.json).
+
 Runtime is self-contained. New art may use native image generation; optional pixel3d or another approved model generator is only justified when a model improves the fixed-camera scene. No generated 3D model was needed for this MVP. Do not buy new generation services without owner approval. Keep private access configuration outside this repository.
 
 ## Style specification
 
-Dark but child-friendly woodland frontier: weathered timber, slate iron, moss green, deep teal storm light and warm amber lanterns. Sturdy expressive animal guardians and armored animal raiders. Courage and shelter, no occult symbols, magic rituals, gore, skulls or horror. Painterly textured storybook illustration, large silhouettes, restrained small detail. Fixed elevated orthographic view with consistent upper-left light. Avoid glossy plastic or mismatched photographic assets.
+Dark but child-friendly woodland frontier: weathered timber, slate iron, moss green, deep teal storm light and warm amber lanterns. Sturdy expressive animal guardians and armored animal raiders. Courage and shelter, no occult symbols, magic rituals, gore, skulls or horror. Painterly textured storybook illustration, large silhouettes, restrained small detail. Fixed orthographic battlefield with upright, slightly elevated character views matching the approved enemy family and consistent upper-left light. Avoid glossy plastic or mismatched photographic assets.
 
 The title background reserves the left 45% for text, with mouse/squirrel guardians and a lantern settlement on the right. The expedition map is an elevated woodland landscape without labels, with an outpost and a stone crossing. UI labels stay in HTML, never baked into generated images.
 
@@ -27,6 +29,6 @@ The atlas has real alpha (859,895 completely transparent source pixels). Faint a
 
 The 1254×1254 forest prop has real alpha and intact roots/tips, but its perspective is slightly shallower than towers. It remains background scenery. The 1254×1254 ground texture has visually similar opposite edges but is not mathematically periodic; do not claim guaranteed seamless tiling. The renderer samples it across four-cell spans.
 
-Transparent art is encoded losslessly; opaque backgrounds use WebP quality 88. Runtime art totals about 3.02 MB. Music is unchanged source audio. See the manifest for exact bytes and licenses for attribution.
+Current full production directory: 17,285,544 bytes. See the current byte inventory; this is not an initial-transfer measurement.
 
 Audio review has two parts: technical decode/playback lifecycle and actual listening for tone, clipping, loop seam, cue clarity and fatigue. A successful MP3 decode or volume UI test cannot replace listening.

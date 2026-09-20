@@ -1,0 +1,429 @@
+{
+  "scenario": "Artificial stress; raw requestAnimationFrame intervals, foreground tab, no CPU throttling",
+  "results": [
+    {
+      "run": 1,
+      "seed": 42,
+      "sampleCount": 7542,
+      "medianFps": 40.98360655733794,
+      "p95Ms": 41.79999999998836,
+      "worstMs": 365.79999999998836,
+      "framesOver100Ms": 22,
+      "renderCpuP95Ms": 36.60000002384186,
+      "frameWorkCpuP95Ms": 37.60000002384186,
+      "phaseCpuP95Ms": {
+        "figures": 5.899999976158142,
+        "effects": 2.299999952316284,
+        "submission": 30.700000047683716
+      },
+      "longFrames": [
+        {
+          "intervalMs": 191.29999999999563,
+          "elapsed": 17.504199999904618,
+          "previousWork": {
+            "totalMs": 189.09999990463257,
+            "renderMs": 187.70000004768372,
+            "rebuiltScene": false,
+            "phase": "wave",
+            "renderer": {
+              "figuresMs": 11.200000047683716,
+              "effectsMs": 1.600000023841858,
+              "submissionMs": 174.89999997615814,
+              "createdRigs": 2,
+              "drawCalls": 746
+            }
+          }
+        },
+        {
+          "intervalMs": 134.59999999999854,
+          "elapsed": 19.23759999990462,
+          "previousWork": {
+            "totalMs": 115.39999997615814,
+            "renderMs": 114.60000002384186,
+            "rebuiltScene": false,
+            "phase": "wave",
+            "renderer": {
+              "figuresMs": 3.799999952316284,
+              "effectsMs": 1.600000023841858,
+              "submissionMs": 109.10000002384186,
+              "createdRigs": 2,
+              "drawCalls": 726
+            }
+          }
+        },
+        {
+          "intervalMs": 116.90000000000146,
+          "elapsed": 20.462499999904622,
+          "previousWork": {
+            "totalMs": 97.10000002384186,
+            "renderMs": 96.5,
+            "rebuiltScene": false,
+            "phase": "wave",
+            "renderer": {
+              "figuresMs": 6.199999928474426,
+              "effectsMs": 8.899999976158142,
+              "submissionMs": 81.40000009536743,
+              "createdRigs": 2,
+              "drawCalls": 730
+            }
+          }
+        },
+        {
+          "intervalMs": 100.5,
+          "elapsed": 22.087999999904614,
+          "previousWork": {
+            "totalMs": 98.30000007152557,
+            "renderMs": 97.5,
+            "rebuiltScene": false,
+            "phase": "wave",
+            "renderer": {
+              "figuresMs": 3.6999999284744263,
+              "effectsMs": 1.600000023841858,
+              "submissionMs": 92.20000004768372,
+              "createdRigs": 0,
+              "drawCalls": 744
+            }
+          }
+        },
+        {
+          "intervalMs": 116.19999999999709,
+          "elapsed": 22.20419999990461,
+          "previousWork": {
+            "totalMs": 106.60000002384186,
+            "renderMs": 106.20000004768372,
+            "rebuiltScene": false,
+            "phase": "wave",
+            "renderer": {
+              "figuresMs": 9.100000023841858,
+              "effectsMs": 3.100000023841858,
+              "submissionMs": 94,
+              "createdRigs": 1,
+              "drawCalls": 744
+            }
+          }
+        },
+        {
+          "intervalMs": 101.5,
+          "elapsed": 22.387899999904615,
+          "previousWork": {
+            "totalMs": 90.60000002384186,
+            "renderMs": 90.10000002384186,
+            "rebuiltScene": false,
+            "phase": "wave",
+            "renderer": {
+              "figuresMs": 5.200000047683716,
+              "effectsMs": 7.700000047683716,
+              "submissionMs": 77.09999990463257,
+              "createdRigs": 2,
+              "drawCalls": 743
+            }
+          }
+        },
+        {
+          "intervalMs": 108.69999999999709,
+          "elapsed": 23.19629999990461,
+          "previousWork": {
+            "totalMs": 98.10000002384186,
+            "renderMs": 97.70000004768372,
+            "rebuiltScene": false,
+            "phase": "wave",
+            "renderer": {
+              "figuresMs": 12.200000047683716,
+              "effectsMs": 1.600000023841858,
+              "submissionMs": 83.89999997615814,
+              "createdRigs": 2,
+              "drawCalls": 734
+            }
+          }
+        },
+        {
+          "intervalMs": 151,
+          "elapsed": 27.91279999990461,
+          "previousWork": {
+            "totalMs": 132.60000007152556,
+            "renderMs": 132.09999990463257,
+            "rebuiltScene": false,
+            "phase": "wave",
+            "renderer": {
+              "figuresMs": 24.09999990463257,
+              "effectsMs": 2.9000000953674316,
+              "submissionMs": 105.09999990463257,
+              "createdRigs": 0,
+              "drawCalls": 744
+            }
+          }
+        },
+        {
+          "intervalMs": 109.19999999999709,
+          "elapsed": 30.058399999904612,
+          "previousWork": {
+            "totalMs": 105.40000009536743,
+            "renderMs": 103.59999990463257,
+            "rebuiltScene": false,
+            "phase": "wave",
+            "renderer": {
+              "figuresMs": 11.699999928474426,
+              "effectsMs": 3.899999976158142,
+              "submissionMs": 88,
+              "createdRigs": 3,
+              "drawCalls": 735
+            }
+          }
+        },
+        {
+          "intervalMs": 101.29999999998836,
+          "elapsed": 32.52499999990462,
+          "previousWork": {
+            "totalMs": 91.30000007152557,
+            "renderMs": 90.60000002384186,
+            "rebuiltScene": false,
+            "phase": "wave",
+            "renderer": {
+              "figuresMs": 8,
+              "effectsMs": 1,
+              "submissionMs": 81.60000002384186,
+              "createdRigs": 1,
+              "drawCalls": 734
+            }
+          }
+        },
+        {
+          "intervalMs": 116.5,
+          "elapsed": 38.0122999999046,
+          "previousWork": {
+            "totalMs": 109.79999995231628,
+            "renderMs": 100.20000004768372,
+            "rebuiltScene": false,
+            "phase": "wave",
+            "renderer": {
+              "figuresMs": 8.200000047683716,
+              "effectsMs": 2.399999976158142,
+              "submissionMs": 89.60000002384186,
+              "createdRigs": 0,
+              "drawCalls": 742
+            }
+          }
+        },
+        {
+          "intervalMs": 133.39999999999418,
+          "elapsed": 60.137599999905035,
+          "previousWork": {
+            "totalMs": 134.29999995231628,
+            "renderMs": 129.60000002384186,
+            "rebuiltScene": true,
+            "phase": "wave",
+            "renderer": {
+              "figuresMs": 18.799999952316284,
+              "effectsMs": 7.100000023841858,
+              "submissionMs": 103.70000004768372,
+              "createdRigs": 75,
+              "drawCalls": 647
+            }
+          }
+        },
+        {
+          "intervalMs": 117.10000000000582,
+          "elapsed": 79.3208999999053,
+          "previousWork": {
+            "totalMs": 102.89999997615814,
+            "renderMs": 102.59999990463257,
+            "rebuiltScene": false,
+            "phase": "wave",
+            "renderer": {
+              "figuresMs": 29.799999952316284,
+              "effectsMs": 10.799999952316284,
+              "submissionMs": 61.90000009536743,
+              "createdRigs": 0,
+              "drawCalls": 734
+            }
+          }
+        },
+        {
+          "intervalMs": 133.29999999998836,
+          "elapsed": 120.13759999990535,
+          "previousWork": {
+            "totalMs": 132.30000007152557,
+            "renderMs": 127.89999997615814,
+            "rebuiltScene": true,
+            "phase": "wave",
+            "renderer": {
+              "figuresMs": 18.699999928474426,
+              "effectsMs": 6.399999976158142,
+              "submissionMs": 102.80000007152557,
+              "createdRigs": 75,
+              "drawCalls": 647
+            }
+          }
+        },
+        {
+          "intervalMs": 108.29999999998836,
+          "elapsed": 120.24589999990533,
+          "previousWork": {
+            "totalMs": 110.70000004768372,
+            "renderMs": 110.20000004768372,
+            "rebuiltScene": false,
+            "phase": "wave",
+            "renderer": {
+              "figuresMs": 4.399999976158142,
+              "effectsMs": 1.2000000476837158,
+              "submissionMs": 104.60000002384186,
+              "createdRigs": 0,
+              "drawCalls": 636
+            }
+          }
+        },
+        {
+          "intervalMs": 365.79999999998836,
+          "elapsed": 138.09539999990602,
+          "previousWork": {
+            "totalMs": 366.90000009536743,
+            "renderMs": 366.8000000715256,
+            "rebuiltScene": false,
+            "phase": "wave",
+            "renderer": {
+              "figuresMs": 2.5,
+              "effectsMs": 0,
+              "submissionMs": 364.3000000715256,
+              "createdRigs": 0,
+              "drawCalls": 746
+            }
+          }
+        },
+        {
+          "intervalMs": 100.20000000001164,
+          "elapsed": 139.86279999990623,
+          "previousWork": {
+            "totalMs": 93.5,
+            "renderMs": 93.20000004768372,
+            "rebuiltScene": false,
+            "phase": "wave",
+            "renderer": {
+              "figuresMs": 1.899999976158142,
+              "effectsMs": 2,
+              "submissionMs": 89.30000007152557,
+              "createdRigs": 0,
+              "drawCalls": 735
+            }
+          }
+        },
+        {
+          "intervalMs": 109.39999999999418,
+          "elapsed": 150.42039999990698,
+          "previousWork": {
+            "totalMs": 104.60000002384186,
+            "renderMs": 104.29999995231628,
+            "rebuiltScene": false,
+            "phase": "wave",
+            "renderer": {
+              "figuresMs": 5.199999928474426,
+              "effectsMs": 0.8000000715255737,
+              "submissionMs": 98.29999995231628,
+              "createdRigs": 1,
+              "drawCalls": 735
+            }
+          }
+        },
+        {
+          "intervalMs": 325,
+          "elapsed": 154.87919999990697,
+          "previousWork": {
+            "totalMs": 329.09999990463257,
+            "renderMs": 328.7000000476837,
+            "rebuiltScene": false,
+            "phase": "wave",
+            "renderer": {
+              "figuresMs": 4.800000071525574,
+              "effectsMs": 3,
+              "submissionMs": 320.89999997615814,
+              "createdRigs": 0,
+              "drawCalls": 736
+            }
+          }
+        },
+        {
+          "intervalMs": 108.5,
+          "elapsed": 174.28339999990789,
+          "previousWork": {
+            "totalMs": 101.5,
+            "renderMs": 101.29999995231628,
+            "rebuiltScene": false,
+            "phase": "wave",
+            "renderer": {
+              "figuresMs": 2,
+              "effectsMs": 10.100000023841858,
+              "submissionMs": 89.19999992847443,
+              "createdRigs": 0,
+              "drawCalls": 750
+            }
+          }
+        },
+        {
+          "intervalMs": 133.39999999999418,
+          "elapsed": 180.13349999990814,
+          "previousWork": {
+            "totalMs": 136.5,
+            "renderMs": 133.10000002384186,
+            "rebuiltScene": true,
+            "phase": "wave",
+            "renderer": {
+              "figuresMs": 14.5,
+              "effectsMs": 10,
+              "submissionMs": 108.5,
+              "createdRigs": 75,
+              "drawCalls": 647
+            }
+          }
+        },
+        {
+          "intervalMs": 174.20000000001164,
+          "elapsed": 180.35759999990816,
+          "previousWork": {
+            "totalMs": 95.89999997615814,
+            "renderMs": 95.79999995231628,
+            "rebuiltScene": false,
+            "phase": "wave",
+            "renderer": {
+              "figuresMs": 1.2999999523162842,
+              "effectsMs": 0.10000002384185791,
+              "submissionMs": 94.39999997615814,
+              "createdRigs": 0,
+              "drawCalls": 636
+            }
+          }
+        }
+      ],
+      "cpuTimingNote": "Synchronous JavaScript work only; does not measure asynchronous GPU completion. Long intervals include preceding frame work and browser scheduling.",
+      "peakEnemies": 60,
+      "defenses": 12,
+      "peakCombinedShotsEffects": 150,
+      "rescueUses": 13,
+      "transitions": [
+        {
+          "time": 58.50319999990499,
+          "phase": "won",
+          "payout": true
+        },
+        {
+          "time": 118.51099999990541,
+          "phase": "won",
+          "payout": true
+        },
+        {
+          "time": 178.53279999990818,
+          "phase": "won",
+          "payout": true
+        }
+      ],
+      "invalidatedByHiddenTab": false,
+      "viewport": [
+        1280,
+        720
+      ],
+      "pixelRatio": 1,
+      "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/153.0.0.0 Safari/537.36",
+      "renderer": "WebGL 2.0 (OpenGL ES 3.0 Chromium)",
+      "timestamp": "2026-09-20T03:50:40.843Z",
+      "lodges": 3
+    }
+  ]
+}

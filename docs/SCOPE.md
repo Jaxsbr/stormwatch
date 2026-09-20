@@ -1,5 +1,7 @@
 # Stormwatch — approved MVP and acceptance contract
 
+> Presentation update: the owner subsequently approved the horizontal visual reboot and animal defenders. [ADR 004](decisions/004-visual-course-correction.md) and [ADR 005](decisions/005-animal-defenders.md) supersede the original isometric/single-view presentation below. Gameplay and economy commitments remain in force. Current verification is tracked in the [reboot audit](../review/2026-09-20-reboot/current-rubric-audit.md).
+
 Status: confirmed by the owner on 20 September 2026; implementation authorized. Approved title and personal repository name: Stormwatch / `Jaxsbr/stormwatch`. This document records the confirmed product decisions; architectural records live in `decisions/`.
 
 ## Product promise

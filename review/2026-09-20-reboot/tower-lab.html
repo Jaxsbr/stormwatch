@@ -1,0 +1,12 @@
+<!doctype html><html><head><meta charset="utf-8"><title>Stormwatch tower assembly review</title><style>body{margin:0;background:#19251e;color:#eee2c1;font:14px system-ui}header{height:60px;display:flex;align-items:center;gap:15px;padding:0 20px}button{padding:10px;min-height:40px}#field{height:calc(100vh - 60px)}#field canvas{display:block;width:100%;height:100%}#recording{max-width:180px}video{position:fixed;right:12px;bottom:12px;width:320px;background:#111}a{color:#efcc76}</style></head><body><header><strong>Tower assembly lab — staged, 5× enemy health</strong><button id="start">Start wave</button><button id="pause">Pause</button><button id="record">Record 10 seconds</button><span id="recording"></span><a id="download" hidden>Download recording</a><output id="status"></output></header><div id="field"></div><script type="module">
+import { Battlefield } from '/src/render/battlefield.ts';
+import { Game } from '/src/sim/game.ts';
+import { lanternPass } from '/src/content/lantern-pass.ts';
+const game=new Game({...lanternPass,healthScale:5},'reach');game.state.coins=500;
+for(const [kind,x,z] of [['bolt',3,3],['bolt',7,3],['stone',4,5],['net',8,5],['trade',10,1]])game.place(kind,{x,z});
+const field=new Battlefield(document.querySelector('#field'));field.load(lanternPass);
+let last=performance.now(),elapsed=0;
+function draw(now){const dt=Math.min((now-last)/1000,.05);last=now;game.advance(dt);field.update(game,null,dt);document.querySelector("#status").textContent=`${game.state.phase} ${game.state.clock.toFixed(1)}s | shots ${game.state.towers.map(t=>t.shots).join("/")} | rigs ${field.diagnostics().rigs.length}`;requestAnimationFrame(draw)}requestAnimationFrame(draw);
+document.querySelector('#start').onclick=()=>game.startWave();document.querySelector('#pause').onclick=()=>game.pause();
+document.querySelector('#record').onclick=()=>{const stream=field.renderer.domElement.captureStream(30),parts=[];const mime=['video/webm;codecs=vp9','video/webm'].find(t=>MediaRecorder.isTypeSupported(t));const r=new MediaRecorder(stream,{mimeType:mime});r.ondataavailable=e=>{if(e.data.size)parts.push(e.data)};r.onstop=()=>{const url=URL.createObjectURL(new Blob(parts,{type:mime}));const a=document.querySelector('#download');a.href=url;a.download='tower-assembly-10s.webm';a.hidden=false;document.querySelector('#recording').textContent='Captured staged scene';stream.getTracks().forEach(t=>t.stop());};r.start();document.querySelector('#recording').textContent='Recording…';setTimeout(()=>r.stop(),10000);};
+</script></body></html>

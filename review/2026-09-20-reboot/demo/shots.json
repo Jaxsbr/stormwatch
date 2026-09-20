@@ -1,0 +1,51 @@
+{
+  "output": "stormwatch-demo-review.mp4",
+  "notes": "Actual-game montage, silent. Screenshots are held still. Canvas footage excludes HTML HUD and plays at captured 1x speed. Result crop removes review toolbar/build tray while retaining entire result panel. Both encounter environments appear; this is not an uninterrupted playthrough. Captures precede the later top-row camera headroom correction; no top-row defender is cropped out to conceal that defect.",
+  "shots": [
+    {
+      "source": "review/2026-09-20-reboot/after/ui-rescore-desktop-title.png",
+      "still": true,
+      "seconds": 3
+    },
+    {
+      "source": "review/2026-09-20-reboot/after/ui-rescore-desktop-map.png",
+      "still": true,
+      "seconds": 3
+    },
+    {
+      "source": "review/2026-09-20-reboot/after/selection-chevron-desktop-skunk.png",
+      "still": true,
+      "seconds": 3
+    },
+    {
+      "source": "review/2026-09-20-reboot/after/animal-normal-wave-one-20s.webm",
+      "seconds": 5
+    },
+    {
+      "source": "review/recordings/gameplay-1789874505143-6dff8522.webm",
+      "start": 2,
+      "seconds": 8
+    },
+    {
+      "source": "review/recordings/gameplay-1789874580344-e716dd27.webm",
+      "start": 0,
+      "seconds": 10
+    },
+    {
+      "source": "review/recordings/gameplay-1789874673050-c912f669.webm",
+      "start": 0,
+      "seconds": 14
+    },
+    {
+      "source": "review/2026-09-20-reboot/after/lantern-normal-victory.png",
+      "still": true,
+      "seconds": 4,
+      "crop": [
+        1280,
+        620,
+        0,
+        0
+      ]
+    }
+  ]
+}

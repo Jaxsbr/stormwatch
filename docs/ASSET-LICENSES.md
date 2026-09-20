@@ -19,6 +19,14 @@ Selection is based on the author-provided orchestral adventure/violin/drum descr
 
 The title scene, entity atlas, expedition map, ground texture and forest prop were created for Stormwatch with OpenAI native image generation on 20 September 2026. No third-party reference images were supplied. Runtime files are the five WebP images in `public/art/`. Their dimensions, encoding and SHA-256 hashes are in `public/art/manifest.json`; sprite bounds are in `atlas-layout.json`. Full-resolution PNGs are retained locally, not required to build. See [production guidance](ASSETS.md) for review and prompt specifications. These are generated project assets, not third-party CC0 works; the CC0 dedication above applies only to TAD's music.
 
+## Generated reboot assets
+
+The native generated project illustrations under `public/art/v2/` extend the original set: rat/weasel/boar/badger directional parts, squirrel/skunk/turtle/donkey defender parts and portraits, woodland and riverbank scenery, cobblestone path material, placement tile and advantage-card icons. These are generated Stormwatch assets, not third-party CC0 works. The music license above does not describe their provenance.
+
+Each generated collection retains its exact prompt in its delivery directory. Rig descriptors and manifests retain native source hashes, crop rectangles, delivery hashes and encoding information; ignored full-resolution sources are retained locally and are not required to run or build. The complete current public-file byte/hash inventory is [asset-bytes.json](evidence/asset-bytes.json). See [the animal prompt/rig index](../review/2026-09-20-reboot/animal-defender-delivery.md) and [pipeline guidance](ART-PIPELINE.md). Native alpha is preserved during delivery encoding; animation deforms the separated native parts at runtime.
+
+Donkey front/rear assets are supplied for the directional review lab. The active trader uses the side view and purse gesture, with no combat targeting. Historical mechanical assets under the superseded review directory are not loaded by the game.
+
 ## Fonts
 
 Cormorant Garamond and DM Sans were obtained from the official Google Fonts distribution and are served locally. Their SIL Open Font License notices are committed in `public/fonts/cormorantgaramond-OFL.txt` and `public/fonts/dmsans-OFL.txt`. Font files retain the downloaded TrueType bytes; filenames and CSS declare their `.ttf` format. No external font request is made at runtime.

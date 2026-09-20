@@ -19,7 +19,8 @@ flowchart LR
 | `src/content` | Tower/enemy/card catalogs and two encounters | Add level data, register it, validate and test |
 | `src/sim/game.ts` | Commands, 30 Hz simulation, damage, movement, targets, waves and outcomes | Add a rule with focused deterministic tests |
 | `src/sim/economy.ts` | Pure interest, trade payout and refunds | Tune rates here; review catalog costs and strategy evidence |
-| `src/render/battlefield.ts` | Orthographic 3D tiles, billboard sprites, picking, range and effects | New visual without importing browser APIs into simulation |
+| `src/render/battlefield.ts` | Flat orthographic painted battlefield, continuous trail, rig direction/aim, picking, range and effects | New visual without importing browser APIs into simulation |
+| `src/render/cutout.ts`, `character-rig.ts` | Shared native textures, per-actor joints and view-aware walking | Descriptor-driven parts; side IK and front/rear projected legs |
 | `src/main.ts` | Semantic HTML screens, input commands, attempt lifecycle and HUD | New screen or input adapter; currently a deliberately small single module |
 | `src/audio/sound.ts` | Gesture-unlocked music and synthesized cue family | New licensed track or cue, preserving volume/mute lifecycle |
 | `src/persistence/save.ts` | Version 1 validation/defaults, stars, settings and unlock | Explicit migration for future schema changes |
@@ -27,7 +28,15 @@ flowchart LR
 
 Simulation commands return success/failure and emit lightweight events. The UI translates commands into feedback; rendering reads state. `advance` accumulates fixed 1/30-second steps and limits long-frame catch-up. `tick` is available to deterministic tests. Randomness uses a seeded generator; current encounter rules have no random targeting or damage. Fixed seeds alone do not make browser frame timings deterministic.
 
-Coordinates use integer `x,z` grid positions, with Y vertical only in the renderer. Paths are axis-aligned polylines. Occupancy excludes path tiles and blocked tiles. Towers cannot reroute enemies. Camera-facing entities use cropped atlas UV rectangles, an anchor near the feet, and a ground shadow. A structure hit is tested before the ground plane so tapping its visible art selects it.
+Coordinates use integer `x,z` grid positions. Paths are axis-aligned polylines;
+rendered corner rounding is cosmetic. Occupancy excludes path tiles and blocked
+tiles. Towers cannot reroute enemies. The presentation maps simulation coordinates
+onto a flat orthographic stage with separate horizontal/vertical spacing, a painted
+biome plate, and a textured continuous trail. Approved tower footprints remain
+screen aligned. Runtime character rigs choose front/rear views for vertical travel
+and side views for current rightward segments. Gait, reload and idle motion read
+simulation time/distance, so pause freezes them. A structure hit is tested before
+ground picking except during construction, when the exact ground cell wins.
 
 ## Add an encounter
 
@@ -41,8 +50,51 @@ Coordinates use integer `x,z` grid positions, with Y vertical only in the render
 
 ## Add a tower/enemy/card
 
-Catalog data controls existing roles. A genuinely new attack behavior also needs a typed kind, simulation rule, asset bounds, UI explanation and tests. Do not represent new mechanics as arbitrary strings or pretend the catalog can express behavior it cannot. Atlas indices connect definitions to the renderer. Cards modify range, starting crowns, slow duration or upgrade cost in simulation.
+Catalog data controls existing roles. A genuinely new attack behavior also needs
+a typed kind, simulation rule, asset bounds, UI explanation and tests. Do not
+represent new mechanics as arbitrary strings or pretend the catalog can express
+behavior it cannot. Rig resources map each role to generated parts; see
+`ART-PIPELINE.md` for import, source provenance and visual review. Legacy atlas
+indices remain fallback metadata. Cards modify range, starting crowns, slow
+duration or upgrade cost in simulation.
 
 ## Planned boundaries
 
 Extract screen controllers when more screens make `main.ts` unwieldy. Consider shared/instanced terrain geometry and sprite batching only after measurements identify pressure. A save migration registry, content editor, cloud saves, multi-biome campaign and dynamic camera are not implemented. Do not introduce abstractions for them in small content additions.
+
+### Presentation resource costs
+
+Flat articulated limb planes use a single transparent draw pass even when both
+sides are visible; they have no separate front/back volume to composite. Impact
+rings use one ordered dynamic geometry with per-vertex colour and alpha. The
+batch preserves the individual ring topology, position, size and fade, with
+regression coverage for growth and stale-effect removal. Neither optimization
+changes simulation state or effect timing.
+
+Reloading the same encounter clears actors and interaction overlays while
+retaining its scenery and path textures. The reuse key includes the level id,
+dimensions and route; a changed layout rebuilds the scenery. QA-only phase timing
+separates figure updates, effect updates and synchronous WebGL submission, and
+retains long-frame context. These timings do not measure GPU completion.
+
+Character and defender rigs are reused through bounded pools keyed by asset,
+height and (for defenders) reflected view. Checked-out rigs are never shared;
+released rigs are detached from the scene, and all retained resources are disposed
+with the battlefield. Pose and colour are recomputed from current simulation state
+before a reused rig renders.
+
+Grounding shadows and injured health bars use three instanced draws, with the
+same circle/plane shapes and per-actor transforms as the prior individual meshes.
+Unused instances are excluded by count and visibility; health backgrounds and
+fills retain distinct painter layers.
+
+Path projection is cached when an encounter layout is loaded. Each animated leg
+owns reusable sampling and pose buffers; neither buffer is shared across actors.
+The gait still derives contact from simulation distance, including through corners
+and resets. Differential tests compare both maps against the simulation sampler.
+
+Enemy leg meshes now keep static source vertices and apply bone pose uniforms in
+the vertex shader. Side-view transforms retain the same two-bone blend; front/rear
+views retain upright boots and projected cloth movement. Each leg owns its pose
+uniforms, while materials share the compiled shader program. This removes repeated
+leg vertex-buffer uploads without changing simulation or gait targets.
