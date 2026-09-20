@@ -1,0 +1,17 @@
+Use case: stylized-concept. Production asset for Stormwatch.
+Subject: A compact timber crossbow watchtower operated by a squirrel guardian, brass fittings, moss-dark wood, amber lantern, large visible horizontal bow and a sturdy timber pedestal. Broad readable mechanism and operator silhouette.
+Style: Premium hand-painted 2D woodland strategy-game art. Broad expressive silhouettes, confidently painted forms, restrained brush texture, warm amber defenders against muted crimson raiders, deep moss and storm-teal surroundings. Dark and adventurous but child-friendly, practical armor and machinery, no occult themes or gore.
+Lighting: Soft upper-left key light, consistent across every frame; no changing cast shadow, no lighting flicker.
+Avoid: No text, labels, frame numbers, grid lines, watermark, painted checkerboard, cropped body parts, floating equipment, occult symbols, skulls or gore. Never change costume, proportions, equipment or camera between frames.
+Camera: Nearly side-on three-quarter view facing right, mildly elevated strategy-game camera. Show face, chest and two legs clearly. No isometric terrain platform.
+Create one genuine-transparent RGBA animation sheet: exactly 4 columns and 2 rows, equal cells, prefer2048x1024. Reading order left to right then next row. Every cell shows the SAME subject at the SAME scale/camera/light. Keep ground baseline at92percent of each cell height, horizontal center at50percent. Entire silhouette stays inside its cell with at least8percent clear margins. No backdrop or terrain; no contact shadow baked in.
+The base remains perfectly stationary and identical. Animate the mechanism and operator only. Clearly distinct anticipation, release and recovery; no changing architecture.
+Poses:
+Cell1: Rest: bow unloaded, operator alert
+Cell2: Anticipation: operator draws mechanism, bow begins flexing
+Cell3: Full draw: bow arms visibly flexed, operator braced
+Cell4: Release: bow snaps forward, no projectile baked into sprite
+Cell5: Recoil: bow assembly moves back slightly, operator recoils
+Cell6: Reload: operator pulls loading lever
+Cell7: Recovery: bow and operator settle
+Cell8: Rest: match first frame exactly

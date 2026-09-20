@@ -1,0 +1,110 @@
+{
+  "version": 1,
+  "id": "stone-overhead-rig-v3",
+  "kind": "cutout-tower",
+  "source": "assets/source/reboot/stone-overhead-parts.png",
+  "width": 2172,
+  "height": 724,
+  "hasAlpha": true,
+  "sourceSha256": "67e49fe821d23b2e461b91059235ffaf2182f3dbd544166d17a88850b3c3cad9",
+  "camera": {
+    "elevationDegrees": 75,
+    "azimuth": 0,
+    "projection": "orthographic",
+    "screenAligned": true
+  },
+  "units": "local source pixels; restPosition relative footprintpivot Y up",
+  "parts": [
+    {
+      "id": "base",
+      "rect": [
+        80,
+        60,
+        610,
+        610
+      ],
+      "pivot": [
+        300,
+        315
+      ],
+      "scale": 1,
+      "z": 0,
+      "attachments": {
+        "mount": [
+          350,
+          330
+        ],
+        "operator": [
+          425,
+          205
+        ]
+      },
+      "texture": "art/v3/stone-rig/base.webp",
+      "restPosition": [
+        0,
+        0
+      ]
+    },
+    {
+      "id": "arm",
+      "rect": [
+        775,
+        230,
+        940,
+        270
+      ],
+      "pivot": [
+        620,
+        155
+      ],
+      "scale": 0.48,
+      "z": 2,
+      "attachTo": "base.mount",
+      "joints": {
+        "axle": [
+          620,
+          155
+        ],
+        "cup": [
+          114,
+          137
+        ],
+        "release": [
+          114,
+          137
+        ]
+      },
+      "texture": "art/v3/stone-rig/arm.webp",
+      "restPosition": [
+        50,
+        -15
+      ]
+    },
+    {
+      "id": "operator",
+      "rect": [
+        1770,
+        220,
+        330,
+        390
+      ],
+      "pivot": [
+        150,
+        245
+      ],
+      "scale": 0.55,
+      "z": 1,
+      "attachTo": "base.operator",
+      "texture": "art/v3/stone-rig/operator.webp",
+      "restPosition": [
+        125,
+        110
+      ]
+    }
+  ],
+  "review": {
+    "status": "candidate-parts",
+    "notes": "Native separateparts, fixedpartscales, manualapprox anchors. Screenaligned topdominant no exterior sidewalls; assemblyreview required. Stoneoperator generatedsquirrelratherthanbadger. Netdrum+crank arebaked into one launcher and cannotrotateindependently without additional separation. Tradefrontfacade deeperthanbolt but no threequarter sides."
+  },
+  "prompt": "art/v3/stone-rig/prompt.txt"
+}

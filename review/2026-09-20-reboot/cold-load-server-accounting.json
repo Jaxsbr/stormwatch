@@ -1,0 +1,53 @@
+{
+  "profile": "Server-shaped aggregate 10 Mbps response bodies; 100ms delay per response; Cache-Control:no-store; no HTTP compression; localhost. Not physical mobile emulation.",
+  "responseBodies": [
+    {
+      "file": "/",
+      "bytes": 1238
+    },
+    {
+      "file": "/fonts/fonts.css",
+      "bytes": 1136
+    },
+    {
+      "file": "/assets/game-DoR8tvFJ.css",
+      "bytes": 35998
+    },
+    {
+      "file": "/assets/game-ezVVqlej.js",
+      "bytes": 25220
+    },
+    {
+      "file": "/assets/battlefield-gI5tXeii.js",
+      "bytes": 601988
+    },
+    {
+      "file": "/assets/load-report-D2Xzr5Zo.js",
+      "bytes": 1307
+    },
+    {
+      "file": "/fonts/dm-sans-3.ttf",
+      "bytes": 48280
+    },
+    {
+      "file": "/fonts/dm-sans-6.ttf",
+      "bytes": 48200
+    },
+    {
+      "file": "/art/title-background.webp",
+      "bytes": 212612
+    },
+    {
+      "file": "/fonts/cormorant-garamond-0.ttf",
+      "bytes": 290496
+    }
+  ],
+  "totalResponseBodyBytes": 1266475,
+  "titleReadyMs": 1600.2000000476837,
+  "browserResourceTimingLimitation": "Title background response absent from ResourceTiming despite decoded-image readiness. Complete response-body sum comes from the local server completion log.",
+  "budgets": {
+    "titleMs": 5000,
+    "initialBytes": 8000000
+  },
+  "result": "pass for measured desktop title load"
+}

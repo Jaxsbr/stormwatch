@@ -1,0 +1,57 @@
+{
+  "version": 1,
+  "id": "bolt-unstrung-v2",
+  "texture": "art/v2/bolt-rig-v2/bow-unstrung.webp",
+  "width": 686,
+  "height": 488,
+  "pivot": [
+    315,
+    449
+  ],
+  "scale": 0.59,
+  "source": "assets/source/reboot/bolt-unstrung-native.png",
+  "sourceDimensions": [
+    1487,
+    1058
+  ],
+  "sourceSha256": "3e0cbbd08bcf04d831f86532e91927e01c7e9372a25e9a7aa1f49c2366d5f687",
+  "processing": "Native precise removal of bakedstring, then fullimage uniform-equivalent resize to original686x488 coordinateframe; preserved nativealpha. No alpha removal or repainting in code.",
+  "string": {
+    "tipNear": [
+      51,
+      340
+    ],
+    "tipFar": [
+      599,
+      49
+    ],
+    "braceCenter": [
+      325,
+      194
+    ],
+    "drawCenter": [
+      160,
+      132
+    ],
+    "color": "#bba16a",
+    "widthSourcePixels": 3.5
+  },
+  "rail": {
+    "rear": [
+      158,
+      132
+    ],
+    "front": [
+      589,
+      352
+    ],
+    "release": [
+      644,
+      413
+    ]
+  },
+  "review": {
+    "status": "candidate",
+    "notes": "Native removed bothstringsegments and retained solid silhouette/perspective closely; output resolution changed. Exactpixelidentity not guaranteed. Coordinates manually annotated in resized686x488space; require assembledreview. Bindingropes retained."
+  }
+}

@@ -1,0 +1,218 @@
+{
+  "version": 1,
+  "id": "net-overhead-rig-v3",
+  "kind": "cutout-tower",
+  "width": 2172,
+  "height": 887,
+  "hasAlpha": true,
+  "camera": {
+    "elevationDegrees": 75,
+    "azimuth": 0,
+    "projection": "orthographic",
+    "screenAligned": true
+  },
+  "units": "Each rect/sourceRect refers to its per-part native source; descriptor dimensions cover both sources. Pivots are crop-local. All attachment coordinates are flattened into base crop pixels; restPosition is base-pivot relative, Y up.",
+  "parts": [
+    {
+      "id": "base",
+      "rect": [
+        50,
+        95,
+        680,
+        700
+      ],
+      "pivot": [
+        340,
+        390
+      ],
+      "scale": 1,
+      "z": 0,
+      "attachments": {
+        "mount": [
+          345,
+          360
+        ],
+        "drum": [
+          345,
+          360
+        ],
+        "crank": [
+          345,
+          432.6
+        ],
+        "operator": [
+          450,
+          235
+        ]
+      },
+      "texture": "art/v3/net-rig/base.webp",
+      "restPosition": [
+        0,
+        0
+      ],
+      "source": "assets/source/reboot/net-overhead-parts.png",
+      "sourceSha256": "bb1b1e7a0bbc63dcd114dbfffd0581f08b22f0f5ef612ac907d711224370fb77",
+      "sourceRect": [
+        50,
+        95,
+        680,
+        700
+      ]
+    },
+    {
+      "id": "operator",
+      "rect": [
+        1460,
+        240,
+        280,
+        420
+      ],
+      "pivot": [
+        140,
+        275
+      ],
+      "scale": 0.62,
+      "z": 1,
+      "attachTo": "base.operator",
+      "texture": "art/v3/net-rig/operator.webp",
+      "restPosition": [
+        110,
+        155
+      ],
+      "source": "assets/source/reboot/net-overhead-parts.png",
+      "sourceSha256": "bb1b1e7a0bbc63dcd114dbfffd0581f08b22f0f5ef612ac907d711224370fb77",
+      "sourceRect": [
+        1460,
+        240,
+        280,
+        420
+      ]
+    },
+    {
+      "id": "drum",
+      "rect": [
+        1100,
+        0,
+        500,
+        724
+      ],
+      "sourceRect": [
+        1100,
+        0,
+        500,
+        724
+      ],
+      "source": "assets/source/reboot/net-winding-parts-v1.png",
+      "sourceSha256": "2eea623bdee53908f3bbdc5508ea5a4a85a1032365c96abe711cef49e5bd6ba7",
+      "pivot": [
+        255,
+        350
+      ],
+      "scale": 0.3432,
+      "z": 2,
+      "attachTo": "base.drum",
+      "texture": "art/v3/net-winding-parts/drum.webp",
+      "restPosition": [
+        5,
+        30
+      ]
+    },
+    {
+      "id": "launcher",
+      "rect": [
+        0,
+        0,
+        1050,
+        724
+      ],
+      "sourceRect": [
+        0,
+        0,
+        1050,
+        724
+      ],
+      "source": "assets/source/reboot/net-winding-parts-v1.png",
+      "sourceSha256": "2eea623bdee53908f3bbdc5508ea5a4a85a1032365c96abe711cef49e5bd6ba7",
+      "pivot": [
+        620,
+        325
+      ],
+      "scale": 0.44,
+      "z": 3,
+      "attachTo": "base.mount",
+      "texture": "art/v3/net-winding-parts/frame.webp",
+      "restPosition": [
+        5,
+        30
+      ],
+      "joints": {
+        "release": [
+          45,
+          310
+        ],
+        "drum": [
+          620,
+          325
+        ],
+        "crank": [
+          620,
+          490
+        ]
+      },
+      "recoilAxis": [
+        1,
+        0
+      ]
+    },
+    {
+      "id": "crank",
+      "rect": [
+        1680,
+        180,
+        470,
+        470
+      ],
+      "sourceRect": [
+        1680,
+        180,
+        470,
+        470
+      ],
+      "source": "assets/source/reboot/net-winding-parts-v1.png",
+      "sourceSha256": "2eea623bdee53908f3bbdc5508ea5a4a85a1032365c96abe711cef49e5bd6ba7",
+      "pivot": [
+        105,
+        180
+      ],
+      "scale": 0.528,
+      "z": 4,
+      "attachTo": "base.crank",
+      "texture": "art/v3/net-winding-parts/crank.webp",
+      "restPosition": [
+        5,
+        -42.6
+      ]
+    }
+  ],
+  "review": {
+    "status": "static-assembly-reviewed-motion-pending",
+    "notes": "Approved overhead base/operator preserved; refined separated native frame/drum/crank assembled to static comparison. Drum remains seated without screen-plane wheel rotation. Crank winds one full turn during simulation reload; launcher assembly follows aim and recoil. Runtime motion still requires visual review. Crank handle uses 1.5x the static candidate scale for normal-size action readability; fixed axle anchor is unchanged.",
+    "evidence": "review/2026-09-20-reboot/after/net-winding-assembly-refined-comparison.png",
+    "prompt": "art/v3/net-winding-parts/prompt.txt"
+  },
+  "sources": [
+    {
+      "source": "assets/source/reboot/net-overhead-parts.png",
+      "sourceSha256": "bb1b1e7a0bbc63dcd114dbfffd0581f08b22f0f5ef612ac907d711224370fb77",
+      "width": 1774,
+      "height": 887
+    },
+    {
+      "source": "assets/source/reboot/net-winding-parts-v1.png",
+      "sourceSha256": "2eea623bdee53908f3bbdc5508ea5a4a85a1032365c96abe711cef49e5bd6ba7",
+      "width": 2172,
+      "height": 724
+    }
+  ],
+  "prompt": "art/v3/net-rig/prompt.txt"
+}

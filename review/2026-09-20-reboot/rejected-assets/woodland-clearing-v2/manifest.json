@@ -1,0 +1,27 @@
+{
+  "version": 1,
+  "id": "woodland-clearing-v2",
+  "kind": "biome",
+  "subject": "Rain-dark woodland frontier: layered pine forest, mossy roots, rocky banks, tiny amber lanterns and a distant timber outpost. Intimate adventurous atmosphere, a sheltered valley clearing rather than a floating board.",
+  "composition": "Wide horizontal battlefield, about16:9. Elevated near-front view. Sculpted-looking painterly scenery frames the upper quarter and lower fifth; low unobtrusive side banks. The central broad meadow is continuous low-contrast moss/earth, open and unobstructed for a winding path and defenses. Foreground roots and rocks create depth. No horizon sky dominating the scene. No tile edges, checkerboard, grid, path, road, characters, towers, text or UI. Keep the central70percent of width open so live gameplay provides the focal points.",
+  "review": {
+    "status": "rejected",
+    "notes": "User rejected landscape perspective: oversized foreground, receding distant scene, wrong combat-map projection. Do not use in runtime. Retained as rejected pipeline evidence."
+  },
+  "texture": "art/v2/woodland-clearing-v2/atlas.webp",
+  "width": 1672,
+  "height": 941,
+  "frames": [],
+  "sha256": "674989b18814921d52aa584bb43f04d85240ee1e46bac6aea2894e6b506d625a",
+  "bytes": 406444,
+  "provenance": "Native image generation; prompt and descriptor retained; imported without repainting or alpha substitution",
+  "validation": {
+    "id": "woodland-clearing-v2",
+    "width": 1672,
+    "height": 941,
+    "hasAlpha": false,
+    "errors": [],
+    "warnings": [],
+    "frames": []
+  }
+}

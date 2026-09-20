@@ -1,0 +1,113 @@
+{
+  "version": 1,
+  "id": "net-overhead-rig-v3",
+  "kind": "cutout-tower",
+  "source": "assets/source/reboot/net-overhead-parts.png",
+  "width": 1774,
+  "height": 887,
+  "hasAlpha": true,
+  "sourceSha256": "bb1b1e7a0bbc63dcd114dbfffd0581f08b22f0f5ef612ac907d711224370fb77",
+  "camera": {
+    "elevationDegrees": 75,
+    "azimuth": 0,
+    "projection": "orthographic",
+    "screenAligned": true
+  },
+  "units": "local source pixels; restPosition relative footprintpivot Y up",
+  "parts": [
+    {
+      "id": "base",
+      "rect": [
+        50,
+        95,
+        680,
+        700
+      ],
+      "pivot": [
+        340,
+        390
+      ],
+      "scale": 1,
+      "z": 0,
+      "attachments": {
+        "mount": [
+          345,
+          340
+        ],
+        "operator": [
+          450,
+          235
+        ]
+      },
+      "texture": "art/v3/net-rig/base.webp",
+      "restPosition": [
+        0,
+        0
+      ]
+    },
+    {
+      "id": "launcher",
+      "rect": [
+        715,
+        235,
+        710,
+        505
+      ],
+      "pivot": [
+        405,
+        180
+      ],
+      "scale": 0.64,
+      "z": 2,
+      "attachTo": "base.mount",
+      "joints": {
+        "drum": [
+          405,
+          180
+        ],
+        "crank": [
+          450,
+          325
+        ],
+        "release": [
+          30,
+          185
+        ]
+      },
+      "recoilAxis": [
+        1,
+        0
+      ],
+      "texture": "art/v3/net-rig/launcher.webp",
+      "restPosition": [
+        5,
+        50
+      ]
+    },
+    {
+      "id": "operator",
+      "rect": [
+        1460,
+        240,
+        280,
+        420
+      ],
+      "pivot": [
+        140,
+        275
+      ],
+      "scale": 0.62,
+      "z": 1,
+      "attachTo": "base.operator",
+      "texture": "art/v3/net-rig/operator.webp",
+      "restPosition": [
+        110,
+        155
+      ]
+    }
+  ],
+  "review": {
+    "status": "candidate-parts",
+    "notes": "Native separateparts, fixedpartscales, manualapprox anchors. Screenaligned topdominant no exterior sidewalls; assemblyreview required. Stoneoperator generatedsquirrelratherthanbadger. Netdrum+crank arebaked into one launcher and cannotrotateindependently without additional separation. Tradefrontfacade deeperthanbolt but no threequarter sides."
+  }
+}

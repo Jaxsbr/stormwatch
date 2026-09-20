@@ -1,0 +1,7 @@
+Use case: stylized-concept. Production asset for Stormwatch.
+Subject: Rain-dark woodland frontier: layered pine forest, mossy roots, rocky banks, tiny amber lanterns and a distant timber outpost. Intimate adventurous atmosphere, a sheltered valley clearing rather than a floating board.
+Style: Premium hand-painted 2D woodland strategy-game art. Broad expressive silhouettes, confidently painted forms, restrained brush texture, warm amber defenders against muted crimson raiders, deep moss and storm-teal surroundings. Dark and adventurous but child-friendly, practical armor and machinery, no occult themes or gore.
+Lighting: Soft upper-left key light, consistent across every frame; no changing cast shadow, no lighting flicker.
+Avoid: No text, labels, frame numbers, grid lines, watermark, painted checkerboard, cropped body parts, floating equipment, occult symbols, skulls or gore. Never change costume, proportions, equipment or camera between frames.
+Composition: Wide horizontal battlefield, about16:9. Elevated near-front view. Sculpted-looking painterly scenery frames the upper quarter and lower fifth; low unobtrusive side banks. The central broad meadow is continuous low-contrast moss/earth, open and unobstructed for a winding path and defenses. Foreground roots and rocks create depth. No horizon sky dominating the scene. No tile edges, checkerboard, grid, path, road, characters, towers, text or UI. Keep the central70percent of width open so live gameplay provides the focal points.
+Opaque full-bleed landscape image, prefer2048x1152. No frames or border.

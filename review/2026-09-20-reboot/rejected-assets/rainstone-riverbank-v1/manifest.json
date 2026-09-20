@@ -1,0 +1,27 @@
+{
+  "version": 1,
+  "id": "rainstone-riverbank-v1",
+  "kind": "biome",
+  "subject": "Rainstone riverbank: a storm-teal woodland clearing bordered by moss-covered slate ledges, broad wet river stones, reeds, alder trees and tiny practical amber lanterns along the outer bottom and right river edge. No buildings. Distinct cool blue-grey ground with sparse moss, a calm adventurous refuge.",
+  "composition": "Wide horizontal battlefield, about 16:9. Elevated near-front view. Dimensional painterly wooded stone banks occupy only upper quarter and lower fifth. A narrow river hugs the OUTERMOST right edge and lower-right corner, never crossing the playing area. Central 75 percent width and middle 50 percent height are continuous low-contrast flat earth and fine slate grit, entirely open for live paths and defenses. Low foreground stones and reeds frame without blocking center. No dominating sky, grid, tiles, road, path, characters, defense towers, text, UI or large center rocks.",
+  "review": {
+    "status": "rejected",
+    "notes": "User rejected landscape perspective: oversized foreground, receding distant scene, wrong combat-map projection. Do not use in runtime. Retained as rejected pipeline evidence."
+  },
+  "texture": "art/v2/rainstone-riverbank-v1/atlas.webp",
+  "width": 1672,
+  "height": 941,
+  "frames": [],
+  "sha256": "0bef07563e4c858189cb589008824907099d5f89842e56a76cf65afb3fa7e604",
+  "bytes": 455624,
+  "provenance": "Native image generation; prompt and descriptor retained; imported without repainting or alpha substitution",
+  "validation": {
+    "id": "rainstone-riverbank-v1",
+    "width": 1672,
+    "height": 941,
+    "hasAlpha": false,
+    "errors": [],
+    "warnings": [],
+    "frames": []
+  }
+}

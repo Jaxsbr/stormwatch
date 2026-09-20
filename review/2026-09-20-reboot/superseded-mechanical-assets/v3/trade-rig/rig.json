@@ -1,0 +1,102 @@
+{
+  "version": 1,
+  "id": "trade-overhead-rig-v3",
+  "kind": "cutout-tower",
+  "source": "assets/source/reboot/trade-overhead-parts.png",
+  "width": 2170,
+  "height": 725,
+  "hasAlpha": true,
+  "sourceSha256": "c1fd127ae64d5b8378aa8d3cb755f4b2ea8b4d1996d526fc3ed777d6314606db",
+  "camera": {
+    "elevationDegrees": 75,
+    "azimuth": 0,
+    "projection": "orthographic",
+    "screenAligned": true
+  },
+  "units": "local source pixels; restPosition relative footprintpivot Y up",
+  "parts": [
+    {
+      "id": "base",
+      "rect": [
+        190,
+        0,
+        1010,
+        710
+      ],
+      "pivot": [
+        505,
+        390
+      ],
+      "scale": 1,
+      "z": 0,
+      "attachments": {
+        "flag": [
+          800,
+          390
+        ],
+        "lantern": [
+          185,
+          475
+        ]
+      },
+      "joints": {
+        "payout": [
+          505,
+          610
+        ]
+      },
+      "texture": "art/v3/trade-rig/base.webp",
+      "restPosition": [
+        0,
+        0
+      ]
+    },
+    {
+      "id": "flag",
+      "rect": [
+        1320,
+        115,
+        420,
+        495
+      ],
+      "pivot": [
+        375,
+        60
+      ],
+      "scale": 0.36,
+      "z": 1,
+      "attachTo": "base.flag",
+      "texture": "art/v3/trade-rig/flag.webp",
+      "restPosition": [
+        295,
+        0
+      ]
+    },
+    {
+      "id": "lantern",
+      "rect": [
+        1830,
+        245,
+        170,
+        290
+      ],
+      "pivot": [
+        110,
+        50
+      ],
+      "scale": 0.5,
+      "z": 1,
+      "attachTo": "base.lantern",
+      "texture": "art/v3/trade-rig/lantern.webp",
+      "restPosition": [
+        -320,
+        -85
+      ]
+    }
+  ],
+  "review": {
+    "status": "candidate-parts",
+    "notes": "Native separateparts, fixedpartscales, manualapprox anchors. Screenaligned topdominant no exterior sidewalls; assemblyreview required. Stoneoperator generatedsquirrelratherthanbadger. Netdrum+crank arebaked into one launcher and cannotrotateindependently without additional separation. Tradefrontfacade deeperthanbolt but no threequarter sides."
+  },
+  "prompt": "art/v3/trade-rig/prompt.txt"
+}

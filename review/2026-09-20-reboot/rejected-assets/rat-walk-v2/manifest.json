@@ -1,0 +1,357 @@
+{
+  "version": 1,
+  "id": "rat-walk-v2",
+  "kind": "character",
+  "subject": "A sturdy small rat raider with rounded ears, a weathered slate iron helmet, crimson quilted tunic, leather belt, short boots and a compact round wooden shield on the far arm. Expressive determined face; no weapon hiding the legs.",
+  "sheet": {
+    "columns": 4,
+    "rows": 2
+  },
+  "clips": {
+    "walk": {
+      "frames": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
+      ],
+      "fps": 10,
+      "loop": true
+    }
+  },
+  "frameInstructions": [
+    "Right foot forward contact, left foot back",
+    "Right leg takes weight, body low",
+    "Left leg passes planted right leg",
+    "Left leg swings forward, body high",
+    "Left foot forward contact, right foot back",
+    "Left leg takes weight, body low",
+    "Right leg passes planted left leg",
+    "Right leg swings forward, body high"
+  ],
+  "pivot": [
+    0.5,
+    0.92
+  ],
+  "worldHeight": 1.1,
+  "review": {
+    "status": "unreviewed",
+    "notes": "First motion proof. Do not integrate until normal-speed loop and in-game size reviewed."
+  },
+  "texture": "art/v2/rat-walk-v2/atlas.webp",
+  "width": 1774,
+  "height": 887,
+  "frames": [
+    {
+      "index": 0,
+      "rect": [
+        0,
+        0,
+        443,
+        443
+      ],
+      "visibleBounds": [
+        37,
+        37,
+        391,
+        415
+      ],
+      "visiblePixels": 67825,
+      "anchor": [
+        238,
+        415
+      ]
+    },
+    {
+      "index": 1,
+      "rect": [
+        443,
+        0,
+        444,
+        443
+      ],
+      "visibleBounds": [
+        485,
+        58,
+        838,
+        415
+      ],
+      "visiblePixels": 63122,
+      "anchor": [
+        241,
+        415
+      ]
+    },
+    {
+      "index": 2,
+      "rect": [
+        887,
+        0,
+        443,
+        443
+      ],
+      "visibleBounds": [
+        908,
+        42,
+        1246,
+        407
+      ],
+      "visiblePixels": 61436,
+      "anchor": [
+        231,
+        407
+      ]
+    },
+    {
+      "index": 3,
+      "rect": [
+        1330,
+        0,
+        444,
+        443
+      ],
+      "visibleBounds": [
+        1356,
+        22,
+        1709,
+        408
+      ],
+      "visiblePixels": 66214,
+      "anchor": [
+        242,
+        408
+      ]
+    },
+    {
+      "index": 4,
+      "rect": [
+        0,
+        443,
+        443,
+        444
+      ],
+      "visibleBounds": [
+        28,
+        478,
+        375,
+        851
+      ],
+      "visiblePixels": 64442,
+      "anchor": [
+        224,
+        408
+      ]
+    },
+    {
+      "index": 5,
+      "rect": [
+        443,
+        443,
+        444,
+        444
+      ],
+      "visibleBounds": [
+        479,
+        496,
+        826,
+        852
+      ],
+      "visiblePixels": 60808,
+      "anchor": [
+        237,
+        409
+      ]
+    },
+    {
+      "index": 6,
+      "rect": [
+        887,
+        443,
+        443,
+        444
+      ],
+      "visibleBounds": [
+        916,
+        471,
+        1243,
+        843
+      ],
+      "visiblePixels": 62015,
+      "anchor": [
+        231,
+        400
+      ]
+    },
+    {
+      "index": 7,
+      "rect": [
+        1330,
+        443,
+        444,
+        444
+      ],
+      "visibleBounds": [
+        1365,
+        453,
+        1712,
+        841
+      ],
+      "visiblePixels": 66276,
+      "anchor": [
+        241,
+        398
+      ]
+    }
+  ],
+  "sha256": "5686b979cb5a378b02da627c6a800537bbe122e7d760b069d521892f1273929d",
+  "bytes": 926670,
+  "provenance": "Native image generation; prompt and descriptor retained; imported without repainting or alpha substitution",
+  "validation": {
+    "id": "rat-walk-v2",
+    "width": 1774,
+    "height": 887,
+    "hasAlpha": true,
+    "errors": [],
+    "warnings": [
+      "Numeric validation cannot prove stable identity, foot planting or smooth motion. Review a normal-speed loop and in-game capture."
+    ],
+    "frames": [
+      {
+        "index": 0,
+        "rect": [
+          0,
+          0,
+          443,
+          443
+        ],
+        "visibleBounds": [
+          37,
+          37,
+          391,
+          415
+        ],
+        "visiblePixels": 67825
+      },
+      {
+        "index": 1,
+        "rect": [
+          443,
+          0,
+          444,
+          443
+        ],
+        "visibleBounds": [
+          485,
+          58,
+          838,
+          415
+        ],
+        "visiblePixels": 63122
+      },
+      {
+        "index": 2,
+        "rect": [
+          887,
+          0,
+          443,
+          443
+        ],
+        "visibleBounds": [
+          908,
+          42,
+          1246,
+          407
+        ],
+        "visiblePixels": 61436
+      },
+      {
+        "index": 3,
+        "rect": [
+          1330,
+          0,
+          444,
+          443
+        ],
+        "visibleBounds": [
+          1356,
+          22,
+          1709,
+          408
+        ],
+        "visiblePixels": 66214
+      },
+      {
+        "index": 4,
+        "rect": [
+          0,
+          443,
+          443,
+          444
+        ],
+        "visibleBounds": [
+          28,
+          478,
+          375,
+          851
+        ],
+        "visiblePixels": 64442
+      },
+      {
+        "index": 5,
+        "rect": [
+          443,
+          443,
+          444,
+          444
+        ],
+        "visibleBounds": [
+          479,
+          496,
+          826,
+          852
+        ],
+        "visiblePixels": 60808
+      },
+      {
+        "index": 6,
+        "rect": [
+          887,
+          443,
+          443,
+          444
+        ],
+        "visibleBounds": [
+          916,
+          471,
+          1243,
+          843
+        ],
+        "visiblePixels": 62015
+      },
+      {
+        "index": 7,
+        "rect": [
+          1330,
+          443,
+          444,
+          444
+        ],
+        "visibleBounds": [
+          1365,
+          453,
+          1712,
+          841
+        ],
+        "visiblePixels": 66276
+      }
+    ]
+  },
+  "anchorReview": {
+    "method": "Manual visual approximate torso center plus planted boot sole; tower platform center plus base contact. Translation only, fixed cell scale.",
+    "status": "candidate alignment; temporal and alternating-gait approval pending"
+  }
+}

@@ -1,0 +1,357 @@
+{
+  "version": 1,
+  "id": "bolt-action-v2",
+  "kind": "tower",
+  "subject": "A compact timber crossbow watchtower operated by a squirrel guardian, brass fittings, moss-dark wood, amber lantern, large visible horizontal bow and a sturdy timber pedestal. Broad readable mechanism and operator silhouette.",
+  "sheet": {
+    "columns": 4,
+    "rows": 2
+  },
+  "clips": {
+    "fire": {
+      "frames": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
+      ],
+      "fps": 14,
+      "loop": false
+    }
+  },
+  "frameInstructions": [
+    "Rest: bow unloaded, operator alert",
+    "Anticipation: operator draws mechanism, bow begins flexing",
+    "Full draw: bow arms visibly flexed, operator braced",
+    "Release: bow snaps forward, no projectile baked into sprite",
+    "Recoil: bow assembly moves back slightly, operator recoils",
+    "Reload: operator pulls loading lever",
+    "Recovery: bow and operator settle",
+    "Rest: match first frame exactly"
+  ],
+  "pivot": [
+    0.5,
+    0.92
+  ],
+  "worldHeight": 1.6,
+  "review": {
+    "status": "unreviewed",
+    "notes": "Prove mechanical motion without tower base sliding or changing shape."
+  },
+  "texture": "art/v2/bolt-action-v2/atlas.webp",
+  "width": 1774,
+  "height": 887,
+  "frames": [
+    {
+      "index": 0,
+      "rect": [
+        0,
+        0,
+        443,
+        443
+      ],
+      "visibleBounds": [
+        34,
+        13,
+        430,
+        432
+      ],
+      "visiblePixels": 82967,
+      "anchor": [
+        221,
+        432
+      ]
+    },
+    {
+      "index": 1,
+      "rect": [
+        443,
+        0,
+        444,
+        443
+      ],
+      "visibleBounds": [
+        477,
+        12,
+        866,
+        432
+      ],
+      "visiblePixels": 82965,
+      "anchor": [
+        221,
+        432
+      ]
+    },
+    {
+      "index": 2,
+      "rect": [
+        887,
+        0,
+        443,
+        443
+      ],
+      "visibleBounds": [
+        918,
+        12,
+        1301,
+        432
+      ],
+      "visiblePixels": 82952,
+      "anchor": [
+        221,
+        432
+      ]
+    },
+    {
+      "index": 3,
+      "rect": [
+        1330,
+        0,
+        444,
+        443
+      ],
+      "visibleBounds": [
+        1361,
+        12,
+        1753,
+        432
+      ],
+      "visiblePixels": 84528,
+      "anchor": [
+        221,
+        432
+      ]
+    },
+    {
+      "index": 4,
+      "rect": [
+        0,
+        443,
+        443,
+        444
+      ],
+      "visibleBounds": [
+        35,
+        456,
+        423,
+        875
+      ],
+      "visiblePixels": 83714,
+      "anchor": [
+        221,
+        432
+      ]
+    },
+    {
+      "index": 5,
+      "rect": [
+        443,
+        443,
+        444,
+        444
+      ],
+      "visibleBounds": [
+        476,
+        456,
+        872,
+        875
+      ],
+      "visiblePixels": 83627,
+      "anchor": [
+        221,
+        432
+      ]
+    },
+    {
+      "index": 6,
+      "rect": [
+        887,
+        443,
+        443,
+        444
+      ],
+      "visibleBounds": [
+        919,
+        456,
+        1316,
+        875
+      ],
+      "visiblePixels": 82831,
+      "anchor": [
+        221,
+        432
+      ]
+    },
+    {
+      "index": 7,
+      "rect": [
+        1330,
+        443,
+        444,
+        444
+      ],
+      "visibleBounds": [
+        1363,
+        455,
+        1759,
+        875
+      ],
+      "visiblePixels": 82647,
+      "anchor": [
+        221,
+        432
+      ]
+    }
+  ],
+  "sha256": "07dcb81fa1486d58f6c37dd43ada51aec47e0ad1acd67db8ec2e1e2fbdbe7dc3",
+  "bytes": 1205202,
+  "provenance": "Native image generation; prompt and descriptor retained; imported without repainting or alpha substitution",
+  "validation": {
+    "id": "bolt-action-v2",
+    "width": 1774,
+    "height": 887,
+    "hasAlpha": true,
+    "errors": [],
+    "warnings": [
+      "Numeric validation cannot prove stable identity, foot planting or smooth motion. Review a normal-speed loop and in-game capture."
+    ],
+    "frames": [
+      {
+        "index": 0,
+        "rect": [
+          0,
+          0,
+          443,
+          443
+        ],
+        "visibleBounds": [
+          34,
+          13,
+          430,
+          432
+        ],
+        "visiblePixels": 82967
+      },
+      {
+        "index": 1,
+        "rect": [
+          443,
+          0,
+          444,
+          443
+        ],
+        "visibleBounds": [
+          477,
+          12,
+          866,
+          432
+        ],
+        "visiblePixels": 82965
+      },
+      {
+        "index": 2,
+        "rect": [
+          887,
+          0,
+          443,
+          443
+        ],
+        "visibleBounds": [
+          918,
+          12,
+          1301,
+          432
+        ],
+        "visiblePixels": 82952
+      },
+      {
+        "index": 3,
+        "rect": [
+          1330,
+          0,
+          444,
+          443
+        ],
+        "visibleBounds": [
+          1361,
+          12,
+          1753,
+          432
+        ],
+        "visiblePixels": 84528
+      },
+      {
+        "index": 4,
+        "rect": [
+          0,
+          443,
+          443,
+          444
+        ],
+        "visibleBounds": [
+          35,
+          456,
+          423,
+          875
+        ],
+        "visiblePixels": 83714
+      },
+      {
+        "index": 5,
+        "rect": [
+          443,
+          443,
+          444,
+          444
+        ],
+        "visibleBounds": [
+          476,
+          456,
+          872,
+          875
+        ],
+        "visiblePixels": 83627
+      },
+      {
+        "index": 6,
+        "rect": [
+          887,
+          443,
+          443,
+          444
+        ],
+        "visibleBounds": [
+          919,
+          456,
+          1316,
+          875
+        ],
+        "visiblePixels": 82831
+      },
+      {
+        "index": 7,
+        "rect": [
+          1330,
+          443,
+          444,
+          444
+        ],
+        "visibleBounds": [
+          1363,
+          455,
+          1759,
+          875
+        ],
+        "visiblePixels": 82647
+      }
+    ]
+  },
+  "anchorReview": {
+    "method": "Manual visual approximate torso center plus planted boot sole; tower platform center plus base contact. Translation only, fixed cell scale.",
+    "status": "candidate alignment; temporal and alternating-gait approval pending"
+  }
+}

@@ -1,0 +1,140 @@
+{
+  "id": "rat-walk-v2",
+  "width": 1774,
+  "height": 887,
+  "hasAlpha": true,
+  "errors": [],
+  "warnings": [
+    "Numeric validation cannot prove stable identity, foot planting or smooth motion. Review a normal-speed loop and in-game capture."
+  ],
+  "frames": [
+    {
+      "index": 0,
+      "rect": [
+        0,
+        0,
+        443,
+        443
+      ],
+      "visibleBounds": [
+        37,
+        37,
+        398,
+        418
+      ],
+      "visiblePixels": 69885
+    },
+    {
+      "index": 1,
+      "rect": [
+        443,
+        0,
+        444,
+        443
+      ],
+      "visibleBounds": [
+        486,
+        55,
+        845,
+        419
+      ],
+      "visiblePixels": 64912
+    },
+    {
+      "index": 2,
+      "rect": [
+        887,
+        0,
+        443,
+        443
+      ],
+      "visibleBounds": [
+        901,
+        41,
+        1254,
+        416
+      ],
+      "visiblePixels": 64709
+    },
+    {
+      "index": 3,
+      "rect": [
+        1330,
+        0,
+        444,
+        443
+      ],
+      "visibleBounds": [
+        1353,
+        20,
+        1720,
+        414
+      ],
+      "visiblePixels": 69627
+    },
+    {
+      "index": 4,
+      "rect": [
+        0,
+        443,
+        443,
+        444
+      ],
+      "visibleBounds": [
+        28,
+        476,
+        385,
+        853
+      ],
+      "visiblePixels": 68531
+    },
+    {
+      "index": 5,
+      "rect": [
+        443,
+        443,
+        444,
+        444
+      ],
+      "visibleBounds": [
+        477,
+        486,
+        841,
+        853
+      ],
+      "visiblePixels": 65448
+    },
+    {
+      "index": 6,
+      "rect": [
+        887,
+        443,
+        443,
+        444
+      ],
+      "visibleBounds": [
+        904,
+        469,
+        1254,
+        847
+      ],
+      "visiblePixels": 67410
+    },
+    {
+      "index": 7,
+      "rect": [
+        1330,
+        443,
+        444,
+        444
+      ],
+      "visibleBounds": [
+        1356,
+        453,
+        1723,
+        847
+      ],
+      "visiblePixels": 70179
+    }
+  ]
+}
