@@ -1,8 +1,8 @@
 # Stormwatch isolated delivery export
 
 - Export: fresh temporary directory, outside the original worktree.
-- Snapshot type: direct copy of the current uncommitted worktree; this is not a git clone and no commit was created.
-- Latest source inventory (325 paths, excluding generated `node_modules` and `dist`): [source inventory](delivery-source-inventory.txt)
+- Latest snapshot: fresh Git archive of local commit `09aa194`; the worktree-copy reports below are retained as historical checks. No ignored sources, existing dependencies or built output were copied.
+- Latest committed source/evidence inventory (487 paths, excluding generated `node_modules` and `dist`): [source inventory](delivery-source-inventory.txt)
 - Exact emitted art inventory: [built art inventory](delivery-dist-art-inventory.txt)
 
 ## Initial export source (historical)
@@ -52,3 +52,9 @@ Offline install passed (123 packages, 0 reported vulnerabilities). Type checking
 ## Committed implementation check
 
 Local commit `45f0a98` contains the implementation, runtime assets, pipeline descriptors, tools and test fixtures. A fresh `git archive HEAD` extraction (without worktree overlays, existing dependencies or built output) passed offline install, type checking, formatting, all 110 tests in 16 files, and production build. It emitted the same production bundle names and the existing size warning. This verifies committed implementation completeness; the final documentation/evidence packaging is a separate pending commit. No remote push occurred.
+
+## Final committed delivery check
+
+Fresh archive of `09aa194`, including renderer checkpoint `4961b03`, passed offline installation (123 packages, zero reported vulnerabilities), type checking, formatting, all 112 tests in 17 files, and production build. All 175 public files match their emitted files byte for byte. The production directory is 17,298,067 bytes, below 20 MB. The renderer, game and QA bundle names exactly match the successful baseline-browser measurement: `battlefield-C9dHZNg9.js`, `game-B-wzWxuP.js`, `qa-COphKdFl.js`. The existing >500 kB minified chunk warning remains; no build failure occurred.
+
+The committed package includes the actual demo, its source clips/stills and composition manifest, current visual reviews, raw passing and failing performance results, pipeline descriptors and runtime provenance. Final report/inventory edits after this archive are documentation-only. The current production UI was reopened through title → map → Rainstone briefing → preparation; saved three-star progress and all four animal build cards were visible, with no console warnings/errors. No remote push or publication occurred.

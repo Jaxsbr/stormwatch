@@ -1,6 +1,6 @@
 # Current reboot rubric audit — 20 September 2026
 
-**Goal remains open.** The fixed rubric minimum is4/5 for every dimension. Scores below reflect the current animal build; historical mechanical scores are not transferred. A targeted visual pass does not establish whole-game completion. Latest code passes formatting, type checking, 112 tests and production build. Commit `45f0a98` passed an independent Git-archive build with 110 tests; the GPU leg deformation and QA instrumentation are committed in `4961b03`; final independent delivery verification remains pending.
+**Delivery verified against the fixed rubric.** The fixed rubric minimum is4/5 for every dimension. Scores below reflect the current animal build; historical mechanical scores are not transferred. A targeted visual pass does not establish whole-game completion. Latest code passes formatting, type checking, 112 tests and production build. Commit `45f0a98` passed an independent Git-archive build with 110 tests; the GPU leg deformation and QA instrumentation are committed in `4961b03`; a fresh archive of delivery commit `09aa194` passes all required checks.
 
 | Dimension | Current supported assessment | Evidence / remaining scope |
 |---|---|---|
@@ -11,14 +11,14 @@
 | tower_animation / animal defenders |4/5 targeted, medium|[Fixed-length limb follow-up](animal-defender-review.md) verifies stable limbs, hand/bow/payload contact and four-view samples. Trader uses side view/purse gesture; no invented attack requirement.|
 | ui_identity |4/5 for reviewed states, medium|Timber/brass identity, selection/upgrade tray and phone settings retained. Phone defeat action clipping fixed and retry verified in [phone review](animal-phone-ui-review.md). No physical-touch claim.|
 | combat_feel |4/5, medium|[Consecutive normal-combat review](lantern-consecutive-motion-review.md) verifies distinct attacks, hit/recovery and sustained slow. Full normal runs in both encounters support economy/playability; broad balance and continuous perceptual cadence are not claimed.|
-| content_pipeline |4/5 provisional delivery gate|Native sources/prompts/hashes, shared arm/gait adapters and two biomes. All12 defender specs now match delivered landmarks/actions/portrait metadata with regression checks; reusable animal recipe added. [Packaging audit](animal-packaging-audit.md) found valid hashes but untracked delivery files/stale docs. Docs corrected; [fresh export](delivery-export-report.md) passes offline install, format, typecheck,102tests,build and byte-for-byte runtime-art verification. Camera-only delta recheck passed; the subsequent renderer changes need a refreshed export. Local implementation commit `45f0a98` passed a fresh Git-archive build; final GPU deformation changes and documentation/evidence delivery remain pending.|
+| content_pipeline |4/5, medium|Native sources/prompts/hashes, reusable animal recipe, all 12 defender specs and shared arm/gait adapters. Four animal roles and two biomes demonstrate reuse. [Final committed archive](delivery-export-report.md) passes installation, formatting, type checking, 112 tests, build and byte-for-byte verification of all 175 public files. Manual image generation, landmark measurement and visual review remain explicit steps.|
 | demo_coherence |4/5, medium|[Revised50-second cut](demo/stormwatch-demo-review.mp4) contains real boss/mixed/final-wave footage and has [independent review](lantern-consecutive-motion-review.md). Shot provenance, crops, silence and still/live montage are disclosed.|
 
 ## Delivery verification
 
 The original desktop performance profile passes on the final renderer candidate: all three in-app Chromium 152 runs achieved median 59.88 FPS, p95 17.6 ms, worst 17.8 ms and zero intervals over 100 ms. [Protocol and browser limitation](../../docs/evidence/animal-performance-summary.md). Chrome 153 retained isolated stress stalls; that result is not waived or labelled passing. Physical mobile performance is not assessed.
 
-Final source checkpoint `4961b03` passes 112 tests in 17 files, type checking, formatting and production build. The rebuilt renderer/QA bundle names match the measured candidate. Final documentation/evidence packaging and independent committed-delivery verification remain pending.
+Final source checkpoint `4961b03` passes 112 tests in 17 files, type checking, formatting and production build. The rebuilt renderer/QA bundle names match the measured candidate. Documentation, curated evidence and runtime assets are committed locally. A fresh archive of `09aa194` passes all required checks and reproduces the measured bundle; see [delivery verification](delivery-export-report.md).
 
 Actual busy-combat footage is saved, and independent consecutive-frame/edited-demo review is complete. These close the previous missing-content gates without claiming continuous perceptual playback or audio review.
 
