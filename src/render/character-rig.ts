@@ -1,3 +1,4 @@
+import { LegDeformation } from "./leg-deformation";
 import * as THREE from "three";
 import { solveTwoBone } from "./ik";
 import {
@@ -10,7 +11,7 @@ import { CutoutInstance, type CutoutPart, type CutoutResource } from "./cutout";
 type Leg = {
   part: CutoutPart;
   mesh: THREE.Mesh<THREE.PlaneGeometry, THREE.MeshBasicMaterial>;
-  original: Float32Array;
+  deformation: LegDeformation;
   hip: { x: number; y: number };
   knee: { x: number; y: number };
   sole: { x: number; y: number };
@@ -52,7 +53,6 @@ export class CharacterRig {
         20,
       );
       const positions = geometry.attributes.position;
-      (positions as THREE.BufferAttribute).setUsage(THREE.DynamicDrawUsage);
       for (let i = 0; i < positions.count; i++)
         positions.setXY(
           i,
@@ -85,7 +85,13 @@ export class CharacterRig {
         part,
         mesh,
         gait: createPathGaitWorkspace(),
-        original: new Float32Array(positions.array),
+        deformation: new LegDeformation(
+          mesh.material,
+          this.frontal,
+          local(part.joints.knee).y,
+          local(part.joints.ankle ?? part.joints.sole).y,
+          local(part.joints.sole),
+        ),
         hip: {
           x: sprite.position.x + (jointHip[0] - part.pivot[0]) * part.scale,
           y: sprite.position.y + (part.pivot[1] - jointHip[1]) * part.scale,
@@ -132,27 +138,7 @@ export class CharacterRig {
         // Knees flex in depth when viewed head-on. Project the cloth vertically
         // instead of bending both knees sideways in the image plane. Keep each
         // illustrated boot upright and rigid, with its sole at the gait target.
-        const positions = leg.mesh.geometry.attributes.position;
-        const ankleY = foot.y + leg.ankle.y - leg.sole.y;
-        for (let i = 0; i < positions.count; i++) {
-          const x = leg.original[i * 3],
-            y = leg.original[i * 3 + 1];
-          if (y <= leg.ankle.y) {
-            positions.setXY(
-              i,
-              foot.x + x - leg.sole.x,
-              foot.y + y - leg.sole.y,
-            );
-          } else {
-            const t = THREE.MathUtils.clamp(y / leg.ankle.y, 0, 1);
-            positions.setXY(
-              i,
-              THREE.MathUtils.lerp(hip.x + x, foot.x + x - leg.sole.x, t),
-              THREE.MathUtils.lerp(hip.y, ankleY, t),
-            );
-          }
-        }
-        positions.needsUpdate = true;
+        leg.deformation.setFront(hip, foot);
         leg.mesh.material.color.set(color);
         leg.mesh.renderOrder = order + leg.part.z * 0.01;
         continue;
@@ -166,28 +152,7 @@ export class CharacterRig {
       const lowerAngle =
         Math.atan2(pose.foot.y - pose.knee.y, pose.foot.x - pose.knee.x) -
         Math.atan2(leg.sole.y - leg.knee.y, leg.sole.x - leg.knee.x);
-      const uc = Math.cos(upperAngle),
-        us = Math.sin(upperAngle),
-        lc = Math.cos(lowerAngle),
-        ls = Math.sin(lowerAngle);
-      const positions = leg.mesh.geometry.attributes.position;
-      for (let i = 0; i < positions.count; i++) {
-        const x = leg.original[i * 3],
-          y = leg.original[i * 3 + 1];
-        const blend = THREE.MathUtils.smoothstep(
-          -y,
-          -leg.knee.y - 28,
-          -leg.knee.y + 28,
-        );
-        const ux = hip.x + x * uc - y * us,
-          uy = hip.y + x * us + y * uc;
-        const dx = x - leg.knee.x,
-          dy = y - leg.knee.y;
-        const lx = pose.knee.x + dx * lc - dy * ls,
-          ly = pose.knee.y + dx * ls + dy * lc;
-        positions.setXY(i, ux + (lx - ux) * blend, uy + (ly - uy) * blend);
-      }
-      positions.needsUpdate = true;
+      leg.deformation.setSide(hip, pose.knee, leg.knee, upperAngle, lowerAngle);
       leg.mesh.material.color.set(color);
       leg.mesh.renderOrder = order + leg.part.z * 0.01;
     }

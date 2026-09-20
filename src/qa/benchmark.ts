@@ -1,3 +1,4 @@
+import { TimingProbe } from "./timing-probe";
 import { Battlefield } from "../render/battlefield";
 import { Game } from "../sim/game";
 import { lanternPass } from "../content/lantern-pass";
@@ -7,7 +8,7 @@ import type { EnemyKind, TowerKind } from "../sim/types";
 
 // Deliberately artificial rendering stress. Never imported by the playable game.
 const root = document.querySelector<HTMLDivElement>("#qa")!;
-root.innerHTML = `<style>body{margin:0;background:#142825;color:#f5e5c0;font:14px system-ui}header{height:110px;padding:12px;box-sizing:border-box;display:flex;gap:16px;align-items:center}button{min-height:44px;padding:10px}#field{height:calc(100vh - 110px)}#status{white-space:pre-wrap}#results{position:absolute;bottom:8px;left:8px;max-height:35vh;overflow:auto;background:#142825ed;font-size:11px;pointer-events:none}</style><header><div><b>Stormwatch · artificial stress fixture</b><br>Seed 42 · 60 enemies · 12 defenses · 3 lodges<br>150 combined shots/effects · 10s warmup + 180s × 3</div><button id="start">Run three benchmarks</button><button id="diagnostic">Run one diagnostic</button><button id="download" disabled>Download evidence</button><span id="status">Ready. Keep this tab visible.</span></header><div id="field"></div><pre id="results"></pre>`;
+root.innerHTML = `<style>body{margin:0;background:#142825;color:#f5e5c0;font:14px system-ui}header{height:110px;padding:12px;box-sizing:border-box;display:flex;gap:16px;align-items:center}button{min-height:44px;padding:10px}#field{height:calc(100vh - 110px)}#status{white-space:pre-wrap}#results{position:absolute;bottom:8px;left:8px;max-height:35vh;overflow:auto;background:#142825ed;font-size:11px;pointer-events:none}</style><header><div><b>Stormwatch · artificial stress fixture</b><br>Seed 42 · 60 enemies · 12 defenses · 3 lodges<br>150 combined shots/effects · 10s warmup + 180s × 3</div><button id="start">Run three benchmarks</button><button id="diagnostic">Run one diagnostic</button><button id="attribution">Run attribution diagnostic</button><button id="download" disabled>Download evidence</button><span id="status">Ready. Keep this tab visible.</span></header><div id="field"></div><pre id="results"></pre>`;
 const field = new Battlefield(document.querySelector("#field")!);
 field.profileTiming = true;
 let game: Game;
@@ -17,7 +18,10 @@ let last = 0;
 let running = false;
 let run = 0;
 let runLimit = 3;
+let timingProbe: TimingProbe | undefined;
 let samples: number[] = [];
+let renderedIntervals: number[] = [];
+let lastRendered = 0;
 let invalid = false;
 let transitions: { time: number; phase: string; payout: boolean }[] = [];
 const results: unknown[] = [];
@@ -27,6 +31,7 @@ let rescueCount = 0;
 let previousWork = {
   totalMs: 0,
   renderMs: 0,
+  rendered: false,
   rebuiltScene: false,
   phase: "idle",
   renderer: { ...field.frameProfile },
@@ -131,6 +136,7 @@ function percentile(values: number[], fraction: number) {
 }
 function finishRun() {
   const ordered = [...samples].sort((a, b) => a - b);
+  const renderedOrder = [...renderedIntervals].sort((a, b) => a - b);
   const defenses = game.state.towers.filter(
     (tower) => tower.kind !== "trade",
   ).length;
@@ -141,6 +147,13 @@ function finishRun() {
     run: run + 1,
     seed: 42,
     sampleCount: samples.length,
+    renderedCadence: {
+      sampleCount: renderedOrder.length,
+      medianFps: 1000 / percentile(renderedOrder, 0.5),
+      p95Ms: percentile(renderedOrder, 0.95),
+      worstMs: renderedOrder.at(-1),
+      framesOver100Ms: renderedOrder.filter((v) => v > 100).length,
+    },
     medianFps: 1000 / percentile(ordered, 0.5),
     p95Ms: percentile(ordered, 0.95),
     worstMs: ordered.at(-1),
@@ -163,8 +176,9 @@ function finishRun() {
       ]),
     ),
     longFrames,
+    attribution: timingProbe?.stop(),
     cpuTimingNote:
-      "Synchronous JavaScript work only; does not measure asynchronous GPU completion. Long intervals include preceding frame work and browser scheduling.",
+      "Wall-clock elapsed time inside callbacks and render phases, not CPU execution time or asynchronous GPU completion. Long intervals include preceding work and browser scheduling.",
     peakEnemies,
     defenses,
     lodges,
@@ -185,9 +199,12 @@ function finishRun() {
     null,
     2,
   );
+  timingProbe = undefined;
   run++;
   if (run === runLimit) {
     running = false;
+    (document.querySelector("#attribution") as HTMLButtonElement).disabled =
+      false;
     status.textContent = "Complete. Download evidence.";
     (document.querySelector("#download") as HTMLButtonElement).disabled = false;
     (document.querySelector("#start") as HTMLButtonElement).disabled = false;
@@ -198,6 +215,8 @@ function finishRun() {
 function resetRun() {
   elapsed = 0;
   samples = [];
+  renderedIntervals = [];
+  lastRendered = 0;
   renderSamples = [];
   workSamples = [];
   phaseSamples = { figures: [], effects: [], submission: [] };
@@ -248,39 +267,60 @@ function frame(now: number) {
     }
     game.drainEvents();
     const renderStart = performance.now();
-    field.update(game, null, Math.min(raw / 1000, 0.1));
+    const rendered = true;
+    if (rendered) {
+      field.update(game, null, Math.min(raw / 1000, 0.1));
+      if (elapsed >= 10 && lastRendered)
+        renderedIntervals.push(now - lastRendered);
+      lastRendered = now;
+    }
     const renderMs = performance.now() - renderStart;
     peakEnemies = Math.max(peakEnemies, game.state.enemies.length);
     peakEffects = Math.max(
       peakEffects,
       game.state.shots.length + game.state.effects.length,
     );
-    status.textContent = `Run ${run + 1}/${runLimit} · ${elapsed < 10 ? "warmup" : "measuring"} ${elapsed.toFixed(0)}/190s\n${game.state.enemies.length} enemies · ${game.state.shots.length + game.state.effects.length} shots/effects · ${game.state.phase}${invalid ? " · INVALID: hidden tab" : ""}`;
+    const nextStatus = `Run ${run + 1}/${runLimit} · ${elapsed < 10 ? "warmup" : "measuring"} ${elapsed.toFixed(0)}/190s\n${game.state.enemies.length} enemies · ${game.state.shots.length + game.state.effects.length} shots/effects · ${game.state.phase}${invalid ? " · INVALID: hidden tab" : ""}`;
+    if (status.textContent !== nextStatus) status.textContent = nextStatus;
     previousWork = {
       totalMs: performance.now() - workStart,
       renderMs,
+      rendered,
       rebuiltScene,
       phase: game.state.phase,
-      renderer: { ...field.frameProfile },
+      renderer: rendered
+        ? { ...field.frameProfile }
+        : {
+            figuresMs: 0,
+            effectsMs: 0,
+            submissionMs: 0,
+            createdRigs: 0,
+            drawCalls: 0,
+          },
     };
     if (elapsed >= 10) {
-      renderSamples.push(renderMs);
       workSamples.push(previousWork.totalMs);
+    }
+    if (elapsed >= 10 && rendered) {
+      renderSamples.push(renderMs);
       phaseSamples.figures.push(field.frameProfile.figuresMs);
       phaseSamples.effects.push(field.frameProfile.effectsMs);
       phaseSamples.submission.push(field.frameProfile.submissionMs);
     }
+    timingProbe?.frame(raw, workStart, performance.now());
     if (elapsed >= 190) finishRun();
   }
   requestAnimationFrame(frame);
 }
-function startRuns(count: number) {
+function startRuns(count: number, attribution = false) {
   runLimit = count;
   results.length = 0;
   run = 0;
   resetRun();
+  timingProbe = attribution ? new TimingProbe() : undefined;
   running = true;
-  last = performance.now();
+  (document.querySelector("#attribution") as HTMLButtonElement).disabled = true;
+  last = 0;
   (document.querySelector("#start") as HTMLButtonElement).disabled = true;
   (document.querySelector("#diagnostic") as HTMLButtonElement).disabled = true;
   (document.querySelector("#download") as HTMLButtonElement).disabled = true;
@@ -289,6 +329,9 @@ document.querySelector("#start")!.addEventListener("click", () => startRuns(3));
 document
   .querySelector("#diagnostic")!
   .addEventListener("click", () => startRuns(1));
+document
+  .querySelector("#attribution")!
+  .addEventListener("click", () => startRuns(1, true));
 document.querySelector("#download")!.addEventListener("click", () => {
   const a = document.createElement("a");
   a.href = URL.createObjectURL(
