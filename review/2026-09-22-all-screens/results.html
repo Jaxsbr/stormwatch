@@ -1,0 +1,16 @@
+<!doctype html>
+<html lang="en">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Result screen review</title><link rel="stylesheet" href="/fonts/fonts.css"></head>
+<body>
+<main class="battle-screen"><div class="result-overlay" id="result"></div></main>
+<script type="module">
+import "/src/style.css";
+import "/src/ui/advantage-screen.css";
+import "/src/ui/game-chrome.css";
+import "/src/ui/button-skin.css";
+import { resultCard } from "/src/ui/game-chrome.ts";
+const phase = new URLSearchParams(location.search).has("lost") ? "lost" : "won";
+document.getElementById("result").innerHTML = resultCard({phase,stars:3},true,false);
+</script>
+</body>
+</html>

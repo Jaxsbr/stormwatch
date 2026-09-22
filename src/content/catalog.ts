@@ -107,7 +107,7 @@ export const CARDS: {
     id: "supply",
     name: "Supply wagons",
     tag: "RESOURCES",
-    description: "Begin with 45 extra crowns. Build now, or save for interest.",
+    description: "Begin with 45 extra gold. Build now, or save for interest.",
     icon: "▣",
   },
   {

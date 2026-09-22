@@ -1,0 +1,261 @@
+/* All action controls share the approved advantage-screen timber artwork. */
+.game-art-button.game-art-button {
+  border: solid transparent;
+  border-width: 13px 18px 12px;
+  border-image: url("../../public/art/v2/timber-ui-frame-v1/atlas.webp") 290 280
+    195 280 stretch;
+  border-radius: 0;
+  background: linear-gradient(#615038, #302b21);
+  background-clip: padding-box;
+  box-shadow: none;
+  color: #f4e3bb;
+  font: 700 26px/1.1 var(--serif);
+  min-height: 60px;
+  min-width: 140px;
+  padding: 5px 20px 8px;
+  text-shadow: 0 2px 2px #000;
+}
+.game-art-button.game-art-button--primary {
+  background-image: linear-gradient(#9a7338, #594020);
+  color: #fff1c9;
+}
+.game-art-button:disabled {
+  opacity: 0.5;
+  filter: saturate(0.4);
+}
+.game-art-button:focus-visible {
+  outline: 3px solid #ffe3a0;
+  outline-offset: 3px;
+}
+.title-screen .title-copy {
+  top: 25%;
+}
+.title-copy .game-art-button {
+  margin-top: 38px;
+  min-width: 220px;
+}
+.title-top .game-art-button {
+  font-size: 22px;
+}
+.expedition.menu-screen {
+  grid-template-rows: auto minmax(0, 1fr) auto;
+  padding: 26px max(30px, 5vw);
+  gap: 24px;
+}
+.expedition .map-heading {
+  padding: 0;
+  text-align: center;
+}
+.expedition .map-heading h1 {
+  font-size: clamp(32px, 4vw, 48px);
+  color: #f2dfb7;
+}
+.expedition .expedition-map {
+  width: min(88vw, calc((100dvh - 225px) * 1.7768));
+  max-width: 1100px;
+}
+.expedition .menu-footer {
+  border: 0;
+  padding: 0;
+  min-height: 0;
+  background: none;
+}
+.settings-card {
+  width: 450px;
+  max-height: calc(100dvh - 24px);
+  overflow: auto;
+}
+.settings-card label {
+  font-size: 16px;
+}
+.settings-card > p:not(.eyebrow) {
+  font-size: 16px;
+  line-height: 1.4;
+}
+.game-credits {
+  margin: 12px 0;
+  color: #bdc5b4;
+}
+.game-credits summary {
+  cursor: pointer;
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+}
+.game-credits p {
+  font-size: 13px;
+  line-height: 1.5;
+}
+.result-card {
+  width: min(680px, 100%);
+}
+.result-card .unlock-note {
+  font-size: 17px !important;
+  line-height: 1.5;
+}
+.result-card .assist-help {
+  margin-top: 16px !important;
+  font-size: 15px !important;
+}
+.result-card > small {
+  font-size: 14px;
+}
+.result-actions .game-art-button {
+  min-width: 140px;
+}
+.battle-screen .game-art-button {
+  min-width: 0;
+  min-height: 44px;
+  height: auto;
+  padding: 3px 9px;
+  border-width: 8px 9px 7px;
+  font-size: 18px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+}
+.battle-tools .game-art-button {
+  width: auto;
+}
+.battle-tools {
+  gap: 6px;
+}
+.battle-brand {
+  gap: 10px;
+}
+.battle-screen .wave-controls .game-art-button {
+  width: 100%;
+}
+.battle-screen .rescue-button {
+  flex-wrap: wrap;
+}
+.battle-screen .rescue-button small {
+  font:
+    12px/1.2 "DM Sans",
+    sans-serif;
+}
+.battle-screen .selection-actions {
+  flex-wrap: wrap;
+}
+.field-instruction:empty,
+#field-instruction:empty {
+  display: none;
+}
+.battle-screen .economy-panel {
+  border: solid transparent;
+  border-width: 12px 11px 10px;
+  border-image: url("../../public/art/v2/timber-ui-frame-v1/atlas.webp") 290 280
+    195 280 stretch;
+  border-radius: 0;
+  background: #292d23f5;
+  background-clip: padding-box;
+  padding: 6px 10px;
+}
+.battle-screen .economy-panel summary {
+  min-height: 30px;
+}
+.tray-label:has(#cancel:not([hidden])) #build-label {
+  display: none;
+}
+.battle-screen .pause-overlay .game-art-button,
+.battle-screen .result-card .game-art-button {
+  font-size: 23px;
+  min-height: 52px;
+  padding: 5px 15px;
+}
+@media (orientation: landscape) and (max-height: 600px) {
+  .game-art-button.game-art-button {
+    min-height: 48px;
+    min-width: 120px;
+    padding: 1px 15px 4px;
+    border-width: 10px 14px 9px;
+    font-size: 23px;
+  }
+  .title-screen {
+    min-height: 100dvh;
+  }
+  .title-screen .title-copy {
+    top: 14%;
+  }
+  .title-copy .game-art-button {
+    margin-top: 18px;
+  }
+  .title-top {
+    top: 12px;
+  }
+  .expedition.menu-screen {
+    padding: 12px 30px;
+    gap: 15px;
+  }
+  .expedition .map-heading h1 {
+    font-size: 30px;
+  }
+  .expedition .expedition-map {
+    width: min(86vw, calc((100dvh - 140px) * 1.7768));
+  }
+  .expedition .map-node {
+    width: 155px;
+  }
+  .settings-card {
+    border-width: 20px 24px 16px;
+    padding: 4px 18px 10px;
+  }
+  .settings-card h2 {
+    margin: 4px 0 10px;
+  }
+  .settings-card label {
+    min-height: 44px;
+  }
+  .game-credits {
+    margin: 0;
+  }
+  .settings-card > button {
+    margin-top: 3px;
+  }
+  .battle-screen .game-art-button {
+    min-width: 0;
+    min-height: 44px;
+    padding: 2px 7px;
+    border-width: 7px 8px 6px;
+    font-size: 16px;
+  }
+  .battle-screen .battle-tools #speed {
+    display: inline-flex;
+  }
+  .battle-brand strong {
+    font-size: 18px;
+  }
+  .battle-header {
+    gap: 8px;
+  }
+  .hud-stats {
+    gap: 14px;
+  }
+  .battle-tools {
+    gap: 3px;
+  }
+  .battle-screen .result-card {
+    border-width: 20px 24px 16px;
+    padding: 4px 14px 12px;
+  }
+  .result-card h1 {
+    font-size: 36px;
+    margin: 6px 0;
+  }
+  .result-stars {
+    font-size: 27px;
+    margin-bottom: 5px;
+  }
+  .result-actions {
+    margin-top: 10px;
+  }
+  .result-card .unlock-note {
+    font-size: 15px !important;
+  }
+  .battle-screen .pause-overlay .game-art-button,
+  .battle-screen .result-card .game-art-button {
+    min-height: 44px;
+    font-size: 20px;
+  }
+}

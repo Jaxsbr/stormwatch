@@ -1,0 +1,26 @@
+{
+  "id": "timber-button-v2",
+  "kind": "ui",
+  "provenance": "Native built-in image generation; exact prompt retained in prompt.txt",
+  "source": "assets/source/ui/timber-button-v2.png",
+  "sourceSha256": "d11c33bd94e8320f1c60ec83d89c1600849671f5c0acff1d3093c3287485515c",
+  "crop": {
+    "left": 66,
+    "top": 71,
+    "width": 1644,
+    "height": 740
+  },
+  "width": 1644,
+  "height": 740,
+  "slices": [
+    166,
+    166,
+    166,
+    166
+  ],
+  "center": "Integrated generated brown fill; no transparent opening",
+  "encoding": "Lossless WebP; decoded alpha checked byte-for-byte against native crop",
+  "minCenterAlpha": 252,
+  "bytes": 1076774,
+  "sha256": "570b7587af3da745ad18e65e0d280bc3e2dc37226505bb0a9a91ff91af931fac"
+}

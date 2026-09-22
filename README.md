@@ -31,7 +31,7 @@ Serve `dist/` over HTTP; opening its HTML as a filesystem URL is unsupported. Th
 
 Choose an encounter and one support card. Select a structure, then click/tap clear ground beside the trail. Placement stays active until **Cancel**. Cancel and select an existing structure to inspect its range, upgrade or sell. Start each wave when ready. During a wave, choose **Supply drop** and tap the trail. Pause and sound settings are always available. Defeat offers a free retry or assistance.
 
-Interest pays 10% of your unspent crowns, rounded down and capped at 20, when a wave ends. Donkey traders pay 12 crowns per wave, or 22 when upgraded. Interest is calculated before any wave payout. Waiting and pausing earn nothing. Progress and settings stay in this browser's local storage; clearing site data removes them.
+Interest pays 10% of your unspent gold, rounded down and capped at 20, when a wave ends. Donkey traders pay 12 gold per wave, or 22 when upgraded. Interest is calculated before any wave payout. Waiting and pausing earn nothing. Progress and settings stay in this browser's local storage; clearing site data removes them.
 
 ## Project guide
 

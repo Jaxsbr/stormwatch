@@ -1,0 +1,12 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Button skin review</title><link rel="stylesheet" href="/fonts/fonts.css"></head>
+<body><main class="battle-screen" style="display:block;padding:24px;min-height:100vh"><h2>Compact actions · shared production skin</h2><div class="selection-actions" style="display:flex;flex-wrap:wrap;gap:12px" id="actions"></div><div class="result-card" style="margin:24px 0" id="results"></div></main>
+<script type="module">
+import '/src/style.css';
+import '/src/ui/advantage-screen.css';
+import '/src/ui/game-chrome.css';
+import '/src/ui/button-skin.css';
+import {button} from '/src/ui/game-chrome.ts';
+document.querySelector('#actions').innerHTML=['Map','1×','Pause','Settings','Cancel','Upgrade · 55','Sell · +61','Close','Supply drop','Start wave 1'].map(label=>button('review',label,'secondary')).join('')+button('review','Fully upgraded','secondary','disabled');
+document.querySelector('#results').innerHTML=button('review','Play again','primary')+button('review','Easier retry','secondary');
+</script></body></html>

@@ -1,7 +1,12 @@
 import "./style.css";
+import "./ui/advantage-screen.css";
+import "./ui/game-chrome.css";
+import "./ui/button-skin.css";
+import { button, resultCard } from "./ui/game-chrome";
+import { advantageScreen } from "./ui/advantage-screen";
 import { Game } from "./sim/game";
 import type { CardId, Point, TowerKind } from "./sim/types";
-import { TOWERS, CARDS, ENEMIES } from "./content/catalog";
+import { TOWERS, CARDS } from "./content/catalog";
 import { LEVELS } from "./content/levels";
 import { refundFor, tradeIncome } from "./sim/economy";
 import { Battlefield } from "./render/battlefield";
@@ -48,8 +53,6 @@ let noticeText = "";
 let frameHandle = 0;
 let disposeRecording: (() => void) | undefined;
 const frames: number[] = [];
-const button = (action: string, label: string, cls = "", extra = "") =>
-  `<button data-action="${action}" class="${cls}" ${extra}>${label}</button>`;
 const portrait = (index: number, cls = "") =>
   index < 4
     ? towerPortrait((["bolt", "stone", "net", "trade"] as const)[index])
@@ -71,9 +74,6 @@ function toast(text: string) {
     t.classList.add("visible");
   }
 }
-function commonHeader(eyebrow: string) {
-  return `<header class="screen-header"><a class="wordmark" href="#" data-action="title">STORMWATCH</a><span class="eyebrow header-label">${eyebrow}</span>${button("settings", '<span aria-hidden="true">⚙</span><span class="sr-only">Settings</span>', "icon-button")}</header>`;
-}
 function render() {
   disposeRecording?.();
   disposeRecording = undefined;
@@ -81,22 +81,25 @@ function render() {
   field = null;
   settings = false;
   if (screen === "title")
-    app.innerHTML = `<main class="title-screen"><div class="title-shade"></div><div class="title-top"><span></span>${button("settings", "Settings", "quiet")}</div><section class="title-copy"><div class="crest" aria-hidden="true">♜</div><h1>STORM<span>WATCH</span></h1><p class="title-sub">Hold the lantern line.</p>${button("map", Object.keys(save.stars).length ? "Continue the expedition <span>→</span>" : "Begin the expedition <span>→</span>", "primary large")}</section></main>`;
+    app.innerHTML = `<main class="title-screen"><div class="title-shade"></div><div class="title-top"><span></span>${button("settings", "Settings", "quiet")}</div><section class="title-copy"><h1>STORM<span>WATCH</span></h1>${button("map", "Play", "primary large")}</section></main>`;
   if (screen === "map")
-    app.innerHTML = `<main class="menu-screen expedition">${commonHeader("YOUR EXPEDITION")}<section class="map-heading"><h1>Choose your crossing</h1></section><div class="expedition-map"><div class="map-land"></div>${LEVELS.map(
+    app.innerHTML = `<main class="menu-screen expedition"><section class="map-heading"><h1>Choose your crossing</h1></section><div class="expedition-map"><div class="map-land"></div>${LEVELS.map(
       (l, i) => {
         const unlocked = i === 0 || (save.stars[LEVELS[i - 1].id] ?? 0) > 0;
         return `<button class="map-node node-${i} ${unlocked ? "" : "locked"}" data-action="level:${i}" ${unlocked ? "" : "disabled"}><span class="node-medallion">${unlocked ? "♜" : "⌑"}</span><span class="node-number">0${i + 1}</span><strong>${l.name}</strong><span class="map-stars">${stars(save.stars[l.id] ?? 0)}</span><small>${unlocked ? "" : "Complete Lantern Pass"}</small></button>`;
       },
     ).join(
       "",
-    )}</div><footer class="menu-footer">${button("title", "← Title", "quiet")}<span>${save.unlocked.includes("thrift") ? "Careful carpenters unlocked" : "Complete Lantern Pass to open the river crossing."}</span></footer></main>`;
+    )}</div><footer class="menu-footer">${button("title", "Back", "quiet")}</footer></main>`;
   if (screen === "briefing") {
-    const level = LEVELS[levelIndex],
-      cards = CARDS.filter(
-        (c) => c.id !== "thrift" || save.unlocked.includes("thrift"),
-      );
-    app.innerHTML = `<main class="menu-screen briefing">${commonHeader(level.subtitle)}<div class="briefing-body"><section class="briefing-intro"><p class="eyebrow gold">PREPARE YOUR WATCH</p><h1>${level.name}</h1><p>${level.description}</p><div class="mission-facts"><span><b>${level.waves.length}</b> waves</span><span><b>5–8</b> minutes</span><span><b>12</b> village hearts</span></div><div class="enemy-preview"><span class="eyebrow">ON THE TRAIL</span><div>${(["raider", "runner", "armored"] as const).map((k) => `<span title="${ENEMIES[k].name}">${portrait(ENEMIES[k].sprite)}<small>${ENEMIES[k].name}</small></span>`).join("")}</div></div><p class="briefing-tip">Spend crowns on defenses, or keep a reserve to earn <strong>10% interest</strong> after each wave, up to 20 crowns. Donkey traders add steady income.</p></section><section class="card-choice"><h2>Choose one advantage</h2><div class="cards">${cards.map((c) => `<button class="support-card ${card === c.id ? "chosen" : ""}" data-action="card:${c.id}" aria-pressed="${card === c.id}"><svg class="card-art" viewBox="${{ reach: "0 0 565 724", supply: "565 0 550 724", nets: "1115 0 515 724", thrift: "1630 0 542 724" }[c.id]}" aria-hidden="true"><defs><clipPath id="card-clip-${c.id}"><rect x="${{ reach: 0, supply: 565, nets: 1115, thrift: 1630 }[c.id]}" y="0" width="${{ reach: 565, supply: 550, nets: 515, thrift: 542 }[c.id]}" height="724"/></clipPath></defs><image clip-path="url(#card-clip-${c.id})" href="${import.meta.env.BASE_URL}art/v2/advantage-icons-v1/atlas.webp" width="2172" height="724"/></svg><small>${c.tag}</small><h3>${c.name}</h3><p>${c.description}</p><span class="card-check">${card === c.id ? "✓ Selected" : "Choose this card"}</span></button>`).join("")}</div></section></div><footer class="menu-footer">${button("map", "← Expedition", "quiet")}<span class="quiet-note">You can build and plan before starting each wave.</span>${button("begin", "Take your positions <span>→</span>", "primary")}</footer></main>`;
+    const cards = CARDS.filter(
+      (c) => c.id !== "thrift" || save.unlocked.includes("thrift"),
+    );
+    app.innerHTML = advantageScreen(
+      LEVELS[levelIndex],
+      cards.map((c) => c.id),
+      card,
+    );
   }
   if (screen === "battle") renderBattle();
   void paintTowerPortraits(app);
@@ -107,7 +110,7 @@ function render() {
 }
 function renderBattle() {
   const l = LEVELS[levelIndex];
-  app.innerHTML = `<main class="battle-screen"><header class="battle-header"><div class="battle-brand">${button("leave", "←", "icon-button", 'aria-label="Return to expedition"')}<div><strong>${l.name}</strong></div></div><div class="hud-stats"><div class="stat"><span>CROWNS</span><b id="coins">0</b></div><div class="stat"><span>VILLAGE</span><b id="lives">12 / 12</b></div><div class="stat"><span>WAVE</span><b id="wave">0 / ${l.waves.length}</b></div></div><div class="battle-tools">${button("speed", "1×", "icon-button", 'aria-label="Game speed" id="speed"')}${button("pause", "Ⅱ", "icon-button", 'aria-label="Pause game" id="pause"')}${button("settings", "⚙", "icon-button", 'aria-label="Settings"')}</div></header><div class="battle-middle"><section class="battlefield"><div id="canvas-host"></div><div class="field-heading"><span class="eyebrow" id="phase-label">PREPARATION</span><p id="field-instruction">Choose a structure below, then tap open ground.</p></div><div id="field-message" class="field-message"></div><div id="pause-overlay" class="pause-overlay" hidden><div><h2>Paused</h2><p>Time and income are paused.</p>${button("pause", "Resume the watch", "primary")}</div></div><div id="result-overlay" class="result-overlay" hidden></div></section><aside class="battle-aside"><details class="economy-panel"><summary>Next payout <b id="forecast-summary">+0</b></summary><div class="payout-total"><b id="forecast-total">+0</b><span>projected crowns</span></div><dl><div><dt>Wave reward</dt><dd id="forecast-reward">+0</dd></div><div><dt>Trading income</dt><dd id="forecast-trade">+0</dd></div><div><dt>Savings interest <span title="10% of savings, maximum 20 crowns">ⓘ</span></dt><dd id="forecast-interest">+0</dd></div></dl><p class="economy-note">Interest uses your savings before the payout. Waiting never earns income.</p></details><div class="wave-controls">${button("rescue", '<span>✥</span> Supply drop <small id="rescue-status">Ready</small>', "rescue-button", 'id="rescue"')}${button("start", "Start wave <span>→</span>", "primary", 'id="start-wave"')}</div></aside></div><footer class="build-tray"><section id="selection-panel" class="selection-panel"></section><div class="tray-label"><strong id="build-label">Choose a structure</strong>${button("cancel", "Cancel", "quiet small", 'id="cancel" hidden')}</div><div class="tower-buttons">${(Object.keys(TOWERS) as TowerKind[]).map((k) => `<button class="tower-button" data-action="build:${k}" id="build-${k}">${portrait(TOWERS[k].sprite)}<span><strong>${TOWERS[k].name}</strong><small>${TOWERS[k].role}</small></span><b>${TOWERS[k].cost}<small> crowns</small></b></button>`).join("")}</div></footer></main>`;
+  app.innerHTML = `<main class="battle-screen"><header class="battle-header"><div class="battle-brand">${button("leave", "Map", "icon-button", 'aria-label="Return to map"')}<div><strong>${l.name}</strong></div></div><div class="hud-stats"><div class="stat"><span>GOLD</span><b id="coins">0</b></div><div class="stat"><span>VILLAGE</span><b id="lives">12 / 12</b></div><div class="stat"><span>WAVE</span><b id="wave">0 / ${l.waves.length}</b></div></div><div class="battle-tools">${button("speed", "1×", "icon-button", 'aria-label="Game speed" id="speed"')}${button("pause", "Pause", "icon-button", 'aria-label="Pause game" id="pause"')}${button("settings", "Settings", "icon-button", 'aria-label="Settings"')}</div></header><div class="battle-middle"><section class="battlefield"><div id="canvas-host"></div><div class="field-heading"><span class="eyebrow" id="phase-label">PREPARATION</span><p id="field-instruction">Choose a structure below, then tap open ground.</p></div><div id="field-message" class="field-message"></div><div id="pause-overlay" class="pause-overlay" hidden><div><h2>Paused</h2>${button("pause", "Resume", "primary")}</div></div><div id="result-overlay" class="result-overlay" hidden></div></section><aside class="battle-aside"><details class="economy-panel"><summary>Next payout <b id="forecast-summary">+0</b></summary><div class="payout-total"><b id="forecast-total">+0</b><span>projected gold</span></div><dl><div><dt>Wave reward</dt><dd id="forecast-reward">+0</dd></div><div><dt>Trading income</dt><dd id="forecast-trade">+0</dd></div><div><dt>Savings interest <span title="10% of savings, maximum 20 gold">ⓘ</span></dt><dd id="forecast-interest">+0</dd></div></dl></details><div class="wave-controls">${button("rescue", 'Supply drop <small id="rescue-status">Ready</small>', "rescue-button", 'id="rescue"')}${button("start", "Start wave", "primary", 'id="start-wave"')}</div></aside></div><footer class="build-tray"><section id="selection-panel" class="selection-panel"></section><div class="tray-label"><strong id="build-label">Choose a structure</strong>${button("cancel", "Cancel", "quiet small", 'id="cancel" hidden')}</div><div class="tower-buttons">${(Object.keys(TOWERS) as TowerKind[]).map((k) => `<button class="tower-button" data-action="build:${k}" id="build-${k}">${portrait(TOWERS[k].sprite)}<span><strong>${TOWERS[k].name}</strong><small>${TOWERS[k].role}</small></span><b>${TOWERS[k].cost}<small> gold</small></b></button>`).join("")}</div></footer></main>`;
   try {
     field = new Battlefield(document.querySelector("#canvas-host")!);
     field.load(l);
@@ -142,7 +145,7 @@ function pick(p: Point) {
     } else
       toast(
         game.canPlace(p)
-          ? "Not enough crowns. Save up or choose a lighter defense."
+          ? "Not enough gold."
           : "Choose clear ground beside the trail.",
       );
   } else {
@@ -195,8 +198,8 @@ function updateHud() {
       : build
         ? `Tap open ground to place ${TOWERS[build].name.toLowerCase()}.`
         : s.phase === "preparation"
-          ? "Build, upgrade, or save. Start the wave when you are ready."
-          : "Keep the trail covered. Select a tower to inspect or upgrade.",
+          ? ""
+          : "",
   );
   text(
     "build-label",
@@ -213,12 +216,12 @@ function updateHud() {
   start.disabled = s.phase !== "preparation";
   start.innerHTML =
     s.phase === "won"
-      ? "Watch complete"
+      ? "Victory"
       : s.phase === "lost"
-        ? "Watch ended"
+        ? "Defeat"
         : activeWave
           ? `${s.enemies.length} on the trail`
-          : `Start wave ${s.wave + 1} <span>→</span>`;
+          : `Start wave ${s.wave + 1}`;
   const remaining = Math.max(0, Math.ceil(s.abilityReadyAt - s.clock));
   const rescue = document.querySelector<HTMLButtonElement>("#rescue")!;
   rescue.disabled = s.phase !== "wave" || remaining > 0;
@@ -227,7 +230,13 @@ function updateHud() {
     "rescue-status",
     remaining ? `${remaining}s` : rescueMode ? "Tap the trail" : "Ready",
   );
-  text("pause", s.phase === "paused" ? "▶" : "Ⅱ");
+  text("pause", s.phase === "paused" ? "Resume" : "Pause");
+  document
+    .getElementById("pause")!
+    .setAttribute(
+      "aria-label",
+      s.phase === "paused" ? "Resume game" : "Pause game",
+    );
   document.querySelector<HTMLButtonElement>("#pause")!.disabled =
     s.phase === "won" || s.phase === "lost";
   document.getElementById("pause-overlay")!.hidden = s.phase !== "paused";
@@ -241,7 +250,7 @@ function updateHud() {
   const t = s.towers.find((t) => t.id === selected),
     panel = document.getElementById("selection-panel")!;
   const content = t
-    ? `<div class="selected-heading">${portrait(TOWERS[t.kind].sprite)}<div><span class="eyebrow">LEVEL ${t.level} / 2</span><h3>${TOWERS[t.kind].name}</h3></div></div><p>${t.kind === "trade" ? `Pays ${tradeIncome([t])} crowns after each wave.` : `${Math.round(TOWERS[t.kind].damage * (t.level === 2 ? 1.7 : 1))} damage · ${game.range(t).toFixed(1)} range${t.kind === "net" ? " · slows enemies" : ""}`}</p><div class="selection-actions">${button("upgrade", t.level === 2 ? "Fully upgraded" : `Upgrade · ${game.upgradeCost(t)}`, "secondary", `${t.level === 2 || s.coins < game.upgradeCost(t) || !game.canAct() ? "disabled" : ""}`)}${button("sell", `Sell · +${refundFor(t.spent)}`, "quiet", `${!game.canAct() ? "disabled" : ""}`)}${button("inspect-close", "Structures", "quiet")}</div>`
+    ? `<div class="selected-heading">${portrait(TOWERS[t.kind].sprite)}<div><span class="eyebrow">LEVEL ${t.level} / 2</span><h3>${TOWERS[t.kind].name}</h3></div></div><p>${t.kind === "trade" ? `Pays ${tradeIncome([t])} gold after each wave.` : `${Math.round(TOWERS[t.kind].damage * (t.level === 2 ? 1.7 : 1))} damage · ${game.range(t).toFixed(1)} range${t.kind === "net" ? " · slows enemies" : ""}`}</p><div class="selection-actions">${button("upgrade", t.level === 2 ? "Fully upgraded" : `Upgrade · ${game.upgradeCost(t)}`, "secondary", `${t.level === 2 || s.coins < game.upgradeCost(t) || !game.canAct() ? "disabled" : ""}`)}${button("sell", `Sell · +${refundFor(t.spent)}`, "quiet", `${!game.canAct() ? "disabled" : ""}`)}${button("inspect-close", "Close", "quiet")}</div>`
     : "";
   const inspecting = !!t && !build && !rescueMode;
   panel.hidden = !inspecting;
@@ -256,7 +265,7 @@ function updateHud() {
   const message = document.getElementById("field-message")!;
   message.innerHTML =
     s.lastPayout && s.phase === "preparation"
-      ? `<span>✓ Wave held</span> +${s.lastPayout.total} crowns <small>${s.lastPayout.interest} interest · ${s.lastPayout.trade} trade · ${s.lastPayout.reward} reward</small>`
+      ? `<span>✓ Wave held</span> +${s.lastPayout.total} gold <small>${s.lastPayout.interest} interest · ${s.lastPayout.trade} trade · ${s.lastPayout.reward} reward</small>`
       : "";
   if (s.phase === "won" || s.phase === "lost") showResult();
 }
@@ -272,7 +281,7 @@ function showResult() {
   const el = document.getElementById("result-overlay")!;
   el.hidden = false;
   if (el.innerHTML) return;
-  el.innerHTML = `<section class="result-card"><p class="eyebrow gold">${won ? "THE LANTERNS STILL BURN" : "THE WATCH WILL RISE AGAIN"}</p><h1>${won ? "You brought them home." : "A new plan. Another dawn."}</h1><div class="result-stars">${won ? stars(s.stars) : "◇"}</div><p>${won ? "The village is safe. Your choices made the difference." : "The line broke, but your expedition progress is safe. Try different positions, or ask for a little help."}</p><div class="result-stats"><span><b>${s.kills}</b> raiders stopped</span><span><b>${s.totalInterest}</b> interest earned</span><span><b>${s.totalTrade}</b> trading income</span></div>${won && levelIndex === 0 ? '<p class="unlock-note">✦ Rainstone Crossing & Careful carpenters unlocked</p>' : ""}<div class="result-actions">${button("map", "Return to expedition", "primary")}${button("retry", "Try again", "secondary")}${won ? "" : button("assist", "Retry with assistance", "quiet")}</div>${assisted ? "<small>Assisted watch · Extra starting crowns and village hearts</small>" : ""}</section>`;
+  el.innerHTML = resultCard(s, levelIndex === 0, assisted);
 }
 function settingsModal() {
   settings = true;
@@ -280,7 +289,7 @@ function settingsModal() {
   if (settingsPaused) game!.pause();
   sound.pause(true);
   const root = document.getElementById("modal-root")!;
-  root.innerHTML = `<div class="modal-backdrop"><section class="settings-card" role="dialog" aria-modal="true" aria-labelledby="settings-title"><h2 id="settings-title">Settings</h2><label>Music <input data-setting="music" type="range" min="0" max="1" step="0.05" value="${save.music}"></label><label>Sound effects <input data-setting="effects" type="range" min="0" max="1" step="0.05" value="${save.effects}"></label><label class="mute-row"><input data-setting="muted" type="checkbox" ${save.muted ? "checked" : ""}> Mute all sound</label><p>Music: Treasure Hunter by TAD · CC0<br>Artwork generated for Stormwatch.</p>${button("close-settings", "Back to the watch", "primary")}</section></div>`;
+  root.innerHTML = `<div class="modal-backdrop"><section class="settings-card" role="dialog" aria-modal="true" aria-labelledby="settings-title"><h2 id="settings-title">Settings</h2><label>Music <input data-setting="music" type="range" min="0" max="1" step="0.05" value="${save.music}"></label><label>Sound effects <input data-setting="effects" type="range" min="0" max="1" step="0.05" value="${save.effects}"></label><label class="mute-row"><input data-setting="muted" type="checkbox" ${save.muted ? "checked" : ""}> Mute all sound</label><details class="game-credits"><summary>Credits</summary><p>Music: Treasure Hunter by TAD · CC0<br>Artwork generated for Stormwatch.</p></details>${button("close-settings", "Back", "primary")}</section></div>`;
   root.querySelector("input")?.focus();
 }
 function closeSettings() {
@@ -342,7 +351,14 @@ app.addEventListener("click", (e) => {
   }
   if (action === "card") {
     card = value as CardId;
-    render();
+    for (const option of app.querySelectorAll<HTMLButtonElement>(
+      ".advantage-option",
+    )) {
+      option.setAttribute(
+        "aria-pressed",
+        String(option.dataset.action === `card:${card}`),
+      );
+    }
     return;
   }
   if (action === "begin" || action === "retry") {
@@ -362,7 +378,7 @@ app.addEventListener("click", (e) => {
     }
     sound.pause(true);
     document.getElementById("modal-root")!.innerHTML =
-      `<div class="modal-backdrop"><section class="settings-card" role="dialog" aria-modal="true" aria-labelledby="leave-title"><h2 id="leave-title">Leave this watch?</h2><p>This attempt’s crowns and towers will reset. Earned stars and unlocks stay safe.</p>${button("map", "Return to expedition", "primary")}${button("stay", "Stay here", "secondary")}</section></div>`;
+      `<div class="modal-backdrop"><section class="settings-card" role="dialog" aria-modal="true" aria-labelledby="leave-title"><h2 id="leave-title">Leave this game?</h2><p>Gold and defenses will reset. Your progress is saved.</p>${button("map", "Leave", "primary")}${button("stay", "Stay", "secondary")}</section></div>`;
   }
   if (action === "stay") {
     document.getElementById("modal-root")!.innerHTML = "";

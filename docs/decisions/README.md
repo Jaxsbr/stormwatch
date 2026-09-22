@@ -8,3 +8,5 @@ Read the accepted records before changing consequential behavior. For a new deci
 
 - [004: Horizontal animated presentation](004-visual-course-correction.md)
 - [005: Animal defenders](005-animal-defenders.md)
+- [006: Advantage selection](006-advantage-screen.md)
+- [007: Shared game UI and gold](007-shared-game-ui-and-gold.md)

@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Advantage screen · review fixture</title>
+    <link rel="stylesheet" href="/fonts/fonts.css">
+  </head>
+  <body>
+    <div id="fixture"></div>
+    <script type="module">
+      import "/src/style.css";
+      import "/src/ui/advantage-screen.css";
+      import "/src/ui/game-chrome.css";
+      import "/src/ui/button-skin.css";
+      import { advantageScreen } from "/src/ui/advantage-screen.ts";
+      import { rainstoneCrossing } from "/src/content/rainstone-crossing.ts";
+      const root = document.querySelector("#fixture");
+      root.innerHTML = advantageScreen(rainstoneCrossing, ["reach", "supply", "nets", "thrift"], "thrift");
+      root.addEventListener("click", (event) => {
+        const button = event.target.closest("[data-action]");
+        if (!button?.dataset.action.startsWith("card:")) return;
+        for (const option of root.querySelectorAll(".advantage-option")) {
+          option.setAttribute("aria-pressed", String(option === button));
+        }
+      });
+    </script>
+  </body>
+</html>

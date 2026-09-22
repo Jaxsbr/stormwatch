@@ -1,0 +1,278 @@
+/* Reusable illustrated controls. Text stays live for legibility/accessibility. */
+.game-art-button {
+  min-width: 156px;
+  min-height: 60px;
+  padding: 5px 28px 8px;
+  border: solid transparent;
+  border-width: 13px 18px 12px;
+  border-image: url("../../public/art/v2/timber-ui-frame-v1/atlas.webp") 290 280
+    195 280 stretch;
+  background: linear-gradient(#615038, #302b21);
+  background-clip: padding-box;
+  color: #f4e3bb;
+  font: 700 26px/1 var(--serif);
+  text-shadow: 0 2px 2px #000;
+  filter: drop-shadow(0 5px 4px #0006);
+}
+.game-art-button--primary {
+  background-image: linear-gradient(#9a7338, #594020);
+  color: #fff1c9;
+}
+.game-art-button:focus-visible {
+  outline: 3px solid #ffe3a0;
+  outline-offset: 4px;
+}
+.advantage-screen {
+  min-height: 100dvh;
+  width: 100%;
+  padding: 26px max(24px, calc((100vw - 1100px) / 2));
+  display: grid;
+  grid-template-rows: auto auto 1fr auto;
+  gap: 20px;
+  background: radial-gradient(
+    ellipse at 50% 35%,
+    #334438 0,
+    #192d29 55%,
+    #101e22 100%
+  );
+}
+.advantage-screen > h1 {
+  font-size: clamp(34px, 4vw, 50px);
+  text-align: center;
+  color: #f2dfb7;
+}
+.encounter-roster h2 {
+  color: #c5cbb8;
+  font: 600 18px/1.2 var(--serif);
+  text-align: center;
+  margin-bottom: 8px;
+}
+.encounter-roster ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  justify-content: center;
+  gap: 28px;
+}
+.encounter-roster li {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.encounter-roster img {
+  width: 74px;
+  height: 80px;
+  object-fit: contain;
+  filter: drop-shadow(0 5px 4px #0005);
+}
+.encounter-roster strong,
+.encounter-roster span {
+  display: block;
+}
+.encounter-roster strong {
+  font: 600 20px/1.15 var(--serif);
+}
+.encounter-roster span {
+  margin-top: 5px;
+  font-size: 14px;
+  color: #c4ccb9;
+}
+.advantage-choice {
+  align-self: center;
+  width: 100%;
+}
+.advantage-choice h2 {
+  text-align: center;
+  font-size: 30px;
+  margin-bottom: 16px;
+}
+.advantage-options {
+  display: flex;
+  justify-content: center;
+  gap: 22px;
+}
+.advantage-option {
+  position: relative;
+  flex: 1 1 0;
+  max-width: 285px;
+  min-width: 0;
+  padding: 8px 14px 20px;
+  border: solid transparent;
+  border-width: 19px 17px 15px;
+  border-image: url("../../public/art/v2/timber-ui-frame-v1/atlas.webp") 290 280
+    195 280 stretch;
+  background: radial-gradient(ellipse at 50% 35%, #4c4930, #272c21 80%);
+  background-clip: padding-box;
+  box-shadow: 0 10px 20px #0004;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.advantage-option[aria-pressed="true"] {
+  background-image: radial-gradient(ellipse at 50% 35%, #857042, #453b26 85%);
+  outline: 3px solid #edca7d;
+  outline-offset: -5px;
+  box-shadow:
+    0 0 25px #e9b64630,
+    0 10px 20px #0004;
+}
+.advantage-option:focus-visible {
+  outline: 3px solid #fff3cb;
+  outline-offset: 5px;
+}
+.advantage-art {
+  width: 100%;
+  height: clamp(110px, 23vh, 185px);
+  filter: drop-shadow(0 8px 5px #0005);
+}
+.advantage-effect {
+  display: grid;
+  gap: 3px;
+  text-align: center;
+}
+.advantage-effect strong {
+  font: 700 42px/1 var(--serif);
+  color: #ffe2a3;
+}
+.advantage-effect > span {
+  font-size: 19px;
+  line-height: 1.25;
+  color: #f1e4c6;
+}
+.advantage-actions {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+@media (max-width: 1000px) {
+  .encounter-roster ul {
+    gap: 16px;
+  }
+  .encounter-roster img {
+    width: 58px;
+    height: 64px;
+  }
+  .encounter-roster strong {
+    font-size: 18px;
+  }
+  .encounter-roster span {
+    font-size: 13px;
+  }
+  .advantage-options {
+    gap: 14px;
+  }
+}
+@media (orientation: landscape) and (max-height: 600px) {
+  .advantage-screen {
+    padding: 10px 24px;
+    gap: 8px;
+  }
+  .advantage-screen > h1 {
+    font-size: 30px;
+  }
+  .encounter-roster h2 {
+    font-size: 16px;
+    margin-bottom: 2px;
+  }
+  .encounter-roster img {
+    width: 48px;
+    height: 48px;
+  }
+  .encounter-roster strong {
+    font-size: 16px;
+  }
+  .encounter-roster span {
+    margin-top: 3px;
+    font-size: 12px;
+  }
+  .advantage-choice h2 {
+    font-size: 23px;
+    margin-bottom: 6px;
+  }
+  .advantage-option {
+    max-width: 240px;
+    padding: 0 8px 8px;
+    border-width: 11px 11px 9px;
+  }
+  .advantage-art {
+    height: 76px;
+  }
+  .advantage-effect {
+    gap: 0;
+  }
+  .advantage-effect strong {
+    font-size: 29px;
+  }
+  .advantage-effect > span {
+    font-size: 16px;
+  }
+  .game-art-button {
+    min-height: 48px;
+    min-width: 130px;
+    padding: 0 20px 3px;
+    border-width: 10px 14px 9px;
+    font-size: 23px;
+  }
+}
+@media (orientation: portrait) {
+  .advantage-screen {
+    gap: 24px;
+    padding: 24px;
+  }
+  .encounter-roster ul {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px;
+  }
+  .advantage-options {
+    flex-wrap: wrap;
+  }
+  .advantage-option {
+    flex-basis: 40%;
+    max-width: none;
+  }
+  .advantage-art {
+    height: 120px;
+  }
+}
+@media (max-width: 480px) {
+  .advantage-screen {
+    padding: 20px 14px;
+    gap: 20px;
+  }
+  .encounter-roster ul {
+    gap: 10px;
+  }
+  .encounter-roster li {
+    gap: 3px;
+  }
+  .encounter-roster img {
+    width: 44px;
+  }
+  .encounter-roster strong {
+    font-size: 17px;
+  }
+  .encounter-roster span {
+    font-size: 12px;
+  }
+  .advantage-choice h2 {
+    font-size: 26px;
+  }
+  .advantage-option {
+    padding: 4px 5px 12px;
+    border-width: 12px 10px 10px;
+  }
+  .advantage-effect strong {
+    font-size: 34px;
+  }
+  .advantage-effect > span {
+    font-size: 16px;
+  }
+  .game-art-button {
+    min-width: 125px;
+    padding-inline: 14px;
+  }
+}

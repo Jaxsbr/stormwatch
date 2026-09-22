@@ -1,0 +1,123 @@
+/* One nine-slice image includes both the rods and their inset surface.
+   Equal slices preserve corner scale; the center stretches with the frame. */
+:is(
+  .game-art-button.game-art-button,
+  .advantage-screen .advantage-option,
+  .expedition .map-node,
+  .battle-screen .tower-button
+) {
+  isolation: isolate;
+  border: 0;
+  border-image: none;
+  border-radius: 5px;
+  background: none;
+  background-image: none;
+  box-shadow: none;
+  filter: none;
+  --skin-corner: 16px;
+}
+.game-art-button.game-art-button,
+.advantage-screen .advantage-option,
+.battle-screen .tower-button {
+  position: relative;
+}
+:is(.game-art-button, .advantage-option, .map-node, .tower-button)::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  border: var(--skin-corner, 16px) solid transparent;
+  border-image: url("../../public/art/v2/timber-button-v2/skin.webp") 166 fill
+    stretch;
+  filter: drop-shadow(0 3px 3px #0005);
+}
+.battle-screen .tower-button::after {
+  content: none;
+}
+.game-art-button.game-art-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 14px 22px;
+  min-height: 60px;
+}
+.game-art-button.game-art-button--primary::before,
+.advantage-option[aria-pressed="true"]::before,
+.tower-button[aria-pressed="true"]::before {
+  filter: brightness(1.22) saturate(1.12) drop-shadow(0 3px 3px #0005);
+}
+.advantage-option[aria-pressed="true"],
+.tower-button[aria-pressed="true"] {
+  outline-offset: 2px;
+}
+.advantage-screen .advantage-option {
+  --skin-corner: 22px;
+  padding: 22px 20px;
+}
+.expedition .map-node {
+  --skin-corner: 17px;
+  padding: 16px 18px;
+}
+.battle-screen .tower-button {
+  --skin-corner: 16px;
+  padding: 12px 14px;
+}
+.battle-screen .game-art-button {
+  --skin-corner: 12px;
+  min-width: 44px;
+  min-height: 44px;
+  padding: 10px 14px;
+}
+.battle-screen .result-card .game-art-button,
+.battle-screen .pause-overlay .game-art-button {
+  padding: 12px 20px;
+}
+.game-art-button:disabled {
+  filter: saturate(0.4);
+}
+.battle-screen .selection-actions .game-art-button {
+  white-space: nowrap;
+  flex: 0 0 auto;
+  width: auto;
+}
+@media (orientation: landscape) and (max-height: 600px) {
+  .game-art-button.game-art-button {
+    --skin-corner: 14px;
+    min-height: 48px;
+    padding: 11px 20px;
+  }
+  .battle-screen .game-art-button {
+    --skin-corner: 11px;
+    min-height: 44px;
+    min-width: 44px;
+    padding: 10px 12px;
+  }
+  .battle-screen .result-card .game-art-button,
+  .battle-screen .pause-overlay .game-art-button {
+    padding: 10px 16px;
+  }
+  .expedition .map-node {
+    --skin-corner: 14px;
+    padding: 12px 14px;
+  }
+  .advantage-screen .advantage-option {
+    --skin-corner: 16px;
+    padding: 12px 14px;
+  }
+  .battle-screen .tower-button {
+    --skin-corner: 12px;
+    padding: 8px 12px;
+    min-width: 0;
+  }
+  .battle-screen .tower-buttons {
+    min-width: 0;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+  .battle-screen .tower-button > span {
+    min-width: 0;
+  }
+  .battle-screen .build-tray {
+    min-width: 0;
+  }
+}
