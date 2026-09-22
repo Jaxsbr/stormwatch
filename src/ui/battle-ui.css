@@ -1,0 +1,376 @@
+/* Battle information favors sturdy, tabular numerals over display typography. */
+.battle-stats {
+  gap: 28px;
+  align-items: center;
+}
+.resource-stat {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 100px;
+}
+.hud-icon {
+  width: 40px;
+  height: 40px;
+  object-fit: contain;
+  flex: none;
+  filter: drop-shadow(0 2px 2px #0008);
+}
+.resource-stat b {
+  display: block;
+  font:
+    800 27px/1.05 "DM Sans",
+    sans-serif;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.7px;
+  color: #fff4d5;
+}
+.gold-stat b {
+  font-size: 36px;
+  color: #ffdc75;
+}
+.gold-stat .hud-icon {
+  width: 48px;
+  height: 48px;
+}
+.life-stat.critical b {
+  color: #ff8585;
+}
+.life-stat.critical .hud-icon {
+  animation: heart-warning 1s ease-in-out infinite;
+}
+@keyframes heart-warning {
+  50% {
+    transform: scale(1.12);
+  }
+}
+.battle-screen .economy-panel {
+  background: none;
+  border: 0;
+  border-image: none;
+  padding: 0;
+  box-shadow: none;
+  width: 230px;
+}
+.battle-screen .payout-toggle {
+  width: 100%;
+  display: flex;
+  gap: 8px;
+  padding: 10px 15px;
+  text-align: left;
+  font:
+    600 13px "DM Sans",
+    sans-serif;
+}
+.payout-toggle .hud-icon {
+  width: 28px;
+  height: 28px;
+}
+.payout-toggle b {
+  margin-left: auto;
+  font-size: 22px;
+  color: #ffe39b;
+  font-variant-numeric: tabular-nums;
+}
+#payout-details {
+  background: #182d29f5;
+  border: 1px solid #a38a50;
+  border-radius: 8px;
+  padding: 12px;
+  margin-top: 6px;
+  box-shadow: 0 8px 24px #0007;
+}
+#payout-details[hidden] {
+  display: none;
+}
+.payout-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+.payout-heading .game-art-button {
+  font-size: 15px;
+  min-width: 64px;
+}
+#payout-details p {
+  font-size: 12px;
+  line-height: 1.4;
+  color: #c6d1bf;
+  margin: 10px 0 0;
+}
+#payout-details dl {
+  font-size: 13px;
+}
+/* These tracks depend only on viewport size, never selection or build mode. */
+.battle-screen {
+  grid-template-rows: 62px minmax(0, 1fr) 156px;
+}
+.battle-screen .battle-header {
+  min-height: 0;
+}
+.battle-screen .build-tray {
+  min-height: 0;
+  height: 100%;
+  box-sizing: border-box;
+  padding: 8px 20px;
+  background: linear-gradient(100deg, #182f2e, #27372b 55%, #292518);
+  border-top: 2px solid #a58b55;
+}
+.battle-screen .build-tray > .selection-panel {
+  display: grid;
+  grid-template-columns: 132px minmax(160px, 1fr) auto;
+  gap: 18px;
+  align-items: center;
+  overflow: visible;
+}
+.battle-screen .build-tray > .selection-panel[hidden] {
+  display: none;
+}
+.hero-portrait {
+  position: relative;
+  width: 128px;
+  height: 132px;
+  background: radial-gradient(ellipse, #9dc4a233, #162a2b 70%);
+  border: 2px solid #ad945c;
+  border-radius: 16px 16px 32px 32px;
+  box-shadow:
+    inset 0 0 15px #0009,
+    0 0 16px #edcb7040;
+}
+.hero-portrait .rig-portrait {
+  position: absolute;
+  width: 126px !important;
+  height: 134px !important;
+  left: 0;
+  bottom: 7px;
+  overflow: visible;
+  animation: portrait-breathe 3s ease-in-out infinite;
+  transform-origin: 50% 100%;
+}
+.hero-rank {
+  position: absolute;
+  bottom: -5px;
+  left: 0;
+  right: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.battle-screen .hero-identity h3 {
+  font:
+    700 23px/1.1 "DM Sans",
+    sans-serif;
+  margin: 0 0 8px;
+}
+.hero-attributes {
+  display: grid;
+  gap: 3px;
+  margin: 0;
+  max-width: 380px;
+}
+.hero-attribute {
+  display: grid;
+  grid-template-columns: minmax(90px, 1fr) auto;
+  align-items: baseline;
+  column-gap: 16px;
+}
+.hero-attribute dt {
+  color: #b5c8bf;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.7px;
+}
+.hero-attribute dd {
+  font:
+    800 18px/1.3 "DM Sans",
+    sans-serif;
+  margin: 0;
+  color: #fff3ca;
+  white-space: nowrap;
+}
+.upgrade-preview {
+  display: inline;
+  font-size: 13px;
+  line-height: 1.25;
+  color: #99e6af;
+}
+.battle-screen .build-tray .selection-actions {
+  display: grid;
+  grid-template-columns: repeat(2, auto);
+  gap: 7px;
+}
+.battle-screen .selection-actions .game-art-button {
+  font:
+    700 14px "DM Sans",
+    sans-serif;
+  min-width: 96px;
+  min-height: 46px;
+  padding: 11px 15px;
+}
+.battle-screen .tower-buttons {
+  min-width: 0;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+.battle-screen .tower-button {
+  min-width: 0;
+  min-height: 44px;
+}
+.coin-flight {
+  position: fixed;
+  z-index: 4000;
+  pointer-events: none;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font:
+    800 25px "DM Sans",
+    sans-serif;
+  color: #ffe599;
+  text-shadow: 0 2px 3px #000;
+  animation: coin-collect 2s ease-out forwards;
+}
+.coin-flight .hud-icon {
+  width: 36px;
+  height: 36px;
+}
+.payout-celebration {
+  animation: payout-fade 3.5s both;
+  font-weight: 700;
+  color: #ffe4a0;
+}
+@keyframes coin-collect {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, -35px) scale(0.6);
+  }
+  15% {
+    opacity: 1;
+    transform: translate(-50%, -65px) scale(1.15);
+  }
+  65% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -170px) scale(0.65);
+  }
+}
+@keyframes payout-fade {
+  0%,
+  100% {
+    opacity: 0;
+  }
+  12%,
+  75% {
+    opacity: 1;
+  }
+}
+@keyframes portrait-breathe {
+  50% {
+    transform: translateY(-3px) rotate(-1deg) scale(1.02);
+  }
+}
+.is-paused .hero-portrait .rig-portrait {
+  animation-play-state: paused;
+}
+@media (orientation: landscape) and (max-height: 600px) {
+  .battle-brand strong {
+    display: none;
+  }
+  .battle-stats {
+    gap: 14px;
+  }
+  .resource-stat {
+    min-width: 0;
+    gap: 4px;
+  }
+  .resource-stat b {
+    font-size: 20px;
+  }
+  .hud-icon {
+    width: 30px;
+    height: 30px;
+  }
+  .gold-stat .hud-icon {
+    width: 34px;
+    height: 34px;
+  }
+  .gold-stat b {
+    font-size: 27px;
+  }
+  .battle-screen .economy-panel {
+    width: 180px;
+  }
+  .battle-screen .payout-toggle {
+    padding: 9px 12px;
+    font-size: 11px;
+    gap: 4px;
+  }
+  .payout-toggle b {
+    font-size: 18px;
+  }
+  .payout-toggle .hud-icon {
+    width: 22px;
+    height: 22px;
+  }
+  .battle-screen .build-tray {
+    padding: 5px 10px;
+  }
+  .battle-screen {
+    grid-template-rows: 52px minmax(0, 1fr) 112px;
+  }
+  .battle-screen .build-tray > .selection-panel {
+    grid-template-columns: 88px minmax(180px, 1fr) auto;
+    gap: 9px;
+  }
+  .hero-portrait {
+    width: 82px;
+    height: 91px;
+  }
+  .hero-portrait .rig-portrait {
+    width: 84px !important;
+    height: 95px !important;
+    bottom: 2px;
+  }
+  .battle-screen .hero-identity h3 {
+    font-size: 16px;
+    margin-bottom: 4px;
+  }
+  .hero-attributes {
+    gap: 2px;
+    max-width: 300px;
+  }
+  .hero-attribute {
+    grid-template-columns: minmax(85px, 1fr) auto;
+    column-gap: 8px;
+  }
+  .hero-attribute dt {
+    font-size: 10px;
+  }
+  .hero-attribute dd {
+    font-size: 14px;
+  }
+  .upgrade-preview {
+    font-size: 10px;
+  }
+  .battle-screen .selection-actions .game-art-button {
+    font-size: 11px;
+    padding: 10px;
+    min-width: 80px;
+    min-height: 44px;
+  }
+  .battle-screen .build-tray .selection-actions {
+    gap: 4px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .hero-portrait .rig-portrait,
+  .life-stat.critical .hud-icon {
+    animation: none;
+  }
+  .coin-flight {
+    animation: none;
+    transform: translate(-50%, -60px);
+  }
+}

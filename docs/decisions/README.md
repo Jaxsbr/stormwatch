@@ -10,3 +10,5 @@ Read the accepted records before changing consequential behavior. For a new deci
 - [005: Animal defenders](005-animal-defenders.md)
 - [006: Advantage selection](006-advantage-screen.md)
 - [007: Shared game UI and gold](007-shared-game-ui-and-gold.md)
+- [008: Battle information and selection](008-battle-information-and-selection.md)
+- [009: Stable command panel and battle menu](009-stable-command-panel-and-battle-menu.md)

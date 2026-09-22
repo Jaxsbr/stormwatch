@@ -1,0 +1,162 @@
+.battle-menu-backdrop {
+  z-index: 5000;
+  background: #091311b8;
+  backdrop-filter: blur(5px);
+}
+.game-menu-surface {
+  position: relative;
+  isolation: isolate;
+  width: min(480px, calc(100vw - 32px));
+  height: 440px;
+  max-height: calc(100dvh - 28px);
+  padding: 32px 38px;
+  color: #fff0ce;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+.game-menu-surface::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  border: 25px solid transparent;
+  border-image: url("../../public/art/v2/timber-button-v2/skin.webp") 166 fill
+    stretch;
+  filter: drop-shadow(0 12px 24px #0008);
+}
+.game-menu-surface h2 {
+  text-align: center;
+  margin: 0 0 22px;
+  font:
+    700 36px/1.1 "Cormorant Garamond",
+    serif;
+}
+.menu-pages {
+  position: relative;
+  flex: 1;
+  min-height: 0;
+}
+.menu-page {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 14px;
+  overflow: auto;
+  padding: 4px;
+}
+.menu-page[hidden] {
+  display: none;
+}
+.menu-page .game-art-button {
+  width: 100%;
+  min-height: 52px;
+  font-size: 24px;
+  flex: none;
+}
+.menu-page h3 {
+  font:
+    700 20px "DM Sans",
+    sans-serif;
+  margin: 0;
+  text-align: center;
+}
+.menu-page p {
+  font-size: 15px;
+  text-align: center;
+  line-height: 1.5;
+  margin: 0 0 8px;
+}
+.menu-page label {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  min-height: 44px;
+  font:
+    600 16px "DM Sans",
+    sans-serif;
+}
+.menu-page input[type="range"] {
+  width: 48%;
+  accent-color: #e1bb69;
+}
+.menu-page .mute-row {
+  justify-content: flex-start;
+}
+.menu-page input[type="checkbox"] {
+  width: 24px;
+  height: 24px;
+  accent-color: #e1bb69;
+}
+@media (orientation: landscape) and (max-height: 600px) {
+  .game-menu-surface {
+    height: 350px;
+    width: 430px;
+    padding: 22px 32px;
+  }
+  .game-menu-surface h2 {
+    font-size: 30px;
+    margin-bottom: 8px;
+  }
+  .menu-page {
+    gap: 6px;
+  }
+  .menu-page .game-art-button {
+    min-height: 44px;
+    font-size: 21px;
+    padding: 10px 18px;
+  }
+  .menu-page label {
+    min-height: 36px;
+    font-size: 14px;
+  }
+  .menu-page h3 {
+    font-size: 17px;
+  }
+}
+
+/* Independent movement and opacity curves: fast rise easing to rest, slow fade
+   that accelerates late. No keyframe seam or abrupt removal at the end. */
+.toast.toast {
+  position: fixed;
+  left: auto;
+  right: 24px;
+  top: 50%;
+  bottom: auto;
+  max-width: min(340px, calc(100vw - 48px));
+  transform: none;
+  pointer-events: none;
+  z-index: 4500;
+  opacity: 0;
+  transition: none;
+}
+.toast.toast.visible {
+  animation:
+    notice-rise 4s cubic-bezier(0.16, 1, 0.3, 1) both,
+    notice-fade 4s cubic-bezier(0.7, 0, 0.9, 0.35) both;
+}
+@keyframes notice-rise {
+  from {
+    transform: translateY(0);
+  }
+  to {
+    transform: translateY(-110px);
+  }
+}
+@keyframes notice-fade {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .toast.toast.visible {
+    animation: notice-fade 4s linear both;
+  }
+}

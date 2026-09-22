@@ -1,4 +1,6 @@
 import * as THREE from "three";
+import { RANK_BADGE, rankFontSize, rankLabel } from "../ui/rank-badge";
+import { selectionMaterial } from "./selection-material";
 import { CutoutResource, type CutoutInstance } from "./cutout";
 import { projectedPathSampler } from "./path-sampler";
 import { OverlayBatch, enemyHeight } from "./overlay-batch";
@@ -84,9 +86,15 @@ export class Battlefield {
   private owned: THREE.Texture[] = [];
   private sceneTextures: THREE.Texture[] = [];
   private range: THREE.Mesh;
+  private selectionClock = 0;
+  private baseGlow: THREE.Mesh;
   private cursor: THREE.Mesh;
   private selection: THREE.Mesh;
   private selectedMarker: THREE.Mesh;
+  private rankText: THREE.Mesh;
+  private rankCanvas = document.createElement("canvas");
+  private rankTexture: THREE.CanvasTexture;
+  private selectedRank = "";
   private observer: ResizeObserver;
   private characterRigs: Record<EnemyKind, CutoutResource> = {
     raider: new CutoutResource("rat-rig-v1"),
@@ -174,12 +182,19 @@ export class Battlefield {
     this.camera.far = 200;
     this.scene.add(this.world);
     this.range = new THREE.Mesh(
-      new THREE.RingGeometry(0.985, 1, 96),
-      material(0xf4d181, 0.8),
+      new THREE.PlaneGeometry(2.3, 2.3),
+      selectionMaterial(),
     );
     this.range.renderOrder = 30;
     this.range.visible = false;
     this.scene.add(this.range);
+    this.baseGlow = new THREE.Mesh(
+      new THREE.PlaneGeometry(1, 1),
+      selectionMaterial(true),
+    );
+    this.baseGlow.renderOrder = 29;
+    this.baseGlow.visible = false;
+    this.scene.add(this.baseGlow);
     this.cursor = new THREE.Mesh(
       new THREE.RingGeometry(0.82, 1, 48),
       material(0xffdf9b, 0.9),
@@ -215,21 +230,33 @@ export class Battlefield {
     this.selection.visible = false;
     this.scene.add(this.selection);
     this.selectedMarker = new THREE.Mesh(
-      new THREE.ShapeGeometry(
-        new THREE.Shape([
-          new THREE.Vector2(-10, 10),
-          new THREE.Vector2(0, 0),
-          new THREE.Vector2(10, 10),
-          new THREE.Vector2(10, 15),
-          new THREE.Vector2(0, 6),
-          new THREE.Vector2(-10, 15),
-        ]),
-      ),
-      material(0xffdf8c),
+      new THREE.PlaneGeometry(RANK_BADGE.width, RANK_BADGE.height),
+      new THREE.MeshBasicMaterial({
+        map: this.texture(RANK_BADGE.image),
+        transparent: true,
+        depthTest: false,
+        depthWrite: false,
+      }),
     );
     this.selectedMarker.renderOrder = 3000;
     this.selectedMarker.visible = false;
     this.scene.add(this.selectedMarker);
+    this.rankCanvas.width = RANK_BADGE.width * 4;
+    this.rankCanvas.height = RANK_BADGE.height * 4;
+    this.rankTexture = new THREE.CanvasTexture(this.rankCanvas);
+    this.rankTexture.colorSpace = THREE.SRGBColorSpace;
+    this.owned.push(this.rankTexture);
+    this.rankText = new THREE.Mesh(
+      new THREE.PlaneGeometry(RANK_BADGE.width, RANK_BADGE.height),
+      new THREE.MeshBasicMaterial({
+        map: this.rankTexture,
+        transparent: true,
+        depthTest: false,
+        depthWrite: false,
+      }),
+    );
+    this.rankText.renderOrder = 3001;
+    this.selectedMarker.add(this.rankText);
     const atlas = this.texture("art/sprite-atlas.webp", () => {
       for (const t of this.textures) {
         t.image = atlas.image;
@@ -267,6 +294,24 @@ export class Battlefield {
     t.colorSpace = THREE.SRGBColorSpace;
     this.owned.push(t);
     return t;
+  }
+  private updateRank(level: number) {
+    const label = rankLabel(level);
+    if (label === this.selectedRank) return;
+    const context = this.rankCanvas.getContext("2d")!;
+    context.setTransform(4, 0, 0, 4, 0, 0);
+    context.clearRect(0, 0, RANK_BADGE.width, RANK_BADGE.height);
+    context.fillStyle = RANK_BADGE.background;
+    context.beginPath();
+    context.roundRect(4, 9, 32, 24, 5);
+    context.fill();
+    context.fillStyle = RANK_BADGE.color;
+    context.font = `800 ${rankFontSize(label)}px Arial,sans-serif`;
+    context.textAlign = "center";
+    context.textBaseline = "middle";
+    context.fillText(label, 20, 21);
+    this.rankTexture.needsUpdate = true;
+    this.selectedRank = label;
   }
   resize() {
     const { width, height } = this.host.getBoundingClientRect();
@@ -421,6 +466,7 @@ export class Battlefield {
       this.sceneryKey = null;
     }
     this.range.visible = false;
+    this.baseGlow.visible = false;
     this.cursor.visible = false;
     this.selection.visible = false;
     this.selectedMarker.visible = false;
@@ -545,6 +591,14 @@ export class Battlefield {
     };
   }
   update(game: Game, selected: number | null, _dt: number) {
+    const reducedMotion = matchMedia(
+      "(prefers-reduced-motion: reduce)",
+    ).matches;
+    if (game.state.phase !== "paused" && !reducedMotion)
+      this.selectionClock += _dt;
+    for (const mesh of [this.range, this.baseGlow])
+      (mesh.material as THREE.ShaderMaterial).uniforms.time.value =
+        this.selectionClock;
     const profileStart = this.profileTiming ? performance.now() : 0;
     if (this.profileTiming) this.frameProfile.createdRigs = 0;
     const s = game.state,
@@ -727,8 +781,14 @@ export class Battlefield {
     this.selection.visible = false;
     this.selectedMarker.visible = false;
     this.range.visible = !!selectedTower && selectedTower.kind !== "trade";
+    this.baseGlow.visible = !!selectedTower;
     if (selectedTower) {
+      this.updateRank(selectedTower.level);
       const r = game.range(selectedTower);
+      this.baseGlow.position.copy(position(selectedTower));
+      this.baseGlow.scale.set(110, 55, 1);
+      (this.selection.material as THREE.MeshBasicMaterial).opacity =
+        0.65 + 0.3 * Math.sin(this.selectionClock * 2.8);
       this.range.scale.set(r * X, r * Y, 1);
       this.range.position.copy(position(selectedTower));
       const defender = this.figures.get(selectedTower.id)?.defender;
@@ -736,11 +796,14 @@ export class Battlefield {
         this.selection.position.copy(position(selectedTower));
         this.selection.scale.set(76, 36, 1);
         this.selection.visible = true;
-        this.selectedMarker.position.copy(position(selectedTower));
-        this.selectedMarker.position.y += defender.bounds().top + 6;
-        this.selectedMarker.visible = true;
       }
       const rig = this.figures.get(selectedTower.id)?.rig;
+      this.selectedMarker.position.copy(position(selectedTower));
+      this.selectedMarker.position.y +=
+        (defender?.bounds().top ?? rig?.bounds().top ?? 150) +
+        28 +
+        (reducedMotion ? 0 : Math.sin(this.selectionClock * 3) * 5);
+      this.selectedMarker.visible = true;
       const base = rig?.resource.definition?.parts.find(
         (part) => !part.attachTo,
       );
@@ -861,9 +924,13 @@ export class Battlefield {
     Object.values(this.defenderRigs).forEach((views) =>
       Object.values(views).forEach((r) => r?.dispose()),
     );
-    [this.range, this.cursor, this.selection, this.selectedMarker].forEach(
-      (o) => this.releaseObject(o),
-    );
+    [
+      this.range,
+      this.baseGlow,
+      this.cursor,
+      this.selection,
+      this.selectedMarker,
+    ].forEach((o) => this.releaseObject(o));
     this.renderer.dispose();
     this.renderer.domElement.remove();
   }

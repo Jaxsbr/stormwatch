@@ -2,13 +2,23 @@ import "./style.css";
 import "./ui/advantage-screen.css";
 import "./ui/game-chrome.css";
 import "./ui/button-skin.css";
+import "./ui/battle-ui.css";
+import "./ui/battle-menu.css";
+import { BattleMenu } from "./ui/battle-menu";
+import {
+  battleStats,
+  economyPanel,
+  defenderPanel,
+  hudIcon,
+  completedWaves,
+} from "./ui/battle-ui";
 import { button, resultCard } from "./ui/game-chrome";
 import { advantageScreen } from "./ui/advantage-screen";
 import { Game } from "./sim/game";
 import type { CardId, Point, TowerKind } from "./sim/types";
 import { TOWERS, CARDS } from "./content/catalog";
 import { LEVELS } from "./content/levels";
-import { refundFor, tradeIncome } from "./sim/economy";
+import { tradeIncome } from "./sim/economy";
 import { Battlefield } from "./render/battlefield";
 import { attachRecording } from "./render/recording";
 import { towerPortrait, paintTowerPortraits } from "./render/portraits";
@@ -42,7 +52,6 @@ let screen: Screen = "title",
   rescueMode = false,
   settings = false,
   settingsPaused = false,
-  leavePaused = false,
   assisted = false,
   resultSaved = false,
   speed = 1;
@@ -51,6 +60,7 @@ let lastTime = 0,
   noticeUntil = 0;
 let noticeText = "";
 let frameHandle = 0;
+let battleMenu: BattleMenu | null = null;
 let disposeRecording: (() => void) | undefined;
 const frames: number[] = [];
 const portrait = (index: number, cls = "") =>
@@ -72,9 +82,15 @@ function toast(text: string) {
   if (t) {
     t.textContent = text;
     t.classList.add("visible");
+    for (const animation of t.getAnimations()) {
+      animation.currentTime = 0;
+      animation.play();
+    }
   }
 }
 function render() {
+  battleMenu?.destroy();
+  battleMenu = null;
   disposeRecording?.();
   disposeRecording = undefined;
   field?.dispose();
@@ -110,7 +126,7 @@ function render() {
 }
 function renderBattle() {
   const l = LEVELS[levelIndex];
-  app.innerHTML = `<main class="battle-screen"><header class="battle-header"><div class="battle-brand">${button("leave", "Map", "icon-button", 'aria-label="Return to map"')}<div><strong>${l.name}</strong></div></div><div class="hud-stats"><div class="stat"><span>GOLD</span><b id="coins">0</b></div><div class="stat"><span>VILLAGE</span><b id="lives">12 / 12</b></div><div class="stat"><span>WAVE</span><b id="wave">0 / ${l.waves.length}</b></div></div><div class="battle-tools">${button("speed", "1×", "icon-button", 'aria-label="Game speed" id="speed"')}${button("pause", "Pause", "icon-button", 'aria-label="Pause game" id="pause"')}${button("settings", "Settings", "icon-button", 'aria-label="Settings"')}</div></header><div class="battle-middle"><section class="battlefield"><div id="canvas-host"></div><div class="field-heading"><span class="eyebrow" id="phase-label">PREPARATION</span><p id="field-instruction">Choose a structure below, then tap open ground.</p></div><div id="field-message" class="field-message"></div><div id="pause-overlay" class="pause-overlay" hidden><div><h2>Paused</h2>${button("pause", "Resume", "primary")}</div></div><div id="result-overlay" class="result-overlay" hidden></div></section><aside class="battle-aside"><details class="economy-panel"><summary>Next payout <b id="forecast-summary">+0</b></summary><div class="payout-total"><b id="forecast-total">+0</b><span>projected gold</span></div><dl><div><dt>Wave reward</dt><dd id="forecast-reward">+0</dd></div><div><dt>Trading income</dt><dd id="forecast-trade">+0</dd></div><div><dt>Savings interest <span title="10% of savings, maximum 20 gold">ⓘ</span></dt><dd id="forecast-interest">+0</dd></div></dl></details><div class="wave-controls">${button("rescue", 'Supply drop <small id="rescue-status">Ready</small>', "rescue-button", 'id="rescue"')}${button("start", "Start wave", "primary", 'id="start-wave"')}</div></aside></div><footer class="build-tray"><section id="selection-panel" class="selection-panel"></section><div class="tray-label"><strong id="build-label">Choose a structure</strong>${button("cancel", "Cancel", "quiet small", 'id="cancel" hidden')}</div><div class="tower-buttons">${(Object.keys(TOWERS) as TowerKind[]).map((k) => `<button class="tower-button" data-action="build:${k}" id="build-${k}">${portrait(TOWERS[k].sprite)}<span><strong>${TOWERS[k].name}</strong><small>${TOWERS[k].role}</small></span><b>${TOWERS[k].cost}<small> gold</small></b></button>`).join("")}</div></footer></main>`;
+  app.innerHTML = `<main class="battle-screen"><header class="battle-header"><div class="battle-brand"><div><strong>${l.name}</strong></div></div>${battleStats(l.waves.length)}<div class="battle-tools">${button("speed", "1×", "icon-button", 'aria-label="Game speed" id="speed"')}${button("menu", "Menu", "icon-button", 'aria-label="Menu" id="battle-menu"')}</div></header><div class="battle-middle"><section class="battlefield"><div id="canvas-host"></div><div class="field-heading"><span class="eyebrow" id="phase-label">PREPARATION</span><p id="field-instruction">Choose a structure below, then tap open ground.</p></div><div id="result-overlay" class="result-overlay" hidden></div></section><aside class="battle-aside">${economyPanel()}<div class="wave-controls">${button("rescue", 'Supply drop <small id="rescue-status">Ready</small>', "rescue-button", 'id="rescue"')}${button("start", "Start wave", "primary", 'id="start-wave"')}</div></aside></div><footer class="build-tray"><section id="selection-panel" class="selection-panel"></section><div class="tray-label"><strong id="build-label">Choose a structure</strong>${button("cancel", "Cancel", "quiet small", 'id="cancel" hidden')}</div><div class="tower-buttons">${(Object.keys(TOWERS) as TowerKind[]).map((k) => `<button class="tower-button" data-action="build:${k}" id="build-${k}">${portrait(TOWERS[k].sprite)}<span><strong>${TOWERS[k].name}</strong><small>${TOWERS[k].role}</small></span><b>${TOWERS[k].cost}<small> gold</small></b></button>`).join("")}</div></footer></main>`;
   try {
     field = new Battlefield(document.querySelector("#canvas-host")!);
     field.load(l);
@@ -177,8 +193,14 @@ function updateHud() {
     p = game.forecast();
   text("coins", String(s.coins));
   text("lives", `${s.lives} / ${s.maxLives}`);
-  text("wave", `${s.wave} / ${l.waves.length}`);
-  text("forecast-total", `+${p.total}`);
+  const cleared = completedWaves(s);
+  text("wave", `${cleared} / ${l.waves.length}`);
+  document
+    .querySelector(".life-stat")
+    ?.classList.toggle("critical", s.lives <= s.maxLives / 3);
+  document
+    .querySelector(".battle-screen")
+    ?.classList.toggle("is-paused", s.phase === "paused");
   text("forecast-summary", `+${p.total}`);
   text("forecast-reward", `+${p.reward}`);
   text("forecast-trade", `+${p.trade}`);
@@ -230,16 +252,7 @@ function updateHud() {
     "rescue-status",
     remaining ? `${remaining}s` : rescueMode ? "Tap the trail" : "Ready",
   );
-  text("pause", s.phase === "paused" ? "Resume" : "Pause");
-  document
-    .getElementById("pause")!
-    .setAttribute(
-      "aria-label",
-      s.phase === "paused" ? "Resume game" : "Pause game",
-    );
-  document.querySelector<HTMLButtonElement>("#pause")!.disabled =
-    s.phase === "won" || s.phase === "lost";
-  document.getElementById("pause-overlay")!.hidden = s.phase !== "paused";
+  if (s.phase === "paused" && !battleMenu) openBattleMenu();
   for (const k of Object.keys(TOWERS) as TowerKind[]) {
     const el = document.querySelector<HTMLButtonElement>(`#build-${k}`)!;
     el.classList.toggle("selected", build === k);
@@ -249,24 +262,31 @@ function updateHud() {
   }
   const t = s.towers.find((t) => t.id === selected),
     panel = document.getElementById("selection-panel")!;
-  const content = t
-    ? `<div class="selected-heading">${portrait(TOWERS[t.kind].sprite)}<div><span class="eyebrow">LEVEL ${t.level} / 2</span><h3>${TOWERS[t.kind].name}</h3></div></div><p>${t.kind === "trade" ? `Pays ${tradeIncome([t])} gold after each wave.` : `${Math.round(TOWERS[t.kind].damage * (t.level === 2 ? 1.7 : 1))} damage · ${game.range(t).toFixed(1)} range${t.kind === "net" ? " · slows enemies" : ""}`}</p><div class="selection-actions">${button("upgrade", t.level === 2 ? "Fully upgraded" : `Upgrade · ${game.upgradeCost(t)}`, "secondary", `${t.level === 2 || s.coins < game.upgradeCost(t) || !game.canAct() ? "disabled" : ""}`)}${button("sell", `Sell · +${refundFor(t.spent)}`, "quiet", `${!game.canAct() ? "disabled" : ""}`)}${button("inspect-close", "Close", "quiet")}</div>`
-    : "";
+  const content = t ? defenderPanel(game, t) : "";
   const inspecting = !!t && !build && !rescueMode;
   panel.hidden = !inspecting;
   document
     .querySelector(".build-tray")!
     .classList.toggle("inspecting", inspecting);
   if (panel.dataset.content !== content) {
+    const active = document.activeElement as HTMLElement | null;
+    const focusedAction =
+      active && panel.contains(active) ? active.dataset.action : undefined;
     panel.dataset.content = content;
     panel.innerHTML = content;
     void paintTowerPortraits(panel);
+    if (focusedAction) {
+      const replacement = [
+        ...panel.querySelectorAll<HTMLButtonElement>("button"),
+      ].find(
+        (button) => button.dataset.action === focusedAction && !button.disabled,
+      );
+      (
+        replacement ??
+        panel.querySelector<HTMLButtonElement>('[data-action="inspect-close"]')
+      )?.focus();
+    }
   }
-  const message = document.getElementById("field-message")!;
-  message.innerHTML =
-    s.lastPayout && s.phase === "preparation"
-      ? `<span>✓ Wave held</span> +${s.lastPayout.total} gold <small>${s.lastPayout.interest} interest · ${s.lastPayout.trade} trade · ${s.lastPayout.reward} reward</small>`
-      : "";
   if (s.phase === "won" || s.phase === "lost") showResult();
 }
 function showResult() {
@@ -282,6 +302,27 @@ function showResult() {
   el.hidden = false;
   if (el.innerHTML) return;
   el.innerHTML = resultCard(s, levelIndex === 0, assisted);
+}
+function openBattleMenu() {
+  if (!game || battleMenu || screen !== "battle") return;
+  if (game.state.phase === "won" || game.state.phase === "lost") return;
+  const root = document.getElementById("modal-root");
+  if (!root) return;
+  if (game.state.phase === "wave" || game.state.phase === "preparation")
+    game.pause();
+  sound.pause(true);
+  document.querySelector<HTMLElement>(".battle-screen")!.inert = true;
+  battleMenu = new BattleMenu(root, save);
+  updateHud();
+}
+function closeBattleMenu() {
+  battleMenu?.destroy();
+  battleMenu = null;
+  document.querySelector<HTMLElement>(".battle-screen")!.inert = false;
+  if (game?.state.phase === "paused") game.pause();
+  sound.pause(false);
+  updateHud();
+  document.getElementById("battle-menu")?.focus();
 }
 function settingsModal() {
   settings = true;
@@ -325,6 +366,36 @@ app.addEventListener("click", (e) => {
   if ((el as HTMLButtonElement).disabled) return;
   const [action, value] = el.dataset.action!.split(":");
   sound.play("ui");
+  if (action === "payout-toggle" || action === "payout-close") {
+    const details = document.getElementById("payout-details")!;
+    details.hidden = action === "payout-close" || !details.hidden;
+    document
+      .querySelector(".payout-toggle")
+      ?.setAttribute("aria-expanded", String(!details.hidden));
+    if (action === "payout-close")
+      document.querySelector<HTMLButtonElement>(".payout-toggle")?.focus();
+    return;
+  }
+  if (action === "menu") {
+    openBattleMenu();
+    return;
+  }
+  if (action.startsWith("menu-")) {
+    if (!battleMenu || battleMenu.transitioning) return;
+    if (action === "menu-settings") void battleMenu.navigate("settings");
+    if (action === "menu-back") void battleMenu.navigate("menu");
+    if (action === "menu-quit") void battleMenu.navigate("quit");
+    if (action === "menu-continue") closeBattleMenu();
+    if (action === "menu-confirm-quit") {
+      battleMenu.destroy();
+      battleMenu = null;
+      game = null;
+      screen = "map";
+      sound.pause(false);
+      render();
+    }
+    return;
+  }
   if (action === "settings") {
     settingsModal();
     return;
@@ -336,7 +407,6 @@ app.addEventListener("click", (e) => {
   if (action === "title" || action === "map") {
     sound.pause(false);
     sound.unlock();
-    leavePaused = false;
     screen = action;
     game = null;
     render();
@@ -370,22 +440,6 @@ app.addEventListener("click", (e) => {
     return;
   }
   if (!game) return;
-  if (action === "leave") {
-    leavePaused = false;
-    if (game.state.phase === "wave") {
-      game.pause();
-      leavePaused = true;
-    }
-    sound.pause(true);
-    document.getElementById("modal-root")!.innerHTML =
-      `<div class="modal-backdrop"><section class="settings-card" role="dialog" aria-modal="true" aria-labelledby="leave-title"><h2 id="leave-title">Leave this game?</h2><p>Gold and defenses will reset. Your progress is saved.</p>${button("map", "Leave", "primary")}${button("stay", "Stay", "secondary")}</section></div>`;
-  }
-  if (action === "stay") {
-    document.getElementById("modal-root")!.innerHTML = "";
-    if (leavePaused && game.state.phase === "paused") game.pause();
-    leavePaused = false;
-    sound.pause(game.state.phase === "paused");
-  }
   if (action === "build") {
     build = build === value ? null : (value as TowerKind);
     rescueMode = false;
@@ -402,10 +456,6 @@ app.addEventListener("click", (e) => {
     build = null;
     field?.highlight(null);
     sound.unlock();
-  }
-  if (action === "pause") {
-    game.pause();
-    sound.pause(game.state.phase === "paused");
   }
   if (action === "speed") {
     speed = speed === 1 ? 2 : 1;
@@ -424,15 +474,67 @@ app.addEventListener("click", (e) => {
 });
 document.addEventListener("keydown", (e) => {
   if (orientationBlocked) return;
+  if (battleMenu) {
+    if (e.key === "Escape") {
+      e.preventDefault();
+      if (battleMenu.transitioning) return;
+      if (battleMenu.view !== "menu") void battleMenu.navigate("menu");
+      else closeBattleMenu();
+    }
+    if (e.key === "Tab") {
+      const targets = [
+        ...document.querySelectorAll<HTMLElement>(
+          "#modal-root .menu-page:not([hidden]):not([inert]) button, #modal-root .menu-page:not([hidden]):not([inert]) input",
+        ),
+      ];
+      const first = targets[0],
+        last = targets[targets.length - 1];
+      if (!first) {
+        e.preventDefault();
+        return;
+      }
+      if (
+        e.shiftKey &&
+        (document.activeElement === first ||
+          !targets.includes(document.activeElement as HTMLElement))
+      ) {
+        e.preventDefault();
+        last.focus();
+      } else if (
+        !e.shiftKey &&
+        (document.activeElement === last ||
+          !targets.includes(document.activeElement as HTMLElement))
+      ) {
+        e.preventDefault();
+        first.focus();
+      }
+    }
+    return;
+  }
+  const payoutDetails = document.getElementById("payout-details");
+  if (e.key === "Escape" && payoutDetails && !payoutDetails.hidden) {
+    payoutDetails.hidden = true;
+    const toggle = document.querySelector<HTMLButtonElement>(".payout-toggle");
+    toggle?.setAttribute("aria-expanded", "false");
+    toggle?.focus();
+    e.preventDefault();
+    return;
+  }
   if (e.key === "Escape" && settings) {
     e.preventDefault();
     closeSettings();
     return;
   }
-  if ((e.target as HTMLElement).matches("input,button")) return;
+  if (e.key !== "Escape" && (e.target as HTMLElement).matches("input,button"))
+    return;
   if (e.key === "Escape") {
+    if (screen === "battle" && !build && !rescueMode && selected === null) {
+      openBattleMenu();
+      return;
+    }
     build = null;
     rescueMode = false;
+    selected = null;
     field?.highlight(null);
     updateHud();
   }
@@ -443,7 +545,7 @@ document.addEventListener("keydown", (e) => {
   ) {
     e.preventDefault();
     if (game?.state.phase === "preparation") game.startWave();
-    else game?.pause();
+    else openBattleMenu();
     sound.pause(game?.state.phase === "paused");
     updateHud();
   }
@@ -497,7 +599,24 @@ function frame(now: number) {
   syncOrientation();
   if (game && field) {
     game.advance(dt * speed);
-    for (const e of game.drainEvents()) sound.play(e.type);
+    for (const e of game.drainEvents()) {
+      sound.play(e.type);
+      if (e.type === "payout") {
+        for (const trader of game.state.towers.filter(
+          (t) => t.kind === "trade",
+        )) {
+          const point = field.project(trader);
+          const coin = document.createElement("div");
+          coin.className = "coin-flight";
+          coin.style.left = `${point.x}px`;
+          coin.style.top = `${point.y}px`;
+          coin.innerHTML = `${hudIcon("gold")}+${tradeIncome([trader])}`;
+          app.append(coin);
+          setTimeout(() => coin.remove(), 2100);
+        }
+        toast(`Wave cleared · +${e.value} gold`);
+      }
+    }
     field.preferGround = !!build || rescueMode;
     field.update(game, selected, dt);
     if (now - lastHud > 100) {

@@ -1,0 +1,51 @@
+{
+  "generator": "OpenAI native ImageGen",
+  "source": "assets/source/ui/battle-icons-v1.png",
+  "processing": "Crop transparent atlas cells; trim transparent margins; downsample to 256px; lossless WebP. No background removal or repainting.",
+  "assets": [
+    {
+      "name": "gold",
+      "sourceRect": [
+        0,
+        0,
+        627,
+        550
+      ],
+      "sha256": "f3a28309c72d43277f398d874307deff2a6b3954eec78f47b5bf6ca357aebcb5",
+      "bytes": 66272
+    },
+    {
+      "name": "heart",
+      "sourceRect": [
+        627,
+        0,
+        627,
+        550
+      ],
+      "sha256": "97fd2f3f271c2b9b8fdef07ca01db61a81ce26273691fb666b45646bd25b8173",
+      "bytes": 66872
+    },
+    {
+      "name": "flag",
+      "sourceRect": [
+        0,
+        550,
+        627,
+        704
+      ],
+      "sha256": "653b7b1d2a54e3b47cc5a60e4c25f3c7962ebd62f3fb80d6a9fb7c59c53ce289",
+      "bytes": 52294
+    },
+    {
+      "name": "marker",
+      "sourceRect": [
+        627,
+        550,
+        627,
+        704
+      ],
+      "sha256": "94ac42fe289c9c4f867ca589d532c42f37bbed2b63bea452557aee784436a098",
+      "bytes": 64364
+    }
+  ]
+}

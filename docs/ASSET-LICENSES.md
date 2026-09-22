@@ -27,6 +27,10 @@ Each generated collection retains its exact prompt in its delivery directory. Ri
 
 Donkey front/rear assets are supplied for the directional review lab. The active trader uses the side view and purse gesture, with no combat targeting. Historical mechanical assets under the superseded review directory are not loaded by the game.
 
+## Battle UI icons
+
+The gold, heart, pennant and selection/rank marker in `public/art/v2/battle-icons-v1/` were generated for Stormwatch with native OpenAI ImageGen on 22 September 2026. No third-party reference images were supplied. The exact prompt and runtime hashes are beside the assets. `tools/encode-battle-icons.mjs` crops transparent atlas cells and encodes 256px lossless WebP deliveries; it does not remove or repaint backgrounds. These are original generated project illustrations, not CC0 stock assets. Full-resolution source remains locally ignored.
+
 ## Fonts
 
 Cormorant Garamond and DM Sans were obtained from the official Google Fonts distribution and are served locally. Their SIL Open Font License notices are committed in `public/fonts/cormorantgaramond-OFL.txt` and `public/fonts/dmsans-OFL.txt`. Font files retain the downloaded TrueType bytes; filenames and CSS declare their `.ttf` format. No external font request is made at runtime.
