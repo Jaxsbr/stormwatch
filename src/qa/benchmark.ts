@@ -8,7 +8,7 @@ import type { EnemyKind, TowerKind } from "../sim/types";
 
 // Deliberately artificial rendering stress. Never imported by the playable game.
 const root = document.querySelector<HTMLDivElement>("#qa")!;
-root.innerHTML = `<style>body{margin:0;background:#142825;color:#f5e5c0;font:14px system-ui}header{height:110px;padding:12px;box-sizing:border-box;display:flex;gap:16px;align-items:center}button{min-height:44px;padding:10px}#field{height:calc(100vh - 110px)}#status{white-space:pre-wrap}#results{position:absolute;bottom:8px;left:8px;max-height:35vh;overflow:auto;background:#142825ed;font-size:11px;pointer-events:none}</style><header><div><b>Stormwatch · artificial stress fixture</b><br>Seed 42 · 60 enemies · 12 defenses · 3 lodges<br>150 combined shots/effects · 10s warmup + 180s × 3</div><button id="start">Run three benchmarks</button><button id="diagnostic">Run one diagnostic</button><button id="attribution">Run attribution diagnostic</button><button id="download" disabled>Download evidence</button><span id="status">Ready. Keep this tab visible.</span></header><div id="field"></div><pre id="results"></pre>`;
+root.innerHTML = `<style>body{margin:0;background:#142825;color:#f5e5c0;font:14px system-ui}header{height:110px;padding:12px;box-sizing:border-box;display:flex;gap:16px;align-items:center}button{min-height:44px;padding:10px}#field{height:calc(100vh - 110px)}#status{white-space:pre-wrap}#results{position:absolute;bottom:8px;left:8px;max-height:35vh;overflow:auto;background:#142825ed;font-size:11px;pointer-events:none}</style><header><div><b>Stormwatch · artificial stress fixture</b><br>Seed 42 · 60 enemies · 12 defenses<br>150 combined shots/effects · 10s warmup + 180s × 3</div><button id="start">Run three benchmarks</button><button id="diagnostic">Run one diagnostic</button><button id="attribution">Run attribution diagnostic</button><button id="download" disabled>Download evidence</button><span id="status">Ready. Keep this tab visible.</span></header><div id="field"></div><pre id="results"></pre>`;
 const field = new Battlefield(document.querySelector("#field")!);
 field.profileTiming = true;
 let game: Game;
@@ -27,7 +27,6 @@ let transitions: { time: number; phase: string; payout: boolean }[] = [];
 const results: unknown[] = [];
 let peakEnemies = 0,
   peakEffects = 0;
-let rescueCount = 0;
 let previousWork = {
   totalMs: 0,
   renderMs: 0,
@@ -57,7 +56,11 @@ const status = document.querySelector("#status")!;
 function fixture() {
   rebuiltScene = true;
   game = new Game(
-    { ...lanternPass, waves: [{ title: "Stress", reward: 30, groups: [] }] },
+    {
+      ...lanternPass,
+      availableTowers: ["bolt", "stone", "net"],
+      waves: [{ title: "Stress", reward: 30, groups: [] }],
+    },
     "nets",
     false,
     42,
@@ -76,15 +79,9 @@ function fixture() {
     { x: 7, z: 4 },
     { x: 8, z: 4 },
     { x: 10, z: 4 },
-    { x: 0, z: 1 },
-    { x: 0, z: 5 },
-    { x: 11, z: 5 },
   ];
   const placed = positions.map((p, i) =>
-    game.place(
-      i >= 12 ? "trade" : (["bolt", "stone", "net"] as TowerKind[])[i % 3],
-      p,
-    ),
+    game.place((["bolt", "stone", "net"] as TowerKind[])[i % 3], p),
   );
   if (placed.some((ok) => !ok))
     throw new Error("QA fixture placement rejected; stress counts are invalid");
@@ -139,12 +136,7 @@ function percentile(values: number[], fraction: number) {
 function finishRun() {
   const ordered = [...samples].sort((a, b) => a - b);
   const renderedOrder = [...renderedIntervals].sort((a, b) => a - b);
-  const defenses = game.state.towers.filter(
-    (tower) => tower.kind !== "trade",
-  ).length;
-  const lodges = game.state.towers.filter(
-    (tower) => tower.kind === "trade",
-  ).length;
+  const defenses = game.state.towers.length;
   results.push({
     run: run + 1,
     seed: 42,
@@ -183,9 +175,7 @@ function finishRun() {
       "Wall-clock elapsed time inside callbacks and render phases, not CPU execution time or asynchronous GPU completion. Long intervals include preceding work and browser scheduling.",
     peakEnemies,
     defenses,
-    lodges,
     peakCombinedShotsEffects: peakEffects,
-    rescueUses: rescueCount,
     transitions,
     invalidatedByHiddenTab: invalid,
     viewport: [innerWidth, innerHeight],
@@ -227,7 +217,6 @@ function resetRun() {
   transitions = [];
   peakEnemies = 0;
   peakEffects = 0;
-  rescueCount = 0;
   fixture();
 }
 function frame(now: number) {
@@ -260,11 +249,6 @@ function frame(now: number) {
       game.advance(Math.min(raw / 1000, 0.1));
       if (game.state.phase === "lost") game.state.phase = "wave";
       replenish();
-      if (Math.floor(elapsed / 14) > rescueCount) {
-        game.state.abilityReadyAt = 0;
-        game.rescue({ x: 5, z: 1 });
-        rescueCount++;
-      }
       replenish();
     }
     game.drainEvents();

@@ -90,8 +90,28 @@
   width: min(680px, 100%);
 }
 .result-card .unlock-note {
-  font-size: 17px !important;
+  margin: 14px 0;
+  padding: 14px 18px;
+  border: 1px solid #d0a85c;
+  border-radius: 9px;
+  background: #29402fe8;
   line-height: 1.5;
+}
+.result-card .unlock-note small {
+  color: #f6d987;
+  font:
+    800 12px/1 "DM Sans",
+    sans-serif;
+  letter-spacing: 1.4px;
+}
+.result-card .unlock-note h2 {
+  margin: 5px 0;
+  color: #fff0c0;
+  font-size: 26px;
+}
+.result-card .unlock-note p {
+  margin: 0;
+  font-size: 16px;
 }
 .result-card .assist-help {
   margin-top: 16px !important;
@@ -126,6 +146,16 @@
 }
 .battle-screen .wave-controls .game-art-button {
   width: 100%;
+}
+.battle-screen .wave-countdown {
+  margin: 0;
+  color: #f5dfaa;
+  font:
+    700 14px/1.25 "DM Sans",
+    sans-serif;
+  text-align: center;
+  font-variant-numeric: tabular-nums;
+  text-shadow: 0 1px 3px #000;
 }
 .battle-screen .rescue-button {
   flex-wrap: wrap;

@@ -6,14 +6,14 @@ export const button = (action: string, label: string, cls = "", extra = "") =>
 
 export function resultCard(
   state: Pick<GameState, "phase" | "stars">,
-  firstMap: boolean,
+  squirrelUpgradeUnlocked: boolean,
   assisted: boolean,
 ) {
   const won = state.phase === "won";
   return `<section class="result-card" aria-labelledby="result-title">
     <h1 id="result-title">${won ? "Victory!" : "Defeat"}</h1>
     ${won ? `<div class="result-stars" aria-label="${state.stars} stars">${"★".repeat(state.stars)}${"☆".repeat(3 - state.stars)}</div>` : ""}
-    ${won && firstMap ? '<p class="unlock-note">Unlocked: Rainstone Crossing<br>New advantage: 20% cheaper upgrades</p>' : ""}
+    ${won && squirrelUpgradeUnlocked ? '<section class="unlock-note" aria-labelledby="reward-title"><small>NEW REWARD</small><h2 id="reward-title">Squirrel upgrades unlocked</h2><p>Select a Squirrel during future battles to improve its damage, range, and attack speed.</p></section>' : ""}
     <div class="result-actions">
       ${button("map", "Map", won ? "primary" : "secondary")}
       ${button("retry", "Play again", won ? "secondary" : "primary")}

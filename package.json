@@ -8,6 +8,7 @@
   },
   "scripts": {
     "dev": "vite --host 127.0.0.1",
+    "prototype:mvp-feedback": "vite --host 127.0.0.1 --open /review/2026-09-25-mvp-feedback/index.html",
     "build": "tsc --noEmit && vite build",
     "check": "tsc --noEmit",
     "test": "vitest run",

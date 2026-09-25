@@ -14,17 +14,17 @@ flowchart LR
   U --> A
 ```
 
-| Boundary | Implemented responsibility | Extension point |
-|---|---|---|
-| `src/content` | Tower/enemy/card catalogs and two encounters | Add level data, register it, validate and test |
-| `src/sim/game.ts` | Commands, 30 Hz simulation, damage, movement, targets, waves and outcomes | Add a rule with focused deterministic tests |
-| `src/sim/economy.ts` | Pure interest, trade payout and refunds | Tune rates here; review catalog costs and strategy evidence |
-| `src/render/battlefield.ts` | Flat orthographic painted battlefield, continuous trail, rig direction/aim, picking, range and effects | New visual without importing browser APIs into simulation |
-| `src/render/cutout.ts`, `character-rig.ts` | Shared native textures, per-actor joints and view-aware walking | Descriptor-driven parts; side IK and front/rear projected legs |
-| `src/main.ts` | Semantic HTML screens, input commands, attempt lifecycle and HUD | New screen or input adapter; currently a deliberately small single module |
-| `src/audio/sound.ts` | Gesture-unlocked music and synthesized cue family | New licensed track or cue, preserving volume/mute lifecycle |
-| `src/persistence/save.ts` | Version 1 validation/defaults, stars, settings and unlock | Explicit migration for future schema changes |
-| `src/qa/benchmark.ts` | Separate artificial browser stress fixture | Raw RAF measurement; never used by normal gameplay |
+| Boundary                                   | Implemented responsibility                                                                             | Extension point                                                           |
+| ------------------------------------------ | ------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------- |
+| `src/content`                              | Tower/enemy/card catalogs and two encounters                                                           | Add level data, register it, validate and test                            |
+| `src/sim/game.ts`                          | Commands, 30 Hz simulation, damage, movement, targets, waves and outcomes                              | Add a rule with focused deterministic tests                               |
+| `src/sim/economy.ts`                       | Fixed wave rewards and sell refunds                                                                    | Tune authored rewards alongside catalog costs and strategy evidence       |
+| `src/render/battlefield.ts`                | Flat orthographic painted battlefield, continuous trail, rig direction/aim, picking, range and effects | New visual without importing browser APIs into simulation                 |
+| `src/render/cutout.ts`, `character-rig.ts` | Shared native textures, per-actor joints and view-aware walking                                        | Descriptor-driven parts; side IK and front/rear projected legs            |
+| `src/main.ts`                              | Semantic HTML screens, input commands, attempt lifecycle and HUD                                       | New screen or input adapter; currently a deliberately small single module |
+| `src/audio/sound.ts`                       | Gesture-unlocked music and synthesized cue family                                                      | New licensed track or cue, preserving volume/mute lifecycle               |
+| `src/persistence/save.ts`                  | Version 1 validation/defaults, stars, settings and unlock                                              | Explicit migration for future schema changes                              |
+| `src/qa/benchmark.ts`                      | Separate artificial browser stress fixture                                                             | Raw RAF measurement; never used by normal gameplay                        |
 
 Simulation commands return success/failure and emit lightweight events. The UI translates commands into feedback; rendering reads state. `advance` accumulates fixed 1/30-second steps and limits long-frame catch-up. `tick` is available to deterministic tests. Randomness uses a seeded generator; current encounter rules have no random targeting or damage. Fixed seeds alone do not make browser frame timings deterministic.
 
@@ -50,13 +50,15 @@ ground picking except during construction, when the exact ground cell wins.
 
 ## Add a tower/enemy/card
 
-Catalog data controls existing roles. A genuinely new attack behavior also needs
-a typed kind, simulation rule, asset bounds, UI explanation and tests. Do not
+Catalog data controls existing roles. Each encounter declares its available
+defenders, while persistent progress declares which upgrades are usable. A
+genuinely new attack behavior also needs a typed kind, simulation rule, asset bounds, UI explanation and tests. Do not
 represent new mechanics as arbitrary strings or pretend the catalog can express
 behavior it cannot. Rig resources map each role to generated parts; see
 `ART-PIPELINE.md` for import, source provenance and visual review. Legacy atlas
-indices remain fallback metadata. Cards modify range, starting crowns, slow
-duration or upgrade cost in simulation.
+indices remain fallback metadata. Advantage definitions can modify range, slow
+duration, or upgrade cost, but remain dormant until a campaign reward explicitly
+unlocks them.
 
 ## Planned boundaries
 

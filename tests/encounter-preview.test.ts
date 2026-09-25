@@ -1,18 +1,17 @@
 import { describe, expect, it } from "vitest";
-import { encounterEnemies } from "../src/ui/advantage-screen";
+import { advantageScreen, encounterEnemies } from "../src/ui/advantage-screen";
 import { lanternPass } from "../src/content/lantern-pass";
 import { rainstoneCrossing } from "../src/content/rainstone-crossing";
 
 describe("encounter roster", () => {
-  it("includes the boss and deduplicates repeated enemies on both current maps", () => {
-    for (const level of [lanternPass, rainstoneCrossing]) {
-      expect(encounterEnemies(level)).toEqual([
-        "raider",
-        "runner",
-        "armored",
-        "boss",
-      ]);
-    }
+  it("shows the Rat Raider trial roster on Lantern and the full roster on Rainstone", () => {
+    expect(encounterEnemies(lanternPass)).toEqual(["raider"]);
+    expect(encounterEnemies(rainstoneCrossing)).toEqual([
+      "raider",
+      "runner",
+      "armored",
+      "boss",
+    ]);
   });
   it("reflects a different map roster instead of always displaying every enemy", () => {
     expect(
@@ -31,5 +30,12 @@ describe("encounter roster", () => {
         ],
       }),
     ).toEqual(["runner"]);
+  });
+  it("introduces the first watch without showing unexplained advantages", () => {
+    const screen = advantageScreen(lanternPass, [], "none");
+    expect(screen).toContain("First watch");
+    expect(screen).toContain("Begin with the Squirrel archer");
+    expect(screen).not.toContain("Choose one advantage");
+    expect(screen).not.toContain('data-action="card:');
   });
 });

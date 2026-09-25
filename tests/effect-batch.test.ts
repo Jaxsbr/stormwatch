@@ -23,7 +23,7 @@ describe("batched effect appearance", () => {
     const effects = [
       effect(1, "hit"),
       effect(2, "splash"),
-      effect(3, "supply", 0.75),
+      effect(3, "slow", 0.75),
     ];
     batch.update(effects, project);
     const positions = batch.mesh.geometry.attributes.position;
@@ -31,10 +31,8 @@ describe("batched effect appearance", () => {
     const v = source.attributes.position;
     effects.forEach((fx, n) => {
       const center = project(fx);
-      const size =
-        (fx.kind === "supply" ? 130 : fx.kind === "splash" ? 60 : 18) *
-        (0.2 + fx.age * 0.8);
-      const color = new THREE.Color(fx.kind === "supply" ? 0xf5d085 : 0xdab575);
+      const size = (fx.kind === "splash" ? 60 : 18) * (0.2 + fx.age * 0.8);
+      const color = new THREE.Color(0xdab575);
       for (let i = 0; i < v.count; i++) {
         const index = n * v.count + i;
         expect(positions.getX(index)).toBeCloseTo(

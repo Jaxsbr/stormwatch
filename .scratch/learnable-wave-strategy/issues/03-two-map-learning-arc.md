@@ -16,3 +16,11 @@
 ## Reconciliation
 
 This is the next ticket. The current game already gives every rat a periodic guard in the existing waves; those wave groups were not authored as a teach → practice → combine lesson. Start by checking whether a first sighting is forgiving and whether two tower plans or placements respond differently. The saved broad and focused plans still win both maps with 12 hearts, while the greedy opening loses more hearts in wave 1. Use the current [scenario check](../../../review/2026-09-25-learnable-wave-strategy/reconciliation-2026-09-25.md) when planning the arc.
+
+## Comments
+
+25 September 2026: The owner selected a five-wave Rat Raider trial for Lantern Pass to start playtesting shield duration, reduced movement speed, and solo versus staggered-pair arrivals. See [decision 012](../../../docs/decisions/012-rat-raider-five-wave-trial.md). This is the first-map Rat lesson slice; the complete two-map learning arc remains open.
+
+25 September 2026: First play feedback confirmed that guard timing affected tower placement. Follow-up adds a readable guard glyph, a five-second skippable inter-wave countdown, an ordinal wave counter, and a 100-gold Lantern Pass start. See [decision 013](../../../docs/decisions/013-battle-feedback-and-inter-wave-pacing.md). Balance across tower types remains open for owner playtesting.
+
+25 September 2026: The owner narrowed Lantern Pass discovery to the Squirrel archer and made Squirrel upgrades the first-victory reward. Advantages now stay hidden until explicitly earned; interest, the income tower, payout forecast, and supply drop were removed in favor of combat coins plus fixed wave rewards. See [decision 014](../../../docs/decisions/014-progressive-discovery-and-simple-wave-economy.md).

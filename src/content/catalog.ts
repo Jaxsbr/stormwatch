@@ -12,8 +12,8 @@ export const TOWERS: Record<TowerKind, TowerDef> = {
     cost: 40,
     upgrade: 55,
     range: 2.7,
-    damage: 14,
-    interval: 0.9,
+    damage: 10,
+    interval: 1,
     sprite: 0,
     color: "#eec576",
   },
@@ -38,17 +38,6 @@ export const TOWERS: Record<TowerKind, TowerDef> = {
     interval: 1.35,
     sprite: 2,
     color: "#a8c8a3",
-  },
-  trade: {
-    name: "Donkey trader",
-    role: "Income • investment",
-    cost: 55,
-    upgrade: 40,
-    range: 0,
-    damage: 0,
-    interval: 1,
-    sprite: 3,
-    color: "#ecc274",
   },
 };
 export const ENEMIES: Record<EnemyKind, EnemyDef> = {
@@ -102,13 +91,6 @@ export const CARDS: {
     tag: "REACH",
     description: "All defenses reach 18% farther. Cover more of the trail.",
     icon: "◎",
-  },
-  {
-    id: "supply",
-    name: "Supply wagons",
-    tag: "RESOURCES",
-    description: "Begin with 45 extra gold. Build now, or save for interest.",
-    icon: "▣",
   },
   {
     id: "nets",

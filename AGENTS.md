@@ -7,3 +7,17 @@ Keep simulation deterministic and browser-independent. Content is data; renderin
 Keep patches bounded. Review delegated edits before integrating. Public docs describe capabilities generically; never commit machine paths, credentials, account configuration, infrastructure access instructions or private logs. Generated runtime assets must be committed and have provenance. Source assets can remain locally ignored. Do not modify the previous game.
 
 Record consequential choices in docs/decisions with context, decision, consequences and verification. New product direction or additional asset spending requires owner approval. Do not replace agreed capabilities with placeholders to make checks pass.
+
+## Agent skills
+
+### Issue tracker
+
+Issues and specs are local Markdown files under `.scratch/<feature>/`. See `docs/agents/issue-tracker.md`.
+
+### Triage labels
+
+Use `needs-triage`, `needs-info`, `ready-for-agent`, `ready-for-human`, and `wontfix`. See `docs/agents/triage-labels.md`.
+
+### Domain docs
+
+Single-context: use `docs/GLOSSARY.md` and relevant records in `docs/decisions/`. See `docs/agents/domain.md`.

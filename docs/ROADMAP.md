@@ -9,12 +9,13 @@ Playable two-encounter visual reboot with generated painterly scenery, an orthog
 | Priority | Work | Depends on | Acceptance |
 |---|---|---|---|
 | P0 | Physical phone and audible mix sign-off | Candidate build, iPhone 12-class Safari/Pixel 6-class Chrome, listener | Essential taps on physical devices; 3 stress runs per device at p95≤35ms; music loop/mix heard and notes recorded |
+| P1 | MVP feedback follow-up and individual animation review | Owner review of prototypes; current gameplay capture | Refine mobile placement around variant B and clear-ground guidance; use A for physical hits and C for effect/status cues; audit every current role individually at normal speed and record evidence gaps |
 | P1 | Family playtest and economy tuning | Stable verified input/layout | Observe first-time play without coaching; 5–8min encounters including planning; spending and saving both understandable; document failures before adjusting costs |
 | P1 | Resolve any measured performance gaps | Raw benchmark and gameplay evidence | Desktop p95≤20ms and no attributable >100ms gameplay frame; retain before/after evidence |
-| P2 | More varied second encounter tactics | Playtest results | A distinct pressure pattern without extra rules unless justified; both reasonable strategies viable, no required grinding |
+| P2 | Roster matchup and two-map challenge audit | Owner-confirmed wave-learning and overlap direction; current-build play scenarios; family playtest | Complete four-enemy × three-combat-tower matrix; set a teach → practice → combine purpose across the two fixed-route maps; establish whether current one-of-each play is dominant and what causes understandable leaks |
 | P2 | Extract screen controllers as content grows | More UI complexity | Same full-loop regression evidence; simulation remains DOM-free; screen lifecycle owns cleanup |
 | P2 | Stronger content validation and save migration | Third encounter or changed save schema | Bad ids/paths/groups fail clearly; old version migrates without losing best stars |
-| P3 | Additional biome and enemy/tower behavior | Above foundations stable | New content follows documented extension process, has cohesive art, focused rule tests and budgets |
+| P3 | Production-lineage enemy/tower gameplay slices | Roster and map plan reviewed; one candidate lesson selected | Implement one enemy ability at a time through real content/simulation/rendering; retain focused rule tests and visual cues; expand towers/upgrades only when needed for overlapping trade-offs |
 
 ## Known limits
 

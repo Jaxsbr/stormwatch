@@ -3,7 +3,6 @@ const animals: Record<TowerKind, string> = {
   bolt: "squirrel",
   stone: "skunk",
   net: "turtle",
-  trade: "donkey",
 };
 export const towerPortrait = (kind: TowerKind) =>
   `<span class="portrait rig-portrait" data-tower-portrait="${kind}" aria-hidden="true"></span>`;

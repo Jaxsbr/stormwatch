@@ -2,7 +2,7 @@ import { ENEMIES } from "../content/catalog";
 import type { CardId, EnemyKind, LevelDef } from "../sim/types";
 
 const advantages: Record<
-  CardId,
+  Exclude<CardId, "none">,
   { value: string; label: string; accessible: string; crop: [number, number] }
 > = {
   reach: {
@@ -10,12 +10,6 @@ const advantages: Record<
     label: "more range",
     accessible: "All defenses shoot 18% farther",
     crop: [0, 565],
-  },
-  supply: {
-    value: "+45",
-    label: "starting gold",
-    accessible: "Start with 45 extra gold",
-    crop: [565, 550],
   },
   nets: {
     value: "+50%",
@@ -75,7 +69,9 @@ export function advantageScreen(
         )
         .join("")}</ul>
     </section>
-    <section class="advantage-choice" aria-labelledby="advantage-title">
+    ${
+      cards.length
+        ? `<section class="advantage-choice" aria-labelledby="advantage-title">
       <h2 id="advantage-title">Choose one advantage</h2>
       <div class="advantage-options" role="group" aria-labelledby="advantage-title">
         ${cards
@@ -85,7 +81,7 @@ export function advantageScreen(
               label,
               accessible,
               crop: [x, width],
-            } = advantages[id];
+            } = advantages[id as Exclude<CardId, "none">];
             return `<button class="advantage-option" data-action="card:${id}" aria-pressed="${selected === id}" aria-label="${accessible}">
             <svg class="advantage-art" viewBox="${x} 0 ${width} 724" aria-hidden="true" focusable="false"><defs><clipPath id="advantage-clip-${id}"><rect x="${x}" y="0" width="${width}" height="724"/></clipPath></defs><image clip-path="url(#advantage-clip-${id})" href="${import.meta.env.BASE_URL}art/v2/advantage-icons-v1/atlas.webp" width="2172" height="724"/></svg>
             <span class="advantage-effect"><strong>${value}</strong><span>${label}</span></span>
@@ -93,7 +89,9 @@ export function advantageScreen(
           })
           .join("")}
       </div>
-    </section>
+    </section>`
+        : '<section class="first-watch-brief"><strong>First watch</strong><p>Begin with the Squirrel archer. More defenders and advantages are discovered as the expedition continues.</p></section>'
+    }
     <nav class="advantage-actions" aria-label="Encounter navigation">
       <button class="game-art-button" data-action="map">Back</button>
       <button class="game-art-button game-art-button--primary" data-action="begin">Play</button>

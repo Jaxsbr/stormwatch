@@ -13,13 +13,13 @@ describe("save persistence adapter", () => {
 
   it("whitelists progress, clamps settings, and derives the tactical unlock", () => {
     const parsed = parseSave(
-      '{"version":1,"stars":{"lantern-pass":9,"rainstone-crossing":-2,"not-a-level":3,"__proto__":{"polluted":true}},"unlocked":["thrift","thrift","rainstone-crossing","unknown"],"music":4,"effects":-1,"muted":"yes","tutorialSeen":1}',
+      '{"version":1,"stars":{"lantern-pass":9,"rainstone-crossing":-2,"not-a-level":3,"__proto__":{"polluted":true}},"unlocked":["thrift","squirrel-upgrade","squirrel-upgrade","rainstone-crossing","unknown"],"music":4,"effects":-1,"muted":"yes","tutorialSeen":1}',
     );
 
     expect(parsed).toEqual({
       version: 1,
       stars: { "lantern-pass": 3, "rainstone-crossing": 0 },
-      unlocked: ["thrift"],
+      unlocked: ["squirrel-upgrade"],
       music: 1,
       effects: 0,
       muted: false,
@@ -45,7 +45,7 @@ describe("save persistence adapter", () => {
 
     expect(initial).toEqual(freshSave());
     expect(earned.stars).toEqual({ "lantern-pass": 2 });
-    expect(earned.unlocked).toEqual(["thrift"]);
+    expect(earned.unlocked).toEqual(["squirrel-upgrade"]);
 
     const lower = recordVictory(earned, "lantern-pass", 1);
     expect(lower.stars).toEqual(earned.stars);

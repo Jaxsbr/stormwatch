@@ -210,7 +210,11 @@
 }
 .battle-screen .tower-buttons {
   min-width: 0;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+.battle-screen .tower-buttons:has(> :only-child) {
+  grid-template-columns: minmax(240px, 340px);
+  justify-content: center;
 }
 .battle-screen .tower-button {
   min-width: 0;
@@ -363,6 +367,12 @@
   .battle-screen .build-tray .selection-actions {
     gap: 4px;
   }
+}
+.upgrade-lock {
+  margin: 8px 0 0;
+  color: #e6ca8d;
+  font-size: 12px;
+  line-height: 1.35;
 }
 @media (prefers-reduced-motion: reduce) {
   .hero-portrait .rig-portrait,

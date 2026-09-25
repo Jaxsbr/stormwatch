@@ -12,3 +12,8 @@ Read the accepted records before changing consequential behavior. For a new deci
 - [007: Shared game UI and gold](007-shared-game-ui-and-gold.md)
 - [008: Battle information and selection](008-battle-information-and-selection.md)
 - [009: Stable command panel and battle menu](009-stable-command-panel-and-battle-menu.md)
+- [010: MVP feedback experiments](010-mvp-feedback-experiments.md)
+- [011: Rat guard uses complete torso frames](011-rat-shield-cutout-motion.md)
+- [012: Rat Raider five-wave trial](012-rat-raider-five-wave-trial.md)
+- [013: Battle feedback and inter-wave pacing](013-battle-feedback-and-inter-wave-pacing.md)
+- [014: Progressive discovery and simple wave economy](014-progressive-discovery-and-simple-wave-economy.md)

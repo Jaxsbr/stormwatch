@@ -1,7 +1,7 @@
 export type Point = { x: number; z: number };
-export type TowerKind = "bolt" | "stone" | "net" | "trade";
+export type TowerKind = "bolt" | "stone" | "net";
 export type EnemyKind = "raider" | "runner" | "armored" | "boss";
-export type CardId = "reach" | "supply" | "nets" | "thrift";
+export type CardId = "none" | "reach" | "nets" | "thrift";
 export type Phase = "preparation" | "wave" | "paused" | "won" | "lost";
 export interface TowerDef {
   name: string;
@@ -23,8 +23,27 @@ export interface EnemyDef {
   leak: number;
   sprite: number;
 }
+export interface ShieldCycle {
+  upSeconds: number;
+  downSeconds: number;
+}
+export interface WaveGroupDef {
+  kind: EnemyKind;
+  /** Total enemies in the group, including every batch. */
+  count: number;
+  /** Seconds between solo spawns or between batch start times. */
+  gap: number;
+  /** Optional batch size; defaults to one enemy per spawn time. */
+  batchSize?: number;
+  /** Seconds between enemies within one batch. */
+  batchStagger?: number;
+  /** Per-group movement multiplier; 0.75 means 25% slower than catalog speed. */
+  movementScale?: number;
+  /** Optional per-group Rat Raider guard timing; first guard follows one down interval. */
+  shieldCycle?: ShieldCycle;
+}
 export interface WaveDef {
-  groups: { kind: EnemyKind; count: number; gap: number }[];
+  groups: WaveGroupDef[];
   reward: number;
   title: string;
 }
@@ -38,6 +57,8 @@ export interface LevelDef {
   path: Point[];
   blocked: Point[];
   startCoins: number;
+  availableTowers?: TowerKind[];
+  enemyRewardScale?: number;
   healthScale?: number;
   waves: WaveDef[];
   accent: string;
@@ -61,6 +82,9 @@ export interface Enemy extends Point {
   hitAt: number;
   spawnedAt: number;
   shieldRaised: boolean;
+  shieldHitAt?: number;
+  movementScale?: number;
+  shieldCycle?: ShieldCycle;
 }
 export interface Shot extends Point {
   id: number;
@@ -74,7 +98,7 @@ export interface Shot extends Point {
 }
 export interface Effect extends Point {
   id: number;
-  kind: "hit" | "splash" | "slow" | "supply" | "coin";
+  kind: "hit" | "splash" | "slow" | "coin";
   age: number;
   ttl: number;
 }
@@ -91,8 +115,7 @@ export interface GameEvent {
     | "start"
     | "payout"
     | "win"
-    | "loss"
-    | "supply";
+    | "loss";
   value?: number;
 }
 export interface GameState {
@@ -100,6 +123,8 @@ export interface GameState {
   resumePhase: "preparation" | "wave";
   clock: number;
   wave: number;
+  /** Seconds until the next wave; null before wave one and after the finale. */
+  nextWaveCountdown: number | null;
   coins: number;
   lives: number;
   maxLives: number;
@@ -110,15 +135,6 @@ export interface GameState {
   effects: Effect[];
   card: CardId;
   assist: boolean;
-  abilityReadyAt: number;
-  abilityUses: number;
-  lastPayout: {
-    interest: number;
-    trade: number;
-    reward: number;
-    total: number;
-  } | null;
-  totalInterest: number;
-  totalTrade: number;
+  lastPayout: { reward: number; total: number } | null;
   stars: number;
 }

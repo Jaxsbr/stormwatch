@@ -8,7 +8,9 @@ export const lanternPass: LevelDef = {
   width: 12,
   depth: 8,
   accent: "#caab6c",
-  startCoins: 175,
+  startCoins: 100,
+  availableTowers: ["bolt"],
+  enemyRewardScale: 0.4,
   path: [
     { x: -1, z: 3 },
     { x: 2, z: 3 },
@@ -27,68 +29,69 @@ export const lanternPass: LevelDef = {
   ],
   waves: [
     {
-      title: "Footsteps in the rain",
+      title: "The first guard",
       reward: 25,
-      groups: [{ kind: "raider", count: 9, gap: 2.2 }],
+      groups: [
+        {
+          kind: "raider",
+          count: 20,
+          gap: 3,
+          shieldCycle: { upSeconds: 2, downSeconds: 8 },
+        },
+      ],
     },
     {
-      title: "A quicker shadow",
+      title: "A busier trail",
       reward: 28,
       groups: [
-        { kind: "raider", count: 8, gap: 1.8 },
-        { kind: "runner", count: 5, gap: 1.6 },
+        {
+          kind: "raider",
+          count: 23,
+          gap: 2,
+          shieldCycle: { upSeconds: 2, downSeconds: 8 },
+        },
       ],
     },
     {
-      title: "Iron on the trail",
+      title: "The slow pairs",
       reward: 30,
       groups: [
-        { kind: "armored", count: 4, gap: 3 },
-        { kind: "raider", count: 10, gap: 1.4 },
+        {
+          kind: "raider",
+          count: 20,
+          gap: 3,
+          batchSize: 2,
+          batchStagger: 0.3,
+          movementScale: 0.75,
+          shieldCycle: { upSeconds: 4, downSeconds: 6 },
+        },
       ],
     },
     {
-      title: "The long column",
+      title: "The held line",
       reward: 34,
       groups: [
-        { kind: "raider", count: 16, gap: 1.1 },
-        { kind: "runner", count: 8, gap: 1.1 },
+        {
+          kind: "raider",
+          count: 23,
+          gap: 3,
+          shieldCycle: { upSeconds: 6, downSeconds: 4 },
+        },
       ],
     },
     {
-      title: "Hold the crossing",
+      title: "The guarded pairs",
       reward: 38,
       groups: [
-        { kind: "armored", count: 9, gap: 1.7 },
-        { kind: "runner", count: 10, gap: 1.1 },
-      ],
-    },
-    {
-      title: "The Roadwarden arrives",
-      reward: 45,
-      groups: [
-        { kind: "armored", count: 6, gap: 2 },
-        { kind: "boss", count: 1, gap: 4 },
-        { kind: "raider", count: 16, gap: 1.2 },
-      ],
-    },
-    {
-      title: "Briar and iron",
-      reward: 50,
-      groups: [
-        { kind: "armored", count: 10, gap: 1.4 },
-        { kind: "runner", count: 12, gap: 0.9 },
-        { kind: "raider", count: 12, gap: 0.9 },
-      ],
-    },
-    {
-      title: "The lantern line",
-      reward: 65,
-      groups: [
-        { kind: "armored", count: 8, gap: 1.8 },
-        { kind: "runner", count: 12, gap: 0.9 },
-        { kind: "boss", count: 2, gap: 3.5 },
-        { kind: "raider", count: 20, gap: 0.9 },
+        {
+          kind: "raider",
+          count: 20,
+          gap: 2,
+          batchSize: 2,
+          batchStagger: 0.3,
+          movementScale: 0.75,
+          shieldCycle: { upSeconds: 6, downSeconds: 4 },
+        },
       ],
     },
   ],

@@ -33,13 +33,30 @@ export function validateLevel(level: LevelDef): void {
     if ((a.x !== b.x && a.z !== b.z) || distance(a, b) === 0)
       throw new Error("Path must use nonzero orthogonal segments");
   }
-  for (const w of level.waves)
-    for (const g of w.groups)
+  for (const w of level.waves) {
+    for (const g of w.groups) {
       if (
         !Number.isInteger(g.count) ||
         g.count < 1 ||
         !Number.isFinite(g.gap) ||
-        g.gap <= 0
+        g.gap <= 0 ||
+        (g.batchSize !== undefined &&
+          (!Number.isInteger(g.batchSize) || g.batchSize < 1)) ||
+        (g.batchStagger !== undefined &&
+          (!Number.isFinite(g.batchStagger) ||
+            g.batchStagger < 0 ||
+            g.batchStagger >= g.gap ||
+            (g.batchSize ?? 1) < 2)) ||
+        (g.movementScale !== undefined &&
+          (!Number.isFinite(g.movementScale) || g.movementScale <= 0)) ||
+        (g.shieldCycle !== undefined &&
+          (g.kind !== "raider" ||
+            !Number.isFinite(g.shieldCycle.upSeconds) ||
+            g.shieldCycle.upSeconds <= 0 ||
+            !Number.isFinite(g.shieldCycle.downSeconds) ||
+            g.shieldCycle.downSeconds <= 0))
       )
         throw new Error("Invalid wave group");
+    }
+  }
 }

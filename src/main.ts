@@ -5,20 +5,13 @@ import "./ui/button-skin.css";
 import "./ui/battle-ui.css";
 import "./ui/battle-menu.css";
 import { BattleMenu } from "./ui/battle-menu";
-import {
-  battleStats,
-  economyPanel,
-  defenderPanel,
-  hudIcon,
-  completedWaves,
-} from "./ui/battle-ui";
+import { battleStats, defenderPanel, displayedWave } from "./ui/battle-ui";
 import { button, resultCard } from "./ui/game-chrome";
 import { advantageScreen } from "./ui/advantage-screen";
 import { Game } from "./sim/game";
 import type { CardId, Point, TowerKind } from "./sim/types";
 import { TOWERS, CARDS } from "./content/catalog";
 import { LEVELS } from "./content/levels";
-import { tradeIncome } from "./sim/economy";
 import { Battlefield } from "./render/battlefield";
 import { attachRecording } from "./render/recording";
 import { towerPortrait, paintTowerPortraits } from "./render/portraits";
@@ -44,16 +37,16 @@ sound.muted = save.muted;
 type Screen = "title" | "map" | "briefing" | "battle";
 let screen: Screen = "title",
   levelIndex = 0,
-  card: CardId = "reach",
+  card: CardId = "none",
   game: Game | null = null,
   field: Battlefield | null = null,
   build: TowerKind | null = null,
   selected: number | null = null,
-  rescueMode = false,
   settings = false,
   settingsPaused = false,
   assisted = false,
   resultSaved = false,
+  resultUnlockedUpgrade = false,
   speed = 1;
 let lastTime = 0,
   lastHud = 0,
@@ -64,8 +57,8 @@ let battleMenu: BattleMenu | null = null;
 let disposeRecording: (() => void) | undefined;
 const frames: number[] = [];
 const portrait = (index: number, cls = "") =>
-  index < 4
-    ? towerPortrait((["bolt", "stone", "net", "trade"] as const)[index])
+  index < 3
+    ? towerPortrait((["bolt", "stone", "net"] as const)[index])
     : `<img class="portrait character-portrait ${cls}" src="${import.meta.env.BASE_URL}art/v2/${["rat", "weasel", "boar", "badger"][index - 4]}-rig-v1/body.webp" alt="" aria-hidden="true">`;
 const stars = (n: number) => "★".repeat(n) + "☆".repeat(3 - n);
 function persist() {
@@ -108,9 +101,7 @@ function render() {
       "",
     )}</div><footer class="menu-footer">${button("title", "Back", "quiet")}</footer></main>`;
   if (screen === "briefing") {
-    const cards = CARDS.filter(
-      (c) => c.id !== "thrift" || save.unlocked.includes("thrift"),
-    );
+    const cards = CARDS.filter((c) => save.unlocked.includes(c.id));
     app.innerHTML = advantageScreen(
       LEVELS[levelIndex],
       cards.map((c) => c.id),
@@ -126,7 +117,9 @@ function render() {
 }
 function renderBattle() {
   const l = LEVELS[levelIndex];
-  app.innerHTML = `<main class="battle-screen"><header class="battle-header"><div class="battle-brand"><div><strong>${l.name}</strong></div></div>${battleStats(l.waves.length)}<div class="battle-tools">${button("speed", "1×", "icon-button", 'aria-label="Game speed" id="speed"')}${button("menu", "Menu", "icon-button", 'aria-label="Menu" id="battle-menu"')}</div></header><div class="battle-middle"><section class="battlefield"><div id="canvas-host"></div><div class="field-heading"><span class="eyebrow" id="phase-label">PREPARATION</span><p id="field-instruction">Choose a structure below, then tap open ground.</p></div><div id="result-overlay" class="result-overlay" hidden></div></section><aside class="battle-aside">${economyPanel()}<div class="wave-controls">${button("rescue", 'Supply drop <small id="rescue-status">Ready</small>', "rescue-button", 'id="rescue"')}${button("start", "Start wave", "primary", 'id="start-wave"')}</div></aside></div><footer class="build-tray"><section id="selection-panel" class="selection-panel"></section><div class="tray-label"><strong id="build-label">Choose a structure</strong>${button("cancel", "Cancel", "quiet small", 'id="cancel" hidden')}</div><div class="tower-buttons">${(Object.keys(TOWERS) as TowerKind[]).map((k) => `<button class="tower-button" data-action="build:${k}" id="build-${k}">${portrait(TOWERS[k].sprite)}<span><strong>${TOWERS[k].name}</strong><small>${TOWERS[k].role}</small></span><b>${TOWERS[k].cost}<small> gold</small></b></button>`).join("")}</div></footer></main>`;
+  const availableTowers =
+    l.availableTowers ?? (Object.keys(TOWERS) as TowerKind[]);
+  app.innerHTML = `<main class="battle-screen"><header class="battle-header"><div class="battle-brand"><div><strong>${l.name}</strong></div></div>${battleStats(l.waves.length)}<div class="battle-tools">${button("speed", "1×", "icon-button", 'aria-label="Game speed" id="speed"')}${button("menu", "Menu", "icon-button", 'aria-label="Menu" id="battle-menu"')}</div></header><div class="battle-middle"><section class="battlefield"><div id="canvas-host"></div><div class="field-heading"><span class="eyebrow" id="phase-label">PREPARATION</span><p id="field-instruction">Choose a structure below, then tap open ground.</p></div><div id="result-overlay" class="result-overlay" hidden></div></section><aside class="battle-aside"><div class="wave-controls"><p id="wave-countdown" class="wave-countdown" role="status" aria-live="polite" hidden></p>${button("start", "Start wave", "primary", 'id="start-wave"')}</div></aside></div><footer class="build-tray"><section id="selection-panel" class="selection-panel"></section><div class="tray-label"><strong id="build-label">Choose a structure</strong>${button("cancel", "Cancel", "quiet small", 'id="cancel" hidden')}</div><div class="tower-buttons">${availableTowers.map((k) => `<button class="tower-button" data-action="build:${k}" id="build-${k}">${portrait(TOWERS[k].sprite)}<span><strong>${TOWERS[k].name}</strong><small>${TOWERS[k].role}</small></span><b>${TOWERS[k].cost}<small> gold</small></b></button>`).join("")}</div></footer></main>`;
   try {
     field = new Battlefield(document.querySelector("#canvas-host")!);
     field.load(l);
@@ -135,8 +128,7 @@ function renderBattle() {
     }
     field.onPick = pick;
     field.onHover = (p) => {
-      if (build || rescueMode)
-        field?.highlight(p, !!p && (rescueMode || game!.canPlace(p)));
+      if (build) field?.highlight(p, !!p && game!.canPlace(p));
     };
   } catch (error) {
     document.querySelector("#canvas-host")!.innerHTML =
@@ -149,12 +141,7 @@ function pick(p: Point) {
   if (!game) return;
   const s = game.state;
   if (!game.canAct()) return;
-  if (rescueMode) {
-    if (game.rescue(p)) {
-      rescueMode = false;
-      toast("Supplies delivered. Raiders slowed; one village heart restored.");
-    } else toast("The supply drop is not ready.");
-  } else if (build) {
+  if (build) {
     if (game.place(build, p)) {
       selected = s.towers[s.towers.length - 1].id;
       toast(`${TOWERS[build].name} ready.`);
@@ -173,11 +160,15 @@ function begin(assist = false) {
   sound.pause(false);
   sound.unlock();
   assisted = assist;
-  game = new Game(LEVELS[levelIndex], card, assist);
+  game = new Game(LEVELS[levelIndex], card, assist, 42, {
+    unlockedUpgrades: save.unlocked.includes("squirrel-upgrade")
+      ? ["bolt"]
+      : [],
+  });
   build = null;
   selected = null;
-  rescueMode = false;
   resultSaved = false;
+  resultUnlockedUpgrade = false;
   speed = 1;
   screen = "battle";
   render();
@@ -189,22 +180,16 @@ function text(id: string, value: string) {
 function updateHud() {
   if (screen !== "battle" || !game) return;
   const s = game.state,
-    l = game.level,
-    p = game.forecast();
+    l = game.level;
   text("coins", String(s.coins));
   text("lives", `${s.lives} / ${s.maxLives}`);
-  const cleared = completedWaves(s);
-  text("wave", `${cleared} / ${l.waves.length}`);
+  text("wave", `${displayedWave(s, l.waves.length)} / ${l.waves.length}`);
   document
     .querySelector(".life-stat")
     ?.classList.toggle("critical", s.lives <= s.maxLives / 3);
   document
     .querySelector(".battle-screen")
     ?.classList.toggle("is-paused", s.phase === "paused");
-  text("forecast-summary", `+${p.total}`);
-  text("forecast-reward", `+${p.reward}`);
-  text("forecast-trade", `+${p.trade}`);
-  text("forecast-interest", `+${p.interest}`);
   text(
     "phase-label",
     s.phase === "preparation"
@@ -215,23 +200,17 @@ function updateHud() {
   );
   text(
     "field-instruction",
-    rescueMode
-      ? "Tap the trail to deliver supplies and slow nearby raiders."
-      : build
-        ? `Tap open ground to place ${TOWERS[build].name.toLowerCase()}.`
-        : s.phase === "preparation"
-          ? ""
-          : "",
+    build
+      ? `Tap open ground to place ${TOWERS[build].name.toLowerCase()}.`
+      : s.phase === "preparation"
+        ? ""
+        : "",
   );
   text(
     "build-label",
-    rescueMode
-      ? "Aim your supply drop"
-      : build
-        ? `Placing ${TOWERS[build].name}`
-        : "Choose a structure",
+    build ? `Placing ${TOWERS[build].name}` : "Choose a structure",
   );
-  document.getElementById("cancel")!.hidden = !build && !rescueMode;
+  document.getElementById("cancel")!.hidden = !build;
   const start = document.querySelector<HTMLButtonElement>("#start-wave")!;
   const activeWave =
     s.phase === "wave" || (s.phase === "paused" && s.resumePhase === "wave");
@@ -243,18 +222,21 @@ function updateHud() {
         ? "Defeat"
         : activeWave
           ? `${s.enemies.length} on the trail`
-          : `Start wave ${s.wave + 1}`;
-  const remaining = Math.max(0, Math.ceil(s.abilityReadyAt - s.clock));
-  const rescue = document.querySelector<HTMLButtonElement>("#rescue")!;
-  rescue.disabled = s.phase !== "wave" || remaining > 0;
-  rescue.classList.toggle("active", rescueMode);
-  text(
-    "rescue-status",
-    remaining ? `${remaining}s` : rescueMode ? "Tap the trail" : "Ready",
-  );
+          : s.wave > 0
+            ? `Start wave ${s.wave + 1} now`
+            : `Start wave ${s.wave + 1}`;
+  const countdown = document.getElementById("wave-countdown")!;
+  const showCountdown =
+    s.phase === "preparation" && s.nextWaveCountdown !== null;
+  countdown.hidden = !showCountdown;
+  if (showCountdown) {
+    const seconds = Math.ceil(s.nextWaveCountdown!);
+    countdown.textContent = `Next wave starts in ${seconds} ${seconds === 1 ? "second" : "seconds"}`;
+  }
   if (s.phase === "paused" && !battleMenu) openBattleMenu();
   for (const k of Object.keys(TOWERS) as TowerKind[]) {
-    const el = document.querySelector<HTMLButtonElement>(`#build-${k}`)!;
+    const el = document.querySelector<HTMLButtonElement>(`#build-${k}`);
+    if (!el) continue;
     el.classList.toggle("selected", build === k);
     el.classList.toggle("unaffordable", s.coins < TOWERS[k].cost);
     el.disabled = !game.canAct();
@@ -263,7 +245,7 @@ function updateHud() {
   const t = s.towers.find((t) => t.id === selected),
     panel = document.getElementById("selection-panel")!;
   const content = t ? defenderPanel(game, t) : "";
-  const inspecting = !!t && !build && !rescueMode;
+  const inspecting = !!t && !build;
   panel.hidden = !inspecting;
   document
     .querySelector(".build-tray")!
@@ -294,6 +276,9 @@ function showResult() {
   const s = game.state,
     won = s.phase === "won";
   if (won && !resultSaved) {
+    resultUnlockedUpgrade =
+      game.level.id === "lantern-pass" &&
+      !save.unlocked.includes("squirrel-upgrade");
     save = recordVictory(save, game.level.id, s.stars);
     persist();
     resultSaved = true;
@@ -301,7 +286,7 @@ function showResult() {
   const el = document.getElementById("result-overlay")!;
   el.hidden = false;
   if (el.innerHTML) return;
-  el.innerHTML = resultCard(s, levelIndex === 0, assisted);
+  el.innerHTML = resultCard(s, resultUnlockedUpgrade, assisted);
 }
 function openBattleMenu() {
   if (!game || battleMenu || screen !== "battle") return;
@@ -366,16 +351,6 @@ app.addEventListener("click", (e) => {
   if ((el as HTMLButtonElement).disabled) return;
   const [action, value] = el.dataset.action!.split(":");
   sound.play("ui");
-  if (action === "payout-toggle" || action === "payout-close") {
-    const details = document.getElementById("payout-details")!;
-    details.hidden = action === "payout-close" || !details.hidden;
-    document
-      .querySelector(".payout-toggle")
-      ?.setAttribute("aria-expanded", String(!details.hidden));
-    if (action === "payout-close")
-      document.querySelector<HTMLButtonElement>(".payout-toggle")?.focus();
-    return;
-  }
   if (action === "menu") {
     openBattleMenu();
     return;
@@ -414,7 +389,7 @@ app.addEventListener("click", (e) => {
   }
   if (action === "level") {
     levelIndex = Number(value);
-    card = "reach";
+    card = "none";
     screen = "briefing";
     render();
     return;
@@ -442,13 +417,11 @@ app.addEventListener("click", (e) => {
   if (!game) return;
   if (action === "build") {
     build = build === value ? null : (value as TowerKind);
-    rescueMode = false;
     selected = null;
   }
   if (action === "inspect-close") selected = null;
   if (action === "cancel") {
     build = null;
-    rescueMode = false;
     field?.highlight(null);
   }
   if (action === "start") {
@@ -465,10 +438,6 @@ app.addEventListener("click", (e) => {
   if (action === "sell" && selected !== null) {
     game.sell(selected);
     selected = null;
-  }
-  if (action === "rescue") {
-    rescueMode = !rescueMode;
-    build = null;
   }
   updateHud();
 });
@@ -511,15 +480,6 @@ document.addEventListener("keydown", (e) => {
     }
     return;
   }
-  const payoutDetails = document.getElementById("payout-details");
-  if (e.key === "Escape" && payoutDetails && !payoutDetails.hidden) {
-    payoutDetails.hidden = true;
-    const toggle = document.querySelector<HTMLButtonElement>(".payout-toggle");
-    toggle?.setAttribute("aria-expanded", "false");
-    toggle?.focus();
-    e.preventDefault();
-    return;
-  }
   if (e.key === "Escape" && settings) {
     e.preventDefault();
     closeSettings();
@@ -528,12 +488,11 @@ document.addEventListener("keydown", (e) => {
   if (e.key !== "Escape" && (e.target as HTMLElement).matches("input,button"))
     return;
   if (e.key === "Escape") {
-    if (screen === "battle" && !build && !rescueMode && selected === null) {
+    if (screen === "battle" && !build && selected === null) {
       openBattleMenu();
       return;
     }
     build = null;
-    rescueMode = false;
     selected = null;
     field?.highlight(null);
     updateHud();
@@ -602,22 +561,10 @@ function frame(now: number) {
     for (const e of game.drainEvents()) {
       sound.play(e.type);
       if (e.type === "payout") {
-        for (const trader of game.state.towers.filter(
-          (t) => t.kind === "trade",
-        )) {
-          const point = field.project(trader);
-          const coin = document.createElement("div");
-          coin.className = "coin-flight";
-          coin.style.left = `${point.x}px`;
-          coin.style.top = `${point.y}px`;
-          coin.innerHTML = `${hudIcon("gold")}+${tradeIncome([trader])}`;
-          app.append(coin);
-          setTimeout(() => coin.remove(), 2100);
-        }
         toast(`Wave cleared · +${e.value} gold`);
       }
     }
-    field.preferGround = !!build || rescueMode;
+    field.preferGround = !!build;
     field.update(game, selected, dt);
     if (now - lastHud > 100) {
       updateHud();

@@ -6,7 +6,6 @@ export class EffectBatch {
   readonly mesh: THREE.Mesh<THREE.BufferGeometry, THREE.MeshBasicMaterial>;
   private readonly ring = new THREE.RingGeometry(0.7, 1, 24);
   private readonly ordinary = new THREE.Color(0xdab575);
-  private readonly supply = new THREE.Color(0xf5d085);
   private capacity = 0;
 
   constructor() {
@@ -63,11 +62,9 @@ export class EffectBatch {
     for (let n = 0; n < effects.length; n++) {
       const fx = effects[n];
       const k = fx.age / fx.ttl;
-      const size =
-        (fx.kind === "supply" ? 130 : fx.kind === "splash" ? 60 : 18) *
-        (0.2 + k * 0.8);
+      const size = (fx.kind === "splash" ? 60 : 18) * (0.2 + k * 0.8);
       const center = project(fx);
-      const color = fx.kind === "supply" ? this.supply : this.ordinary;
+      const color = this.ordinary;
       for (let i = 0; i < vertices.count; i++) {
         const offset = n * vertices.count + i;
         positions.setXYZ(

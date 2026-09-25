@@ -27,6 +27,7 @@ export const rainstoneCrossing: LevelDef = {
     { x: 11, z: 7 },
   ],
   startCoins: 185,
+  availableTowers: ["bolt", "stone", "net"],
   healthScale: 1.12,
   accent: "#91b9ac",
   waves: [

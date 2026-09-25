@@ -1,0 +1,101 @@
+import * as THREE from "three";
+
+export type StatusGlyphKind = "shield";
+
+export interface StatusGlyphView {
+  kind: StatusGlyphKind;
+  opacity: number;
+  flash: number;
+}
+
+function shieldShape() {
+  const shape = new THREE.Shape();
+  shape.moveTo(-12, 11);
+  shape.lineTo(12, 11);
+  shape.lineTo(10, -2);
+  shape.quadraticCurveTo(8, -11, 0, -16);
+  shape.quadraticCurveTo(-8, -11, -10, -2);
+  shape.closePath();
+  return shape;
+}
+
+/** Reusable overhead effect marker; each actor can show several status kinds. */
+export class StatusGlyph {
+  readonly group = new THREE.Group();
+  private readonly glow: THREE.Mesh<
+    THREE.ShapeGeometry,
+    THREE.MeshBasicMaterial
+  >;
+  private readonly fill: THREE.Mesh<
+    THREE.ShapeGeometry,
+    THREE.MeshBasicMaterial
+  >;
+  private readonly outline: THREE.LineLoop<
+    THREE.BufferGeometry,
+    THREE.LineBasicMaterial
+  >;
+
+  constructor(readonly kind: StatusGlyphKind) {
+    const shape = shieldShape();
+    this.glow = new THREE.Mesh(
+      new THREE.ShapeGeometry(shape),
+      new THREE.MeshBasicMaterial({
+        color: 0x9be2ff,
+        transparent: true,
+        opacity: 0,
+        depthTest: false,
+        depthWrite: false,
+      }),
+    );
+    this.glow.scale.set(1.55, 1.55, 1);
+    this.glow.renderOrder = 3998;
+    this.fill = new THREE.Mesh(
+      new THREE.ShapeGeometry(shape),
+      new THREE.MeshBasicMaterial({
+        color: 0x67bce9,
+        transparent: true,
+        opacity: 0,
+        depthTest: false,
+        depthWrite: false,
+      }),
+    );
+    this.fill.renderOrder = 3999;
+    this.outline = new THREE.LineLoop(
+      new THREE.BufferGeometry().setFromPoints(shape.getPoints(20)),
+      new THREE.LineBasicMaterial({
+        color: 0xdaf5ff,
+        transparent: true,
+        opacity: 0,
+        depthTest: false,
+        depthWrite: false,
+      }),
+    );
+    this.outline.renderOrder = 4000;
+    this.group.add(this.glow, this.fill, this.outline);
+  }
+
+  update(opacity: number, flash: number) {
+    const alpha = THREE.MathUtils.clamp(opacity, 0, 1);
+    const pulse = THREE.MathUtils.clamp(flash, 0, 1);
+    const bright = new THREE.Color(0xffffff);
+    this.group.visible = alpha > 0.005 || pulse > 0.005;
+    this.fill.material.opacity = alpha * (0.48 + 0.34 * pulse);
+    this.fill.material.color.set(0x67bce9).lerp(bright, pulse * 0.8);
+    this.outline.material.opacity = alpha * (0.88 + 0.12 * pulse);
+    this.outline.material.color.set(0xdaf5ff).lerp(bright, pulse);
+    this.glow.material.opacity = alpha * 0.16 + pulse * 0.7;
+    this.glow.material.color.set(0x9be2ff).lerp(bright, pulse);
+    const scale = 1 + pulse * 0.22;
+    this.group.scale.set(scale, scale, 1);
+  }
+
+  dispose() {
+    this.glow.geometry.dispose();
+    this.glow.material.dispose();
+    this.fill.geometry.dispose();
+    this.fill.material.dispose();
+    this.outline.geometry.dispose();
+    this.outline.material.dispose();
+    this.group.clear();
+  }
+}

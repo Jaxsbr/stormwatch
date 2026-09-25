@@ -65,7 +65,6 @@ export class Sound {
       payout: [784, 0.18, 0.13],
       win: [523, 0.25, 0.15],
       loss: [147, 0.5, 0.12],
-      supply: [587, 0.3, 0.12],
     };
     const [hz, length, volume] = tones[type] ?? tones.ui;
     this.tone(

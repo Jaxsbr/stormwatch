@@ -6,7 +6,8 @@ import {
   pointOnPath,
   validateLevel,
 } from "./path";
-import { refundFor, wavePayout } from "./economy";
+import { refundFor, waveReward } from "./economy";
+import { ratShieldState } from "./rat-shield";
 import type {
   CardId,
   Enemy,
@@ -17,36 +18,47 @@ import type {
   Point,
   Tower,
   TowerKind,
+  WaveGroupDef,
 } from "./types";
 
-// A shielded rat keeps walking for roughly two gait cycles before lowering it.
-const RAT_SHIELD_PERIOD = 5;
-const RAT_SHIELD_RAISE_AT = 1.1;
-const RAT_SHIELD_LOWER_AT = 3.1;
+export const INTER_WAVE_COUNTDOWN_SECONDS = 5;
+export interface AttemptRules {
+  unlockedUpgrades?: readonly TowerKind[];
+}
 
 export class Game {
   readonly state: GameState;
   readonly events: GameEvent[] = [];
   private serial = 1;
-  private queue: { at: number; kind: EnemyKind }[] = [];
+  private queue: {
+    at: number;
+    kind: EnemyKind;
+    movementScale?: number;
+    shieldCycle?: WaveGroupDef["shieldCycle"];
+  }[] = [];
   private waveClock = 0;
   private accumulator = 0;
   private seed: number;
+  private readonly unlockedUpgrades: ReadonlySet<TowerKind> | null;
   constructor(
     readonly level: LevelDef,
-    card: CardId = "reach",
+    card: CardId = "none",
     assist = false,
     seed = 42,
+    rules: AttemptRules = {},
   ) {
     validateLevel(level);
     this.seed = seed >>> 0;
+    this.unlockedUpgrades = rules.unlockedUpgrades
+      ? new Set(rules.unlockedUpgrades)
+      : null;
     this.state = {
       phase: "preparation",
       resumePhase: "preparation",
       clock: 0,
       wave: 0,
-      coins:
-        level.startCoins + (card === "supply" ? 45 : 0) + (assist ? 70 : 0),
+      nextWaveCountdown: null,
+      coins: level.startCoins + (assist ? 70 : 0),
       lives: assist ? 20 : 12,
       maxLives: assist ? 20 : 12,
       kills: 0,
@@ -56,11 +68,7 @@ export class Game {
       effects: [],
       card,
       assist,
-      abilityReadyAt: 0,
-      abilityUses: 0,
       lastPayout: null,
-      totalInterest: 0,
-      totalTrade: 0,
       stars: 0,
     };
   }
@@ -94,6 +102,8 @@ export class Game {
     const def = TOWERS[kind];
     if (
       !def ||
+      (this.level.availableTowers !== undefined &&
+        !this.level.availableTowers.includes(kind)) ||
       !this.canAct() ||
       !this.canPlace(p) ||
       this.state.coins < def.cost
@@ -117,10 +127,14 @@ export class Game {
       TOWERS[t.kind].upgrade * (this.state.card === "thrift" ? 0.8 : 1),
     );
   }
+  canUpgrade(t: Tower) {
+    return this.unlockedUpgrades === null || this.unlockedUpgrades.has(t.kind);
+  }
   upgrade(id: number) {
     const t = this.state.towers.find((t) => t.id === id);
     if (
       !t ||
+      !this.canUpgrade(t) ||
       !this.canAct() ||
       t.level !== 1 ||
       this.state.coins < this.upgradeCost(t)
@@ -148,28 +162,34 @@ export class Game {
       (this.state.card === "reach" ? 1.18 : 1)
     );
   }
-  forecast() {
-    const s = this.state;
-    const active =
-      s.phase === "wave" || (s.phase === "paused" && s.resumePhase === "wave");
-    const index = Math.min(
-      Math.max(0, s.wave - (active ? 1 : 0)),
-      this.level.waves.length - 1,
-    );
-    return wavePayout(s.coins, s.towers, this.level.waves[index].reward);
-  }
   startWave() {
     const s = this.state;
     if (s.phase !== "preparation" || s.wave >= this.level.waves.length)
       return false;
     const def = this.level.waves[s.wave];
+    s.nextWaveCountdown = null;
     this.queue = [];
     let at = 0.7;
-    for (const g of def.groups)
-      for (let n = 0; n < g.count; n++) {
-        this.queue.push({ at, kind: g.kind });
+    for (const g of def.groups) {
+      const batchSize = g.batchSize ?? 1;
+      const batchStagger = g.batchStagger ?? 0;
+      for (let n = 0; n < g.count; n += batchSize) {
+        const inBatch = Math.min(batchSize, g.count - n);
+        for (let i = 0; i < inBatch; i += 1) {
+          this.queue.push({
+            at: at + i * batchStagger,
+            kind: g.kind,
+            ...(g.movementScale === undefined
+              ? {}
+              : { movementScale: g.movementScale }),
+            ...(g.shieldCycle === undefined
+              ? {}
+              : { shieldCycle: { ...g.shieldCycle } }),
+          });
+        }
         at += g.gap;
       }
+    }
     this.waveClock = 0;
     s.wave++;
     s.phase = "wave";
@@ -188,35 +208,6 @@ export class Game {
       s.phase = "paused";
     }
   }
-  rescue(p: Point) {
-    const s = this.state;
-    if (
-      s.phase !== "wave" ||
-      s.clock < s.abilityReadyAt ||
-      p.x < 0 ||
-      p.z < 0 ||
-      p.x >= this.level.width ||
-      p.z >= this.level.depth
-    )
-      return false;
-    s.abilityReadyAt = s.clock + 42;
-    s.abilityUses++;
-    s.lives = Math.min(s.maxLives, s.lives + 1);
-    for (const e of s.enemies)
-      if (e.alive && distance(e, p) < 2.3) {
-        e.slowUntil = Math.max(e.slowUntil, s.clock + 5);
-        this.hurt(e, 60);
-      }
-    s.effects.push({
-      ...p,
-      id: this.serial++,
-      kind: "supply",
-      age: 0,
-      ttl: 1.3,
-    });
-    this.emit("supply");
-    return true;
-  }
   advance(realSeconds: number) {
     if (!Number.isFinite(realSeconds) || realSeconds <= 0) return;
     this.accumulator += Math.min(realSeconds, 0.25);
@@ -227,7 +218,14 @@ export class Game {
   }
   tick(dt: number) {
     const s = this.state;
-    if (s.phase !== "wave" || !Number.isFinite(dt) || dt <= 0) return;
+    if (!Number.isFinite(dt) || dt <= 0 || s.phase === "paused") return;
+    if (s.phase === "preparation") {
+      if (s.nextWaveCountdown === null) return;
+      s.nextWaveCountdown = Math.max(0, s.nextWaveCountdown - dt);
+      if (s.nextWaveCountdown === 0) this.startWave();
+      return;
+    }
+    if (s.phase !== "wave") return;
     s.clock += dt;
     this.waveClock += dt;
     while (this.queue.length && this.queue[0].at <= this.waveClock) {
@@ -246,13 +244,23 @@ export class Game {
         hitAt: -1,
         spawnedAt: s.clock,
         shieldRaised: false,
+        shieldHitAt: -1,
+        ...(q.movementScale === undefined
+          ? {}
+          : { movementScale: q.movementScale }),
+        ...(q.shieldCycle === undefined
+          ? {}
+          : { shieldCycle: { ...q.shieldCycle } }),
       });
     }
     const len = pathLength(this.level.path);
     for (const e of s.enemies) {
       if (!e.alive) continue;
       e.distance +=
-        ENEMIES[e.kind].speed * (e.slowUntil > s.clock ? 0.48 : 1) * dt;
+        ENEMIES[e.kind].speed *
+        (e.movementScale ?? 1) *
+        (e.slowUntil > s.clock ? 0.48 : 1) *
+        dt;
       Object.assign(e, pointOnPath(this.level.path, e.distance));
       if (e.distance >= len) {
         e.alive = false;
@@ -267,15 +275,13 @@ export class Game {
     }
     for (const e of s.enemies) {
       if (e.kind !== "raider") continue;
-      const phase = (s.clock - e.spawnedAt) % RAT_SHIELD_PERIOD;
-      const raised =
-        phase >= RAT_SHIELD_RAISE_AT && phase < RAT_SHIELD_LOWER_AT;
+      const age = s.clock - e.spawnedAt;
+      const raised = ratShieldState(age, e.shieldCycle).raised;
       if (raised !== e.shieldRaised) {
         e.shieldRaised = raised;
       }
     }
     for (const t of s.towers) {
-      if (t.kind === "trade") continue;
       t.cooldown -= dt;
       if (t.cooldown > 0) continue;
       const target = s.enemies
@@ -328,18 +334,12 @@ export class Game {
     for (const fx of s.effects) fx.age += dt;
     s.effects = s.effects.filter((fx) => fx.age < fx.ttl);
     if (!this.queue.length && !s.enemies.length) {
-      const p = wavePayout(
-        s.coins,
-        s.towers,
-        this.level.waves[s.wave - 1].reward,
-      );
-      s.coins += p.total;
-      s.totalInterest += p.interest;
-      s.totalTrade += p.trade;
-      s.lastPayout = p;
+      const reward = waveReward(this.level.waves[s.wave - 1].reward);
+      s.coins += reward;
+      s.lastPayout = { reward, total: reward };
       s.shots = [];
       s.effects = [];
-      this.emit("payout", p.total);
+      this.emit("payout", reward);
       if (s.wave === this.level.waves.length) {
         s.phase = "won";
         s.stars =
@@ -347,6 +347,7 @@ export class Game {
         this.emit("win");
       } else {
         s.phase = "preparation";
+        s.nextWaveCountdown = INTER_WAVE_COUNTDOWN_SECONDS;
       }
     }
   }
@@ -356,6 +357,7 @@ export class Game {
     const guarded = projectile && e.kind === "raider" && e.shieldRaised;
     e.hp -= Math.max(1, damage - ENEMIES[e.kind].armor) * (guarded ? 0.5 : 1);
     if (guarded) {
+      e.shieldHitAt = s.clock;
       this.emit("shield-hit");
     } else {
       e.hitAt = s.clock;
@@ -372,7 +374,9 @@ export class Game {
     if (e.hp <= 0) {
       e.alive = false;
       s.kills++;
-      s.coins += ENEMIES[e.kind].reward;
+      s.coins += Math.floor(
+        ENEMIES[e.kind].reward * (this.level.enemyRewardScale ?? 1),
+      );
       this.emit("kill");
     }
   }

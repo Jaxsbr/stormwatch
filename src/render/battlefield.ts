@@ -8,6 +8,12 @@ import { ResourcePool } from "./resource-pool";
 import { EffectBatch } from "./effect-batch";
 import { DefenderRig } from "./defender-rig";
 import { CharacterRig } from "./character-rig";
+import {
+  StatusGlyph,
+  type StatusGlyphKind,
+  type StatusGlyphView,
+} from "./status-glyph";
+import { ratShieldState } from "../sim/rat-shield";
 import { netGeometry } from "./combat-shapes";
 import { ENEMIES, TOWERS } from "../content/catalog";
 import { pointOnPath } from "../sim/path";
@@ -42,6 +48,7 @@ type Figure = {
   defender?: DefenderRig;
   pad?: THREE.Sprite;
   direction?: { x: number; y: number };
+  statusGlyphs?: Map<StatusGlyphKind, StatusGlyph>;
 };
 function material(color: number, opacity = 1) {
   return new THREE.MeshBasicMaterial({
@@ -128,19 +135,12 @@ export class Battlefield {
       bolt: "squirrel",
       stone: "skunk",
       net: "turtle",
-      trade: "donkey",
     }).map(([kind, animal]) => [
       kind,
       {
         side: new CutoutResource(`${animal}-side-defender-v1`),
-        front:
-          kind === "trade"
-            ? null
-            : new CutoutResource(`${animal}-front-defender-v1`),
-        rear:
-          kind === "trade"
-            ? null
-            : new CutoutResource(`${animal}-rear-defender-v1`),
+        front: new CutoutResource(`${animal}-front-defender-v1`),
+        rear: new CutoutResource(`${animal}-rear-defender-v1`),
       },
     ]),
   ) as Record<
@@ -488,6 +488,7 @@ export class Battlefield {
           this.scene.remove(o);
           this.releaseObject(o);
         }
+      for (const glyph of f.statusGlyphs?.values() ?? []) glyph.dispose();
     }
     this.figures.clear();
     this.fired.clear();
@@ -524,6 +525,30 @@ export class Battlefield {
     f = { sprite, enemy, point: { x: 0, z: 0 } };
     this.figures.set(id, f);
     return f;
+  }
+  private updateStatusGlyphs(
+    figure: Figure,
+    point: Point,
+    anchorHeight: number,
+    views: readonly StatusGlyphView[],
+  ) {
+    const active = new Set<StatusGlyphKind>();
+    for (const view of views) {
+      active.add(view.kind);
+      let glyph = figure.statusGlyphs?.get(view.kind);
+      if (!glyph && (view.opacity > 0.005 || view.flash > 0.005)) {
+        glyph = new StatusGlyph(view.kind);
+        figure.statusGlyphs ??= new Map();
+        figure.statusGlyphs.set(view.kind, glyph);
+        this.scene.add(glyph.group);
+      }
+      if (!glyph) continue;
+      const center = position(point);
+      glyph.group.position.set(center.x, center.y + anchorHeight + 34, 0);
+      glyph.update(view.opacity, view.flash);
+    }
+    for (const [kind, glyph] of figure.statusGlyphs ?? [])
+      if (!active.has(kind)) glyph.update(0, 0);
   }
   pick(clientX: number, clientY: number): Point | null {
     const r = this.renderer.domElement.getBoundingClientRect();
@@ -605,16 +630,13 @@ export class Battlefield {
       ids = new Set<number>();
     for (const t of s.towers) {
       ids.add(t.id);
-      const f = this.figure(
-        t.id,
-        TOWERS[t.kind].sprite,
-        t.kind === "trade" ? 142 : 150,
-      );
+      const f = this.figure(t.id, TOWERS[t.kind].sprite, 150);
       f.sprite.visible = false;
       f.point = { x: t.x, z: t.z };
       f.sprite.position.copy(position(t));
       f.sprite.renderOrder = 1000 + ORIGIN_Y + t.z * Y;
       f.sprite.material.color.set(t.level === 2 ? 0xffe6ac : 0xffffff);
+      this.updateStatusGlyphs(f, t, 98, []);
       {
         let fired = this.fired.get(t.id);
         if (!fired || fired.shots !== t.shots) {
@@ -655,7 +677,7 @@ export class Battlefield {
             f.defender = undefined;
           }
           if (!f.defender) {
-            const height = t.kind === "trade" ? 110 : 98;
+            const height = 98;
             f.defender = this.defenderPool.acquire(
               `${resource!.definition!.id}:${height}:${mirrored}`,
               () => {
@@ -686,8 +708,8 @@ export class Battlefield {
           f.pad.position.copy(position(t));
           f.defender.group.position.copy(position(t));
           f.defender.update(
-            t.kind === "trade" ? s.clock % 2 : s.clock - fired.at,
-            t.kind === "trade" ? 2 - (s.clock % 2) : t.cooldown,
+            s.clock - fired.at,
+            t.cooldown,
             f.sprite.renderOrder,
           );
           continue;
@@ -714,6 +736,18 @@ export class Battlefield {
           : e.slowUntil > s.clock
             ? 0xb9dfd1
             : 0xffffff,
+      );
+      const guard = ratShieldState(s.clock - e.spawnedAt, e.shieldCycle);
+      const flashAge =
+        e.shieldHitAt === undefined ? Infinity : s.clock - e.shieldHitAt;
+      const flash = flashAge >= 0 && flashAge < 0.24 ? 1 - flashAge / 0.24 : 0;
+      this.updateStatusGlyphs(
+        f,
+        e,
+        height,
+        e.kind === "raider"
+          ? [{ kind: "shield", opacity: guard.strength, flash }]
+          : [],
       );
       const next = pointOnPath(game.level.path, e.distance + 0.02);
       const vertical = Math.abs(next.z - e.z) > Math.abs(next.x - e.x);
@@ -774,6 +808,7 @@ export class Battlefield {
             this.scene.remove(o);
             this.releaseObject(o);
           }
+        for (const glyph of f.statusGlyphs?.values() ?? []) glyph.dispose();
         this.figures.delete(id);
       }
     this.overlays.update(s.towers, s.enemies, position);
@@ -781,7 +816,7 @@ export class Battlefield {
     const selectedTower = s.towers.find((t) => t.id === selected);
     this.selection.visible = false;
     this.selectedMarker.visible = false;
-    this.range.visible = !!selectedTower && selectedTower.kind !== "trade";
+    this.range.visible = !!selectedTower;
     this.baseGlow.visible = !!selectedTower;
     if (selectedTower) {
       this.updateRank(selectedTower.level);

@@ -64,7 +64,7 @@ function startAndRun(game: Game, maxSeconds = 30): number {
 }
 
 describe("Game simulation", () => {
-  it("pays one wave boundary exactly once using the pre-payout balance", () => {
+  it("pays one fixed wave reward exactly once", () => {
     const game = new Game(
       makeLevel({
         startCoins: 199,
@@ -82,12 +82,10 @@ describe("Game simulation", () => {
 
     expect(game.state.phase).toBe("won");
     expect(game.state.lastPayout).toEqual({
-      interest: 19,
-      trade: 0,
       reward: 25,
-      total: 44,
+      total: 25,
     });
-    expect(game.state.coins).toBe(243);
+    expect(game.state.coins).toBe(224);
     expect(
       game.drainEvents().filter((event) => event.type === "payout"),
     ).toHaveLength(1);
@@ -104,16 +102,16 @@ describe("Game simulation", () => {
 
     expect(game.place("bolt", p)).toBe(true);
     const tower = game.state.towers[0];
-    expect(game.state.coins).toBe(135);
+    expect(game.state.coins).toBe(60);
     expect(game.upgrade(tower.id)).toBe(true);
     expect(tower.level).toBe(2);
     expect(tower.spent).toBe(95);
-    expect(game.state.coins).toBe(80);
+    expect(game.state.coins).toBe(5);
     expect(game.upgrade(tower.id)).toBe(false);
 
     expect(game.sell(tower.id)).toBe(true);
     expect(game.state.towers).toHaveLength(0);
-    expect(game.state.coins).toBe(141);
+    expect(game.state.coins).toBe(66);
     expect(game.sell(tower.id)).toBe(false);
   });
 
@@ -179,43 +177,6 @@ describe("Game simulation", () => {
       30,
     );
     expect(game.state.lastPayout).not.toBeNull();
-  });
-
-  it("forecasts the active wave during combat and pause, then the next wave in preparation", () => {
-    const game = new Game(
-      makeLevel({
-        path: [
-          { x: -1, z: 1 },
-          { x: 1, z: 1 },
-        ],
-        waves: [
-          {
-            title: "Current forecast",
-            reward: 11,
-            groups: [{ kind: "raider", count: 1, gap: 1 }],
-          },
-          {
-            title: "Next forecast",
-            reward: 22,
-            groups: [{ kind: "raider", count: 1, gap: 1 }],
-          },
-        ],
-      }),
-    );
-
-    expect(game.forecast().reward).toBe(11);
-    expect(game.startWave()).toBe(true);
-    expect(game.forecast().reward).toBe(11);
-
-    game.pause();
-    expect(game.forecast().reward).toBe(11);
-    for (let i = 0; i < 10; i += 1) game.advance(0.25);
-    expect(game.forecast().reward).toBe(11);
-
-    game.pause();
-    runUntil(game, () => game.state.phase === "preparation", 10);
-    expect(game.state.wave).toBe(1);
-    expect(game.forecast().reward).toBe(22);
   });
 
   it("ignores nonfinite and nonpositive fixed-step input without corrupting combat time", () => {
@@ -303,16 +264,16 @@ describe("Game simulation", () => {
 
   it("ends in victory and a fresh replay starts with no transient state", () => {
     const level = makeLevel();
-    const game = new Game(level, "supply", true);
+    const game = new Game(level, "none", true);
     startAndRun(game, 30);
     expect(game.state.phase).toBe("won");
     expect(game.state.stars).toBe(2);
 
-    const replay = new Game(level, "supply", true);
+    const replay = new Game(level, "none", true);
     expect(replay.state.phase).toBe("preparation");
     expect(replay.state.wave).toBe(0);
     expect(replay.state.clock).toBe(0);
-    expect(replay.state.coins).toBe(level.startCoins + 45 + 70);
+    expect(replay.state.coins).toBe(level.startCoins + 70);
     expect(replay.state.towers).toEqual([]);
     expect(replay.state.enemies).toEqual([]);
     expect(replay.state.lastPayout).toBeNull();
@@ -352,14 +313,11 @@ describe("Game simulation", () => {
     expect(replay.state.towers).toEqual([]);
   });
 
-  it("applies reach, supply, thrift, and nets card effects to actual play values", () => {
+  it("applies unlocked reach, thrift, and nets advantages to actual play values", () => {
     const normal = new Game(lanternPass, "reach");
     expect(normal.place("bolt", pointNearPath())).toBe(true);
     const placed = normal.state.towers[0];
     expect(normal.range(placed)).toBeCloseTo(TOWERS.bolt.range * 1.18, 6);
-
-    const supply = new Game(lanternPass, "supply");
-    expect(supply.state.coins).toBe(220);
 
     const thrift = new Game(lanternPass, "thrift");
     expect(thrift.place("bolt", pointNearPath())).toBe(true);
@@ -397,35 +355,19 @@ describe("Game simulation", () => {
     expect(slowDuration("reach")).toBeCloseTo(3, 5);
   });
 
-  it("pays a trade structure at the wave boundary and leaves its level intact", () => {
-    const game = new Game(
-      makeLevel({
-        startCoins: 100,
-        waves: [
-          {
-            title: "Trade payout",
-            reward: 7,
-            groups: [{ kind: "raider", count: 1, gap: 1 }],
-          },
-        ],
-      }),
-    );
-    expect(game.place("trade", { x: 1, z: 1 })).toBe(true);
-    const lodge = game.state.towers[0];
-    expect(game.startWave()).toBe(true);
-    runUntil(
-      game,
-      () => game.state.phase === "won" || game.state.phase === "lost",
-      30,
-    );
-
-    expect(lodge.level).toBe(1);
-    expect(game.state.lastPayout).toEqual({
-      interest: 4,
-      trade: 12,
-      reward: 7,
-      total: 23,
+  it("enforces map tower discovery and the separately unlocked Squirrel upgrade", () => {
+    const locked = new Game(lanternPass, "none", false, 42, {
+      unlockedUpgrades: [],
     });
-    expect(game.state.coins).toBe(68);
+    expect(locked.place("stone", pointNearPath())).toBe(false);
+    expect(locked.place("bolt", pointNearPath())).toBe(true);
+    locked.state.coins = 100;
+    expect(locked.upgrade(locked.state.towers[0].id)).toBe(false);
+
+    const unlocked = new Game(lanternPass, "none", false, 42, {
+      unlockedUpgrades: ["bolt"],
+    });
+    expect(unlocked.place("bolt", pointNearPath())).toBe(true);
+    expect(unlocked.upgrade(unlocked.state.towers[0].id)).toBe(true);
   });
 });

@@ -11,7 +11,6 @@ interface AttemptResult {
   lives: number;
   coins: number;
   duration: number;
-  totalTrade: number;
 }
 
 const boltA = { x: 0, z: 4 };
@@ -21,18 +20,12 @@ const boltD = { x: 9, z: 5 };
 const stoneA = { x: 2, z: 6 };
 const stoneB = { x: 9, z: 4 };
 const netA = { x: 7, z: 5 };
-const tradeA = { x: 0, z: 1 };
-
-function runAttempt(
-  card: "reach" | "supply",
-  strategy: Strategy,
-): AttemptResult {
+function runAttempt(card: "reach" | "none", strategy: Strategy): AttemptResult {
   const game = new Game(rainstoneCrossing, card, false, 42);
   for (let wave = 0; wave < rainstoneCrossing.waves.length; wave += 1) {
     strategy(game, wave);
     expect(game.startWave()).toBe(true);
-    for (let i = 0; i < 240 * 30; i += 1) {
-      if (game.state.phase === "won" || game.state.phase === "lost") break;
+    for (let i = 0; i < 240 * 30 && game.state.phase === "wave"; i += 1) {
       game.tick(DT);
     }
     if (game.state.phase === "won" || game.state.phase === "lost") break;
@@ -43,7 +36,6 @@ function runAttempt(
     lives: game.state.lives,
     coins: game.state.coins,
     duration: game.state.clock,
-    totalTrade: game.state.totalTrade,
   };
 }
 
@@ -73,48 +65,6 @@ function spendingLed(game: Game, wave: number): void {
   if (wave === 6) game.upgrade(game.state.towers[5].id);
 }
 
-function investmentLed(game: Game, wave: number): void {
-  if (wave === 0) {
-    game.place("trade", tradeA);
-    game.place("bolt", boltA);
-    game.place("bolt", boltB);
-  }
-  if (wave === 1) {
-    game.place("stone", stoneA);
-    game.upgrade(game.state.towers.find((tower) => tower.kind === "bolt")!.id);
-  }
-  if (wave === 2) {
-    game.place("bolt", boltC);
-    game.upgrade(game.state.towers.find((tower) => tower.kind === "stone")!.id);
-  }
-  if (wave === 3) {
-    game.place("net", netA);
-    game.upgrade(
-      game.state.towers.find(
-        (tower) => tower.kind === "bolt" && tower.level === 1,
-      )!.id,
-    );
-  }
-  if (wave === 4) {
-    game.place("stone", stoneB);
-    game.upgrade(
-      game.state.towers.find(
-        (tower) => tower.kind === "bolt" && tower.level === 1,
-      )!.id,
-    );
-  }
-  if (wave === 5) {
-    game.place("bolt", boltD);
-    game.upgrade(game.state.towers.find((tower) => tower.kind === "net")!.id);
-  }
-  if (wave === 6)
-    game.upgrade(
-      game.state.towers.find(
-        (tower) => tower.kind === "stone" && tower.level === 1,
-      )!.id,
-    );
-}
-
 describe("Rainstone Crossing strategy evidence", () => {
   it("supports a spending-led line through all eight waves with no leaks", () => {
     const result = runAttempt("reach", spendingLed);
@@ -122,19 +72,6 @@ describe("Rainstone Crossing strategy evidence", () => {
     expect(result.phase).toBe("won");
     expect(result.wave).toBe(8);
     expect(result.lives).toBe(12);
-    expect(result.totalTrade).toBe(0);
-    expect(result.duration).toBeGreaterThanOrEqual(240);
-    expect(result.duration).toBeLessThanOrEqual(330);
-  });
-
-  it("supports an early one-lodge investment line with the supply card", () => {
-    const result = runAttempt("supply", investmentLed);
-
-    expect(result.phase).toBe("won");
-    expect(result.wave).toBe(8);
-    expect(result.lives).toBe(12);
-    expect(result.totalTrade).toBeGreaterThan(0);
-    expect(result.coins).toBeGreaterThan(230);
     expect(result.duration).toBeGreaterThanOrEqual(240);
     expect(result.duration).toBeLessThanOrEqual(330);
   });

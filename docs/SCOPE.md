@@ -1,6 +1,6 @@
 # Stormwatch — approved MVP and acceptance contract
 
-> Presentation update: the owner subsequently approved the horizontal visual reboot and animal defenders. [ADR 004](decisions/004-visual-course-correction.md) and [ADR 005](decisions/005-animal-defenders.md) supersede the original isometric/single-view presentation below. Gameplay and economy commitments remain in force. Current verification is tracked in the [reboot audit](../review/2026-09-20-reboot/current-rubric-audit.md).
+> Direction updates: the owner subsequently approved the horizontal visual reboot, animal defenders, and progressive discovery with a simple wave economy. [ADR 004](decisions/004-visual-course-correction.md), [ADR 005](decisions/005-animal-defenders.md), and [ADR 014](decisions/014-progressive-discovery-and-simple-wave-economy.md) supersede the original presentation and economy commitments below. Current verification is tracked in the [reboot audit](../review/2026-09-20-reboot/current-rubric-audit.md).
 
 Status: confirmed by the owner on 20 September 2026; implementation authorized. Approved title and personal repository name: Stormwatch / `Jaxsbr/stormwatch`. This document records the confirmed product decisions; architectural records live in `decisions/`.
 
@@ -18,7 +18,7 @@ Fixed enemy paths; place structures on any valid ground tile. Three defense role
 
 Proposed concrete, non-occult fiction: bolt tower, lobbed stone tower, adhesive/net slowing tower; an emergency supply drop as the rescue ability. The exact art/name can be adjusted within these roles. Support cards emphasize reach, crowd control or early resources; choices must affect actual gameplay. One alternative card unlock demonstrates progression.
 
-## Economy
+## Economy (superseded by ADR 014)
 
 Combat rewards and wave rewards supply funds. A capped interest payout uses remaining savings after a completed wave. Economy buildings pay on the same wave boundary. Both building and upgrading them compete with immediate defense spending. Income stops during waiting and pause; no benefit from deliberately extending combat time. Show current funds, expected fixed income and projected interest separately.
 
@@ -36,19 +36,19 @@ Music proposal: adventurous instrumental percussion and strings, with tension du
 
 ## Required capabilities and evidence
 
-| Capability | MVP example | Acceptance evidence |
-|---|---|---|
-| Full game flow | Two encounters, both end states, reward and replay | Reproducible mouse/tap path, screenshots or recording |
-| Combat | Three towers, three enemy roles, boss, upgrade and rescue | Focused deterministic rule tests and browser play |
-| Economy | Capped interest, income building/upgrade, spending/saving | Boundary tests, HUD payout agreement and two contrasting play strategies |
-| Choices/progress | Three initial cards, one alternative unlocked, stars/save | Observable rule differences, reload and malformed-save tests |
-| Hybrid art | 3D ground plus illustrated entities and effects | Matched scene captures; overlap, picking, scale and silhouette checks |
-| Asset pipeline | Source art → reviewed/processed runtime asset | Provenance manifest, reproducible integration instructions and asset review |
-| Audio | Loop, cue family, settings and replay lifecycle | Actual listening plus functional checks; unavailable listening stays unverified |
-| Content extension | Second encounter built after first using definitions | Focused diff without unrelated runtime restructuring and authoring instructions |
-| Maintainability | Implemented boundaries, extension points, ADRs | Code-aligned architecture map and review |
-| Reproducibility | Clean checkout install/run/build/test | Recorded commands, versions and results |
-| Publication | New public personal repository | Outgoing files/history reviewed for secrets/private details; verified owner |
+| Capability        | MVP example                                               | Acceptance evidence                                                             |
+| ----------------- | --------------------------------------------------------- | ------------------------------------------------------------------------------- |
+| Full game flow    | Two encounters, both end states, reward and replay        | Reproducible mouse/tap path, screenshots or recording                           |
+| Combat            | Three towers, three enemy roles, boss, upgrade and rescue | Focused deterministic rule tests and browser play                               |
+| Economy           | Capped interest, income building/upgrade, spending/saving | Boundary tests, HUD payout agreement and two contrasting play strategies        |
+| Choices/progress  | Three initial cards, one alternative unlocked, stars/save | Observable rule differences, reload and malformed-save tests                    |
+| Hybrid art        | 3D ground plus illustrated entities and effects           | Matched scene captures; overlap, picking, scale and silhouette checks           |
+| Asset pipeline    | Source art → reviewed/processed runtime asset             | Provenance manifest, reproducible integration instructions and asset review     |
+| Audio             | Loop, cue family, settings and replay lifecycle           | Actual listening plus functional checks; unavailable listening stays unverified |
+| Content extension | Second encounter built after first using definitions      | Focused diff without unrelated runtime restructuring and authoring instructions |
+| Maintainability   | Implemented boundaries, extension points, ADRs            | Code-aligned architecture map and review                                        |
+| Reproducibility   | Clean checkout install/run/build/test                     | Recorded commands, versions and results                                         |
+| Publication       | New public personal repository                            | Outgoing files/history reviewed for secrets/private details; verified owner     |
 
 ## Proposed verification contract
 

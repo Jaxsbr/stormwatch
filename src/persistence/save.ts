@@ -14,7 +14,7 @@ export interface SaveData {
 }
 
 const LEVEL_IDS: readonly string[] = ["lantern-pass", "rainstone-crossing"];
-const UNLOCK_IDS: readonly string[] = ["thrift"];
+const UNLOCK_IDS: readonly string[] = ["squirrel-upgrade"];
 
 const DEFAULT_MUSIC = 0.45;
 const DEFAULT_EFFECTS = 0.6;
@@ -102,9 +102,9 @@ function deriveUnlocked(
   storedUnlocked: string[],
 ): string[] {
   const out = new Set(storedUnlocked);
-  // lantern-pass with any stars always implies the thrift unlock.
+  // Lantern Pass teaches the base Squirrel, then awards its upgrade.
   if ((stars["lantern-pass"] ?? 0) > 0) {
-    out.add("thrift");
+    out.add("squirrel-upgrade");
   }
   return Array.from(out);
 }
@@ -183,13 +183,13 @@ export function recordVictory(
   }
 
   const nextUnlocked = [...save.unlocked];
-  // First lantern-pass win unlocks thrift.
+  // First Lantern Pass win unlocks Squirrel upgrades.
   if (
     levelId === "lantern-pass" &&
     nextStars["lantern-pass"] > 0 &&
-    !nextUnlocked.includes("thrift")
+    !nextUnlocked.includes("squirrel-upgrade")
   ) {
-    nextUnlocked.push("thrift");
+    nextUnlocked.push("squirrel-upgrade");
   }
 
   return {
