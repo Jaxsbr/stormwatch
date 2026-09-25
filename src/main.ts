@@ -161,6 +161,14 @@ function clearBattleSelection() {
   selected = null;
   field?.highlight(null);
 }
+function beginWave() {
+  game?.startWave();
+  clearBattleSelection();
+}
+function refreshHud(now: number) {
+  updateHud();
+  lastHud = now;
+}
 function begin(assist = false) {
   sound.pause(false);
   sound.unlock();
@@ -430,8 +438,7 @@ app.addEventListener("click", (e) => {
     field?.highlight(null);
   }
   if (action === "start") {
-    game.startWave();
-    clearBattleSelection();
+    beginWave();
     sound.unlock();
   }
   if (action === "speed") {
@@ -508,8 +515,7 @@ document.addEventListener("keydown", (e) => {
   ) {
     e.preventDefault();
     if (game?.state.phase === "preparation") {
-      game.startWave();
-      clearBattleSelection();
+      beginWave();
     } else openBattleMenu();
     sound.pause(game?.state.phase === "paused");
     updateHud();
@@ -565,7 +571,10 @@ function frame(now: number) {
   if (game && field) {
     const preparing = game.state.phase === "preparation";
     game.advance(dt * speed);
-    if (preparing && game.state.phase === "wave") clearBattleSelection();
+    if (preparing && game.state.phase === "wave") {
+      clearBattleSelection();
+      refreshHud(now);
+    }
     for (const e of game.drainEvents()) {
       sound.play(e.type);
       if (e.type === "payout") {
@@ -575,8 +584,7 @@ function frame(now: number) {
     field.preferGround = !!build;
     field.update(game, selected, dt);
     if (now - lastHud > 100) {
-      updateHud();
-      lastHud = now;
+      refreshHud(now);
     }
     if (frames.length < 40000) frames.push(rawDt * 1000);
   }
