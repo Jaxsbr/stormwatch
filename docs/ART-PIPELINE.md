@@ -25,7 +25,7 @@ runtime assets; source images remain in ignored `assets/source/`.
 | Content | Generated pieces | Runtime motion |
 |---|---|---|
 | Walking character | Body plus separate near/far legs, with overlap at hips | Two-bone leg deformation, alternating stance and swing; fixed scale |
-| Proposed Rat Raider shield | Body, two arms, shield and two legs in each view | Review assembly and pivots before any runtime motion |
+| Proposed Rat Raider shield | Original complete torso for shield down; generated complete torso for shield up; anatomical leg pair per view | Switch whole torso frames; simple separate leg motion; review before integration |
 | Squirrel archer | Planted body, holding/action arms, bow | Draw string, release arrow, recover; target-facing direction |
 | Skunk rock thrower | Planted body, holding/action arms, rock | Wind up, release rock, recover; target-facing direction |
 | Turtle net thrower | Planted body, holding/action arms, net | Wind up, release net, recover; target-facing direction |
@@ -72,7 +72,14 @@ source crop rectangles, pivots, fixed scale, layer order, attachment landmarks a
 mechanical/leg joints. Landmarks use local source pixels. Runtime positions use Y
 up; image coordinates use Y down.
 
-For held equipment that moves during play, regenerate the complete body behind it
+For Rat Raider guard, preserve the original torso byte-for-byte as the down frame.
+Generate a complete matching up torso, including both arms and shield. Do not
+split or warp the arms, shoulders or shield. Side legs must show outer and inner
+surfaces of opposing legs; front and rear must contain anatomical left/right
+pairs. Use one shared scale per pair. Review the assembled frame switch at large
+and game-like sizes before integration; a successful generation is not approval.
+
+For other held equipment that moves during play, regenerate the complete body behind it
 and supply each movable arm and object as its own transparent part. Match the
 original assembled rest pose before adding motion. Swing arms within a restrained
 range around that pose; move a shield at its own pivot for guard and recoil. Do
@@ -172,3 +179,5 @@ Each sheet separates a planted body, holding arm, action arm and bow or payload.
 
 
 The current reusable starting point is `assets/pipeline/templates/animal-defender-recipe.json`, with camera/style guidance in `templates/style.json`. Copy the closest animal/action/view specification into a new id and replace the source description, crops and landmarks. The importer validates required action objects and nonzero elbow/grip bones before writing a new delivery directory. The regression suite compares all12 saved specifications with their delivered runtime parts, action and portrait metadata so a later import cannot silently discard reviewed fixes. Portrait crops and prompt copies remain explicit delivery steps; the cutout importer creates the separated parts, not a complete publishing workflow.
+
+Front guard anatomy: the raised shield presents its flat outer face toward the viewer. The carrying hand and forearm are hidden behind it; never paint a hand on the outward shield face.

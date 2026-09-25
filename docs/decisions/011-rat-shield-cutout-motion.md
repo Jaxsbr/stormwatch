@@ -1,21 +1,23 @@
-# 011 — Review rat shield assembly before gameplay integration
+# 011 — Rat guard uses complete torso frames
 
-Status: visual candidate withdrawn from gameplay; assembly review pending, 25 September 2026.
+Status: owner-directed art approach; generated candidate awaits visual review, 25 September 2026.
 
 ## Context
 
-The owner proposed periodic Rat Raider guard, half damage, shield recoil and a thunk. The first implementation generated separate body, arm, shield and leg parts for three views and integrated them directly. The resulting normal-size animation did not preserve the approved rat silhouette or arm placement. The owner rejected it and requested a part assembly preview with adjustable positions and rotations before any new art is added to the game.
+Separate rat arms and shield introduced inconsistent scale, shoulder joins and silhouette. The owner rejected both the animation and its part assembly page, and identified duplicated leg anatomy. They requested the original complete torso plus a generated shield-up version, with correct paired legs.
 
 ## Decision
 
-Restore the original fixed rat rigs and existing gameplay rules. Keep the separated v2 rat textures as review candidates only. Present original and candidate side, front and rear assemblies together in `review/2026-09-25-rat-shield/assembly.html`. The page lets the owner move, rotate, resize and layer each candidate part, overlay the original reference, and export settings for all views. No candidate rig or shield rule returns to the game before the assembled art is reviewed.
+Keep the original torso byte-for-byte for shield down. Generate one complete shield-up torso per side, front and rear view, retaining both arms and shield in the painting. Switch between these whole torso frames; do not deform regions or animate separate rat arms/shield. Generate outer/inner leg surfaces for the side view and anatomical left/right pairs for front and rear. Each pair has a shared fixed scale.
 
-The armless body must not retain a painted sleeve cup or shoulder pad. Each detached arm owns its red shoulder and must seat directly into the torso. Match the original rest pose before testing guard, recoil or walking swing.
+The review page compares assembled down/up frames, demonstrates switching and gentle leg motion, exposes the unoccluded leg pairs, and permits position/rotation export. Review art remains outside the game until the owner reviews the assembly.
 
 ## Consequences
 
-The game currently retains the original rat appearance and behavior. The shield mechanic, sound and animation remain unshipped. The editable page is an art review tool, not proof of finished motion or balance.
+The game retains the original rat appearance and behavior. Guard damage, sound and recoil remain unshipped. Any later impact pose must follow this complete-torso art approach. Generated frames can still drift in fine detail, so frame registration and identity require visual review.
 
 ## Verification
 
-The game references the v1 rat rigs again. `npm run check`, `npm test` and `npm run build` pass after the rollback. The assembly page loaded all three views; part position changes persisted across reload, reset restored defaults, JSON export copied successfully, and the browser console had no errors.
+Original down files are byte-identical copies. Native generated alpha is retained in lossless WebP crops. Prompts, native source hashes, crop rectangles and fixed assembly transforms are retained with the review assets. Inspect all three assembled views and the frame switch before integration. Automated checks do not constitute art approval.
+
+Front guard anatomy: the raised shield presents its flat outer face toward the viewer. The carrying hand and forearm are hidden behind it; never paint a hand on the outward shield face.

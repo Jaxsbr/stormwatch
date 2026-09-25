@@ -1,0 +1,183 @@
+{
+  "status": "review only; not integrated",
+  "generator": "native image_gen",
+  "views": {
+    "side": {
+      "originalRig": "rat-rig-v1",
+      "body": {
+        "width": 750,
+        "height": 672
+      },
+      "legs": [
+        {
+          "file": "side-leg-0.webp",
+          "rect": {
+            "left": 167,
+            "top": 7,
+            "width": 597,
+            "height": 986
+          },
+          "pivot": [
+            173.13,
+            24
+          ],
+          "x": 450,
+          "y": 525,
+          "rotation": 0,
+          "label": "Outer / near (right leg)"
+        },
+        {
+          "file": "side-leg-1.webp",
+          "rect": {
+            "left": 888,
+            "top": 6,
+            "width": 581,
+            "height": 985
+          },
+          "pivot": [
+            168.48999999999998,
+            24
+          ],
+          "x": 360,
+          "y": 508,
+          "rotation": 0,
+          "label": "Inner / far (left leg)"
+        }
+      ],
+      "sources": [
+        {
+          "source": "assets/source/reboot/rat-whole-torso-v3/side-up.png",
+          "sha256": "7d74f8b79d5a91168191b542e1f777b71c428a234f1866b30c676ca213b85be2"
+        },
+        {
+          "source": "assets/source/reboot/rat-whole-torso-v3/side-legs.png",
+          "sha256": "367e6ab185df3c8b829f79ece4f9569eeecd6bf6b41aa84b78e71e5600980a7a"
+        }
+      ],
+      "up": {
+        "scale": 0.5660377358490566,
+        "x": 8,
+        "y": 0
+      },
+      "legScale": 0.29411764705882354
+    },
+    "front": {
+      "originalRig": "rat-front-rig-v1",
+      "body": {
+        "width": 760,
+        "height": 672
+      },
+      "legs": [
+        {
+          "file": "front-leg-0.webp",
+          "rect": {
+            "left": 173,
+            "top": 33,
+            "width": 433,
+            "height": 1076
+          },
+          "pivot": [
+            216.5,
+            24
+          ],
+          "x": 375,
+          "y": 520,
+          "rotation": 0,
+          "label": "Right leg (screen left)"
+        },
+        {
+          "file": "front-leg-1.webp",
+          "rect": {
+            "left": 768,
+            "top": 33,
+            "width": 433,
+            "height": 1076
+          },
+          "pivot": [
+            216.5,
+            24
+          ],
+          "x": 475,
+          "y": 520,
+          "rotation": 0,
+          "label": "Left leg (screen right)"
+        }
+      ],
+      "sources": [
+        {
+          "source": "assets/source/reboot/rat-whole-torso-v3/front-up.png",
+          "sha256": "d068d1daf40b9a21e5a17646d7b97cccc2440c4288d6c92713621a3c6efbf50f"
+        },
+        {
+          "source": "assets/source/reboot/rat-whole-torso-v3/front-legs.png",
+          "sha256": "5a4a5ad5a8269fa3aa7da15aefeb0d744067967c6e1c2cf7a595dd1f1487dab2"
+        }
+      ],
+      "up": {
+        "scale": 0.56,
+        "x": 42,
+        "y": 0
+      },
+      "legScale": 0.2695167286245353
+    },
+    "rear": {
+      "originalRig": "rat-rear-rig-v1",
+      "body": {
+        "width": 590,
+        "height": 710
+      },
+      "legs": [
+        {
+          "file": "rear-leg-0.webp",
+          "rect": {
+            "left": 282,
+            "top": 23,
+            "width": 310,
+            "height": 964
+          },
+          "pivot": [
+            155,
+            24
+          ],
+          "x": 255,
+          "y": 510,
+          "rotation": 0,
+          "label": "Left leg (screen left)"
+        },
+        {
+          "file": "rear-leg-1.webp",
+          "rect": {
+            "left": 944,
+            "top": 21,
+            "width": 307,
+            "height": 966
+          },
+          "pivot": [
+            153.5,
+            24
+          ],
+          "x": 355,
+          "y": 510,
+          "rotation": 0,
+          "label": "Right leg (screen right)"
+        }
+      ],
+      "sources": [
+        {
+          "source": "assets/source/reboot/rat-whole-torso-v3/rear-up.png",
+          "sha256": "d982bc57c048fdc71b1b88f407072165157776db686983dbbce2125d4c396937"
+        },
+        {
+          "source": "assets/source/reboot/rat-whole-torso-v3/rear-legs.png",
+          "sha256": "a9b397ffa990b2d0c59818f39714833bb369ecdb54961bf667c7127a77eddea3"
+        }
+      ],
+      "up": {
+        "scale": 0.5166374781085814,
+        "x": 0,
+        "y": 0
+      },
+      "legScale": 0.3002070393374741
+    }
+  }
+}

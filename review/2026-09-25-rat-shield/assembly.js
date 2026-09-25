@@ -1,150 +1,27 @@
-const VIEW_IDS = {
-  side: ["rat-rig-v1", "rat-rig-v2"],
-  front: ["rat-front-rig-v1", "rat-front-rig-v2"],
-  rear: ["rat-rear-rig-v1", "rat-rear-rig-v2"],
-};
-const STORAGE = "stormwatch-rat-assembly-draft-v1";
-const STAGE = { x: 220, y: 305, scale: 0.45 };
-const fields = ["x", "y", "rotation", "scale", "layer"];
-const names = { body: "Body", freeArm: "Free arm", shieldArm: "Shield arm", shield: "Shield", nearLeg: "Near leg", farLeg: "Far leg" };
-const $ = (id) => document.getElementById(id);
-const rigs = {};
-let view = "side", selected = "freeArm", dragging = null;
-let saved;
-try { saved = JSON.parse(localStorage.getItem(STORAGE) || "{}"); } catch { saved = {}; }
-const offsets = saved && typeof saved === "object" ? saved : {};
-
-function defaultPose(part, direction) {
-  return { x: 0, y: 0, rotation: part.id === "freeArm" ? ({ side: 43, front: 37, rear: 20 })[direction] : 0, scale: 100, layer: part.z };
-}
-function pose(part) {
-  const base = defaultPose(part, view);
-  const stored = offsets[view]?.[part.id];
-  if (!stored || typeof stored !== "object") return base;
-  for (const key of fields) if (!Number.isFinite(stored[key])) return base;
-  return { ...base, ...stored };
-}
-function persist() {
-  localStorage.setItem(STORAGE, JSON.stringify(offsets));
-  $("output").value = JSON.stringify({ format: "stormwatch-rat-assembly-v1", units: "source pixels and degrees", views: Object.fromEntries(Object.entries(VIEW_IDS).map(([direction, ids]) => [direction, { rig: ids[1], parts: Object.fromEntries((rigs[direction]?.candidate.def.parts || []).map(part => [part.id, direction === view ? pose(part) : { ...defaultPose(part, direction), ...offsets[direction]?.[part.id] }])) }])) }, null, 2);
-}
-async function loadRig(id) {
-  const base = id.endsWith("-v2") ? "/review/2026-09-25-rat-shield/assets" : "/art/v2";
-  const response = await fetch(`${base}/${id}/rig.json`);
-  if (!response.ok) throw new Error(`${id}: ${response.status}`);
-  const def = await response.json();
-  const images = Object.fromEntries(await Promise.all(def.parts.map(async (part) => {
-    const img = new Image(); img.src = `/${part.texture}`; await img.decode();
-    return [part.id, img];
-  })));
-  return { def, images };
-}
-function origin(part, rig) {
-  const root = rig.def.parts.find((p) => !p.attachTo);
-  if (!part.attachTo) return { x: STAGE.x, y: STAGE.y };
-  const [, anchor] = part.attachTo.split(".");
-  const [x, y] = root.attachments[anchor];
-  return { x: STAGE.x + (x - root.pivot[0]) * STAGE.scale, y: STAGE.y + (y - root.pivot[1]) * STAGE.scale };
-}
-function geometry(part, rig, editable) {
-  const adjust = editable ? pose(part) : { x: 0, y: 0, rotation: 0, scale: 100, layer: part.z };
-  const center = origin(part, rig);
-  return { x: center.x + adjust.x * STAGE.scale, y: center.y + adjust.y * STAGE.scale, rotation: adjust.rotation * Math.PI / 180, size: STAGE.scale * part.scale * adjust.scale / 100, layer: adjust.layer };
-}
-function paintPart(ctx, part, rig, editable, highlight = false) {
-  const img = rig.images[part.id], g = geometry(part, rig, editable);
-  ctx.save();ctx.translate(g.x, g.y);ctx.rotate(g.rotation);ctx.scale(g.size, g.size);
-  ctx.drawImage(img, -part.pivot[0], -part.pivot[1], part.rect[2], part.rect[3]);
-  if (highlight) {
-    ctx.strokeStyle = "#efbe62";ctx.lineWidth = 2 / g.size;
-    ctx.strokeRect(-part.pivot[0], -part.pivot[1], part.rect[2], part.rect[3]);
-  }
-  ctx.restore();
-  if (highlight) { ctx.beginPath();ctx.arc(g.x, g.y, 4, 0, 2 * Math.PI);ctx.fillStyle = "#efbe62";ctx.fill(); }
-}
-function paint(canvas, rig, editable) {
-  const ctx = canvas.getContext("2d");ctx.clearRect(0,0,canvas.width,canvas.height);
-  const ordered = [...rig.def.parts].sort((a,b) => geometry(a,rig,editable).layer - geometry(b,rig,editable).layer);
-  for (const part of ordered) paintPart(ctx,part,rig,editable,editable && $("guides").checked && part.id === selected);
-  if (editable && Number($("overlay").value)) {
-    ctx.save();ctx.globalAlpha = Number($("overlay").value) / 100;
-    const original = rigs[view].original;
-    for (const part of [...original.def.parts].sort((a,b) => a.z - b.z)) paintPart(ctx,part,original,false);
-    ctx.restore();
-  }
-}
-function render() {
-  if (!rigs[view]) return;
-  paint($("original"), rigs[view].original, false);
-  paint($("candidate"), rigs[view].candidate, true);
-  for (const button of $("views").querySelectorAll("button")) button.setAttribute("aria-pressed", String(button.dataset.view === view));
-  for (const button of $("parts").querySelectorAll("button")) button.setAttribute("aria-pressed", String(button.dataset.part === selected));
-  persist();
-}
-function selectPart(id) {
-  selected = id;$("part").value = id;
-  const part = rigs[view].candidate.def.parts.find((item) => item.id === id);
-  const values = pose(part);
-  for (const field of fields) {
-    const value = field === "scale" ? values[field] : values[field];
-    $(field).value = value;$(field + "Number").value = value;
-  }
-  render();
-}
-function setupView() {
-  $("part").replaceChildren();$("parts").replaceChildren();
-  for (const part of rigs[view].candidate.def.parts) {
-    const option = new Option(names[part.id] || part.id, part.id);$("part").add(option);
-    const button = document.createElement("button");button.textContent = names[part.id] || part.id;button.dataset.part = part.id;button.onclick = () => selectPart(part.id);$("parts").append(button);
-  }
-  selectPart(selected in rigs[view].candidate.images ? selected : "body");
-}
-function edit(field, raw) {
-  const part = rigs[view].candidate.def.parts.find((item) => item.id === selected);
-  const min = Number($(field).min), max = Number($(field).max);
-  const value = Math.max(min, Math.min(max, Number(raw)));
-  if (!Number.isFinite(value)) return;
-  offsets[view] ??= {};offsets[view][selected] = { ...pose(part), [field]: value };
-  $(field).value = value;$(field + "Number").value = value;render();
-}
-function point(event) {
-  const rect = $("candidate").getBoundingClientRect();
-  return { x: (event.clientX - rect.left) * 440 / rect.width, y: (event.clientY - rect.top) * 430 / rect.height };
-}
-function hitPart(part, pt) {
-  const g = geometry(part, rigs[view].candidate, true), dx = pt.x - g.x, dy = pt.y - g.y;
-  const x = (dx * Math.cos(g.rotation) + dy * Math.sin(g.rotation)) / g.size + part.pivot[0];
-  const y = (-dx * Math.sin(g.rotation) + dy * Math.cos(g.rotation)) / g.size + part.pivot[1];
-  return x >= 0 && y >= 0 && x <= part.rect[2] && y <= part.rect[3];
-}
-$("candidate").addEventListener("pointerdown", (event) => {
-  const pt = point(event), rig = rigs[view].candidate;
-  const hit = [...rig.def.parts].sort((a,b) => geometry(b,rig,true).layer - geometry(a,rig,true).layer).find((part) => hitPart(part,pt));
-  if (hit) selectPart(hit.id);
-  dragging = pt;$("candidate").setPointerCapture(event.pointerId);
-});
-$("candidate").addEventListener("pointermove", (event) => {
-  if (!dragging) return;
-  const pt = point(event), part = rigs[view].candidate.def.parts.find((item) => item.id === selected);
-  const current = pose(part), dx = (pt.x - dragging.x) / STAGE.scale, dy = (pt.y - dragging.y) / STAGE.scale;
-  offsets[view] ??= {};offsets[view][selected] = { ...current, x: Math.round(current.x + dx), y: Math.round(current.y + dy) };
-  dragging = pt;selectPart(selected);
-});
-for (const type of ["pointerup", "pointercancel", "lostpointercapture"]) $("candidate").addEventListener(type, () => { dragging = null; });
-$("part").onchange = (event) => selectPart(event.target.value);
-$("guides").onchange = render;
-for (const field of fields) for (const id of [field, field + "Number"]) $(id).addEventListener("input", (event) => edit(field,event.target.value));
-$("overlay").oninput = (event) => { $("overlayNumber").value = event.target.value;render(); };
-$("overlayNumber").oninput = (event) => { $("overlay").value = event.target.value;render(); };
-$("resetPart").onclick = () => { delete offsets[view]?.[selected];selectPart(selected);$("status").textContent = `Reset ${names[selected] || selected}.`; };
-$("resetView").onclick = () => { delete offsets[view];setupView();$("status").textContent = `Reset ${view} view.`; };
-$("copy").onclick = async () => { try { await navigator.clipboard.writeText($("output").value);$("status").textContent = "Copied settings for all three views."; } catch { $("output").select();$("status").textContent = "Select and copy the JSON text."; } };
-$("download").onclick = () => { const blob = new Blob([$("output").value],{type:"application/json"}), url = URL.createObjectURL(blob), link = document.createElement("a");link.href=url;link.download="rat-assembly-settings.json";link.click();setTimeout(() => URL.revokeObjectURL(url),1000);$("status").textContent="Downloaded settings for all three views."; };
-for (const direction of Object.keys(VIEW_IDS)) {
-  const button = document.createElement("button");button.textContent=direction[0].toUpperCase()+direction.slice(1);button.dataset.view=direction;
-  button.onclick=()=>{view=direction;setupView();};$("views").append(button);
-}
-try {
-  await Promise.all(Object.entries(VIEW_IDS).map(async ([direction,[original,candidate]]) => { const [oldRig,newRig]=await Promise.all([loadRig(original),loadRig(candidate)]);rigs[direction]={original:oldRig,candidate:newRig}; }));
-  setupView();
-} catch (error) { $("status").textContent=`Could not load rat art: ${error.message}`; }
+const $=id=>document.getElementById(id);
+const base='./assets/whole-torso-v3/';
+const manifest=await fetch(base+'manifest.json').then(r=>{if(!r.ok)throw Error('Manifest missing');return r.json()});
+const defaults=structuredClone(manifest.views), views=manifest.views, images={};
+const storageKey='stormwatch-rat-whole-torso-v3-forward-guard-final';
+try { const saved=JSON.parse(localStorage.getItem(storageKey)||'null'); for(const [name,v] of Object.entries(views)){const old=saved?.[name];if(!old)continue;for(const k of ['scale','x','y'])if(Number.isFinite(old.up?.[k])&&(k!=='scale'||old.up[k]>0))v.up[k]=old.up[k];if(Number.isFinite(old.legScale)&&old.legScale>0)v.legScale=old.legScale;v.legs.forEach((l,i)=>{for(const k of ['x','y','rotation'])if(Number.isFinite(old.legs?.[i]?.[k]))l[k]=old.legs[i][k];});}}catch{}
+let direction='side', switching=false, started=0;
+async function load(file){const im=new Image();im.src=base+file;await im.decode();return im;}
+try{
+ for(const [view,v] of Object.entries(views)){
+  images[view]={down:await load(view+'-down.webp'),up:await load(view+'-up.webp'),legs:await Promise.all(v.legs.map(l=>load(l.file)))};
+  const b=document.createElement('button');b.textContent={side:'Side',front:'Front',rear:'Rear'}[view];b.dataset.view=view;b.onclick=()=>{direction=view;setup()};$('views').append(b);
+ }
+ $('status').textContent='All three views loaded. Art awaits visual review.';
+}catch(error){$('status').textContent='Could not load artwork: '+error.message;throw error;}
+function settings(){ try{localStorage.setItem(storageKey,JSON.stringify(views));}catch{} $('output').value=JSON.stringify({format:'rat-whole-torso-v3',units:'original torso pixels; rotation in degrees',views},null,2); }
+function field(label,obj,key,step=1){const el=document.createElement('label');el.textContent=label;const input=document.createElement('input');input.type='number';input.step=step;input.value=obj[key];input.oninput=()=>{const n=Number(input.value);if(Number.isFinite(n)&&(!(key==='scale'||key==='legScale')||n>0)){obj[key]=n;settings();}};el.append(input);$('adjust').append(el);}
+function setup(){const v=views[direction];for(const b of $('views').children)b.setAttribute('aria-pressed',String(b.dataset.view===direction));$('legs').replaceChildren();$('legTitle').textContent=direction==='side'?'Outer and inner leg surfaces':'Anatomical left and right legs';v.legs.forEach((l,i)=>{const d=document.createElement('div');d.className='leg';const im=images[direction].legs[i].cloneNode();im.alt=l.label;const label=document.createElement('small');label.textContent=l.label;d.append(im,label);$('legs').append(d)});$('adjust').replaceChildren();field('Pair scale',v,'legScale',.005);v.legs.forEach((l,i)=>{field(`Leg ${i+1} hip X`,l,'x');field(`Leg ${i+1} hip Y`,l,'y');field(`Leg ${i+1} rotation`,l,'rotation')});field('Up frame scale',v.up,'scale',.001);field('Up frame X',v.up,'x');field('Up frame Y',v.up,'y');settings();}
+function draw(canvas,state,time){const ctx=canvas.getContext('2d'),v=views[direction],im=images[direction];ctx.clearRect(0,0,520,520);const scale=$('small').checked?.15:.53;const center=direction==='rear'?300:direction==='front'?430:420;ctx.save();ctx.translate(260,500-(810*scale));ctx.scale(scale,scale);ctx.translate(-center,0);
+ const order=direction==='side'?[1,0]:[0,1];for(const i of order){const l=v.legs[i];ctx.save();ctx.translate(l.x,l.y);const swing=$('walk').checked?Math.sin(time*.004+i*Math.PI)*.09:0;ctx.rotate(l.rotation*Math.PI/180+swing);ctx.scale(v.legScale,v.legScale);ctx.drawImage(im.legs[i],-l.pivot[0],-l.pivot[1]);ctx.restore();}
+ if(!$('hide').checked){if(state==='up'){ctx.save();ctx.translate(v.up.x,v.up.y);ctx.scale(v.up.scale,v.up.scale);ctx.drawImage(im.up,0,0);ctx.restore();}else ctx.drawImage(im.down,0,0);}
+ ctx.restore();}
+function frame(t){const state=switching&&Math.floor((t-started)/1400)%2===1?'down':'up';draw($('down'),'down',t);draw($('up'),state,t);$('upLabel').textContent=switching?`Switch preview · shield ${state}`:'Shield up · new torso';requestAnimationFrame(frame);}
+$('switch').onclick=()=>{switching=!switching;started=performance.now();$('switch').setAttribute('aria-pressed',String(switching));$('switch').textContent=switching?'Pause shield switch':'Play shield switch';};
+$('reset').onclick=()=>{views[direction]=structuredClone(defaults[direction]);setup()};
+$('copy').onclick=async()=>{try{await navigator.clipboard.writeText($('output').value);$('status').textContent='Copied assembly settings for all views.';}catch{$('output').select();$('status').textContent='Select and copy the settings text.';}};
+setup();requestAnimationFrame(frame);
