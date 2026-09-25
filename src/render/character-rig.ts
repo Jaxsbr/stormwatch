@@ -18,7 +18,6 @@ type Leg = {
   ankle: { x: number; y: number };
   gait: PathGaitWorkspace;
 };
-type ShieldPose = { raised: boolean; age: number; hitAge: number };
 /** Two-bone cloth deformation preserves the illustrated boot as one rigid part. */
 export class CharacterRig {
   readonly cutout: CutoutInstance;
@@ -27,8 +26,6 @@ export class CharacterRig {
   private readonly scale: number;
   private readonly hipHeight: number;
   private readonly frontal: boolean;
-  private readonly shieldSide: number;
-  private readonly freeArmRestAngle: number;
   constructor(resource: CutoutResource, height = 88) {
     this.cutout = new CutoutInstance(resource, height);
     this.group = this.cutout.group;
@@ -36,13 +33,6 @@ export class CharacterRig {
     this.frontal =
       resource.definition!.view === "front" ||
       resource.definition!.view === "rear";
-    this.shieldSide = resource.definition!.view === "rear" ? -1 : 1;
-    this.freeArmRestAngle =
-      resource.definition!.view === "rear"
-        ? -0.35
-        : resource.definition!.view === "front"
-          ? -0.65
-          : -0.75;
     const hipHeight = resource.definition!.animation?.hipHeight;
     this.hipHeight =
       typeof hipHeight === "number" &&
@@ -121,7 +111,6 @@ export class CharacterRig {
     order: number,
     color: THREE.ColorRepresentation,
     hitAge = Infinity,
-    shield?: ShieldPose,
   ) {
     this.cutout.reset(order, color);
     const phase = (distance / 0.65) % 1;
@@ -133,43 +122,6 @@ export class CharacterRig {
     body.position.y = hipHeight;
     body.position.x = -impact * (this.frontal ? 10 : 24);
     body.material.rotation = impact * 0.045;
-    const freeArm = this.cutout.parts.get("freeArm");
-    const shieldArm = this.cutout.parts.get("shieldArm");
-    const shieldPart = this.cutout.parts.get("shield");
-    if (freeArm && shieldArm && shieldPart) {
-      const transition = shield
-        ? THREE.MathUtils.smoothstep(shield.age, 0, 0.25)
-        : 0;
-      const raised = shield?.raised ? transition : 1 - transition;
-      const shieldHitAge = shield?.hitAge ?? Infinity;
-      const recoil =
-        shieldHitAge >= 0 && shieldHitAge < 0.24
-          ? Math.sin((Math.PI * shieldHitAge) / 0.24)
-          : 0;
-      const stride = Math.sin(phase * Math.PI * 2);
-      freeArm.position.y += hipHeight;
-      shieldArm.position.y += hipHeight;
-      shieldPart.position.y += hipHeight;
-      const shieldRestX = shieldPart.position.x - shieldArm.position.x;
-      const shieldRestY = shieldPart.position.y - shieldArm.position.y;
-      // Swing around the original painted arm pose, not the horizontal source pose.
-      freeArm.material.rotation =
-        this.freeArmRestAngle - this.shieldSide * stride * 0.1;
-      shieldArm.material.rotation =
-        this.shieldSide * (stride * 0.09 * (1 - raised) + raised * 0.38);
-      const armAngle = shieldArm.material.rotation;
-      shieldPart.position.x =
-        shieldArm.position.x +
-        Math.cos(armAngle) * shieldRestX -
-        Math.sin(armAngle) * shieldRestY +
-        this.shieldSide * recoil * 10;
-      shieldPart.position.y =
-        shieldArm.position.y +
-        Math.sin(armAngle) * shieldRestX +
-        Math.cos(armAngle) * shieldRestY -
-        recoil * 24;
-      shieldPart.material.rotation = armAngle * 0.3 - this.shieldSide * recoil * 0.14;
-    }
     for (const [index, leg] of this.legs.entries()) {
       const hip = { x: leg.hip.x + body.position.x, y: hipHeight + leg.hip.y };
       const { foot } = gaitOnPath(

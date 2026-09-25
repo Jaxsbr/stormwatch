@@ -44,7 +44,7 @@
           425
         ]
       },
-      "texture": "art/v2/rat-rear-rig-v2/body.webp",
+      "texture": "review/2026-09-25-rat-shield/assets/rat-rear-rig-v2/body.webp",
       "sha256": "61530a1bea04adfcadece334e9862933aac01c1458344d9d8b51493d3fff9f82",
       "bytes": 76232
     },
@@ -63,7 +63,7 @@
       "scale": 0.8,
       "z": 3,
       "attachTo": "body.freeShoulder",
-      "texture": "art/v2/rat-rear-rig-v2/freeArm.webp",
+      "texture": "review/2026-09-25-rat-shield/assets/rat-rear-rig-v2/freeArm.webp",
       "sha256": "2e12f092dace45b8a462477e485bff1e5c991d196fa218fd330ee0cb6f54c7d4",
       "bytes": 18664
     },
@@ -82,7 +82,7 @@
       "scale": 1,
       "z": 3.1,
       "attachTo": "body.shieldShoulder",
-      "texture": "art/v2/rat-rear-rig-v2/shieldArm.webp",
+      "texture": "review/2026-09-25-rat-shield/assets/rat-rear-rig-v2/shieldArm.webp",
       "sha256": "7f60b37cc93b3edb84905a0ec701844b23d5f58c73707ba2c5b5bbb316d03c3a",
       "bytes": 18868
     },
@@ -101,7 +101,7 @@
       "scale": 0.6,
       "z": 4,
       "attachTo": "body.shieldRest",
-      "texture": "art/v2/rat-rear-rig-v2/shield.webp",
+      "texture": "review/2026-09-25-rat-shield/assets/rat-rear-rig-v2/shield.webp",
       "sha256": "84e6f7be12933d04e81f74a4efe391fab12b49ba5e067928c677b0f616fe10e6",
       "bytes": 33002
     },
@@ -138,7 +138,7 @@
         ]
       },
       "attachTo": "body.nearHip",
-      "texture": "art/v2/rat-rear-rig-v2/nearLeg.webp",
+      "texture": "review/2026-09-25-rat-shield/assets/rat-rear-rig-v2/nearLeg.webp",
       "sha256": "64d3a8bd85f5683d8b6b82b696426a38eb32690dba9c7e6375a97e4e7ed2751e",
       "bytes": 25868
     },
@@ -175,7 +175,7 @@
         ]
       },
       "attachTo": "body.farHip",
-      "texture": "art/v2/rat-rear-rig-v2/farLeg.webp",
+      "texture": "review/2026-09-25-rat-shield/assets/rat-rear-rig-v2/farLeg.webp",
       "sha256": "d546dea038cf9fb73dbc0935a4d5ca8ac2519f1bbfac9b0f74a71a88162c3529",
       "bytes": 24922
     }
@@ -189,7 +189,7 @@
     "nearLegAnatomy": "character right",
     "farLegAnatomy": "character left"
   },
-  "prompt": "art/v2/rat-rear-rig-v2/prompt.txt",
+  "prompt": "review/2026-09-25-rat-shield/assets/rat-rear-rig-v2/prompt.txt",
   "sourceSha256": "d197b2070da64527f248c4238b326bcaba1039209cf014c2d5bcb7b8356cef12",
   "review": {
     "status": "candidate",

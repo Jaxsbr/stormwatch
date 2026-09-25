@@ -25,7 +25,7 @@ runtime assets; source images remain in ignored `assets/source/`.
 | Content | Generated pieces | Runtime motion |
 |---|---|---|
 | Walking character | Body plus separate near/far legs, with overlap at hips | Two-bone leg deformation, alternating stance and swing; fixed scale |
-| Rat raider with shield | Body, two arms, shield and two legs in each view | Shoulder-pivot arm swing, shield guard and recoil with simple part transforms |
+| Proposed Rat Raider shield | Body, two arms, shield and two legs in each view | Review assembly and pivots before any runtime motion |
 | Squirrel archer | Planted body, holding/action arms, bow | Draw string, release arrow, recover; target-facing direction |
 | Skunk rock thrower | Planted body, holding/action arms, rock | Wind up, release rock, recover; target-facing direction |
 | Turtle net thrower | Planted body, holding/action arms, net | Wind up, release net, recover; target-facing direction |

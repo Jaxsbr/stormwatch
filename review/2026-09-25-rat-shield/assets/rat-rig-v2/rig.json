@@ -44,7 +44,7 @@
           429
         ]
       },
-      "texture": "art/v2/rat-rig-v2/body.webp",
+      "texture": "review/2026-09-25-rat-shield/assets/rat-rig-v2/body.webp",
       "sha256": "29fc60a675ea4d3549a4b437dd7e854733003c07b9c50c7fcbf4e8632ac9e68f",
       "bytes": 77558
     },
@@ -63,7 +63,7 @@
       "scale": 0.8,
       "z": 3,
       "attachTo": "body.freeShoulder",
-      "texture": "art/v2/rat-rig-v2/freeArm.webp",
+      "texture": "review/2026-09-25-rat-shield/assets/rat-rig-v2/freeArm.webp",
       "sha256": "cc33b7b536ff200945922d93e1762de837ecd3ecd4b7d260196ea4d714999289",
       "bytes": 17792
     },
@@ -82,7 +82,7 @@
       "scale": 1,
       "z": 3.1,
       "attachTo": "body.shieldShoulder",
-      "texture": "art/v2/rat-rig-v2/shieldArm.webp",
+      "texture": "review/2026-09-25-rat-shield/assets/rat-rig-v2/shieldArm.webp",
       "sha256": "94d5d0f93adbad2475e8a95ced3480c622151bbcb7848173cc257a6937941ac9",
       "bytes": 16724
     },
@@ -101,7 +101,7 @@
       "scale": 0.7,
       "z": 4,
       "attachTo": "body.shieldRest",
-      "texture": "art/v2/rat-rig-v2/shield.webp",
+      "texture": "review/2026-09-25-rat-shield/assets/rat-rig-v2/shield.webp",
       "sha256": "436a8d5ace63a4b2781825fe5cdf9a63861d4037f3da8414391171e80a9417ad",
       "bytes": 25298
     },
@@ -138,7 +138,7 @@
         ]
       },
       "attachTo": "body.nearHip",
-      "texture": "art/v2/rat-rig-v2/nearLeg.webp",
+      "texture": "review/2026-09-25-rat-shield/assets/rat-rig-v2/nearLeg.webp",
       "sha256": "a72082cc466296d8d2d38b63ba29eed145fa3afba9fda5380fc2fb7125069087",
       "bytes": 27910
     },
@@ -175,7 +175,7 @@
         ]
       },
       "attachTo": "body.farHip",
-      "texture": "art/v2/rat-rig-v2/farLeg.webp",
+      "texture": "review/2026-09-25-rat-shield/assets/rat-rig-v2/farLeg.webp",
       "sha256": "6525d3f3fe4e5e880bdab7179bc8390ff70a4869a51b98f13cc1a58c254336a1",
       "bytes": 27662
     }
@@ -191,7 +191,7 @@
     "maxBodyBobSourcePixels": 6,
     "requirement": "alternate planted contacts, pin stance foot, do not substitute bodybob for limb movement"
   },
-  "prompt": "art/v2/rat-rig-v2/prompt.txt",
+  "prompt": "review/2026-09-25-rat-shield/assets/rat-rig-v2/prompt.txt",
   "sourceSha256": "60fda1e05a9533220fcb317a4bf27e6cc1f9316c60f4066b06d2bb38852bf8e4",
   "review": {
     "status": "candidate",

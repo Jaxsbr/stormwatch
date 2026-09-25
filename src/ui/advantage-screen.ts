@@ -32,7 +32,7 @@ const advantages: Record<
 };
 
 const enemyTraits: Record<EnemyKind, string> = {
-  raider: "Raises shield · half damage",
+  raider: "No armor",
   runner: "Runs fast",
   armored: "Blocks damage",
   boss: "Boss · tough & armored",

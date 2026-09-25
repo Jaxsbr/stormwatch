@@ -4,7 +4,6 @@ export class Sound {
   private paused = false;
   private music = new Audio(`${import.meta.env.BASE_URL}audio/expedition.mp3`);
   private last: Record<string, number> = {};
-  private shieldNoise: AudioBuffer | null = null;
   musicVolume = 0.45;
   effectsVolume = 0.6;
   muted = false;
@@ -40,18 +39,10 @@ export class Sound {
     const now = ctx.currentTime;
     if (
       now - (this.last[type] ?? -10) <
-      (type === "shot"
-        ? 0.1
-        : type === "hit" || type === "shield-hit"
-          ? 0.08
-          : 0.025)
+      (type === "shot" ? 0.1 : type === "hit" ? 0.08 : 0.025)
     )
       return;
     this.last[type] = now;
-    if (type === "shield-hit") {
-      this.shieldThunk(now);
-      return;
-    }
     const tones: Record<string, [number, number, number]> = {
       ui: [440, 0.06, 0.08],
       build: [220, 0.16, 0.14],
@@ -79,40 +70,6 @@ export class Sound {
       this.tone(hz * 1.25, length, 0.1, now + 0.11);
       this.tone(hz * 1.5, length * 1.5, 0.1, now + 0.22);
     }
-  }
-  private shieldThunk(now: number) {
-    const ctx = this.context!;
-    this.shieldNoise ??= (() => {
-      const buffer = ctx.createBuffer(
-        1,
-        Math.ceil(ctx.sampleRate * 0.09),
-        ctx.sampleRate,
-      );
-      const samples = buffer.getChannelData(0);
-      for (let i = 0; i < samples.length; i++) {
-        const grain = Math.sin(i * 72.31) * 43758.5453;
-        samples[i] = (grain - Math.floor(grain)) * 2 - 1;
-      }
-      return buffer;
-    })();
-    const noise = ctx.createBufferSource();
-    noise.buffer = this.shieldNoise;
-    const filter = ctx.createBiquadFilter();
-    filter.type = "lowpass";
-    filter.frequency.value = 950;
-    const impact = ctx.createGain();
-    impact.gain.setValueAtTime(0.001, now);
-    impact.gain.exponentialRampToValueAtTime(
-      Math.max(0.001, 0.11 * this.effectsVolume),
-      now + 0.004,
-    );
-    impact.gain.exponentialRampToValueAtTime(0.001, now + 0.085);
-    noise.connect(filter);
-    filter.connect(impact);
-    impact.connect(ctx.destination);
-    noise.start(now);
-    noise.stop(now + 0.09);
-    this.tone(125, 0.11, 0.09, now, "triangle");
   }
   private tone(
     hz: number,

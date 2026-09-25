@@ -44,7 +44,7 @@
           431
         ]
       },
-      "texture": "art/v2/rat-front-rig-v2/body.webp",
+      "texture": "review/2026-09-25-rat-shield/assets/rat-front-rig-v2/body.webp",
       "sha256": "8afdd53aafd1a29e426e2e9ace6169c06a842faa2bf59837914766afb2622c3c",
       "bytes": 85270
     },
@@ -63,7 +63,7 @@
       "scale": 0.8,
       "z": 3,
       "attachTo": "body.freeShoulder",
-      "texture": "art/v2/rat-front-rig-v2/freeArm.webp",
+      "texture": "review/2026-09-25-rat-shield/assets/rat-front-rig-v2/freeArm.webp",
       "sha256": "67c4338ac7b58a5c4f9fbf9be8c86734389c882986d3fbb37772ec6b912a5c52",
       "bytes": 17582
     },
@@ -82,7 +82,7 @@
       "scale": 1,
       "z": 3.1,
       "attachTo": "body.shieldShoulder",
-      "texture": "art/v2/rat-front-rig-v2/shieldArm.webp",
+      "texture": "review/2026-09-25-rat-shield/assets/rat-front-rig-v2/shieldArm.webp",
       "sha256": "1b142943528904418c4a661dcd29cb2cebadb77cf5d4eb3e867acaca652d380c",
       "bytes": 18616
     },
@@ -101,7 +101,7 @@
       "scale": 0.65,
       "z": 4,
       "attachTo": "body.shieldRest",
-      "texture": "art/v2/rat-front-rig-v2/shield.webp",
+      "texture": "review/2026-09-25-rat-shield/assets/rat-front-rig-v2/shield.webp",
       "sha256": "c99b58348f717732c456c65c97deb40b79ec89893fb97ed7bde23d512a16d2ef",
       "bytes": 37884
     },
@@ -138,7 +138,7 @@
         ]
       },
       "attachTo": "body.nearHip",
-      "texture": "art/v2/rat-front-rig-v2/nearLeg.webp",
+      "texture": "review/2026-09-25-rat-shield/assets/rat-front-rig-v2/nearLeg.webp",
       "sha256": "6a408fa5909cdaa769f8dd3b610f2588b45b36f6cbeda0aa3ab4944ce40924f4",
       "bytes": 28154
     },
@@ -175,7 +175,7 @@
         ]
       },
       "attachTo": "body.farHip",
-      "texture": "art/v2/rat-front-rig-v2/farLeg.webp",
+      "texture": "review/2026-09-25-rat-shield/assets/rat-front-rig-v2/farLeg.webp",
       "sha256": "ce415758a8c7aa4a29d847c86ebc000b4b2abf2faec8a6ff97fbe8536e1978c2",
       "bytes": 28042
     }
@@ -189,7 +189,7 @@
     "nearLegAnatomy": "character right",
     "farLegAnatomy": "character left"
   },
-  "prompt": "art/v2/rat-front-rig-v2/prompt.txt",
+  "prompt": "review/2026-09-25-rat-shield/assets/rat-front-rig-v2/prompt.txt",
   "sourceSha256": "bd07651ad3003c768fac0ceec293598d3d76df67cc65378c4c81aa691b5d7bab",
   "review": {
     "status": "candidate",
