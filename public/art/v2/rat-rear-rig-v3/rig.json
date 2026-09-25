@@ -1,0 +1,133 @@
+{
+  "id": "rat-rear-rig-v3",
+  "kind": "cutout-character",
+  "view": "rear",
+  "animation": {
+    "hipHeight": 270
+  },
+  "parts": [
+    {
+      "id": "body",
+      "rect": [
+        0,
+        0,
+        590,
+        710
+      ],
+      "pivot": [
+        300,
+        510
+      ],
+      "scale": 1,
+      "z": 2,
+      "attachments": {
+        "guard": [
+          300,
+          510
+        ],
+        "nearHip": [
+          255,
+          510
+        ],
+        "farHip": [
+          355,
+          510
+        ]
+      },
+      "restPosition": [
+        0,
+        0
+      ],
+      "texture": "art/v2/rat-rear-rig-v3/body.webp",
+      "sha256": "f3cfa09bd7196a840c408931712d64257e23202038aa8088b74b4d3ed61c7b44",
+      "bytes": 103374
+    },
+    {
+      "id": "bodyGuard",
+      "texture": "art/v2/rat-rear-rig-v3/bodyGuard.webp",
+      "rect": [
+        0,
+        0,
+        1142,
+        1377
+      ],
+      "pivot": [
+        618.8679245283018,
+        962.2641509433962
+      ],
+      "scale": 0.53,
+      "z": 2,
+      "attachTo": "body.guard"
+    },
+    {
+      "id": "nearLeg",
+      "texture": "art/v2/rat-rear-rig-v3/nearLeg.webp",
+      "rect": [
+        0,
+        0,
+        310,
+        964
+      ],
+      "pivot": [
+        155,
+        24
+      ],
+      "scale": 0.3002070393374741,
+      "z": 1,
+      "attachTo": "body.nearHip",
+      "joints": {
+        "hip": [
+          155,
+          24
+        ],
+        "knee": [
+          155,
+          462.71999999999997
+        ],
+        "ankle": [
+          155,
+          771.2
+        ],
+        "sole": [
+          155,
+          944.72
+        ]
+      }
+    },
+    {
+      "id": "farLeg",
+      "texture": "art/v2/rat-rear-rig-v3/farLeg.webp",
+      "rect": [
+        0,
+        0,
+        307,
+        966
+      ],
+      "pivot": [
+        153.5,
+        24
+      ],
+      "scale": 0.3002070393374741,
+      "z": 0,
+      "attachTo": "body.farHip",
+      "joints": {
+        "hip": [
+          153.5,
+          24
+        ],
+        "knee": [
+          153.5,
+          463.68
+        ],
+        "ankle": [
+          153.5,
+          772.8000000000001
+        ],
+        "sole": [
+          153.5,
+          946.68
+        ]
+      }
+    }
+  ]
+}

@@ -17,6 +17,8 @@ const enemy = (id: number, hp = 50): Enemy => ({
   slowUntil: 0,
   alive: true,
   hitAt: -1,
+  spawnedAt: 0,
+  shieldRaised: false,
 });
 const tower: Tower = {
   id: 1,

@@ -59,6 +59,8 @@ export interface Enemy extends Point {
   slowUntil: number;
   alive: boolean;
   hitAt: number;
+  spawnedAt: number;
+  shieldRaised: boolean;
 }
 export interface Shot extends Point {
   id: number;
@@ -83,6 +85,7 @@ export interface GameEvent {
     | "sell"
     | "shot"
     | "hit"
+    | "shield-hit"
     | "kill"
     | "leak"
     | "start"

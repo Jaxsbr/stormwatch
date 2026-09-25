@@ -1,0 +1,61 @@
+{
+  "generator": "native image_gen",
+  "review": "review/2026-09-25-rat-shield/assembly.html",
+  "originalRig": "rat-rig-v1",
+  "body": {
+    "width": 750,
+    "height": 672
+  },
+  "legs": [
+    {
+      "file": "side-leg-0.webp",
+      "rect": {
+        "left": 167,
+        "top": 7,
+        "width": 597,
+        "height": 986
+      },
+      "pivot": [
+        173.13,
+        24
+      ],
+      "x": 450,
+      "y": 525,
+      "rotation": 0,
+      "label": "Outer / near (right leg)"
+    },
+    {
+      "file": "side-leg-1.webp",
+      "rect": {
+        "left": 888,
+        "top": 6,
+        "width": 581,
+        "height": 985
+      },
+      "pivot": [
+        168.48999999999998,
+        24
+      ],
+      "x": 360,
+      "y": 508,
+      "rotation": 0,
+      "label": "Inner / far (left leg)"
+    }
+  ],
+  "sources": [
+    {
+      "source": "assets/source/reboot/rat-whole-torso-v3/side-up.png",
+      "sha256": "7d74f8b79d5a91168191b542e1f777b71c428a234f1866b30c676ca213b85be2"
+    },
+    {
+      "source": "assets/source/reboot/rat-whole-torso-v3/side-legs.png",
+      "sha256": "367e6ab185df3c8b829f79ece4f9569eeecd6bf6b41aa84b78e71e5600980a7a"
+    }
+  ],
+  "up": {
+    "scale": 0.5660377358490566,
+    "x": 8,
+    "y": 0
+  },
+  "legScale": 0.29411764705882354
+}

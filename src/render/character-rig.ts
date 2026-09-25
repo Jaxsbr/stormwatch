@@ -111,17 +111,28 @@ export class CharacterRig {
     order: number,
     color: THREE.ColorRepresentation,
     hitAge = Infinity,
+    shieldRaised = false,
   ) {
     this.cutout.reset(order, color);
     const phase = (distance / 0.65) % 1;
     const impact =
-      hitAge >= 0 && hitAge < 0.2 ? Math.sin((Math.PI * hitAge) / 0.2) : 0;
+      !shieldRaised && hitAge >= 0 && hitAge < 0.2
+        ? Math.sin((Math.PI * hitAge) / 0.2)
+        : 0;
     const hipHeight =
       this.hipHeight + Math.cos(phase * Math.PI * 4) * 5 - impact * 10;
     const body = this.cutout.parts.get("body")!;
     body.position.y = hipHeight;
     body.position.x = -impact * (this.frontal ? 10 : 24);
     body.material.rotation = impact * 0.045;
+    const guard = this.cutout.parts.get("bodyGuard");
+    body.visible = !shieldRaised || !guard;
+    if (guard) {
+      guard.visible = shieldRaised;
+      guard.position.copy(body.position);
+      guard.material.rotation = 0;
+    }
+
     for (const [index, leg] of this.legs.entries()) {
       const hip = { x: leg.hip.x + body.position.x, y: hipHeight + leg.hip.y };
       const { foot } = gaitOnPath(

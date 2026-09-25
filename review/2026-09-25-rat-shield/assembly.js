@@ -11,7 +11,7 @@ try{
   images[view]={down:await load(view+'-down.webp'),up:await load(view+'-up.webp'),legs:await Promise.all(v.legs.map(l=>load(l.file)))};
   const b=document.createElement('button');b.textContent={side:'Side',front:'Front',rear:'Rear'}[view];b.dataset.view=view;b.onclick=()=>{direction=view;setup()};$('views').append(b);
  }
- $('status').textContent='All three views loaded. Art awaits visual review.';
+ $('status').textContent='All three reviewed views loaded. Guard is implemented in the game.';
 }catch(error){$('status').textContent='Could not load artwork: '+error.message;throw error;}
 function settings(){ try{localStorage.setItem(storageKey,JSON.stringify(views));}catch{} $('output').value=JSON.stringify({format:'rat-whole-torso-v3',units:'original torso pixels; rotation in degrees',views},null,2); }
 function field(label,obj,key,step=1){const el=document.createElement('label');el.textContent=label;const input=document.createElement('input');input.type='number';input.step=step;input.value=obj[key];input.oninput=()=>{const n=Number(input.value);if(Number.isFinite(n)&&(!(key==='scale'||key==='legScale')||n>0)){obj[key]=n;settings();}};el.append(input);$('adjust').append(el);}

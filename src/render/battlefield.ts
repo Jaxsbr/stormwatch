@@ -97,7 +97,7 @@ export class Battlefield {
   private selectedRank = "";
   private observer: ResizeObserver;
   private characterRigs: Record<EnemyKind, CutoutResource> = {
-    raider: new CutoutResource("rat-rig-v1"),
+    raider: new CutoutResource("rat-rig-v3"),
     runner: new CutoutResource("weasel-rig-v1"),
     armored: new CutoutResource("boar-rig-v1"),
     boss: new CutoutResource("badger-rig-v1"),
@@ -107,8 +107,8 @@ export class Battlefield {
     { front: CutoutResource; rear: CutoutResource }
   > = {
     raider: {
-      front: new CutoutResource("rat-front-rig-v1"),
-      rear: new CutoutResource("rat-rear-rig-v1"),
+      front: new CutoutResource("rat-front-rig-v3"),
+      rear: new CutoutResource("rat-rear-rig-v3"),
     },
     runner: {
       front: new CutoutResource("weasel-front-rig-v1"),
@@ -709,7 +709,7 @@ export class Battlefield {
       f.sprite.position.copy(position(e));
       f.sprite.renderOrder = 1000 + ORIGIN_Y + e.z * Y;
       f.sprite.material.color.set(
-        s.clock - e.hitAt < 0.1
+        !e.shieldRaised && s.clock - e.hitAt < 0.1
           ? 0xffc5a2
           : e.slowUntil > s.clock
             ? 0xb9dfd1
@@ -748,7 +748,8 @@ export class Battlefield {
           this.gaitSampler,
           f.sprite.renderOrder,
           f.sprite.material.color,
-          s.clock - e.hitAt,
+          e.shieldRaised ? Infinity : s.clock - e.hitAt,
+          e.shieldRaised,
         );
       }
     }

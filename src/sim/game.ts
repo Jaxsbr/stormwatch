@@ -19,6 +19,11 @@ import type {
   TowerKind,
 } from "./types";
 
+// A shielded rat keeps walking for roughly two gait cycles before lowering it.
+const RAT_SHIELD_PERIOD = 5;
+const RAT_SHIELD_RAISE_AT = 1.1;
+const RAT_SHIELD_LOWER_AT = 3.1;
+
 export class Game {
   readonly state: GameState;
   readonly events: GameEvent[] = [];
@@ -239,6 +244,8 @@ export class Game {
         slowUntil: 0,
         alive: true,
         hitAt: -1,
+        spawnedAt: s.clock,
+        shieldRaised: false,
       });
     }
     const len = pathLength(this.level.path);
@@ -257,6 +264,15 @@ export class Game {
       s.phase = "lost";
       this.emit("loss");
       return;
+    }
+    for (const e of s.enemies) {
+      if (e.kind !== "raider") continue;
+      const phase = (s.clock - e.spawnedAt) % RAT_SHIELD_PERIOD;
+      const raised =
+        phase >= RAT_SHIELD_RAISE_AT && phase < RAT_SHIELD_LOWER_AT;
+      if (raised !== e.shieldRaised) {
+        e.shieldRaised = raised;
+      }
     }
     for (const t of s.towers) {
       if (t.kind === "trade") continue;
@@ -290,7 +306,7 @@ export class Game {
       if (shot.kind === "stone") {
         for (const target of s.enemies)
           if (target.alive && distance(target, shot.target) <= 1.15)
-            this.hurt(target, shot.damage);
+            this.hurt(target, shot.damage, true);
         s.effects.push({
           ...shot.target,
           id: this.serial++,
@@ -299,7 +315,7 @@ export class Game {
           ttl: 0.45,
         });
       } else if (e) {
-        this.hurt(e, shot.damage);
+        this.hurt(e, shot.damage, true);
         if (shot.kind === "net")
           e.slowUntil = Math.max(
             e.slowUntil,
@@ -334,20 +350,25 @@ export class Game {
       }
     }
   }
-  private hurt(e: Enemy, damage: number) {
+  private hurt(e: Enemy, damage: number, projectile = false) {
     if (!e.alive) return;
     const s = this.state;
-    e.hp -= Math.max(1, damage - ENEMIES[e.kind].armor);
-    e.hitAt = s.clock;
-    s.effects.push({
-      x: e.x,
-      z: e.z,
-      id: this.serial++,
-      kind: "hit",
-      age: 0,
-      ttl: 0.2,
-    });
-    this.emit("hit");
+    const guarded = projectile && e.kind === "raider" && e.shieldRaised;
+    e.hp -= Math.max(1, damage - ENEMIES[e.kind].armor) * (guarded ? 0.5 : 1);
+    if (guarded) {
+      this.emit("shield-hit");
+    } else {
+      e.hitAt = s.clock;
+      s.effects.push({
+        x: e.x,
+        z: e.z,
+        id: this.serial++,
+        kind: "hit",
+        age: 0,
+        ttl: 0.2,
+      });
+      this.emit("hit");
+    }
     if (e.hp <= 0) {
       e.alive = false;
       s.kills++;
