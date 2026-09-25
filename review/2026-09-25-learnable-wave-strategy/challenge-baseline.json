@@ -1,0 +1,3432 @@
+[
+  {
+    "level": "lantern-pass",
+    "line": "broad",
+    "seed": 42,
+    "card": "reach",
+    "assist": false,
+    "abilityUses": 0,
+    "phase": "won",
+    "wavesStarted": 8,
+    "wavesCompleted": 8,
+    "hearts": 12,
+    "crowns": 1191,
+    "totalInterest": 136,
+    "totalTrade": 0,
+    "waves": [
+      {
+        "wave": 1,
+        "title": "Footsteps in the rain",
+        "actions": [
+          {
+            "command": "boltA",
+            "coinsAfter": 135
+          },
+          {
+            "command": "stoneA",
+            "coinsAfter": 70
+          },
+          {
+            "command": "netA",
+            "coinsAfter": 20
+          }
+        ],
+        "coinsBeforeBuild": 175,
+        "coinsAtStart": 20,
+        "heartsAtStart": 12,
+        "towers": [
+          {
+            "id": 1,
+            "kind": "bolt",
+            "level": 1,
+            "x": 1,
+            "z": 4
+          },
+          {
+            "id": 2,
+            "kind": "stone",
+            "level": 1,
+            "x": 3,
+            "z": 0
+          },
+          {
+            "id": 3,
+            "kind": "net",
+            "level": 1,
+            "x": 5,
+            "z": 0
+          }
+        ],
+        "completed": true,
+        "phase": "preparation",
+        "heartsAfter": 12,
+        "heartsLost": 0,
+        "coinsAfter": 96,
+        "kills": 9,
+        "leaks": [],
+        "shots": [
+          {
+            "id": 1,
+            "count": 26
+          },
+          {
+            "id": 2,
+            "count": 10
+          },
+          {
+            "id": 3,
+            "count": 3
+          }
+        ],
+        "payout": {
+          "interest": 6,
+          "trade": 0,
+          "reward": 25,
+          "total": 31
+        },
+        "clock": 25
+      },
+      {
+        "wave": 2,
+        "title": "A quicker shadow",
+        "actions": [
+          {
+            "command": "boltB",
+            "coinsAfter": 56
+          }
+        ],
+        "coinsBeforeBuild": 96,
+        "coinsAtStart": 56,
+        "heartsAtStart": 12,
+        "towers": [
+          {
+            "id": 1,
+            "kind": "bolt",
+            "level": 1,
+            "x": 1,
+            "z": 4
+          },
+          {
+            "id": 2,
+            "kind": "stone",
+            "level": 1,
+            "x": 3,
+            "z": 0
+          },
+          {
+            "id": 3,
+            "kind": "net",
+            "level": 1,
+            "x": 5,
+            "z": 0
+          },
+          {
+            "id": 97,
+            "kind": "bolt",
+            "level": 1,
+            "x": 3,
+            "z": 2
+          }
+        ],
+        "completed": true,
+        "phase": "preparation",
+        "heartsAfter": 12,
+        "heartsLost": 0,
+        "coinsAfter": 161,
+        "kills": 13,
+        "leaks": [],
+        "shots": [
+          {
+            "id": 1,
+            "count": 26
+          },
+          {
+            "id": 2,
+            "count": 3
+          },
+          {
+            "id": 3,
+            "count": 0
+          },
+          {
+            "id": 97,
+            "count": 25
+          }
+        ],
+        "payout": {
+          "interest": 12,
+          "trade": 0,
+          "reward": 28,
+          "total": 40
+        },
+        "clock": 49.3
+      },
+      {
+        "wave": 3,
+        "title": "Iron on the trail",
+        "actions": [
+          {
+            "command": "stoneB",
+            "coinsAfter": 96
+          }
+        ],
+        "coinsBeforeBuild": 161,
+        "coinsAtStart": 96,
+        "heartsAtStart": 12,
+        "towers": [
+          {
+            "id": 1,
+            "kind": "bolt",
+            "level": 1,
+            "x": 1,
+            "z": 4
+          },
+          {
+            "id": 2,
+            "kind": "stone",
+            "level": 1,
+            "x": 3,
+            "z": 0
+          },
+          {
+            "id": 3,
+            "kind": "net",
+            "level": 1,
+            "x": 5,
+            "z": 0
+          },
+          {
+            "id": 97,
+            "kind": "bolt",
+            "level": 1,
+            "x": 3,
+            "z": 2
+          },
+          {
+            "id": 215,
+            "kind": "stone",
+            "level": 1,
+            "x": 7,
+            "z": 4
+          }
+        ],
+        "completed": true,
+        "phase": "preparation",
+        "heartsAfter": 12,
+        "heartsLost": 0,
+        "coinsAfter": 234,
+        "kills": 14,
+        "leaks": [],
+        "shots": [
+          {
+            "id": 1,
+            "count": 34
+          },
+          {
+            "id": 2,
+            "count": 14
+          },
+          {
+            "id": 3,
+            "count": 14
+          },
+          {
+            "id": 97,
+            "count": 33
+          },
+          {
+            "id": 215,
+            "count": 0
+          }
+        ],
+        "payout": {
+          "interest": 18,
+          "trade": 0,
+          "reward": 30,
+          "total": 48
+        },
+        "clock": 81.7
+      },
+      {
+        "wave": 4,
+        "title": "The long column",
+        "actions": [
+          {
+            "command": "netB",
+            "coinsAfter": 184
+          }
+        ],
+        "coinsBeforeBuild": 234,
+        "coinsAtStart": 184,
+        "heartsAtStart": 12,
+        "towers": [
+          {
+            "id": 1,
+            "kind": "bolt",
+            "level": 1,
+            "x": 1,
+            "z": 4
+          },
+          {
+            "id": 2,
+            "kind": "stone",
+            "level": 1,
+            "x": 3,
+            "z": 0
+          },
+          {
+            "id": 3,
+            "kind": "net",
+            "level": 1,
+            "x": 5,
+            "z": 0
+          },
+          {
+            "id": 97,
+            "kind": "bolt",
+            "level": 1,
+            "x": 3,
+            "z": 2
+          },
+          {
+            "id": 215,
+            "kind": "stone",
+            "level": 1,
+            "x": 7,
+            "z": 4
+          },
+          {
+            "id": 439,
+            "kind": "net",
+            "level": 1,
+            "x": 8,
+            "z": 5
+          }
+        ],
+        "completed": true,
+        "phase": "preparation",
+        "heartsAfter": 12,
+        "heartsLost": 0,
+        "coinsAfter": 358,
+        "kills": 24,
+        "leaks": [],
+        "shots": [
+          {
+            "id": 1,
+            "count": 32
+          },
+          {
+            "id": 2,
+            "count": 14
+          },
+          {
+            "id": 3,
+            "count": 14
+          },
+          {
+            "id": 97,
+            "count": 33
+          },
+          {
+            "id": 215,
+            "count": 1
+          },
+          {
+            "id": 439,
+            "count": 0
+          }
+        ],
+        "payout": {
+          "interest": 20,
+          "trade": 0,
+          "reward": 34,
+          "total": 54
+        },
+        "clock": 114.2
+      },
+      {
+        "wave": 5,
+        "title": "Hold the crossing",
+        "actions": [
+          {
+            "command": "upgrade:boltA",
+            "coinsAfter": 303
+          },
+          {
+            "command": "upgrade:stoneA",
+            "coinsAfter": 228
+          }
+        ],
+        "coinsBeforeBuild": 358,
+        "coinsAtStart": 228,
+        "heartsAtStart": 12,
+        "towers": [
+          {
+            "id": 1,
+            "kind": "bolt",
+            "level": 2,
+            "x": 1,
+            "z": 4
+          },
+          {
+            "id": 2,
+            "kind": "stone",
+            "level": 2,
+            "x": 3,
+            "z": 0
+          },
+          {
+            "id": 3,
+            "kind": "net",
+            "level": 1,
+            "x": 5,
+            "z": 0
+          },
+          {
+            "id": 97,
+            "kind": "bolt",
+            "level": 1,
+            "x": 3,
+            "z": 2
+          },
+          {
+            "id": 215,
+            "kind": "stone",
+            "level": 1,
+            "x": 7,
+            "z": 4
+          },
+          {
+            "id": 439,
+            "kind": "net",
+            "level": 1,
+            "x": 8,
+            "z": 5
+          }
+        ],
+        "completed": true,
+        "phase": "preparation",
+        "heartsAfter": 12,
+        "heartsLost": 0,
+        "coinsAfter": 426,
+        "kills": 19,
+        "leaks": [],
+        "shots": [
+          {
+            "id": 1,
+            "count": 39
+          },
+          {
+            "id": 2,
+            "count": 16
+          },
+          {
+            "id": 3,
+            "count": 3
+          },
+          {
+            "id": 97,
+            "count": 29
+          },
+          {
+            "id": 215,
+            "count": 0
+          },
+          {
+            "id": 439,
+            "count": 0
+          }
+        ],
+        "payout": {
+          "interest": 20,
+          "trade": 0,
+          "reward": 38,
+          "total": 58
+        },
+        "clock": 142.9
+      },
+      {
+        "wave": 6,
+        "title": "The Roadwarden arrives",
+        "actions": [
+          {
+            "command": "upgrade:boltB",
+            "coinsAfter": 371
+          },
+          {
+            "command": "upgrade:stoneB",
+            "coinsAfter": 296
+          }
+        ],
+        "coinsBeforeBuild": 426,
+        "coinsAtStart": 296,
+        "heartsAtStart": 12,
+        "towers": [
+          {
+            "id": 1,
+            "kind": "bolt",
+            "level": 2,
+            "x": 1,
+            "z": 4
+          },
+          {
+            "id": 2,
+            "kind": "stone",
+            "level": 2,
+            "x": 3,
+            "z": 0
+          },
+          {
+            "id": 3,
+            "kind": "net",
+            "level": 1,
+            "x": 5,
+            "z": 0
+          },
+          {
+            "id": 97,
+            "kind": "bolt",
+            "level": 2,
+            "x": 3,
+            "z": 2
+          },
+          {
+            "id": 215,
+            "kind": "stone",
+            "level": 2,
+            "x": 7,
+            "z": 4
+          },
+          {
+            "id": 439,
+            "kind": "net",
+            "level": 1,
+            "x": 8,
+            "z": 5
+          }
+        ],
+        "completed": true,
+        "phase": "preparation",
+        "heartsAfter": 12,
+        "heartsLost": 0,
+        "coinsAfter": 566,
+        "kills": 23,
+        "leaks": [],
+        "shots": [
+          {
+            "id": 1,
+            "count": 54
+          },
+          {
+            "id": 2,
+            "count": 21
+          },
+          {
+            "id": 3,
+            "count": 9
+          },
+          {
+            "id": 97,
+            "count": 53
+          },
+          {
+            "id": 215,
+            "count": 0
+          },
+          {
+            "id": 439,
+            "count": 0
+          }
+        ],
+        "payout": {
+          "interest": 20,
+          "trade": 0,
+          "reward": 45,
+          "total": 65
+        },
+        "clock": 182.7
+      },
+      {
+        "wave": 7,
+        "title": "Briar and iron",
+        "actions": [
+          {
+            "command": "upgrade:netA",
+            "coinsAfter": 506
+          },
+          {
+            "command": "upgrade:netB",
+            "coinsAfter": 446
+          }
+        ],
+        "coinsBeforeBuild": 566,
+        "coinsAtStart": 446,
+        "heartsAtStart": 12,
+        "towers": [
+          {
+            "id": 1,
+            "kind": "bolt",
+            "level": 2,
+            "x": 1,
+            "z": 4
+          },
+          {
+            "id": 2,
+            "kind": "stone",
+            "level": 2,
+            "x": 3,
+            "z": 0
+          },
+          {
+            "id": 3,
+            "kind": "net",
+            "level": 2,
+            "x": 5,
+            "z": 0
+          },
+          {
+            "id": 97,
+            "kind": "bolt",
+            "level": 2,
+            "x": 3,
+            "z": 2
+          },
+          {
+            "id": 215,
+            "kind": "stone",
+            "level": 2,
+            "x": 7,
+            "z": 4
+          },
+          {
+            "id": 439,
+            "kind": "net",
+            "level": 2,
+            "x": 8,
+            "z": 5
+          }
+        ],
+        "completed": true,
+        "phase": "preparation",
+        "heartsAfter": 12,
+        "heartsLost": 0,
+        "coinsAfter": 736,
+        "kills": 34,
+        "leaks": [],
+        "shots": [
+          {
+            "id": 1,
+            "count": 51
+          },
+          {
+            "id": 2,
+            "count": 22
+          },
+          {
+            "id": 3,
+            "count": 11
+          },
+          {
+            "id": 97,
+            "count": 50
+          },
+          {
+            "id": 215,
+            "count": 0
+          },
+          {
+            "id": 439,
+            "count": 0
+          }
+        ],
+        "payout": {
+          "interest": 20,
+          "trade": 0,
+          "reward": 50,
+          "total": 70
+        },
+        "clock": 220.3
+      },
+      {
+        "wave": 8,
+        "title": "The lantern line",
+        "actions": [],
+        "coinsBeforeBuild": 736,
+        "coinsAtStart": 736,
+        "heartsAtStart": 12,
+        "towers": [
+          {
+            "id": 1,
+            "kind": "bolt",
+            "level": 2,
+            "x": 1,
+            "z": 4
+          },
+          {
+            "id": 2,
+            "kind": "stone",
+            "level": 2,
+            "x": 3,
+            "z": 0
+          },
+          {
+            "id": 3,
+            "kind": "net",
+            "level": 2,
+            "x": 5,
+            "z": 0
+          },
+          {
+            "id": 97,
+            "kind": "bolt",
+            "level": 2,
+            "x": 3,
+            "z": 2
+          },
+          {
+            "id": 215,
+            "kind": "stone",
+            "level": 2,
+            "x": 7,
+            "z": 4
+          },
+          {
+            "id": 439,
+            "kind": "net",
+            "level": 2,
+            "x": 8,
+            "z": 5
+          }
+        ],
+        "completed": true,
+        "phase": "won",
+        "heartsAfter": 12,
+        "heartsLost": 0,
+        "coinsAfter": 1191,
+        "kills": 42,
+        "leaks": [],
+        "shots": [
+          {
+            "id": 1,
+            "count": 78
+          },
+          {
+            "id": 2,
+            "count": 33
+          },
+          {
+            "id": 3,
+            "count": 24
+          },
+          {
+            "id": 97,
+            "count": 80
+          },
+          {
+            "id": 215,
+            "count": 7
+          },
+          {
+            "id": 439,
+            "count": 0
+          }
+        ],
+        "payout": {
+          "interest": 20,
+          "trade": 0,
+          "reward": 65,
+          "total": 85
+        },
+        "clock": 280.5
+      }
+    ]
+  },
+  {
+    "level": "lantern-pass",
+    "line": "focused",
+    "seed": 42,
+    "card": "reach",
+    "assist": false,
+    "abilityUses": 0,
+    "phase": "won",
+    "wavesStarted": 8,
+    "wavesCompleted": 8,
+    "hearts": 12,
+    "crowns": 1147,
+    "totalInterest": 117,
+    "totalTrade": 0,
+    "waves": [
+      {
+        "wave": 1,
+        "title": "Footsteps in the rain",
+        "actions": [
+          {
+            "command": "boltA",
+            "coinsAfter": 135
+          },
+          {
+            "command": "boltB",
+            "coinsAfter": 95
+          },
+          {
+            "command": "stoneA",
+            "coinsAfter": 30
+          }
+        ],
+        "coinsBeforeBuild": 175,
+        "coinsAtStart": 30,
+        "heartsAtStart": 12,
+        "towers": [
+          {
+            "id": 1,
+            "kind": "bolt",
+            "level": 1,
+            "x": 1,
+            "z": 4
+          },
+          {
+            "id": 2,
+            "kind": "bolt",
+            "level": 1,
+            "x": 3,
+            "z": 2
+          },
+          {
+            "id": 3,
+            "kind": "stone",
+            "level": 1,
+            "x": 3,
+            "z": 0
+          }
+        ],
+        "completed": true,
+        "phase": "preparation",
+        "heartsAfter": 12,
+        "heartsLost": 0,
+        "coinsAfter": 107,
+        "kills": 9,
+        "leaks": [],
+        "shots": [
+          {
+            "id": 1,
+            "count": 22
+          },
+          {
+            "id": 2,
+            "count": 18
+          },
+          {
+            "id": 3,
+            "count": 0
+          }
+        ],
+        "payout": {
+          "interest": 7,
+          "trade": 0,
+          "reward": 25,
+          "total": 32
+        },
+        "clock": 20.7
+      },
+      {
+        "wave": 2,
+        "title": "A quicker shadow",
+        "actions": [
+          {
+            "command": "boltC",
+            "coinsAfter": 67
+          },
+          {
+            "command": "upgrade:boltA",
+            "coinsAfter": 12
+          }
+        ],
+        "coinsBeforeBuild": 107,
+        "coinsAtStart": 12,
+        "heartsAtStart": 12,
+        "towers": [
+          {
+            "id": 1,
+            "kind": "bolt",
+            "level": 2,
+            "x": 1,
+            "z": 4
+          },
+          {
+            "id": 2,
+            "kind": "bolt",
+            "level": 1,
+            "x": 3,
+            "z": 2
+          },
+          {
+            "id": 3,
+            "kind": "stone",
+            "level": 1,
+            "x": 3,
+            "z": 0
+          },
+          {
+            "id": 89,
+            "kind": "bolt",
+            "level": 1,
+            "x": 5,
+            "z": 2
+          }
+        ],
+        "completed": true,
+        "phase": "preparation",
+        "heartsAfter": 12,
+        "heartsLost": 0,
+        "coinsAfter": 112,
+        "kills": 13,
+        "leaks": [],
+        "shots": [
+          {
+            "id": 1,
+            "count": 30
+          },
+          {
+            "id": 2,
+            "count": 13
+          },
+          {
+            "id": 3,
+            "count": 0
+          },
+          {
+            "id": 89,
+            "count": 0
+          }
+        ],
+        "payout": {
+          "interest": 7,
+          "trade": 0,
+          "reward": 28,
+          "total": 35
+        },
+        "clock": 43.2
+      },
+      {
+        "wave": 3,
+        "title": "Iron on the trail",
+        "actions": [
+          {
+            "command": "netA",
+            "coinsAfter": 62
+          },
+          {
+            "command": "upgrade:boltB",
+            "coinsAfter": 7
+          }
+        ],
+        "coinsBeforeBuild": 112,
+        "coinsAtStart": 7,
+        "heartsAtStart": 12,
+        "towers": [
+          {
+            "id": 1,
+            "kind": "bolt",
+            "level": 2,
+            "x": 1,
+            "z": 4
+          },
+          {
+            "id": 2,
+            "kind": "bolt",
+            "level": 2,
+            "x": 3,
+            "z": 2
+          },
+          {
+            "id": 3,
+            "kind": "stone",
+            "level": 1,
+            "x": 3,
+            "z": 0
+          },
+          {
+            "id": 89,
+            "kind": "bolt",
+            "level": 1,
+            "x": 5,
+            "z": 2
+          },
+          {
+            "id": 184,
+            "kind": "net",
+            "level": 1,
+            "x": 5,
+            "z": 0
+          }
+        ],
+        "completed": true,
+        "phase": "preparation",
+        "heartsAfter": 12,
+        "heartsLost": 0,
+        "coinsAfter": 136,
+        "kills": 14,
+        "leaks": [],
+        "shots": [
+          {
+            "id": 1,
+            "count": 37
+          },
+          {
+            "id": 2,
+            "count": 36
+          },
+          {
+            "id": 3,
+            "count": 0
+          },
+          {
+            "id": 89,
+            "count": 0
+          },
+          {
+            "id": 184,
+            "count": 0
+          }
+        ],
+        "payout": {
+          "interest": 9,
+          "trade": 0,
+          "reward": 30,
+          "total": 39
+        },
+        "clock": 70.6
+      },
+      {
+        "wave": 4,
+        "title": "The long column",
+        "actions": [
+          {
+            "command": "boltD",
+            "coinsAfter": 96
+          },
+          {
+            "command": "upgrade:stoneA",
+            "coinsAfter": 21
+          }
+        ],
+        "coinsBeforeBuild": 136,
+        "coinsAtStart": 21,
+        "heartsAtStart": 12,
+        "towers": [
+          {
+            "id": 1,
+            "kind": "bolt",
+            "level": 2,
+            "x": 1,
+            "z": 4
+          },
+          {
+            "id": 2,
+            "kind": "bolt",
+            "level": 2,
+            "x": 3,
+            "z": 2
+          },
+          {
+            "id": 3,
+            "kind": "stone",
+            "level": 2,
+            "x": 3,
+            "z": 0
+          },
+          {
+            "id": 89,
+            "kind": "bolt",
+            "level": 1,
+            "x": 5,
+            "z": 2
+          },
+          {
+            "id": 184,
+            "kind": "net",
+            "level": 1,
+            "x": 5,
+            "z": 0
+          },
+          {
+            "id": 334,
+            "kind": "bolt",
+            "level": 1,
+            "x": 7,
+            "z": 5
+          }
+        ],
+        "completed": true,
+        "phase": "preparation",
+        "heartsAfter": 12,
+        "heartsLost": 0,
+        "coinsAfter": 189,
+        "kills": 24,
+        "leaks": [],
+        "shots": [
+          {
+            "id": 1,
+            "count": 36
+          },
+          {
+            "id": 2,
+            "count": 33
+          },
+          {
+            "id": 3,
+            "count": 8
+          },
+          {
+            "id": 89,
+            "count": 0
+          },
+          {
+            "id": 184,
+            "count": 0
+          },
+          {
+            "id": 334,
+            "count": 0
+          }
+        ],
+        "payout": {
+          "interest": 14,
+          "trade": 0,
+          "reward": 34,
+          "total": 48
+        },
+        "clock": 97.3
+      },
+      {
+        "wave": 5,
+        "title": "Hold the crossing",
+        "actions": [
+          {
+            "command": "stoneB",
+            "coinsAfter": 124
+          },
+          {
+            "command": "upgrade:boltC",
+            "coinsAfter": 69
+          }
+        ],
+        "coinsBeforeBuild": 189,
+        "coinsAtStart": 69,
+        "heartsAtStart": 12,
+        "towers": [
+          {
+            "id": 1,
+            "kind": "bolt",
+            "level": 2,
+            "x": 1,
+            "z": 4
+          },
+          {
+            "id": 2,
+            "kind": "bolt",
+            "level": 2,
+            "x": 3,
+            "z": 2
+          },
+          {
+            "id": 3,
+            "kind": "stone",
+            "level": 2,
+            "x": 3,
+            "z": 0
+          },
+          {
+            "id": 89,
+            "kind": "bolt",
+            "level": 2,
+            "x": 5,
+            "z": 2
+          },
+          {
+            "id": 184,
+            "kind": "net",
+            "level": 1,
+            "x": 5,
+            "z": 0
+          },
+          {
+            "id": 334,
+            "kind": "bolt",
+            "level": 1,
+            "x": 7,
+            "z": 5
+          },
+          {
+            "id": 502,
+            "kind": "stone",
+            "level": 1,
+            "x": 7,
+            "z": 4
+          }
+        ],
+        "completed": true,
+        "phase": "preparation",
+        "heartsAfter": 12,
+        "heartsLost": 0,
+        "coinsAfter": 267,
+        "kills": 19,
+        "leaks": [],
+        "shots": [
+          {
+            "id": 1,
+            "count": 36
+          },
+          {
+            "id": 2,
+            "count": 34
+          },
+          {
+            "id": 3,
+            "count": 13
+          },
+          {
+            "id": 89,
+            "count": 11
+          },
+          {
+            "id": 184,
+            "count": 0
+          },
+          {
+            "id": 334,
+            "count": 0
+          },
+          {
+            "id": 502,
+            "count": 0
+          }
+        ],
+        "payout": {
+          "interest": 20,
+          "trade": 0,
+          "reward": 38,
+          "total": 58
+        },
+        "clock": 124
+      },
+      {
+        "wave": 6,
+        "title": "The Roadwarden arrives",
+        "actions": [
+          {
+            "command": "upgrade:netA",
+            "coinsAfter": 207
+          }
+        ],
+        "coinsBeforeBuild": 267,
+        "coinsAtStart": 207,
+        "heartsAtStart": 12,
+        "towers": [
+          {
+            "id": 1,
+            "kind": "bolt",
+            "level": 2,
+            "x": 1,
+            "z": 4
+          },
+          {
+            "id": 2,
+            "kind": "bolt",
+            "level": 2,
+            "x": 3,
+            "z": 2
+          },
+          {
+            "id": 3,
+            "kind": "stone",
+            "level": 2,
+            "x": 3,
+            "z": 0
+          },
+          {
+            "id": 89,
+            "kind": "bolt",
+            "level": 2,
+            "x": 5,
+            "z": 2
+          },
+          {
+            "id": 184,
+            "kind": "net",
+            "level": 2,
+            "x": 5,
+            "z": 0
+          },
+          {
+            "id": 334,
+            "kind": "bolt",
+            "level": 1,
+            "x": 7,
+            "z": 5
+          },
+          {
+            "id": 502,
+            "kind": "stone",
+            "level": 1,
+            "x": 7,
+            "z": 4
+          }
+        ],
+        "completed": true,
+        "phase": "preparation",
+        "heartsAfter": 12,
+        "heartsLost": 0,
+        "coinsAfter": 477,
+        "kills": 23,
+        "leaks": [],
+        "shots": [
+          {
+            "id": 1,
+            "count": 51
+          },
+          {
+            "id": 2,
+            "count": 50
+          },
+          {
+            "id": 3,
+            "count": 20
+          },
+          {
+            "id": 89,
+            "count": 26
+          },
+          {
+            "id": 184,
+            "count": 10
+          },
+          {
+            "id": 334,
+            "count": 0
+          },
+          {
+            "id": 502,
+            "count": 0
+          }
+        ],
+        "payout": {
+          "interest": 20,
+          "trade": 0,
+          "reward": 45,
+          "total": 65
+        },
+        "clock": 161.5
+      },
+      {
+        "wave": 7,
+        "title": "Briar and iron",
+        "actions": [
+          {
+            "command": "upgrade:stoneB",
+            "coinsAfter": 402
+          }
+        ],
+        "coinsBeforeBuild": 477,
+        "coinsAtStart": 402,
+        "heartsAtStart": 12,
+        "towers": [
+          {
+            "id": 1,
+            "kind": "bolt",
+            "level": 2,
+            "x": 1,
+            "z": 4
+          },
+          {
+            "id": 2,
+            "kind": "bolt",
+            "level": 2,
+            "x": 3,
+            "z": 2
+          },
+          {
+            "id": 3,
+            "kind": "stone",
+            "level": 2,
+            "x": 3,
+            "z": 0
+          },
+          {
+            "id": 89,
+            "kind": "bolt",
+            "level": 2,
+            "x": 5,
+            "z": 2
+          },
+          {
+            "id": 184,
+            "kind": "net",
+            "level": 2,
+            "x": 5,
+            "z": 0
+          },
+          {
+            "id": 334,
+            "kind": "bolt",
+            "level": 1,
+            "x": 7,
+            "z": 5
+          },
+          {
+            "id": 502,
+            "kind": "stone",
+            "level": 2,
+            "x": 7,
+            "z": 4
+          }
+        ],
+        "completed": true,
+        "phase": "preparation",
+        "heartsAfter": 12,
+        "heartsLost": 0,
+        "coinsAfter": 692,
+        "kills": 34,
+        "leaks": [],
+        "shots": [
+          {
+            "id": 1,
+            "count": 51
+          },
+          {
+            "id": 2,
+            "count": 50
+          },
+          {
+            "id": 3,
+            "count": 20
+          },
+          {
+            "id": 89,
+            "count": 16
+          },
+          {
+            "id": 184,
+            "count": 0
+          },
+          {
+            "id": 334,
+            "count": 0
+          },
+          {
+            "id": 502,
+            "count": 0
+          }
+        ],
+        "payout": {
+          "interest": 20,
+          "trade": 0,
+          "reward": 50,
+          "total": 70
+        },
+        "clock": 199.1
+      },
+      {
+        "wave": 8,
+        "title": "The lantern line",
+        "actions": [],
+        "coinsBeforeBuild": 692,
+        "coinsAtStart": 692,
+        "heartsAtStart": 12,
+        "towers": [
+          {
+            "id": 1,
+            "kind": "bolt",
+            "level": 2,
+            "x": 1,
+            "z": 4
+          },
+          {
+            "id": 2,
+            "kind": "bolt",
+            "level": 2,
+            "x": 3,
+            "z": 2
+          },
+          {
+            "id": 3,
+            "kind": "stone",
+            "level": 2,
+            "x": 3,
+            "z": 0
+          },
+          {
+            "id": 89,
+            "kind": "bolt",
+            "level": 2,
+            "x": 5,
+            "z": 2
+          },
+          {
+            "id": 184,
+            "kind": "net",
+            "level": 2,
+            "x": 5,
+            "z": 0
+          },
+          {
+            "id": 334,
+            "kind": "bolt",
+            "level": 1,
+            "x": 7,
+            "z": 5
+          },
+          {
+            "id": 502,
+            "kind": "stone",
+            "level": 2,
+            "x": 7,
+            "z": 4
+          }
+        ],
+        "completed": true,
+        "phase": "won",
+        "heartsAfter": 12,
+        "heartsLost": 0,
+        "coinsAfter": 1147,
+        "kills": 42,
+        "leaks": [],
+        "shots": [
+          {
+            "id": 1,
+            "count": 78
+          },
+          {
+            "id": 2,
+            "count": 76
+          },
+          {
+            "id": 3,
+            "count": 31
+          },
+          {
+            "id": 89,
+            "count": 47
+          },
+          {
+            "id": 184,
+            "count": 21
+          },
+          {
+            "id": 334,
+            "count": 0
+          },
+          {
+            "id": 502,
+            "count": 2
+          }
+        ],
+        "payout": {
+          "interest": 20,
+          "trade": 0,
+          "reward": 65,
+          "total": 85
+        },
+        "clock": 256.3
+      }
+    ]
+  },
+  {
+    "level": "lantern-pass",
+    "line": "greedy",
+    "seed": 42,
+    "card": "reach",
+    "assist": false,
+    "abilityUses": 0,
+    "phase": "lost",
+    "wavesStarted": 2,
+    "wavesCompleted": 1,
+    "hearts": 0,
+    "crowns": 96,
+    "totalInterest": 9,
+    "totalTrade": 12,
+    "waves": [
+      {
+        "wave": 1,
+        "title": "Footsteps in the rain",
+        "actions": [
+          {
+            "command": "tradeA",
+            "coinsAfter": 120
+          },
+          {
+            "command": "boltA",
+            "coinsAfter": 80
+          }
+        ],
+        "coinsBeforeBuild": 175,
+        "coinsAtStart": 80,
+        "heartsAtStart": 12,
+        "towers": [
+          {
+            "id": 1,
+            "kind": "trade",
+            "level": 1,
+            "x": 0,
+            "z": 1
+          },
+          {
+            "id": 2,
+            "kind": "bolt",
+            "level": 1,
+            "x": 1,
+            "z": 4
+          }
+        ],
+        "completed": true,
+        "phase": "preparation",
+        "heartsAfter": 6,
+        "heartsLost": 6,
+        "coinsAfter": 141,
+        "kills": 3,
+        "leaks": [
+          {
+            "kind": "raider",
+            "atSecond": 36.1
+          },
+          {
+            "kind": "raider",
+            "atSecond": 38.3
+          },
+          {
+            "kind": "raider",
+            "atSecond": 40.5
+          },
+          {
+            "kind": "raider",
+            "atSecond": 42.7
+          },
+          {
+            "kind": "raider",
+            "atSecond": 44.9
+          },
+          {
+            "kind": "raider",
+            "atSecond": 47
+          }
+        ],
+        "shots": [
+          {
+            "id": 1,
+            "count": 0
+          },
+          {
+            "id": 2,
+            "count": 26
+          }
+        ],
+        "payout": {
+          "interest": 9,
+          "trade": 12,
+          "reward": 25,
+          "total": 46
+        },
+        "clock": 47
+      },
+      {
+        "wave": 2,
+        "title": "A quicker shadow",
+        "actions": [
+          {
+            "command": "tradeB",
+            "coinsAfter": 86
+          }
+        ],
+        "coinsBeforeBuild": 141,
+        "coinsAtStart": 86,
+        "heartsAtStart": 6,
+        "towers": [
+          {
+            "id": 1,
+            "kind": "trade",
+            "level": 1,
+            "x": 0,
+            "z": 1
+          },
+          {
+            "id": 2,
+            "kind": "bolt",
+            "level": 1,
+            "x": 1,
+            "z": 4
+          },
+          {
+            "id": 64,
+            "kind": "trade",
+            "level": 1,
+            "x": 10,
+            "z": 1
+          }
+        ],
+        "completed": false,
+        "phase": "lost",
+        "heartsAfter": 0,
+        "heartsLost": 6,
+        "coinsAfter": 96,
+        "kills": 2,
+        "leaks": [
+          {
+            "kind": "raider",
+            "atSecond": 80.1
+          },
+          {
+            "kind": "runner",
+            "atSecond": 80.5
+          },
+          {
+            "kind": "raider",
+            "atSecond": 81.9
+          },
+          {
+            "kind": "runner",
+            "atSecond": 82.1
+          },
+          {
+            "kind": "raider",
+            "atSecond": 83.7
+          },
+          {
+            "kind": "runner",
+            "atSecond": 83.7
+          }
+        ],
+        "shots": [
+          {
+            "id": 1,
+            "count": 0
+          },
+          {
+            "id": 2,
+            "count": 27
+          },
+          {
+            "id": 64,
+            "count": 0
+          }
+        ],
+        "payout": null,
+        "clock": 83.7
+      }
+    ]
+  },
+  {
+    "level": "rainstone-crossing",
+    "line": "broad",
+    "seed": 42,
+    "card": "reach",
+    "assist": false,
+    "abilityUses": 0,
+    "phase": "won",
+    "wavesStarted": 8,
+    "wavesCompleted": 8,
+    "hearts": 12,
+    "crowns": 1102,
+    "totalInterest": 142,
+    "totalTrade": 0,
+    "waves": [
+      {
+        "wave": 1,
+        "title": "First Drizzle",
+        "actions": [
+          {
+            "command": "boltA",
+            "coinsAfter": 145
+          },
+          {
+            "command": "stoneA",
+            "coinsAfter": 80
+          },
+          {
+            "command": "netA",
+            "coinsAfter": 30
+          }
+        ],
+        "coinsBeforeBuild": 185,
+        "coinsAtStart": 30,
+        "heartsAtStart": 12,
+        "towers": [
+          {
+            "id": 1,
+            "kind": "bolt",
+            "level": 1,
+            "x": 0,
+            "z": 4
+          },
+          {
+            "id": 2,
+            "kind": "stone",
+            "level": 1,
+            "x": 2,
+            "z": 6
+          },
+          {
+            "id": 3,
+            "kind": "net",
+            "level": 1,
+            "x": 7,
+            "z": 5
+          }
+        ],
+        "completed": true,
+        "phase": "preparation",
+        "heartsAfter": 12,
+        "heartsLost": 0,
+        "coinsAfter": 116,
+        "kills": 10,
+        "leaks": [],
+        "shots": [
+          {
+            "id": 1,
+            "count": 30
+          },
+          {
+            "id": 2,
+            "count": 13
+          },
+          {
+            "id": 3,
+            "count": 0
+          }
+        ],
+        "payout": {
+          "interest": 8,
+          "trade": 0,
+          "reward": 28,
+          "total": 36
+        },
+        "clock": 27.8
+      },
+      {
+        "wave": 2,
+        "title": "Rising Weeds",
+        "actions": [
+          {
+            "command": "boltB",
+            "coinsAfter": 76
+          }
+        ],
+        "coinsBeforeBuild": 116,
+        "coinsAtStart": 76,
+        "heartsAtStart": 12,
+        "towers": [
+          {
+            "id": 1,
+            "kind": "bolt",
+            "level": 1,
+            "x": 0,
+            "z": 4
+          },
+          {
+            "id": 2,
+            "kind": "stone",
+            "level": 1,
+            "x": 2,
+            "z": 6
+          },
+          {
+            "id": 3,
+            "kind": "net",
+            "level": 1,
+            "x": 7,
+            "z": 5
+          },
+          {
+            "id": 110,
+            "kind": "bolt",
+            "level": 1,
+            "x": 3,
+            "z": 2
+          }
+        ],
+        "completed": true,
+        "phase": "preparation",
+        "heartsAfter": 12,
+        "heartsLost": 0,
+        "coinsAfter": 185,
+        "kills": 13,
+        "leaks": [],
+        "shots": [
+          {
+            "id": 1,
+            "count": 25
+          },
+          {
+            "id": 2,
+            "count": 11
+          },
+          {
+            "id": 3,
+            "count": 0
+          },
+          {
+            "id": 110,
+            "count": 24
+          }
+        ],
+        "payout": {
+          "interest": 14,
+          "trade": 0,
+          "reward": 30,
+          "total": 44
+        },
+        "clock": 51.6
+      },
+      {
+        "wave": 3,
+        "title": "Low Water Drums",
+        "actions": [
+          {
+            "command": "stoneB",
+            "coinsAfter": 120
+          }
+        ],
+        "coinsBeforeBuild": 185,
+        "coinsAtStart": 120,
+        "heartsAtStart": 12,
+        "towers": [
+          {
+            "id": 1,
+            "kind": "bolt",
+            "level": 1,
+            "x": 0,
+            "z": 4
+          },
+          {
+            "id": 2,
+            "kind": "stone",
+            "level": 1,
+            "x": 2,
+            "z": 6
+          },
+          {
+            "id": 3,
+            "kind": "net",
+            "level": 1,
+            "x": 7,
+            "z": 5
+          },
+          {
+            "id": 110,
+            "kind": "bolt",
+            "level": 1,
+            "x": 3,
+            "z": 2
+          },
+          {
+            "id": 247,
+            "kind": "stone",
+            "level": 1,
+            "x": 9,
+            "z": 4
+          }
+        ],
+        "completed": true,
+        "phase": "preparation",
+        "heartsAfter": 12,
+        "heartsLost": 0,
+        "coinsAfter": 274,
+        "kills": 15,
+        "leaks": [],
+        "shots": [
+          {
+            "id": 1,
+            "count": 35
+          },
+          {
+            "id": 2,
+            "count": 16
+          },
+          {
+            "id": 3,
+            "count": 17
+          },
+          {
+            "id": 110,
+            "count": 36
+          },
+          {
+            "id": 247,
+            "count": 4
+          }
+        ],
+        "payout": {
+          "interest": 20,
+          "trade": 0,
+          "reward": 34,
+          "total": 54
+        },
+        "clock": 91.8
+      },
+      {
+        "wave": 4,
+        "title": "Mud Runners",
+        "actions": [
+          {
+            "command": "netB",
+            "coinsAfter": 224
+          }
+        ],
+        "coinsBeforeBuild": 274,
+        "coinsAtStart": 224,
+        "heartsAtStart": 12,
+        "towers": [
+          {
+            "id": 1,
+            "kind": "bolt",
+            "level": 1,
+            "x": 0,
+            "z": 4
+          },
+          {
+            "id": 2,
+            "kind": "stone",
+            "level": 1,
+            "x": 2,
+            "z": 6
+          },
+          {
+            "id": 3,
+            "kind": "net",
+            "level": 1,
+            "x": 7,
+            "z": 5
+          },
+          {
+            "id": 110,
+            "kind": "bolt",
+            "level": 1,
+            "x": 3,
+            "z": 2
+          },
+          {
+            "id": 247,
+            "kind": "stone",
+            "level": 1,
+            "x": 9,
+            "z": 4
+          },
+          {
+            "id": 515,
+            "kind": "net",
+            "level": 1,
+            "x": 5,
+            "z": 2
+          }
+        ],
+        "completed": true,
+        "phase": "preparation",
+        "heartsAfter": 12,
+        "heartsLost": 0,
+        "coinsAfter": 392,
+        "kills": 22,
+        "leaks": [],
+        "shots": [
+          {
+            "id": 1,
+            "count": 37
+          },
+          {
+            "id": 2,
+            "count": 16
+          },
+          {
+            "id": 3,
+            "count": 0
+          },
+          {
+            "id": 110,
+            "count": 33
+          },
+          {
+            "id": 247,
+            "count": 0
+          },
+          {
+            "id": 515,
+            "count": 0
+          }
+        ],
+        "payout": {
+          "interest": 20,
+          "trade": 0,
+          "reward": 38,
+          "total": 58
+        },
+        "clock": 126.1
+      },
+      {
+        "wave": 5,
+        "title": "Falling Rain",
+        "actions": [
+          {
+            "command": "upgrade:boltA",
+            "coinsAfter": 337
+          },
+          {
+            "command": "upgrade:stoneA",
+            "coinsAfter": 262
+          }
+        ],
+        "coinsBeforeBuild": 392,
+        "coinsAtStart": 262,
+        "heartsAtStart": 12,
+        "towers": [
+          {
+            "id": 1,
+            "kind": "bolt",
+            "level": 2,
+            "x": 0,
+            "z": 4
+          },
+          {
+            "id": 2,
+            "kind": "stone",
+            "level": 2,
+            "x": 2,
+            "z": 6
+          },
+          {
+            "id": 3,
+            "kind": "net",
+            "level": 1,
+            "x": 7,
+            "z": 5
+          },
+          {
+            "id": 110,
+            "kind": "bolt",
+            "level": 1,
+            "x": 3,
+            "z": 2
+          },
+          {
+            "id": 247,
+            "kind": "stone",
+            "level": 1,
+            "x": 9,
+            "z": 4
+          },
+          {
+            "id": 515,
+            "kind": "net",
+            "level": 1,
+            "x": 5,
+            "z": 2
+          }
+        ],
+        "completed": true,
+        "phase": "preparation",
+        "heartsAfter": 12,
+        "heartsLost": 0,
+        "coinsAfter": 454,
+        "kills": 18,
+        "leaks": [],
+        "shots": [
+          {
+            "id": 1,
+            "count": 40
+          },
+          {
+            "id": 2,
+            "count": 18
+          },
+          {
+            "id": 3,
+            "count": 0
+          },
+          {
+            "id": 110,
+            "count": 30
+          },
+          {
+            "id": 247,
+            "count": 0
+          },
+          {
+            "id": 515,
+            "count": 0
+          }
+        ],
+        "payout": {
+          "interest": 20,
+          "trade": 0,
+          "reward": 42,
+          "total": 62
+        },
+        "clock": 155.9
+      },
+      {
+        "wave": 6,
+        "title": "River Swell",
+        "actions": [
+          {
+            "command": "upgrade:boltB",
+            "coinsAfter": 399
+          },
+          {
+            "command": "upgrade:stoneB",
+            "coinsAfter": 324
+          }
+        ],
+        "coinsBeforeBuild": 454,
+        "coinsAtStart": 324,
+        "heartsAtStart": 12,
+        "towers": [
+          {
+            "id": 1,
+            "kind": "bolt",
+            "level": 2,
+            "x": 0,
+            "z": 4
+          },
+          {
+            "id": 2,
+            "kind": "stone",
+            "level": 2,
+            "x": 2,
+            "z": 6
+          },
+          {
+            "id": 3,
+            "kind": "net",
+            "level": 1,
+            "x": 7,
+            "z": 5
+          },
+          {
+            "id": 110,
+            "kind": "bolt",
+            "level": 2,
+            "x": 3,
+            "z": 2
+          },
+          {
+            "id": 247,
+            "kind": "stone",
+            "level": 2,
+            "x": 9,
+            "z": 4
+          },
+          {
+            "id": 515,
+            "kind": "net",
+            "level": 1,
+            "x": 5,
+            "z": 2
+          }
+        ],
+        "completed": true,
+        "phase": "preparation",
+        "heartsAfter": 12,
+        "heartsLost": 0,
+        "coinsAfter": 567,
+        "kills": 18,
+        "leaks": [],
+        "shots": [
+          {
+            "id": 1,
+            "count": 50
+          },
+          {
+            "id": 2,
+            "count": 22
+          },
+          {
+            "id": 3,
+            "count": 7
+          },
+          {
+            "id": 110,
+            "count": 49
+          },
+          {
+            "id": 247,
+            "count": 0
+          },
+          {
+            "id": 515,
+            "count": 8
+          }
+        ],
+        "payout": {
+          "interest": 20,
+          "trade": 0,
+          "reward": 48,
+          "total": 68
+        },
+        "clock": 192.9
+      },
+      {
+        "wave": 7,
+        "title": "Stonefall Thunder",
+        "actions": [
+          {
+            "command": "upgrade:netA",
+            "coinsAfter": 507
+          },
+          {
+            "command": "upgrade:netB",
+            "coinsAfter": 447
+          }
+        ],
+        "coinsBeforeBuild": 567,
+        "coinsAtStart": 447,
+        "heartsAtStart": 12,
+        "towers": [
+          {
+            "id": 1,
+            "kind": "bolt",
+            "level": 2,
+            "x": 0,
+            "z": 4
+          },
+          {
+            "id": 2,
+            "kind": "stone",
+            "level": 2,
+            "x": 2,
+            "z": 6
+          },
+          {
+            "id": 3,
+            "kind": "net",
+            "level": 2,
+            "x": 7,
+            "z": 5
+          },
+          {
+            "id": 110,
+            "kind": "bolt",
+            "level": 2,
+            "x": 3,
+            "z": 2
+          },
+          {
+            "id": 247,
+            "kind": "stone",
+            "level": 2,
+            "x": 9,
+            "z": 4
+          },
+          {
+            "id": 515,
+            "kind": "net",
+            "level": 2,
+            "x": 5,
+            "z": 2
+          }
+        ],
+        "completed": true,
+        "phase": "preparation",
+        "heartsAfter": 12,
+        "heartsLost": 0,
+        "coinsAfter": 702,
+        "kills": 26,
+        "leaks": [],
+        "shots": [
+          {
+            "id": 1,
+            "count": 43
+          },
+          {
+            "id": 2,
+            "count": 19
+          },
+          {
+            "id": 3,
+            "count": 0
+          },
+          {
+            "id": 110,
+            "count": 42
+          },
+          {
+            "id": 247,
+            "count": 0
+          },
+          {
+            "id": 515,
+            "count": 0
+          }
+        ],
+        "payout": {
+          "interest": 20,
+          "trade": 0,
+          "reward": 55,
+          "total": 75
+        },
+        "clock": 224.7
+      },
+      {
+        "wave": 8,
+        "title": "The Long Downpour",
+        "actions": [],
+        "coinsBeforeBuild": 702,
+        "coinsAtStart": 702,
+        "heartsAtStart": 12,
+        "towers": [
+          {
+            "id": 1,
+            "kind": "bolt",
+            "level": 2,
+            "x": 0,
+            "z": 4
+          },
+          {
+            "id": 2,
+            "kind": "stone",
+            "level": 2,
+            "x": 2,
+            "z": 6
+          },
+          {
+            "id": 3,
+            "kind": "net",
+            "level": 2,
+            "x": 7,
+            "z": 5
+          },
+          {
+            "id": 110,
+            "kind": "bolt",
+            "level": 2,
+            "x": 3,
+            "z": 2
+          },
+          {
+            "id": 247,
+            "kind": "stone",
+            "level": 2,
+            "x": 9,
+            "z": 4
+          },
+          {
+            "id": 515,
+            "kind": "net",
+            "level": 2,
+            "x": 5,
+            "z": 2
+          }
+        ],
+        "completed": true,
+        "phase": "won",
+        "heartsAfter": 12,
+        "heartsLost": 0,
+        "coinsAfter": 1102,
+        "kills": 30,
+        "leaks": [],
+        "shots": [
+          {
+            "id": 1,
+            "count": 69
+          },
+          {
+            "id": 2,
+            "count": 31
+          },
+          {
+            "id": 3,
+            "count": 20
+          },
+          {
+            "id": 110,
+            "count": 81
+          },
+          {
+            "id": 247,
+            "count": 10
+          },
+          {
+            "id": 515,
+            "count": 43
+          }
+        ],
+        "payout": {
+          "interest": 20,
+          "trade": 0,
+          "reward": 70,
+          "total": 90
+        },
+        "clock": 300.3
+      }
+    ]
+  },
+  {
+    "level": "rainstone-crossing",
+    "line": "focused",
+    "seed": 42,
+    "card": "reach",
+    "assist": false,
+    "abilityUses": 0,
+    "phase": "won",
+    "wavesStarted": 8,
+    "wavesCompleted": 8,
+    "hearts": 12,
+    "crowns": 1063,
+    "totalInterest": 128,
+    "totalTrade": 0,
+    "waves": [
+      {
+        "wave": 1,
+        "title": "First Drizzle",
+        "actions": [
+          {
+            "command": "boltA",
+            "coinsAfter": 145
+          },
+          {
+            "command": "boltB",
+            "coinsAfter": 105
+          },
+          {
+            "command": "stoneA",
+            "coinsAfter": 40
+          }
+        ],
+        "coinsBeforeBuild": 185,
+        "coinsAtStart": 40,
+        "heartsAtStart": 12,
+        "towers": [
+          {
+            "id": 1,
+            "kind": "bolt",
+            "level": 1,
+            "x": 0,
+            "z": 4
+          },
+          {
+            "id": 2,
+            "kind": "bolt",
+            "level": 1,
+            "x": 3,
+            "z": 2
+          },
+          {
+            "id": 3,
+            "kind": "stone",
+            "level": 1,
+            "x": 2,
+            "z": 6
+          }
+        ],
+        "completed": true,
+        "phase": "preparation",
+        "heartsAfter": 12,
+        "heartsLost": 0,
+        "coinsAfter": 127,
+        "kills": 10,
+        "leaks": [],
+        "shots": [
+          {
+            "id": 1,
+            "count": 24
+          },
+          {
+            "id": 2,
+            "count": 20
+          },
+          {
+            "id": 3,
+            "count": 10
+          }
+        ],
+        "payout": {
+          "interest": 9,
+          "trade": 0,
+          "reward": 28,
+          "total": 37
+        },
+        "clock": 22.9
+      },
+      {
+        "wave": 2,
+        "title": "Rising Weeds",
+        "actions": [
+          {
+            "command": "boltC",
+            "coinsAfter": 87
+          },
+          {
+            "command": "upgrade:boltA",
+            "coinsAfter": 32
+          }
+        ],
+        "coinsBeforeBuild": 127,
+        "coinsAtStart": 32,
+        "heartsAtStart": 12,
+        "towers": [
+          {
+            "id": 1,
+            "kind": "bolt",
+            "level": 2,
+            "x": 0,
+            "z": 4
+          },
+          {
+            "id": 2,
+            "kind": "bolt",
+            "level": 1,
+            "x": 3,
+            "z": 2
+          },
+          {
+            "id": 3,
+            "kind": "stone",
+            "level": 1,
+            "x": 2,
+            "z": 6
+          },
+          {
+            "id": 119,
+            "kind": "bolt",
+            "level": 1,
+            "x": 6,
+            "z": 2
+          }
+        ],
+        "completed": true,
+        "phase": "preparation",
+        "heartsAfter": 12,
+        "heartsLost": 0,
+        "coinsAfter": 136,
+        "kills": 13,
+        "leaks": [],
+        "shots": [
+          {
+            "id": 1,
+            "count": 29
+          },
+          {
+            "id": 2,
+            "count": 13
+          },
+          {
+            "id": 3,
+            "count": 1
+          },
+          {
+            "id": 119,
+            "count": 0
+          }
+        ],
+        "payout": {
+          "interest": 9,
+          "trade": 0,
+          "reward": 30,
+          "total": 39
+        },
+        "clock": 45.4
+      },
+      {
+        "wave": 3,
+        "title": "Low Water Drums",
+        "actions": [
+          {
+            "command": "netA",
+            "coinsAfter": 86
+          },
+          {
+            "command": "upgrade:boltB",
+            "coinsAfter": 31
+          }
+        ],
+        "coinsBeforeBuild": 136,
+        "coinsAtStart": 31,
+        "heartsAtStart": 12,
+        "towers": [
+          {
+            "id": 1,
+            "kind": "bolt",
+            "level": 2,
+            "x": 0,
+            "z": 4
+          },
+          {
+            "id": 2,
+            "kind": "bolt",
+            "level": 2,
+            "x": 3,
+            "z": 2
+          },
+          {
+            "id": 3,
+            "kind": "stone",
+            "level": 1,
+            "x": 2,
+            "z": 6
+          },
+          {
+            "id": 119,
+            "kind": "bolt",
+            "level": 1,
+            "x": 6,
+            "z": 2
+          },
+          {
+            "id": 212,
+            "kind": "net",
+            "level": 1,
+            "x": 7,
+            "z": 5
+          }
+        ],
+        "completed": true,
+        "phase": "preparation",
+        "heartsAfter": 12,
+        "heartsLost": 0,
+        "coinsAfter": 178,
+        "kills": 15,
+        "leaks": [],
+        "shots": [
+          {
+            "id": 1,
+            "count": 36
+          },
+          {
+            "id": 2,
+            "count": 35
+          },
+          {
+            "id": 3,
+            "count": 9
+          },
+          {
+            "id": 119,
+            "count": 0
+          },
+          {
+            "id": 212,
+            "count": 0
+          }
+        ],
+        "payout": {
+          "interest": 13,
+          "trade": 0,
+          "reward": 34,
+          "total": 47
+        },
+        "clock": 72.2
+      },
+      {
+        "wave": 4,
+        "title": "Mud Runners",
+        "actions": [
+          {
+            "command": "boltD",
+            "coinsAfter": 138
+          },
+          {
+            "command": "upgrade:stoneA",
+            "coinsAfter": 63
+          }
+        ],
+        "coinsBeforeBuild": 178,
+        "coinsAtStart": 63,
+        "heartsAtStart": 12,
+        "towers": [
+          {
+            "id": 1,
+            "kind": "bolt",
+            "level": 2,
+            "x": 0,
+            "z": 4
+          },
+          {
+            "id": 2,
+            "kind": "bolt",
+            "level": 2,
+            "x": 3,
+            "z": 2
+          },
+          {
+            "id": 3,
+            "kind": "stone",
+            "level": 2,
+            "x": 2,
+            "z": 6
+          },
+          {
+            "id": 119,
+            "kind": "bolt",
+            "level": 1,
+            "x": 6,
+            "z": 2
+          },
+          {
+            "id": 212,
+            "kind": "net",
+            "level": 1,
+            "x": 7,
+            "z": 5
+          },
+          {
+            "id": 392,
+            "kind": "bolt",
+            "level": 1,
+            "x": 9,
+            "z": 5
+          }
+        ],
+        "completed": true,
+        "phase": "preparation",
+        "heartsAfter": 12,
+        "heartsLost": 0,
+        "coinsAfter": 228,
+        "kills": 22,
+        "leaks": [],
+        "shots": [
+          {
+            "id": 1,
+            "count": 38
+          },
+          {
+            "id": 2,
+            "count": 22
+          },
+          {
+            "id": 3,
+            "count": 15
+          },
+          {
+            "id": 119,
+            "count": 0
+          },
+          {
+            "id": 212,
+            "count": 0
+          },
+          {
+            "id": 392,
+            "count": 0
+          }
+        ],
+        "payout": {
+          "interest": 17,
+          "trade": 0,
+          "reward": 38,
+          "total": 55
+        },
+        "clock": 104.2
+      },
+      {
+        "wave": 5,
+        "title": "Falling Rain",
+        "actions": [
+          {
+            "command": "stoneB",
+            "coinsAfter": 163
+          },
+          {
+            "command": "upgrade:boltC",
+            "coinsAfter": 108
+          }
+        ],
+        "coinsBeforeBuild": 228,
+        "coinsAtStart": 108,
+        "heartsAtStart": 12,
+        "towers": [
+          {
+            "id": 1,
+            "kind": "bolt",
+            "level": 2,
+            "x": 0,
+            "z": 4
+          },
+          {
+            "id": 2,
+            "kind": "bolt",
+            "level": 2,
+            "x": 3,
+            "z": 2
+          },
+          {
+            "id": 3,
+            "kind": "stone",
+            "level": 2,
+            "x": 2,
+            "z": 6
+          },
+          {
+            "id": 119,
+            "kind": "bolt",
+            "level": 2,
+            "x": 6,
+            "z": 2
+          },
+          {
+            "id": 212,
+            "kind": "net",
+            "level": 1,
+            "x": 7,
+            "z": 5
+          },
+          {
+            "id": 392,
+            "kind": "bolt",
+            "level": 1,
+            "x": 9,
+            "z": 5
+          },
+          {
+            "id": 558,
+            "kind": "stone",
+            "level": 1,
+            "x": 9,
+            "z": 4
+          }
+        ],
+        "completed": true,
+        "phase": "preparation",
+        "heartsAfter": 12,
+        "heartsLost": 0,
+        "coinsAfter": 300,
+        "kills": 18,
+        "leaks": [],
+        "shots": [
+          {
+            "id": 1,
+            "count": 38
+          },
+          {
+            "id": 2,
+            "count": 35
+          },
+          {
+            "id": 3,
+            "count": 16
+          },
+          {
+            "id": 119,
+            "count": 0
+          },
+          {
+            "id": 212,
+            "count": 0
+          },
+          {
+            "id": 392,
+            "count": 0
+          },
+          {
+            "id": 558,
+            "count": 0
+          }
+        ],
+        "payout": {
+          "interest": 20,
+          "trade": 0,
+          "reward": 42,
+          "total": 62
+        },
+        "clock": 132.4
+      },
+      {
+        "wave": 6,
+        "title": "River Swell",
+        "actions": [
+          {
+            "command": "upgrade:netA",
+            "coinsAfter": 240
+          }
+        ],
+        "coinsBeforeBuild": 300,
+        "coinsAtStart": 240,
+        "heartsAtStart": 12,
+        "towers": [
+          {
+            "id": 1,
+            "kind": "bolt",
+            "level": 2,
+            "x": 0,
+            "z": 4
+          },
+          {
+            "id": 2,
+            "kind": "bolt",
+            "level": 2,
+            "x": 3,
+            "z": 2
+          },
+          {
+            "id": 3,
+            "kind": "stone",
+            "level": 2,
+            "x": 2,
+            "z": 6
+          },
+          {
+            "id": 119,
+            "kind": "bolt",
+            "level": 2,
+            "x": 6,
+            "z": 2
+          },
+          {
+            "id": 212,
+            "kind": "net",
+            "level": 2,
+            "x": 7,
+            "z": 5
+          },
+          {
+            "id": 392,
+            "kind": "bolt",
+            "level": 1,
+            "x": 9,
+            "z": 5
+          },
+          {
+            "id": 558,
+            "kind": "stone",
+            "level": 1,
+            "x": 9,
+            "z": 4
+          }
+        ],
+        "completed": true,
+        "phase": "preparation",
+        "heartsAfter": 12,
+        "heartsLost": 0,
+        "coinsAfter": 483,
+        "kills": 18,
+        "leaks": [],
+        "shots": [
+          {
+            "id": 1,
+            "count": 47
+          },
+          {
+            "id": 2,
+            "count": 46
+          },
+          {
+            "id": 3,
+            "count": 21
+          },
+          {
+            "id": 119,
+            "count": 7
+          },
+          {
+            "id": 212,
+            "count": 7
+          },
+          {
+            "id": 392,
+            "count": 0
+          },
+          {
+            "id": 558,
+            "count": 0
+          }
+        ],
+        "payout": {
+          "interest": 20,
+          "trade": 0,
+          "reward": 48,
+          "total": 68
+        },
+        "clock": 167.1
+      },
+      {
+        "wave": 7,
+        "title": "Stonefall Thunder",
+        "actions": [
+          {
+            "command": "upgrade:stoneB",
+            "coinsAfter": 408
+          }
+        ],
+        "coinsBeforeBuild": 483,
+        "coinsAtStart": 408,
+        "heartsAtStart": 12,
+        "towers": [
+          {
+            "id": 1,
+            "kind": "bolt",
+            "level": 2,
+            "x": 0,
+            "z": 4
+          },
+          {
+            "id": 2,
+            "kind": "bolt",
+            "level": 2,
+            "x": 3,
+            "z": 2
+          },
+          {
+            "id": 3,
+            "kind": "stone",
+            "level": 2,
+            "x": 2,
+            "z": 6
+          },
+          {
+            "id": 119,
+            "kind": "bolt",
+            "level": 2,
+            "x": 6,
+            "z": 2
+          },
+          {
+            "id": 212,
+            "kind": "net",
+            "level": 2,
+            "x": 7,
+            "z": 5
+          },
+          {
+            "id": 392,
+            "kind": "bolt",
+            "level": 1,
+            "x": 9,
+            "z": 5
+          },
+          {
+            "id": 558,
+            "kind": "stone",
+            "level": 2,
+            "x": 9,
+            "z": 4
+          }
+        ],
+        "completed": true,
+        "phase": "preparation",
+        "heartsAfter": 12,
+        "heartsLost": 0,
+        "coinsAfter": 663,
+        "kills": 26,
+        "leaks": [],
+        "shots": [
+          {
+            "id": 1,
+            "count": 43
+          },
+          {
+            "id": 2,
+            "count": 42
+          },
+          {
+            "id": 3,
+            "count": 19
+          },
+          {
+            "id": 119,
+            "count": 0
+          },
+          {
+            "id": 212,
+            "count": 0
+          },
+          {
+            "id": 392,
+            "count": 0
+          },
+          {
+            "id": 558,
+            "count": 0
+          }
+        ],
+        "payout": {
+          "interest": 20,
+          "trade": 0,
+          "reward": 55,
+          "total": 75
+        },
+        "clock": 199
+      },
+      {
+        "wave": 8,
+        "title": "The Long Downpour",
+        "actions": [],
+        "coinsBeforeBuild": 663,
+        "coinsAtStart": 663,
+        "heartsAtStart": 12,
+        "towers": [
+          {
+            "id": 1,
+            "kind": "bolt",
+            "level": 2,
+            "x": 0,
+            "z": 4
+          },
+          {
+            "id": 2,
+            "kind": "bolt",
+            "level": 2,
+            "x": 3,
+            "z": 2
+          },
+          {
+            "id": 3,
+            "kind": "stone",
+            "level": 2,
+            "x": 2,
+            "z": 6
+          },
+          {
+            "id": 119,
+            "kind": "bolt",
+            "level": 2,
+            "x": 6,
+            "z": 2
+          },
+          {
+            "id": 212,
+            "kind": "net",
+            "level": 2,
+            "x": 7,
+            "z": 5
+          },
+          {
+            "id": 392,
+            "kind": "bolt",
+            "level": 1,
+            "x": 9,
+            "z": 5
+          },
+          {
+            "id": 558,
+            "kind": "stone",
+            "level": 2,
+            "x": 9,
+            "z": 4
+          }
+        ],
+        "completed": true,
+        "phase": "won",
+        "heartsAfter": 12,
+        "heartsLost": 0,
+        "coinsAfter": 1063,
+        "kills": 30,
+        "leaks": [],
+        "shots": [
+          {
+            "id": 1,
+            "count": 69
+          },
+          {
+            "id": 2,
+            "count": 68
+          },
+          {
+            "id": 3,
+            "count": 31
+          },
+          {
+            "id": 119,
+            "count": 38
+          },
+          {
+            "id": 212,
+            "count": 17
+          },
+          {
+            "id": 392,
+            "count": 3
+          },
+          {
+            "id": 558,
+            "count": 5
+          }
+        ],
+        "payout": {
+          "interest": 20,
+          "trade": 0,
+          "reward": 70,
+          "total": 90
+        },
+        "clock": 257.1
+      }
+    ]
+  },
+  {
+    "level": "rainstone-crossing",
+    "line": "greedy",
+    "seed": 42,
+    "card": "reach",
+    "assist": false,
+    "abilityUses": 0,
+    "phase": "lost",
+    "wavesStarted": 2,
+    "wavesCompleted": 1,
+    "hearts": 0,
+    "crowns": 105,
+    "totalInterest": 10,
+    "totalTrade": 12,
+    "waves": [
+      {
+        "wave": 1,
+        "title": "First Drizzle",
+        "actions": [
+          {
+            "command": "tradeA",
+            "coinsAfter": 130
+          },
+          {
+            "command": "boltA",
+            "coinsAfter": 90
+          }
+        ],
+        "coinsBeforeBuild": 185,
+        "coinsAtStart": 90,
+        "heartsAtStart": 12,
+        "towers": [
+          {
+            "id": 1,
+            "kind": "trade",
+            "level": 1,
+            "x": 0,
+            "z": 1
+          },
+          {
+            "id": 2,
+            "kind": "bolt",
+            "level": 1,
+            "x": 0,
+            "z": 4
+          }
+        ],
+        "completed": true,
+        "phase": "preparation",
+        "heartsAfter": 4,
+        "heartsLost": 8,
+        "coinsAfter": 150,
+        "kills": 2,
+        "leaks": [
+          {
+            "kind": "raider",
+            "atSecond": 38.9
+          },
+          {
+            "kind": "raider",
+            "atSecond": 41.1
+          },
+          {
+            "kind": "raider",
+            "atSecond": 43.3
+          },
+          {
+            "kind": "raider",
+            "atSecond": 45.5
+          },
+          {
+            "kind": "raider",
+            "atSecond": 47.7
+          },
+          {
+            "kind": "raider",
+            "atSecond": 49.9
+          },
+          {
+            "kind": "raider",
+            "atSecond": 52
+          },
+          {
+            "kind": "raider",
+            "atSecond": 54.2
+          }
+        ],
+        "shots": [
+          {
+            "id": 1,
+            "count": 0
+          },
+          {
+            "id": 2,
+            "count": 30
+          }
+        ],
+        "payout": {
+          "interest": 10,
+          "trade": 12,
+          "reward": 28,
+          "total": 50
+        },
+        "clock": 54.2
+      },
+      {
+        "wave": 2,
+        "title": "Rising Weeds",
+        "actions": [
+          {
+            "command": "tradeB",
+            "coinsAfter": 95
+          }
+        ],
+        "coinsBeforeBuild": 150,
+        "coinsAtStart": 95,
+        "heartsAtStart": 4,
+        "towers": [
+          {
+            "id": 1,
+            "kind": "trade",
+            "level": 1,
+            "x": 0,
+            "z": 1
+          },
+          {
+            "id": 2,
+            "kind": "bolt",
+            "level": 1,
+            "x": 0,
+            "z": 4
+          },
+          {
+            "id": 73,
+            "kind": "trade",
+            "level": 1,
+            "x": 11,
+            "z": 1
+          }
+        ],
+        "completed": false,
+        "phase": "lost",
+        "heartsAfter": 0,
+        "heartsLost": 4,
+        "coinsAfter": 105,
+        "kills": 2,
+        "leaks": [
+          {
+            "kind": "runner",
+            "atSecond": 88.4
+          },
+          {
+            "kind": "runner",
+            "atSecond": 90.2
+          },
+          {
+            "kind": "runner",
+            "atSecond": 92
+          },
+          {
+            "kind": "raider",
+            "atSecond": 92.1
+          }
+        ],
+        "shots": [
+          {
+            "id": 1,
+            "count": 0
+          },
+          {
+            "id": 2,
+            "count": 28
+          },
+          {
+            "id": 73,
+            "count": 0
+          }
+        ],
+        "payout": null,
+        "clock": 92.1
+      }
+    ]
+  }
+]
