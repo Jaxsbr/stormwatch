@@ -1,0 +1,57 @@
+# Proposed overlapping matchup roster
+
+**Status: proposal for owner review. No behavior below is in the playable game.** This is ticket 02's role plan. The two-map wave order belongs to ticket 03; production rules, art tells, and play verification start only after the owner reviews the plan. The three combat defenders are Squirrel Archer (focused shots), Skunk Slinger (splash), and Turtle Trapper (slow). Donkey Trader remains an economy choice, not a combat counter.
+
+## What is observed today
+
+The [current challenge baseline](current-challenge-baseline.md) ran six deterministic strategies on the shipped encounters. Two complete archer/slinger/trapper triads won both maps with all 12 hearts. An archer-heavy line also won both with all hearts and cleared faster. A trader-heavy opening leaked in wave 1 and lost in wave 2. Lantern's second trapper fired zero times across the broad-line run, while Rainstone's second trapper fired 51 times. These are specific placements and plans, not global balance results.
+
+The owner also played Lantern Pass using four Squirrel Archers, upgraded each, and reported that only a boss escaped. That is valuable play feedback, but the placements, card, exact wave, and hearts were not recorded, so it is **not** one of the reproducible baseline runs. It suggests a concrete follow-up check: the first new lesson should ask for an observable decision beyond repeatedly buying archers, without making archers unusable.
+
+Currently, enemies have no active abilities. Rat Raider has ordinary movement and no armor; Fleet Weasel moves faster with less health; Iron Boar moves slower with more health and flat armor; Roadwarden is a very high-health, armored boss whose leak costs six hearts. Every attack currently applies the same armor subtraction, with a minimum of one damage. A net's main contribution against armor is therefore time, not damage. These are code observations from `src/content/catalog.ts` and `src/sim/game.ts`, not the proposed behaviors below.
+
+## The twelve pairings
+
+Each row describes a useful job **if the candidate enemy behavior is approved**, its opportunity cost, and another reasonable answer. Exact durations, damage modifiers, triggers, and wave positions are deliberately open. The later slice must verify these claims in the real game; a proposed matchup is not evidence that it already works.
+
+| Enemy | Tower | Useful job | Cost, placement, and another answer |
+| --- | --- | --- | --- |
+| Rat Raider | Squirrel Archer | Cheap repeated shots finish isolated rats after their brief guard drops. | Shots during guard may do less; one archer can be occupied while a group passes. Overlap two archer ranges on a bend, or use a slinger for a close group. |
+| Rat Raider | Skunk Slinger | Splash punishes rats that arrive together; the impact can still matter around one guarding rat. | The 65-crown slinger fires slowly, so widely spaced early rats waste much of its area. A 40-crown archer handles singles; a trapper buys time for the next splash. |
+| Rat Raider | Turtle Trapper | Slow holds a rat near the firing line until its short guard ends. | The 50-crown trapper does little damage alone; it needs an archer or slinger nearby. If the route already gives enough exposure, spend on direct fire instead. |
+| Fleet Weasel | Squirrel Archer | Repeated focused shots can still finish a weasel after its one telegraphed sidestep. | A single narrow firing window may be lost to the dodge or speed. Cover consecutive trail segments, or use slinger splash at a turn. |
+| Fleet Weasel | Skunk Slinger | Area damage can catch a sidestep and a close pack at a bend. | Slow attacks and higher cost leave gaps against separated runners. Repeated archers or a trapper at the approach remain useful. |
+| Fleet Weasel | Turtle Trapper | A net after the dodge's recovery extends the short time a fast weasel stays in range of other towers. | A net aimed into the dodge may be wasted; slow alone rarely finishes the enemy. An archer with longer coverage or a slinger on a predictable turn is another answer. |
+| Iron Boar | Squirrel Archer | Several upgraded, overlapping archers can crack the proposed plate early and keep focused fire on the exposed boar. | Flat armor already weakens small hits, and pressure on a single boar may leave escorts untouched. A slinger strikes the boar and escorts; a trapper extends exposure. |
+| Iron Boar | Skunk Slinger | A heavy impact contributes to plate breakage while splash also clears smaller escorts. | It costs more and fires slowly; an isolated boar can walk between attacks. Sustained archers or a trapper plus either damage tower can cover that gap. |
+| Iron Boar | Turtle Trapper | Slow keeps a plated boar in the combined firing area long enough for its plate state to change visibly. | Net damage is close to the minimum after armor, so a trapper without damage support is poor value. Use archers or slingers when the path already offers time. |
+| Roadwarden | Squirrel Archer | Focused, upgraded fire can wear down the boss through a long covered route. | Archers may spend their shots on the boss while its rallied escorts escape. Slinger splash addresses the group, or a trapper extends boss exposure while other towers clear escorts. |
+| Roadwarden | Skunk Slinger | Splash benefits from the proposed escort rally drawing smaller enemies close to the boss. | An isolated boss gives up the slinger's group advantage; repeated archers can be better single-target spending. Place splash where the column actually bunches. |
+| Roadwarden | Turtle Trapper | Slowing the leader gives nearby damage towers more time to deal with both the boss and its arriving escorts. | One net does not stop every follower or deal meaningful boss damage. Archer focus or slinger splash remains necessary, and the trapper must cover the correct segment. |
+
+The table does not promise that each tower works alone. It requires at least two useful **defense paths** per enemy. An archer-only defense may still work with good coverage and upgrades; it should require a meaningful choice in timing, placement, or spending, while a mixed defense gains a different advantage. Any candidate that instead makes one tower mandatory should be revised or dropped.
+
+## Four candidate signatures and visual tells
+
+| Enemy | Existing observation | Candidate behavior and visible tell | Decision to check before approval |
+| --- | --- | --- | --- |
+| Rat Raider | Low-health ordinary enemy already appears in the first wave on both maps. | **Brief buckler guard.** The rat visibly lifts its shield before a short protected beat, then recoils and lowers it. Continued fire, splash on nearby rats, or slow that holds it for the opening can all help. | Does the raised shield visibly explain reduced impact at normal size, and does the guard create a timing/coverage choice rather than merely act as extra health? Keep the first sighting low-risk; the current one-archer/trader opening already leaks. |
+| Fleet Weasel | Fast and fragile; current speed alone differentiates it from a rat. | **One signaled sidestep.** A crouch/lean precedes a deterministic dodge of one aimed attack, followed by a brief recovery. Area damage can still catch it; repeated direct fire and a net after recovery remain useful. | Can a player see the avoided attack and recovery without feeling that shots miss at random? Does an archer-heavy plan still work with sufficient overlapping coverage? |
+| Iron Boar | Slow, high health, flat armor, two-heart leak. | **Breakable iron plate.** Its front plate visibly cracks under sustained or heavy hits, then opens an exposed state for the rest of the crossing. Archers, a heavy stone, and slow-assisted combined fire can reach that state by different routes. | Is the plate change clear without a hidden threshold puzzle? Does this add a decision beyond the existing flat armor, and can both direct-fire and mixed lines stop it? Use existing art/effects if possible; any new asset cost needs separate approval. |
+| Roadwarden | Slow boss, high health/armor, six-heart leak; its current tactical question is mainly how much damage is available. | **Escort rally.** A raised-arm command visibly draws its nearby followers into a tighter, briefly faster column. The group favors splash, but archers can focus the boss and trappers can extend exposure. | Is the command visible before the column changes? Does it create a distinct boss lesson without hiding the followers or turning the slinger into the only viable answer? |
+
+These are **four separate hypotheses**, not a package to implement together. In particular, the boar's plate should not become a longer copy of the rat's guard: the rat asks the player to recognize a short timing window; the boar asks where and how to break a persistent plate along the route. If that distinction is not visible in play, revise the boar proposal. None requires a flying enemy, new tower, deeper upgrades, or an economy rewrite.
+
+## Placement implications for the next ticket
+
+Lantern Pass's early rise and long top run let several archers cover the same rats or weasels, as in the focused baseline. Its second trapper at (8,5) never fired in the broad run, so adding a trapper without checking the active path is not a meaningful response. The rat guard should first be seen where a nearby tower has time for a follow-up shot. The later plate/boss questions can use a turn and a second firing window rather than simply increasing enemy health.
+
+Rainstone Crossing has an extra left bend, a longer middle descent, and a different trapper opportunity: the broad run's second trapper at (5,2) did fire. A proposed dodge or plate can make players consider whether to cover the approach, the recovery segment, or both. Ticket 03 should assign teach, practice, and combined waves on the two routes; this document does not set those waves or change their current spawn counts.
+
+## Recommended first complete slice
+
+**Propose the Rat Raider's brief buckler guard first**, subject to owner review. The rat is already the first, most familiar enemy, so a single visible guard-and-opening sequence gives the clearest test of whether animation teaches a rule. It exercises the intended overlap: repeat archer fire after the guard, slinger value when rats group, and trapper time for the opening. The baseline's perfect-hearts archer-heavy and two-triad wins provide comparisons, and the owner's four-archer run gives a specific playthrough to repeat with recorded placements. Start with a forgiving isolated guard sighting planned in ticket 03, then verify the mechanic and tell together in ticket 04. If the guard merely adds effective health or makes a first wave punitive, change or reject it before applying the pattern elsewhere.
+
+## Owner review requested
+
+Please approve, revise, or reject **each candidate behavior** and the recommendation to start with the rat guard. A useful review answer is which visual action you expect to notice, whether at least two tower plans should work against it, and whether it gives you a reason to change your four-archer placement or timing. Approval of this roster would allow ticket 03 to plan the two-map learning arc; it would **not** approve exact damage, timing, art spending, or production implementation on its own.
