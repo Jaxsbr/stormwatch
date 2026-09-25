@@ -71,16 +71,16 @@
         {
           "file": "front-leg-0.webp",
           "rect": {
-            "left": 173,
-            "top": 33,
-            "width": 433,
-            "height": 1076
+            "left": 114,
+            "top": 30,
+            "width": 501,
+            "height": 1091
           },
           "pivot": [
-            216.5,
+            250.5,
             24
           ],
-          "x": 375,
+          "x": 350,
           "y": 520,
           "rotation": 0,
           "label": "Right leg (screen left)"
@@ -88,16 +88,16 @@
         {
           "file": "front-leg-1.webp",
           "rect": {
-            "left": 768,
-            "top": 33,
-            "width": 433,
-            "height": 1076
+            "left": 761,
+            "top": 30,
+            "width": 500,
+            "height": 1091
           },
           "pivot": [
-            216.5,
+            250,
             24
           ],
-          "x": 475,
+          "x": 500,
           "y": 520,
           "rotation": 0,
           "label": "Left leg (screen right)"
@@ -110,7 +110,7 @@
         },
         {
           "source": "assets/source/reboot/rat-whole-torso-v3/front-legs.png",
-          "sha256": "5a4a5ad5a8269fa3aa7da15aefeb0d744067967c6e1c2cf7a595dd1f1487dab2"
+          "sha256": "6053677dec42edc9d201abb85ccfc65a9daeaa8490c157120b8a0022ce8f57ef"
         }
       ],
       "up": {
@@ -118,7 +118,7 @@
         "x": 42,
         "y": 0
       },
-      "legScale": 0.2695167286245353
+      "legScale": 0.26581118240146656
     },
     "rear": {
       "originalRig": "rat-rear-rig-v1",
@@ -165,7 +165,7 @@
       "sources": [
         {
           "source": "assets/source/reboot/rat-whole-torso-v3/rear-up.png",
-          "sha256": "d982bc57c048fdc71b1b88f407072165157776db686983dbbce2125d4c396937"
+          "sha256": "b9cfe9f47771d17b6ef57493a7ec4f640062ac95955fbdcb2eab67b2b9806a9e"
         },
         {
           "source": "assets/source/reboot/rat-whole-torso-v3/rear-legs.png",
@@ -173,8 +173,8 @@
         }
       ],
       "up": {
-        "scale": 0.5166374781085814,
-        "x": 0,
+        "scale": 0.53,
+        "x": -28,
         "y": 0
       },
       "legScale": 0.3002070393374741

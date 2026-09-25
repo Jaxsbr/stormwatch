@@ -21,3 +21,5 @@ The game retains the original rat appearance and behavior. Guard damage, sound a
 Original down files are byte-identical copies. Native generated alpha is retained in lossless WebP crops. Prompts, native source hashes, crop rectangles and fixed assembly transforms are retained with the review assets. Inspect all three assembled views and the frame switch before integration. Automated checks do not constitute art approval.
 
 Front guard anatomy: the raised shield presents its flat outer face toward the viewer. The carrying hand and forearm are hidden behind it; never paint a hand on the outward shield face.
+
+Review refinement: front legs need fuller proportions and hip spacing consistent with the belt width. Rear guard must show the broad inner shield face and raised carrying arm, matching the forward-facing shield plane. Preserve the reviewed rear leg proportions.

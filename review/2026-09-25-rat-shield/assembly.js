@@ -2,7 +2,7 @@ const $=id=>document.getElementById(id);
 const base='./assets/whole-torso-v3/';
 const manifest=await fetch(base+'manifest.json').then(r=>{if(!r.ok)throw Error('Manifest missing');return r.json()});
 const defaults=structuredClone(manifest.views), views=manifest.views, images={};
-const storageKey='stormwatch-rat-whole-torso-v3-forward-guard-final';
+const storageKey='stormwatch-rat-whole-torso-v3-fuller-front-rear-inner';
 try { const saved=JSON.parse(localStorage.getItem(storageKey)||'null'); for(const [name,v] of Object.entries(views)){const old=saved?.[name];if(!old)continue;for(const k of ['scale','x','y'])if(Number.isFinite(old.up?.[k])&&(k!=='scale'||old.up[k]>0))v.up[k]=old.up[k];if(Number.isFinite(old.legScale)&&old.legScale>0)v.legScale=old.legScale;v.legs.forEach((l,i)=>{for(const k of ['x','y','rotation'])if(Number.isFinite(old.legs?.[i]?.[k]))l[k]=old.legs[i][k];});}}catch{}
 let direction='side', switching=false, started=0;
 async function load(file){const im=new Image();im.src=base+file;await im.decode();return im;}
