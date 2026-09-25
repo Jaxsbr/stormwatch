@@ -156,6 +156,11 @@ function pick(p: Point) {
   }
   updateHud();
 }
+function clearBattleSelection() {
+  build = null;
+  selected = null;
+  field?.highlight(null);
+}
 function begin(assist = false) {
   sound.pause(false);
   sound.unlock();
@@ -426,8 +431,7 @@ app.addEventListener("click", (e) => {
   }
   if (action === "start") {
     game.startWave();
-    build = null;
-    field?.highlight(null);
+    clearBattleSelection();
     sound.unlock();
   }
   if (action === "speed") {
@@ -503,8 +507,10 @@ document.addEventListener("keydown", (e) => {
     !document.getElementById("modal-root")?.childElementCount
   ) {
     e.preventDefault();
-    if (game?.state.phase === "preparation") game.startWave();
-    else openBattleMenu();
+    if (game?.state.phase === "preparation") {
+      game.startWave();
+      clearBattleSelection();
+    } else openBattleMenu();
     sound.pause(game?.state.phase === "paused");
     updateHud();
   }
@@ -557,7 +563,9 @@ function frame(now: number) {
   lastTime = now;
   syncOrientation();
   if (game && field) {
+    const preparing = game.state.phase === "preparation";
     game.advance(dt * speed);
+    if (preparing && game.state.phase === "wave") clearBattleSelection();
     for (const e of game.drainEvents()) {
       sound.play(e.type);
       if (e.type === "payout") {
