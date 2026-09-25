@@ -19,6 +19,11 @@ import type {
   TowerKind,
 } from "./types";
 
+// A shielded rat keeps walking for roughly two gait cycles before lowering it.
+const RAT_SHIELD_PERIOD = 5;
+const RAT_SHIELD_RAISE_AT = 1.1;
+const RAT_SHIELD_LOWER_AT = 3.1;
+
 export class Game {
   readonly state: GameState;
   readonly events: GameEvent[] = [];
@@ -239,6 +244,10 @@ export class Game {
         slowUntil: 0,
         alive: true,
         hitAt: -1,
+        spawnedAt: s.clock,
+        shieldRaised: false,
+        shieldChangedAt: -1,
+        shieldHitAt: -1,
       });
     }
     const len = pathLength(this.level.path);
@@ -257,6 +266,16 @@ export class Game {
       s.phase = "lost";
       this.emit("loss");
       return;
+    }
+    for (const e of s.enemies) {
+      if (e.kind !== "raider") continue;
+      const phase = (s.clock - e.spawnedAt) % RAT_SHIELD_PERIOD;
+      const raised =
+        phase >= RAT_SHIELD_RAISE_AT && phase < RAT_SHIELD_LOWER_AT;
+      if (raised !== e.shieldRaised) {
+        e.shieldRaised = raised;
+        e.shieldChangedAt = s.clock;
+      }
     }
     for (const t of s.towers) {
       if (t.kind === "trade") continue;
@@ -337,17 +356,23 @@ export class Game {
   private hurt(e: Enemy, damage: number) {
     if (!e.alive) return;
     const s = this.state;
-    e.hp -= Math.max(1, damage - ENEMIES[e.kind].armor);
-    e.hitAt = s.clock;
-    s.effects.push({
-      x: e.x,
-      z: e.z,
-      id: this.serial++,
-      kind: "hit",
-      age: 0,
-      ttl: 0.2,
-    });
-    this.emit("hit");
+    const guarded = e.kind === "raider" && e.shieldRaised;
+    e.hp -= Math.max(1, damage - ENEMIES[e.kind].armor) * (guarded ? 0.5 : 1);
+    if (guarded) {
+      e.shieldHitAt = s.clock;
+      this.emit("shield-hit");
+    } else {
+      e.hitAt = s.clock;
+      s.effects.push({
+        x: e.x,
+        z: e.z,
+        id: this.serial++,
+        kind: "hit",
+        age: 0,
+        ttl: 0.2,
+      });
+      this.emit("hit");
+    }
     if (e.hp <= 0) {
       e.alive = false;
       s.kills++;

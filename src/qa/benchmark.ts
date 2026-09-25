@@ -110,6 +110,10 @@ function replenish() {
       slowUntil: game.state.clock + (nextId % 3 === 0 ? 3 : 0),
       alive: true,
       hitAt: -1,
+      spawnedAt: game.state.clock,
+      shieldRaised: false,
+      shieldChangedAt: -1,
+      shieldHitAt: -1,
     });
   }
   while (game.state.effects.length + game.state.shots.length < 150) {

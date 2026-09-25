@@ -1,0 +1,245 @@
+{
+  "version": 1,
+  "id": "rat-rear-rig-v2",
+  "kind": "cutout-character",
+  "source": "assets/source/reboot/rat-rear-rig-v2-parts.png",
+  "width": 2163,
+  "height": 727,
+  "view": "rear",
+  "units": "source pixels; all points local to extracted part",
+  "parts": [
+    {
+      "id": "body",
+      "rect": [
+        226,
+        9,
+        492,
+        710
+      ],
+      "pivot": [
+        246,
+        493
+      ],
+      "scale": 1,
+      "z": 2,
+      "attachments": {
+        "nearHip": [
+          300,
+          497
+        ],
+        "farHip": [
+          190,
+          497
+        ],
+        "freeShoulder": [
+          407,
+          276
+        ],
+        "shieldShoulder": [
+          75,
+          276
+        ],
+        "shieldRest": [
+          98,
+          425
+        ]
+      },
+      "texture": "art/v2/rat-rear-rig-v2/body.webp",
+      "sha256": "61530a1bea04adfcadece334e9862933aac01c1458344d9d8b51493d3fff9f82",
+      "bytes": 76232
+    },
+    {
+      "id": "freeArm",
+      "rect": [
+        788,
+        11,
+        268,
+        302
+      ],
+      "pivot": [
+        82,
+        40
+      ],
+      "scale": 0.8,
+      "z": 3,
+      "attachTo": "body.freeShoulder",
+      "texture": "art/v2/rat-rear-rig-v2/freeArm.webp",
+      "sha256": "2e12f092dace45b8a462477e485bff1e5c991d196fa218fd330ee0cb6f54c7d4",
+      "bytes": 18664
+    },
+    {
+      "id": "shieldArm",
+      "rect": [
+        808,
+        294,
+        290,
+        277
+      ],
+      "pivot": [
+        69,
+        45
+      ],
+      "scale": 1,
+      "z": 3.1,
+      "attachTo": "body.shieldShoulder",
+      "texture": "art/v2/rat-rear-rig-v2/shieldArm.webp",
+      "sha256": "7f60b37cc93b3edb84905a0ec701844b23d5f58c73707ba2c5b5bbb316d03c3a",
+      "bytes": 18868
+    },
+    {
+      "id": "shield",
+      "rect": [
+        1146,
+        219,
+        251,
+        391
+      ],
+      "pivot": [
+        125.5,
+        195.5
+      ],
+      "scale": 0.6,
+      "z": 4,
+      "attachTo": "body.shieldRest",
+      "texture": "art/v2/rat-rear-rig-v2/shield.webp",
+      "sha256": "84e6f7be12933d04e81f74a4efe391fab12b49ba5e067928c677b0f616fe10e6",
+      "bytes": 33002
+    },
+    {
+      "id": "nearLeg",
+      "rect": [
+        1480,
+        173,
+        209,
+        519
+      ],
+      "pivot": [
+        125,
+        55
+      ],
+      "scale": 0.55,
+      "z": 1,
+      "joints": {
+        "hip": [
+          125,
+          55
+        ],
+        "knee": [
+          135,
+          235
+        ],
+        "ankle": [
+          125,
+          390
+        ],
+        "sole": [
+          130,
+          515
+        ]
+      },
+      "attachTo": "body.nearHip",
+      "texture": "art/v2/rat-rear-rig-v2/nearLeg.webp",
+      "sha256": "64d3a8bd85f5683d8b6b82b696426a38eb32690dba9c7e6375a97e4e7ed2751e",
+      "bytes": 25868
+    },
+    {
+      "id": "farLeg",
+      "rect": [
+        1852,
+        173,
+        203,
+        519
+      ],
+      "pivot": [
+        110,
+        55
+      ],
+      "scale": 0.55,
+      "z": 0,
+      "joints": {
+        "hip": [
+          110,
+          55
+        ],
+        "knee": [
+          110,
+          235
+        ],
+        "ankle": [
+          110,
+          390
+        ],
+        "sole": [
+          110,
+          515
+        ]
+      },
+      "attachTo": "body.farHip",
+      "texture": "art/v2/rat-rear-rig-v2/farLeg.webp",
+      "sha256": "d546dea038cf9fb73dbc0935a4d5ca8ac2519f1bbfac9b0f74a71a88162c3529",
+      "bytes": 24922
+    }
+  ],
+  "animation": {
+    "hipHeight": 145,
+    "suggestedCycleSeconds": 0.8,
+    "nearPhase": 0,
+    "farPhase": 0.5,
+    "footTravelAxis": "screenY",
+    "nearLegAnatomy": "character right",
+    "farLegAnatomy": "character left"
+  },
+  "prompt": "art/v2/rat-rear-rig-v2/prompt.txt",
+  "sourceSha256": "d197b2070da64527f248c4238b326bcaba1039209cf014c2d5bcb7b8356cef12",
+  "review": {
+    "status": "candidate",
+    "notes": "Imported native separated parts. Assembly and motion gates pending."
+  },
+  "validation": {
+    "width": 2164,
+    "height": 727,
+    "parts": [
+      {
+        "id": "body",
+        "visiblePixels": 180140,
+        "transparentFraction": 0.4626560174052445
+      },
+      {
+        "id": "freeArm",
+        "visiblePixels": 32760,
+        "transparentFraction": 0.5683008797074232
+      },
+      {
+        "id": "shieldArm",
+        "visiblePixels": 33919,
+        "transparentFraction": 0.5524337109423627
+      },
+      {
+        "id": "shield",
+        "visiblePixels": 69153,
+        "transparentFraction": 0.2748698301423462
+      },
+      {
+        "id": "nearLeg",
+        "visiblePixels": 73388,
+        "transparentFraction": 0.3008361681924201
+      },
+      {
+        "id": "farLeg",
+        "visiblePixels": 70955,
+        "transparentFraction": 0.299135320861452
+      }
+    ],
+    "warnings": [
+      "Manual projection, silhouette, attachment, occlusion and motion review still required. Numeric checks do not approve artwork."
+    ]
+  },
+  "encoding": {
+    "format": "webp",
+    "quality": 92,
+    "alphaQuality": 100,
+    "effort": 6,
+    "source": "native source crop",
+    "alphaVerifiedExact": true
+  }
+}

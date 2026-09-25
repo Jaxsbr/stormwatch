@@ -25,6 +25,7 @@ runtime assets; source images remain in ignored `assets/source/`.
 | Content | Generated pieces | Runtime motion |
 |---|---|---|
 | Walking character | Body plus separate near/far legs, with overlap at hips | Two-bone leg deformation, alternating stance and swing; fixed scale |
+| Rat raider with shield | Body, two arms, shield and two legs in each view | Shoulder-pivot arm swing, shield guard and recoil with simple part transforms |
 | Squirrel archer | Planted body, holding/action arms, bow | Draw string, release arrow, recover; target-facing direction |
 | Skunk rock thrower | Planted body, holding/action arms, rock | Wind up, release rock, recover; target-facing direction |
 | Turtle net thrower | Planted body, holding/action arms, net | Wind up, release net, recover; target-facing direction |
@@ -70,6 +71,15 @@ cut an occluded limb out of a flattened whole-body image. A rig descriptor decla
 source crop rectangles, pivots, fixed scale, layer order, attachment landmarks and
 mechanical/leg joints. Landmarks use local source pixels. Runtime positions use Y
 up; image coordinates use Y down.
+
+For held equipment that moves during play, regenerate the complete body behind it
+and supply each movable arm and object as its own transparent part. Match the
+original assembled rest pose before adding motion. Swing arms within a restrained
+range around that pose; move a shield at its own pivot for guard and recoil. Do
+not warp a region of a flattened torso texture to imitate a separate limb.
+The armless body must not retain a painted sleeve cup or shoulder pad underneath
+the detached arm. The arm sprite owns that red shoulder and seats directly into
+the torso; inspect the join throughout its swing, not only at rest.
 
 ```sh
 node tools/cutout-pipeline.mjs inspect descriptor.json source.png
