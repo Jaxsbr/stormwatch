@@ -2,9 +2,9 @@
 
 Status: ready-for-agent
 
-Depends on: Day 1 campaign prerequisites described by the spec; ticket 03 is a historical dependency reference, not an instruction to restart Day 1.
+Depends on: 03 (complete).
 
-Execution entry: Day 2. Verify whether the assumed Day 1 work is present in the integration checkout. Current planning-time inspection did not find all of it. Integrate completed prerequisite work if available; otherwise report specific gaps and continue independent final-route/feedback work without claiming the full campaign is ready.
+Execution entry: ticket 04. Tickets 01–03 are complete, including two player slots, sequential map gates, earned Squirrel upgrades, the four-wave Rat/Weasel lesson and persistent Turtle discovery. Verify these existing prerequisites while integrating the final encounter; preserve the completed lessons and progress. The owner completed Rainstone playtesting after gameplay revision 1c72f84.
 
 Author The Last Lantern route and its first five waves from `../wave-plan.md`. Give Turtle plus Squirrel a useful shared firing position and another viable downstream defense area. Only Squirrel upgrades are available; Turtle stays in its base form. Ensure the starting budget permits a reasonable mixed opening.
 

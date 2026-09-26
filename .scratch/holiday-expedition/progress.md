@@ -4,7 +4,7 @@
 
 The spec remains `ready-for-agent` for the unfinished campaign. Tickets 01–03 are complete at the owner-approved scope; tickets 04–06 remain. The initial planning handoff did not implement gameplay; historical ticket 02 review and current closeout are recorded below.
 
-The planning-time gameplay baseline is local main at `4e25438`. Inspection still found only two registered encounters, the old eight-wave Rainstone roster, and only the Squirrel-upgrade entitlement. Weasel sprint, player slots and the full Day 1 progression work were not found. Day 1 is an assumed prerequisite, not verified completion. Integration may need work produced elsewhere; report exact missing dependencies rather than claiming an all-unlocked debug run proves readiness.
+Current gameplay baseline is `1c72f84`; owner playtest completion is recorded in `153e1b9`. Two player slots, Squirrel upgrade discovery, four-wave mixed Rainstone, deterministic Weasel evasion and Turtle discovery are implemented. The Last Lantern, attached-net feedback, boss ending and replay advantages remain tickets 04–05. Earlier observations below are historical snapshots.
 
 ## Owner context
 
@@ -21,12 +21,12 @@ The planning-time gameplay baseline is local main at `4e25438`. Inspection still
 - `issues/04-turtle-and-final-route.md`: Day 2 entry ticket; prerequisite audit, net feedback, route and teaching waves.
 - `issues/05-boss-and-chapter-ending.md`: Day 2 boss, required defeat, ending and replay rewards.
 - `issues/06-family-release.md`: Day 3 corrective feedback, broader integration and family-device readiness.
-- Tickets 01 and 02: complete at the owner-approved scope. Ticket 03 is follow-on Rainstone/Turtle work; tickets 04–06 remain ahead.
+- Tickets 01–03: complete at the owner-approved scope. Tickets 04–06 remain ahead.
 - `expanded-wave-plan.md`: optional future design, excluded from this release.
 
 ## Next execution step
 
-Begin ticket 03, Weasel and Rainstone, in the actual integration checkout. Verify the declared dependencies, integrate completed work if available, and record any unavailable dependency. Continue independent campaign work where useful. Maintain a candidate/version and append the actual evidence, next action, and owner feedback here after each playable slice.
+Begin ticket 04, Turtle feedback and The Last Lantern route/teaching waves. Preserve the completed Lantern/Rainstone lessons and earned progress. Integrate ticket 05 before making the final encounter a normal campaign destination. Maintain a candidate/version and append evidence, next action and owner feedback after each playable slice.
 
 ## Known release dependencies
 
@@ -36,7 +36,7 @@ Begin ticket 03, Weasel and Rainstone, in the actual integration checkout. Verif
 
 ## Resume prompt
 
-Implement the remaining campaign in `.scratch/holiday-expedition/spec.md`, starting at ticket 03 and continuing through 04–06. Preserve existing progress and leave CuteDefense unchanged. Use existing Game and persistence test boundaries, keep playable candidates, and maintain this progress record. Tune routine details from evidence and incorporate simple owner feedback. Report missing dependencies and required physical-device observations precisely. Do not create a new public deployment destination or buy assets without authorization.
+Implement the remaining campaign in `.scratch/holiday-expedition/spec.md`, starting at ticket 04 and continuing through 05–06. Preserve existing progress and leave CuteDefense unchanged. Use existing Game and persistence test boundaries, keep playable candidates, and maintain this progress record. Tune routine details from evidence and incorporate simple owner feedback. Report missing dependencies and required physical-device observations precisely. Do not create a new public deployment destination or buy assets without authorization.
 
 ## Explicit historical-ticket review — 02 (25 September 2026)
 

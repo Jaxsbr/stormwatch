@@ -1,12 +1,12 @@
 # 017: Rainstone evasion and mixed waves
 
-**Status:** Accepted by owner, 26 September 2026; implemented candidate awaiting playtest.
+**Status:** Accepted by owner, 26 September 2026; implemented and owner playtest completed.
 
 ## Context
 
 The original holiday ticket 03 proposed five waves and sprint without missed shots. The owner approved a replacement: three longer waves with internal cycles, mixed Rats/Weasels, and visible periodic evasion. This supersedes that ticket's five-wave and no-evasion clauses. Lantern's existing lesson remains the arrival prerequisite.
 
-## Decision
+## Initial decision (historical; revised below)
 
 Rainstone uses only Squirrels with their earned upgrade. Start with 120 gold; defeated Rats and Weasels award two gold. Keep the existing route.
 
@@ -26,7 +26,7 @@ Longer coverage and spending timing matter: a short firing window may coincide w
 
 ## Verification
 
-The real Game seam covers hits before/during/after evasion, nets, pause and retry state. Save tests cover Turtle discovery, replay, reload and legacy migration. Earned-tool strategy scenarios clear all three waves with wider coverage or fewer upgraded Squirrels; poor coverage loses. Browser review uses the actual renderer at normal speed, with explicit fixture state rather than a claim of campaign completion. See [candidate evidence](../../review/2026-09-26-rainstone/README.md). Physical devices, child comprehension and global balance remain owner-playtest work.
+The real Game seam covers hits before/during/after evasion, nets, pause and retry state. Save tests cover Turtle discovery, replay, reload and legacy migration. Initial earned-tool strategy scenarios cleared all three waves with wider coverage or fewer upgraded Squirrels; poor coverage loses. Browser review uses the actual renderer at normal speed, with explicit fixture state rather than a claim of campaign completion. See [candidate evidence](../../review/2026-09-26-rainstone/README.md). Physical devices, child comprehension and global balance remain owner-playtest work.
 
 ## Owner playtest revision — 26 September 2026
 
@@ -41,3 +41,9 @@ Real-spawn tests verify all nine cycles, rests, order, fast movement and shorten
 Owner requested one additional full set and revised mini cycles: 1 Rat/6 Weasels, 2 Rats/5 Weasels, 4 Rats/4 Weasels. Repeat the entire pattern four times: twelve mini cycles, twenty-eight Rats and sixty Weasels (88 enemies). Retain 0.2s between spawns and five seconds from a mini cycle's last spawn to the next one's first spawn. Shield timing, extra-fast movement and two-second evasion every five seconds are unchanged. The prior nine-cycle recipe and its balance figures are historical.
 
 Real Game spawn coverage verifies all twelve variable-size mini cycles and pauses. Both existing Squirrel spending strategies still clear all four waves; owner playtest remains the balance check.
+
+## Current accepted state and closeout
+
+Ticket 03 is complete after owner playtesting of gameplay revision 1c72f84. Rainstone has four waves. The opening has a six-second Rat-to-Weasel gap and four-second shields/six seconds exposed. The final wave repeats 1 Rat/6 Weasels, 2 Rats/5 Weasels, 4 Rats/4 Weasels four times, totaling twelve mini cycles and 88 enemies, with 0.2s spawn intervals and five-second rests. The intermediate revisions above remain historical context.
+
+All 176 tests, type check, production build and both review axes passed. Turtle discovery is implemented; attached-net feedback and its first campaign use belong to tickets 04–05. Physical family-device release evidence remains ticket 06.

@@ -1,22 +1,22 @@
-# Rainstone ticket 03 candidate
+# Rainstone ticket 03 completion evidence
 
-Implements the owner-approved three-wave amendment; see [decision 017](../../docs/decisions/017-rainstone-evasion-and-mixed-waves.md).
+Ticket 03 is complete after owner playtesting of the final four-wave revision; see [decision 017](../../docs/decisions/017-rainstone-evasion-and-mixed-waves.md).
 
 ## Candidate and checks
 
-Gameplay build: `4ee0534` on `main`. Run `npm run dev` and open the local URL printed by Vite for the ordinary game; append `/review/2026-09-26-rainstone/index.html` for the focused fixture. This preview requires the hosting computer and server to remain running. No public release is established by this ticket.
+Final gameplay build: `1c72f84`; closeout: `153e1b9` on `main`. Run `npm run dev` and open the local URL printed by Vite for the ordinary game; append `/review/2026-09-26-rainstone/index.html` for the focused fixture. This preview requires the hosting computer and server to remain running. No public release is established by this ticket.
 
-Type check and production build passed. The full suite passed 173 tests in 33 files; an additional focused spawn-cadence test subsequently passed, along with type checking. Standards review found no actionable findings. Spec review found gameplay aligned and requested the capture/checkpoint handoff supplied here.
+Type check and production build passed. The final full suite passed 176 tests in 33 files. Standards review found no actionable findings. Spec review found gameplay aligned and requested the capture/checkpoint handoff supplied here.
 
 [Normal-speed evasion capture, 20 seconds](weasel-evasion-20s.webm) — actual wave-two renderer at 1024×620 viewport (1024×540 canvas), with three base Squirrels. Video contains no audio and does not establish physical device performance. Capture uses the fixture's declared wave-two starting state.
 
 ## What to try
 
-Win Lantern, then enter Rainstone with Squirrels and the earned upgrade. Wave one mixes shielded Rats and non-evasive fast Weasels. Wave two introduces the yellow chevron and floating Evade label. Wave three repeats compact mixed bursts with longer evasion windows. Winning Rainstone discovers Turtle; its first usable encounter arrives in ticket 04.
+Win Lantern, then enter Rainstone with Squirrels and the earned upgrade. Wave one mixes shielded Rats and non-evasive fast Weasels. Wave two introduces the yellow chevron and floating Evade label. Wave three repeats compact mixed bursts with longer evasion windows. Wave four runs twelve extra-fast mini cycles using the final 1/6, 2/5, 4/4 Rat/Weasel pattern. Winning Rainstone discovers Turtle; its first usable encounter arrives in ticket 04.
 
 The local review fixture at `review/2026-09-26-rainstone/index.html` starts wave two with three base Squirrels, normal speed, and recording/pause controls. It uses the real Game and Battlefield, but deliberately skips campaign navigation and cannot certify first-arrival progression. The ordinary game remains the playtest candidate.
 
-## Strategy evidence
+## Historical three-wave strategy evidence
 
 No advantages, assist or Turtle; earned Squirrel upgrade enabled. Seed 42, 30Hz. Purchases use affordable real commands throughout each wave.
 
@@ -51,3 +51,7 @@ Revision verification: all 176 tests in 33 files, type checking and production b
 Owner requested one additional full set and revised mini cycles: 1 Rat/6 Weasels, 2 Rats/5 Weasels, 4 Rats/4 Weasels. Repeat the entire pattern four times: twelve mini cycles, twenty-eight Rats and sixty Weasels (88 enemies). Retain 0.2s between spawns and five seconds from a mini cycle's last spawn to the next one's first spawn. Shield timing, extra-fast movement and two-second evasion every five seconds are unchanged. The prior nine-cycle recipe and its balance figures are historical.
 
 Real Game spawn coverage verifies all twelve variable-size mini cycles and pauses. Both existing Squirrel spending strategies still clear all four waves; owner playtest remains the balance check.
+
+## Closeout
+
+The owner reported the final playtest completed. Ticket 03 is closed; ticket 04 owns Turtle net feedback and The Last Lantern route/teaching waves. The closeout does not infer specific physical-device, audio or child-observation results.

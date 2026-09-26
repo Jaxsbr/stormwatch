@@ -1,10 +1,10 @@
 # Holiday expedition — Day 2 boss chapter and Day 3 release
 
-Status: ready-for-agent
+Status: ready-for-agent — tickets 01–03 complete; continue at 04
 
 ## Owner amendment — 26 September 2026
 
-Ticket 03 initially used three longer mixed Rainstone waves and deterministic projectile evasion, replacing its former five-wave sprint-only/no-evasion contract. See decision 017 and ticket 03 for the approved sequence. Weasel warning/evasion and any speed change remain spawn-relative simulation state; missed nets do not apply slow, existing slow remains active. Owner playtest then eased wave one and added a fourth wave with nine mini cycles; decision 017 records the exact sequence and timing. Turtle remains the Rainstone victory reward and is first used in the later final encounter.
+Ticket 03 is complete after owner playtesting. Rainstone has four mixed waves, deterministic projectile evasion, a gentler opening and twelve final-wave mini cycles. The finale repeats 1 Rat/6 Weasels → 2 Rats/5 Weasels → 4 Rats/4 Weasels four times. See decision 017 for timing and movement. Weasel warning/evasion remains spawn-relative; missed nets do not apply slow and existing slow remains active. Turtle is earned on Rainstone victory and first used in the later final encounter.
 
 ## Problem Statement
 
@@ -14,7 +14,7 @@ The owner wants to start from Day 2 of the discussed plan. The remaining work mu
 
 ## Solution
 
-Deliver The Last Lantern as the third and final encounter of the first chapter. Its opening waves teach Turtle slow alongside earned Squirrel upgrades. Later waves combine familiar Rat guard and Weasel sprint behavior. The sixth wave introduces one Roadwarden with escorts, a readable rally, and an explicit requirement to defeat the boss. A chapter-ending celebration unlocks Reach and Longer Nets advantages for replay.
+Deliver The Last Lantern as the third and final encounter of the first chapter. Its opening waves teach Turtle slow alongside earned Squirrel upgrades. Later waves combine familiar Rat guard and Weasel evasion behavior. The sixth wave introduces one Roadwarden with escorts, a readable rally, and an explicit requirement to defeat the boss. A chapter-ending celebration unlocks Reach and Longer Nets advantages for replay.
 
 Day 2 delivers the complete chapter and reward-enabled replay. Day 3 addresses owner feedback, tunes difficulty, verifies progress and controls, and produces a candidate the children can actually open and play. The calendar is a delivery target; acceptance depends on observed behavior and evidence.
 
@@ -23,10 +23,10 @@ The assumed campaign arrival state is:
 | Encounter          | First-arrival tools and lesson                                                | Victory unlock                         |
 | ------------------ | ----------------------------------------------------------------------------- | -------------------------------------- |
 | Lantern Pass       | Base Squirrel; Rat shields and pairs                                          | Squirrel upgrade and Rainstone         |
-| Rainstone Crossing | Squirrel and its upgrade; Weasel sprint and extended coverage                 | Turtle and The Last Lantern            |
+| Rainstone Crossing | Squirrel and its upgrade; Weasel evasion and extended coverage                 | Turtle and The Last Lantern            |
 | The Last Lantern   | Upgraded Squirrels and base Turtles; slow practice followed by the Roadwarden | Chapter ending, Reach, and Longer Nets |
 
-Day 1 was initially treated as an explicit dependency, not part of this implementation scope. At planning time, the checkout lacked player slots and some assumed progression work. Update — 26 September 2026: the owner accepted Tickets 01 and 02 as complete at their current scope. Ticket 01 does not require plotting a third placeholder node; The Last Lantern and its Turtle reward/use arrive in later encounter tickets. Historical planning observations below remain snapshots, not current status. Full campaign completion is still open.
+Day 1 was initially treated as an explicit dependency, not part of this implementation scope. At planning time, the checkout lacked player slots and some assumed progression work. Update — 26 September 2026: the owner accepted Tickets 01–03 as complete at their current scope. Ticket 01 does not require plotting a third placeholder node; The Last Lantern and its Turtle reward/use arrive in later encounter tickets. Historical planning observations below remain snapshots, not current status. Full campaign completion is still open.
 
 The supporting wave plan supplies complete initial recipes. Its figures are tunable hypotheses, not verified balance. The optional five-map expansion draft is future design material and is excluded from this release.
 
@@ -47,7 +47,7 @@ The supporting wave plan supplies complete initial recipes. Its figures are tuna
 13. As a player, I want multiple useful firing areas along the final route, so that one accidental placement does not decide the entire attempt.
 14. As a player, I want a downstream recovery position, so that I can respond when an enemy escapes my first defense.
 15. As a player, I want to practise slow before meeting the boss, so that the finale tests a tool I have already used.
-16. As a player, I want Rat guard and Weasel sprint to remain recognizable in mixed waves, so that increasing difficulty builds on what I learned.
+16. As a player, I want Rat guard and Weasel evasion to remain recognizable in mixed waves, so that increasing difficulty builds on what I learned.
 17. As a player, I want gold income to support useful purchases throughout the encounter, so that I keep participating in the battle.
 18. As a player, I want upgrades and additional Squirrels to remain understandable spending choices, so that there is more than one reasonable defense.
 19. As a player, I want early mistakes to cause recoverable pressure, so that I have time to learn before losing the attempt.
@@ -87,7 +87,7 @@ The supporting wave plan supplies complete initial recipes. Its figures are tuna
 
 ## Implementation Decisions
 
-- **Starting scope:** begin with Day 2. Verify Day 1 prerequisites against the actual integration checkout without marking assumed work complete. Keep any missing dependency explicit. Tickets 01 and 02 have since been closed at the owner-approved scope. The remaining sequence is Rainstone/Weasel/Turtle progression (ticket 03), Turtle and final route (04), boss and ending/rewards (05), then release hardening (06).
+- **Starting scope:** begin with Day 2. Verify Day 1 prerequisites against the actual integration checkout without marking assumed work complete. Keep any missing dependency explicit. Tickets 01–03 are complete at the owner-approved scope. The remaining sequence is Turtle and final route (04), boss and ending/rewards (05), then release hardening (06).
 - **Architecture:** preserve the browser-independent deterministic attempt simulation, authored encounter data, rendering/input/audio adapters, and pure persistence adapter. Prefer the existing public game commands and observable state/events over new private test hooks or a parallel gameplay implementation.
 - **Existing decisions:** preserve the approved landscape woodland presentation, articulated 2D asset pipeline, Rat guard lesson, and progressive discovery/simple economy decisions. Enemy kills and fixed wave rewards are the only ordinary attempt income. The first encounter remains Squirrel-only; savings interest, Donkey income, supply drops, and immediate unearned advantages do not return.
 - **Encounter content:** register The Last Lantern as the third encounter and support its saved completion. Use a distinct fixed route with two useful firing areas, adjacent room for Turtle and damage support, and a downstream recovery opportunity. Route geometry must preserve readable buildable space on a landscape tablet.
@@ -97,7 +97,7 @@ The supporting wave plan supplies complete initial recipes. Its figures are tuna
 - **Wave scheduling:** authored groups use the existing sequential scheduling semantics. Confirm that the intended escorts actually overlap the boss on the route. A batch count is the total enemy count, not the number of batches.
 - **Turtle feedback:** preserve the current slow rule and render a recognizable attached net while that enemy is slowed. Refresh, expiry, enemy death, pause, and reused actor cleanup must all preserve agreement between visible status and simulation. Projectile origin/release should match the current Turtle rig. Do not add a new tower action or upgrade tree.
 - **Boss rally contract:** first windup starts at boss age six seconds. A one-second visible anticipation precedes a rally pulse; further windups begin every ten seconds. At pulse time, ordinary living enemies within three units of path distance from the boss receive a 25% movement bonus lasting three seconds. Use distance along the route, not straight-line world distance across adjacent bends. Recipients are selected at the pulse; their short effect then expires by simulation time. The boss does not buff itself, summon, heal, or become invulnerable. Its death prevents new pulses; already granted short effects expire normally.
-- **Movement composition:** use the greater of active sprint and rally movement multipliers, then apply the existing net-slow multiplier. Neither speed effect removes slow, and the speed bonuses do not compound. The existing Weasel anticipation/sprint is a Day 1 dependency, not a new dodge mechanic.
+- **Movement composition:** use the greater of active evasive-run and rally movement multipliers, then apply the existing net-slow multiplier. Neither speed effect removes slow, and the speed bonuses do not compound. Preserve the completed spawn-relative Weasel evasion and warning; rally must not change projectile evasion timing.
 - **Threat tells:** show the boss's command through existing body motion and a horn cue, then mark affected escorts consistently. Use shape and movement as well as color. The visible tell must precede or accompany the actual effect, use simulation time, and avoid obscuring other actors. Status data remains authoritative in the simulation; rendering and sound interpret it.
 - **Required boss objective:** declare required boss defeat for the finale rather than changing the success rules of unrelated encounters. Preview the objective before its wave. A Roadwarden leak ends the attempt in defeat even if hearts would remain. Boss death alone does not end a wave with queued or living escorts. Victory requires required-boss defeat, completion of all authored waves, and remaining hearts. Defeat takes precedence if the village is lost during the same update as the final kill. Retry resets objective tracking and transient combat state.
 - **Boss presentation:** give the single boss an entrance and health indicator while it is present. A brief objective label and clear escape explanation are sufficient; no live tutorial modal is needed. Do not introduce a second boss merely to lengthen the finale.
@@ -127,7 +127,7 @@ The supporting wave plan supplies complete initial recipes. Its figures are tuna
 
 ## Out of Scope
 
-- Reimplementing Day 1's player-slot foundation, Weasel sprint lesson, or first-two-map progression under this Day 2 task. Verify/integrate those dependencies and identify gaps explicitly.
+- Reimplementing Day 1's player-slot foundation, Weasel evasion lesson, or first-two-map progression under this Day 2 task. Verify/integrate those dependencies and identify gaps explicitly.
 - Implementing the optional five-map expansion, Skunk/Boar lessons, Turtle upgrades, new enemies/towers, additional bosses or new biomes during this release pass.
 - Random evasion, breakable armor, boss summons/healing/invulnerability, deep upgrade trees, flying enemies, player-controlled heroes or player-shaped paths.
 - New directional character-art production, engine replacement, a content editor, or a generic status framework beyond what the selected behaviors require.
@@ -141,7 +141,7 @@ The supporting wave plan supplies complete initial recipes. Its figures are tuna
 
 The delivery target remains a complete first boss chapter for the holiday. Day 2 should produce the whole third encounter, ending and replay rewards; Day 3 should incorporate feedback and establish release readiness. These labels describe milestones, not evidence that earlier work has already shipped or a promise of uninterrupted agent execution.
 
-Use the [three-map wave plan](wave-plan.md) for initial recipes. The [optional expansion draft](expanded-wave-plan.md) is future material. The remaining implementation sequence is [03 — Weasel and Rainstone](issues/03-weasel-and-rainstone.md), [04 — Turtle and final route](issues/04-turtle-and-final-route.md), [05 — Boss and chapter ending](issues/05-boss-and-chapter-ending.md), then [06 — Family release](issues/06-family-release.md). Tickets 01 and 02 are complete at the owner-approved current scope. Ticket 03 is follow-on Rainstone/Turtle work, then tickets 04–06 deliver the final encounter and release.
+Use the [three-map wave plan](wave-plan.md) for initial recipes. The [optional expansion draft](expanded-wave-plan.md) is future material. The remaining implementation sequence is [04 — Turtle and final route](issues/04-turtle-and-final-route.md), [05 — Boss and chapter ending](issues/05-boss-and-chapter-ending.md), then [06 — Family release](issues/06-family-release.md). Tickets 01–03 are complete at the owner-approved scope.
 
 At the Day 2 checkpoint, provide the build location/version, what to try, and at most three uncertainties. At the Day 3 checkpoint, provide the actual release evidence and any outstanding physical-device work. Basic feedback such as “the net was invisible,” “the boss escaped without a clear explanation,” or “I had 180 gold and stopped building” is sufficient for the agent to reproduce and correct the issue.
 

@@ -23,7 +23,7 @@ flowchart LR
 | `src/render/cutout.ts`, `character-rig.ts` | Shared native textures, per-actor joints and view-aware walking                                        | Descriptor-driven parts; side IK and front/rear projected legs            |
 | `src/main.ts`                              | Semantic HTML screens, input commands, attempt lifecycle and HUD                                       | New screen or input adapter; currently a deliberately small single module |
 | `src/audio/sound.ts`                       | Gesture-unlocked music and synthesized cue family                                                      | New licensed track or cue, preserving volume/mute lifecycle               |
-| `src/persistence/save.ts`                  | Version 2 validation/defaults, legacy save migrations, stars, settings and unlock                     | Explicit migration for future schema changes                              |
+| `src/persistence/save.ts`                  | Version 2 validation/defaults, legacy save migrations, stars, settings, Squirrel upgrade and Turtle discovery                     | Explicit migration for future schema changes                              |
 | `src/qa/benchmark.ts`                      | Separate artificial browser stress fixture                                                             | Raw RAF measurement; never used by normal gameplay                        |
 
 Simulation commands return success/failure and emit lightweight events. The UI translates commands into feedback; rendering reads state. `advance` accumulates fixed 1/30-second steps and limits long-frame catch-up. `tick` is available to deterministic tests. Randomness uses a seeded generator; current encounter rules have no random targeting or damage. Fixed seeds alone do not make browser frame timings deterministic.
@@ -59,6 +59,12 @@ behavior it cannot. Rig resources map each role to generated parts; see
 indices remain fallback metadata. Advantage definitions can modify range, slow
 duration, or upgrade cost, but remain dormant until a campaign reward explicitly
 unlocks them.
+
+## Current encounter rules
+
+Lantern Pass teaches Rat guard and awards Squirrel upgrades. Rainstone Crossing uses four mixed Rat/Weasel waves and awards Turtle discovery. Spawn groups author internal quiet gaps, local movement multipliers and guard/evasion cycles. Evasion is deterministic at projectile impact; missed nets do not refresh slow. The renderer shares spawn-relative warning timing, then presents the yellow marker, sidestep and floating Evade text from simulation outcomes. See [decision 017](decisions/017-rainstone-evasion-and-mixed-waves.md).
+
+Turtle's first campaign use and The Last Lantern are planned final-encounter work, not a registered third map yet.
 
 ## Planned boundaries
 
