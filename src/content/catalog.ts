@@ -70,7 +70,7 @@ export const ENEMIES: Record<EnemyKind, EnemyDef> = {
   },
   boss: {
     name: "The Roadwarden",
-    hp: 1100,
+    hp: 2200,
     speed: 0.46,
     armor: 6,
     reward: 65,
@@ -94,7 +94,7 @@ export const CARDS: {
   },
   {
     id: "nets",
-    name: "Patient trappers",
+    name: "Longer Nets",
     tag: "CONTROL",
     description:
       "Nets hold raiders 50% longer. Buy time for your heavy defenses.",

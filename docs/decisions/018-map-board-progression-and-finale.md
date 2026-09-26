@@ -20,4 +20,4 @@ Ticket 04 authors and tunes waves one through five as the escalation into the fi
 
 ## Verification
 
-The five teaching waves and boss wave are compared through the real Game seam using earned arrival tools. The final wave must be demonstrably more demanding than wave five while still admitting multiple reasonable defenses. Browser play confirms the Roadwarden's distinct rally tell and defeat objective; family playtest determines whether the difficulty and lesson order are understandable.
+At the original 1100-HP/two-party tuning, deterministic first-arrival scenarios cleared the chapter with two build lines and one poor-opening recovery; those outcomes are historical. The owner later requested a 2200-HP boss and five escort parties; under that version the same lines lose before the boss kill. ADR 020 and `wave-plan.md` contain the current checkpoints. Focused boss tests cover rally timing, recipients, required defeat, and escape/loss rules. Browser review confirms the briefing layout, but no full boss battle was inspected. Family playtest must determine whether the revised difficulty is still completable and understandable.

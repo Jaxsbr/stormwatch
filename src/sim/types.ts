@@ -68,6 +68,8 @@ export interface LevelDef {
   availableTowers?: TowerKind[];
   enemyRewardScale?: number;
   healthScale?: number;
+  /** The authored finale cannot be won unless its final wave's boss is defeated. */
+  requiresBossDefeat?: boolean;
   waves: WaveDef[];
   accent: string;
 }
@@ -95,6 +97,12 @@ export interface Enemy extends Point {
   evadeAt?: number;
   movementScale?: number;
   shieldCycle?: ShieldCycle;
+  /** Absolute simulation time when a rallied escort's speed bonus expires. */
+  rallyUntil?: number;
+  /** Absolute simulation time of the boss's next rally pulse. */
+  nextRallyAt?: number;
+  /** Suppresses duplicate rally-warning events for the current pulse. */
+  rallyWarningEmitted?: boolean;
 }
 export interface Shot extends Point {
   id: number;
@@ -125,6 +133,9 @@ export interface GameEvent {
     | "leak"
     | "start"
     | "payout"
+    | "boss-arrival"
+    | "rally-warning"
+    | "rally"
     | "win"
     | "loss";
   value?: number;

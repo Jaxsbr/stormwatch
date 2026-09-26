@@ -230,6 +230,17 @@
     margin-top: 3px;
     font-size: 12px;
   }
+  .first-watch-brief {
+    padding: 10px 16px;
+  }
+  .first-watch-brief strong {
+    font-size: 22px;
+  }
+  .first-watch-brief p {
+    margin-top: 5px;
+    font-size: 13px;
+    line-height: 1.3;
+  }
   .advantage-choice h2 {
     font-size: 23px;
     margin-bottom: 6px;

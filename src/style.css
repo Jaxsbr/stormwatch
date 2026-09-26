@@ -2478,6 +2478,10 @@ button:active:not(:disabled) {
 .expedition .map-node.node-1 {
   top: 78%;
 }
+.expedition .map-node.node-2 {
+  left: 82%;
+  top: 30%;
+}
 .expedition .map-node strong {
   font-size: 21px;
 }
@@ -2516,6 +2520,9 @@ button:active:not(:disabled) {
   }
   .expedition .map-node.node-1 {
     top: 78%;
+  }
+  .expedition .map-node.node-2 {
+    top: 32%;
   }
   .expedition .map-node strong {
     font-size: 18px;

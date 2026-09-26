@@ -2,7 +2,7 @@
 
 ## Current state
 
-The spec remains `ready-for-agent` for the unfinished campaign. Tickets 01–04 are complete at the owner-approved scope; tickets 05–06 remain. The Last Lantern's five teaching waves and Turtle cue are complete, but the map remains unregistered until the Roadwarden finale is integrated. The initial planning handoff did not implement gameplay; historical ticket 02 review and current closeout are recorded below.
+Tickets 01–05 are implemented at the approved scope. The Last Lantern is registered with six teaching/finale waves, required Roadwarden defeat, first-board completion and persistent replay advantages. Ticket 06 owns family-device validation and release hardening. Historical checkpoints below are retained; newer sections supersede earlier status snapshots.
 
 Two player slots, Squirrel upgrade discovery, four-wave mixed Rainstone, deterministic Weasel evasion and Turtle discovery are implemented. The owner confirmed Turtle unlock after Rainstone. Completed Lantern Pass and Rainstone replays now use earned Turtle and Squirrel upgrades to support star improvement. Earlier observations below are historical snapshots.
 
@@ -17,26 +17,26 @@ Two player slots, Squirrel upgrade discovery, four-wave mixed Rainstone, determi
 ## Ready handoff
 
 - `spec.md`: canonical Day 2-onward specification, using the requested template and extensive user stories.
-- `wave-plan.md`: Map 3 implementation recipes plus Maps 1–2 prerequisite context; numeric values untested and tunable.
+- `wave-plan.md`: active recipes for all three board maps and seeded ticket 05 wave-by-wave evidence.
 - `issues/04-turtle-and-final-route.md`: complete; route, teaching waves, woven slow cue and earned-defender replay behavior are implemented.
-- `issues/05-boss-and-chapter-ending.md`: Day 2 boss, required defeat, ending and replay rewards.
+- `issues/05-boss-and-chapter-ending.md`: complete; boss, required defeat, ending, replay rewards and approved denser waves are implemented.
 - `issues/06-family-release.md`: Day 3 corrective feedback, broader integration and family-device readiness.
-- Tickets 01–04: complete at the owner-approved scope. Tickets 05–06 remain ahead.
+- Tickets 01–05: complete at the owner-approved scope. Ticket 06 remains.
 - `expanded-wave-plan.md`: optional future design, excluded from this release.
 
 ## Next execution step
 
-Begin ticket 05, the Roadwarden boss wave, chapter ending and replay rewards. Preserve the completed Lantern/Rainstone lessons, earned-defender replay behavior and star records. Integrate the boss before making The Last Lantern a normal campaign destination. Maintain a candidate/version and append evidence, next action and owner feedback after each playable slice.
+Continue with ticket 06: review the integrated three-map board with the owner on actual family devices, correct observed issues, and record release-readiness evidence. Do not claim physical-device performance or child comprehension from scripted tests or browser emulation.
 
 ## Known release dependencies
 
 - No public holiday deployment route is established by this planning work.
 - Actual tablet models/browser behavior and physical performance require owner/device evidence.
-- Ticket 05's boss wave, rally, chapter ending and replay advantages remain to be implemented and verified. Ticket 06 owns family-device checks and release readiness.
+- Actual tablet models/browser behavior, physical performance, and child comprehension still require owner/device evidence under ticket 06.
 
 ## Resume prompt
 
-Implement the remaining campaign in `.scratch/holiday-expedition/spec.md`, starting at ticket 05 and continuing through 06. Preserve completed ticket 04 and earned replay capabilities. Leave CuteDefense unchanged. Use existing Game and persistence test boundaries, keep playable candidates, and maintain this progress record. Tune routine details from evidence and incorporate simple owner feedback. Report missing dependencies and required physical-device observations precisely. Do not create a new public deployment destination or buy assets without authorization.
+Continue `.scratch/holiday-expedition/spec.md` at ticket 06. Preserve completed campaign progress and first-board ending/replay rewards. Leave CuteDefense unchanged. Use actual family devices for touch/readability observations; report unavailable checks precisely. Do not create a new public deployment destination or buy assets without authorization.
 
 ## Explicit historical-ticket review — 02 (25 September 2026)
 
@@ -138,3 +138,19 @@ Ticket 04 is complete at its content/rendering scope. `npm run check`, all 181 t
 ## Earned defenders on replay — 26 September 2026
 
 The owner confirmed Turtle discovery after winning Rainstone and clarified that earned defenders and Squirrel upgrades should help players replay completed maps for better stars. Completed Lantern and Rainstone attempts now add unlocked Turtle to their roster; briefing and battle use the same resolved roster. First attempts keep their authored lesson roster. Squirrel upgrades remain available through the existing saved unlock. Best stars are retained when a replay earns fewer stars, and player slots retain their own unlocks. Regression coverage exercises replay after save reload, placement, upgrades, briefing, first-attempt restrictions and best-star retention.
+
+## Ticket 05 implementation checkpoint — 26 September 2026
+
+The owner reviewed Rainstone Crossing's spawn schedule against the earlier Last Lantern proposal and approved a denser replan before implementation. The active wave plan now has six waves, including 66-enemy and 88-enemy repeated packets, plus the Roadwarden's timed escort procession. Starting gold was tuned from 120 to 235: deterministic seed-42 runs at 120 and 180 gold failed, while real-Game plans using upgraded Squirrels and a Net/Squirrel mix clear all six waves. A third line with one opening Squirrel at the poor site `(0,6)` still wins with two lives remaining. Exact duration, income, bank, tower and leak profiles are in `wave-plan.md` and regression assertions in `tests/the-last-lantern-strategy.test.ts`.
+
+The Roadwarden enters with a health bar, required-defeat objective, and visible/audible arrival and rally cues. Rally uses route distance; boss escape loses the attempt; final victory waits for the boss and every other threat. The first board has three real map nodes and no placeholder fourth. First victory grants saved Reach and Longer Nets replay choices; save reload, effect, and best-star rules have focused coverage. Decision 019 records the tuned economy and wave cadence. Browser review at 1280×720 and 844×390 confirmed the board and briefing layout (including compact-landscape controls); the first-wave HUD was inspected at desktop size. Final verification passed `npm run check`, 191 tests in 35 files, `npm run build` and `git diff --check`; the build retains the 630.88 kB battlefield chunk advisory. A full boss-battle capture, physical-device performance and child/family balance remain ticket 06 evidence. Ticket 05 is complete.
+
+## Owner-requested wave 6 retune and copy reduction — 26 September 2026
+
+The owner reported wave 6 was too easy compared with wave 5: the two escort parties worked, but the Roadwarden fell easily. Roadwarden health is doubled from 1100 to 2200, with five escort parties total after the existing Rat vanguard. The owner then set each escort party to 7 Weasels or 5 Rats. They start at boss ages 4.5s, 14.5s, 24.5s, 34.5s and 44.5s in 7-Weasel / 5-Rat / 7-Weasel / 5-Rat / 7-Weasel order, one party before each of the first five rally pulses.
+
+Removed boss-arrival/rally text toasts, the directive beside the wave button, and the boxed briefing note shown in the attached screenshot. The Roadwarden health bar and non-text rally indicators remain; the required-defeat rule is unchanged. ADR 020 records the choice.
+
+At seed 42, the final 7/5-party version causes both prior successful lines and the poor-opening line to lose during wave 6 before killing the Roadwarden. The upgraded-Squirrel line loses to boss escape with one life remaining; mixed and poor-opening lines run out of lives. The revised test asserts 2200 health, five party types/counts/times, and exact wave checkpoints. This confirms the implemented sequence and records current pressure; it does not establish that the current version is beatable or balanced for new players. Updated profiles are in `wave-plan.md`.
+
+Verification for this update: `npm run check`, all 191 tests in 35 files, `npm run build` and `git diff --check` pass. Browser inspection of the rendered briefing at 1280×720 and 844×390 confirms the boxed note is gone and Back/Play remain visible. The build still warns about the 630.88 kB battlefield bundle; no full boss fight was captured.

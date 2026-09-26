@@ -6,7 +6,7 @@ import "./ui/battle-ui.css";
 import "./ui/battle-menu.css";
 import { BattleMenu } from "./ui/battle-menu";
 import { battleStats, defenderPanel, displayedWave } from "./ui/battle-ui";
-import { button, resultCard } from "./ui/game-chrome";
+import { button, resultCard, type ResultReward } from "./ui/game-chrome";
 import { fitVisibleViewport } from "./ui/visible-viewport";
 import { advanceBattleFrame } from "./ui/battle-clock";
 import { advantageScreen } from "./ui/advantage-screen";
@@ -68,8 +68,8 @@ let screen: Screen = "title",
   settings = false,
   settingsPaused = false,
   resultSaved = false,
-  resultUnlockedUpgrade = false,
-  resultUnlockedTurtle = false,
+  resultFirstBoardComplete = false,
+  resultRewards: ResultReward[] = [],
   speed = 1;
 let lastTime = 0,
   lastHud = 0,
@@ -135,7 +135,7 @@ function render() {
   }
   if (screen === "battle") renderBattle();
   if (screen === "result" && game)
-    app.innerHTML = `<main class="result-screen">${resultCard(game.state, resultUnlockedUpgrade ? [{ kind: "tower-upgrade", tower: "bolt" }] : resultUnlockedTurtle ? [{ kind: "tower-unlock", tower: "net" }] : [])}</main>`;
+    app.innerHTML = `<main class="result-screen">${resultCard(game.state, resultRewards, resultFirstBoardComplete)}</main>`;
   void paintTowerPortraits(app);
   app.insertAdjacentHTML(
     "beforeend",
@@ -146,7 +146,7 @@ function renderBattle() {
   const l = game!.level;
   const availableTowers =
     l.availableTowers ?? (Object.keys(TOWERS) as TowerKind[]);
-  app.innerHTML = `<main class="battle-screen"><header class="battle-header"><div class="battle-brand"><div><strong>${l.name}</strong></div></div>${battleStats(l.waves.length)}<div class="battle-tools">${button("speed", "1×", "icon-button", 'aria-label="Game speed" id="speed"')}${button("menu", "Menu", "icon-button", 'aria-label="Menu" id="battle-menu"')}</div></header><div class="battle-middle"><section class="battlefield"><div id="canvas-host"></div><div id="wave-countdown" class="wave-countdown" role="status" aria-live="polite" hidden><span>Next wave in</span> <strong id="countdown-number">10</strong></div></section><aside class="battle-aside"><div class="wave-controls">${button("start", "Start first wave", "primary", 'id="start-wave"')}</div></aside></div><footer class="build-tray"><section id="selection-panel" class="selection-panel"></section><div class="tray-label"><strong id="build-label">Choose a structure</strong>${button("cancel", "Cancel", "quiet small", 'id="cancel" hidden')}</div><div class="tower-buttons">${availableTowers.map((k) => `<button class="tower-button" data-action="build:${k}" id="build-${k}">${portrait(TOWERS[k].sprite)}<span><strong>${TOWERS[k].name}</strong><small>${TOWERS[k].role}</small></span><b>${TOWERS[k].cost}<small> gold</small></b></button>`).join("")}</div></footer></main>`;
+  app.innerHTML = `<main class="battle-screen"><header class="battle-header"><div class="battle-brand"><div><strong>${l.name}</strong></div></div>${battleStats(l.waves.length)}<div class="battle-tools">${button("speed", "1×", "icon-button", 'aria-label="Game speed" id="speed"')}${button("menu", "Menu", "icon-button", 'aria-label="Menu" id="battle-menu"')}</div></header><div class="battle-middle"><section class="battlefield"><div id="canvas-host"></div><div id="wave-countdown" class="wave-countdown" role="status" aria-live="polite" hidden><span>Next wave in</span> <strong id="countdown-number">10</strong></div><section class="boss-health-panel" id="boss-health-panel" aria-label="Boss health" hidden><div><strong>The Roadwarden</strong><span id="boss-health-value"></span></div><div class="boss-health-track" id="boss-health-track" role="progressbar" aria-label="The Roadwarden's health" aria-valuemin="0" aria-valuemax="100" aria-valuenow="100"><span id="boss-health-fill"></span></div></section></section><aside class="battle-aside"><div class="wave-controls">${button("start", "Start first wave", "primary", 'id="start-wave"')}</div></aside></div><footer class="build-tray"><section id="selection-panel" class="selection-panel"></section><div class="tray-label"><strong id="build-label">Choose a structure</strong>${button("cancel", "Cancel", "quiet small", 'id="cancel" hidden')}</div><div class="tower-buttons">${availableTowers.map((k) => `<button class="tower-button" data-action="build:${k}" id="build-${k}">${portrait(TOWERS[k].sprite)}<span><strong>${TOWERS[k].name}</strong><small>${TOWERS[k].role}</small></span><b>${TOWERS[k].cost}<small> gold</small></b></button>`).join("")}</div></footer></main>`;
   try {
     field = new Battlefield(document.querySelector("#canvas-host")!);
     field.load(l);
@@ -217,8 +217,8 @@ function begin(assist = false) {
   build = null;
   selected = null;
   resultSaved = false;
-  resultUnlockedUpgrade = false;
-  resultUnlockedTurtle = false;
+  resultFirstBoardComplete = false;
+  resultRewards = [];
   speed = 1;
   screen = "battle";
   render();
@@ -234,6 +234,22 @@ function updateHud() {
   text("coins", String(s.coins));
   text("lives", `${s.lives} / ${s.maxLives}`);
   text("wave", `${displayedWave(s, l.waves.length)} / ${l.waves.length}`);
+  const boss = s.enemies.find((enemy) => enemy.alive && enemy.kind === "boss");
+  const bossPanel = document.getElementById("boss-health-panel");
+  const bossTrack = document.getElementById("boss-health-track");
+  const bossFill = document.getElementById("boss-health-fill");
+  if (bossPanel && bossTrack && bossFill) {
+    bossPanel.hidden = !boss;
+    if (boss) {
+      const percent = Math.max(0, Math.min(100, (boss.hp / boss.maxHp) * 100));
+      bossTrack.setAttribute("aria-valuenow", String(Math.round(percent)));
+      bossFill.setAttribute("style", `width:${percent}%`);
+      text(
+        "boss-health-value",
+        `${Math.ceil(boss.hp)} / ${Math.ceil(boss.maxHp)}`,
+      );
+    }
+  }
   document
     .querySelector(".life-stat")
     ?.classList.toggle("critical", s.lives <= s.maxLives / 3);
@@ -310,12 +326,27 @@ function showResult() {
   const s = game.state,
     won = s.phase === "won";
   if (won && !resultSaved) {
-    resultUnlockedUpgrade =
+    resultFirstBoardComplete =
+      game.level.id === "the-last-lantern" &&
+      !(save.stars["the-last-lantern"] > 0);
+    if (
       game.level.id === "lantern-pass" &&
-      !save.unlocked.includes("squirrel-upgrade");
-    resultUnlockedTurtle =
+      !save.unlocked.includes("squirrel-upgrade")
+    ) {
+      resultRewards = [{ kind: "tower-upgrade", tower: "bolt" }];
+    } else if (
       game.level.id === "rainstone-crossing" &&
-      !save.unlocked.includes("turtle");
+      !save.unlocked.includes("turtle")
+    ) {
+      resultRewards = [{ kind: "tower-unlock", tower: "net" }];
+    } else if (resultFirstBoardComplete) {
+      resultRewards = [
+        { kind: "advantage-unlock", card: "reach" },
+        { kind: "advantage-unlock", card: "nets" },
+      ];
+    } else {
+      resultRewards = [];
+    }
     save = recordVictory(save, game.level.id, s.stars);
     persist();
     resultSaved = true;

@@ -40,6 +40,7 @@ export class Game {
   }[] = [];
   private waveClock = 0;
   private accumulator = 0;
+  private bossKillsAtWaveStart = 0;
   private seed: number;
   private readonly unlockedUpgrades: ReadonlySet<TowerKind> | null;
   constructor(
@@ -198,6 +199,7 @@ export class Game {
       }
     }
     this.waveClock = 0;
+    this.bossKillsAtWaveStart = s.killsByKind.boss;
     s.wave++;
     s.phase = "wave";
     s.lastPayout = null;
@@ -253,6 +255,9 @@ export class Game {
         shieldRaised: false,
         shieldHitAt: -1,
         evadeAt: -1,
+        ...(q.kind === "boss"
+          ? { nextRallyAt: s.clock + 7, rallyWarningEmitted: false }
+          : {}),
         evasionCycle: q.evasionCycle,
         ...(q.movementScale === undefined
           ? {}
@@ -261,6 +266,7 @@ export class Game {
           ? {}
           : { shieldCycle: { ...q.shieldCycle } }),
       });
+      if (q.kind === "boss") this.emit("boss-arrival");
     }
     const len = pathLength(this.level.path);
     for (const e of s.enemies) {
@@ -268,10 +274,13 @@ export class Game {
       e.distance +=
         ENEMIES[e.kind].speed *
         (e.movementScale ?? 1) *
-        (e.kind === "runner" &&
-        weaselEvasionState(s.clock - e.spawnedAt, e.evasionCycle).active
-          ? 1.15
-          : 1) *
+        Math.max(
+          e.kind === "runner" &&
+            weaselEvasionState(s.clock - e.spawnedAt, e.evasionCycle).active
+            ? 1.15
+            : 1,
+          e.rallyUntil !== undefined && e.rallyUntil > s.clock ? 1.25 : 1,
+        ) *
         (e.slowUntil > s.clock ? 0.48 : 1) *
         dt;
       Object.assign(e, pointOnPath(this.level.path, e.distance));
@@ -280,6 +289,11 @@ export class Game {
         s.lives = Math.max(0, s.lives - ENEMIES[e.kind].leak);
         s.leaks++;
         this.emit("leak");
+        if (this.level.requiresBossDefeat && e.kind === "boss") {
+          s.phase = "lost";
+          this.emit("loss");
+          return;
+        }
       }
     }
     if (s.lives === 0) {
@@ -287,6 +301,7 @@ export class Game {
       this.emit("loss");
       return;
     }
+    this.updateBossRallies();
     for (const e of s.enemies) {
       if (e.kind !== "raider") continue;
       const age = s.clock - e.spawnedAt;
@@ -356,6 +371,14 @@ export class Game {
       s.effects = [];
       this.emit("payout", reward);
       if (s.wave === this.level.waves.length) {
+        if (
+          this.level.requiresBossDefeat &&
+          s.killsByKind.boss === this.bossKillsAtWaveStart
+        ) {
+          s.phase = "lost";
+          this.emit("loss");
+          return;
+        }
         s.phase = "won";
         s.stars =
           s.lives === s.maxLives ? 3 : s.lives >= s.maxLives / 2 ? 2 : 1;
@@ -364,6 +387,32 @@ export class Game {
         s.phase = "preparation";
         s.nextWaveCountdown = INTER_WAVE_COUNTDOWN_SECONDS;
       }
+    }
+  }
+  private updateBossRallies() {
+    const s = this.state;
+    for (const boss of s.enemies) {
+      if (!boss.alive || boss.kind !== "boss" || boss.nextRallyAt === undefined)
+        continue;
+      if (!boss.rallyWarningEmitted && s.clock >= boss.nextRallyAt - 1) {
+        boss.rallyWarningEmitted = true;
+        this.emit("rally-warning");
+      }
+      if (s.clock < boss.nextRallyAt) continue;
+      let recipients = 0;
+      for (const escort of s.enemies) {
+        if (
+          !escort.alive ||
+          escort.kind === "boss" ||
+          Math.abs(escort.distance - boss.distance) > 3
+        )
+          continue;
+        escort.rallyUntil = Math.max(escort.rallyUntil ?? 0, s.clock + 3);
+        recipients++;
+      }
+      this.emit("rally", recipients);
+      boss.nextRallyAt += 10;
+      boss.rallyWarningEmitted = false;
     }
   }
   private hurt(e: Enemy, damage: number, projectile = false) {

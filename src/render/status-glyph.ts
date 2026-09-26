@@ -1,6 +1,6 @@
 import * as THREE from "three";
 
-export type StatusGlyphKind = "shield" | "evade";
+export type StatusGlyphKind = "shield" | "evade" | "rally";
 
 export interface StatusGlyphView {
   kind: StatusGlyphKind;
@@ -15,6 +15,18 @@ function shieldShape() {
   shape.lineTo(10, -2);
   shape.quadraticCurveTo(8, -11, 0, -16);
   shape.quadraticCurveTo(-8, -11, -10, -2);
+  shape.closePath();
+  return shape;
+}
+
+function rallyShape() {
+  const shape = new THREE.Shape();
+  shape.moveTo(-14, -8);
+  shape.lineTo(-6, -8);
+  shape.lineTo(5, -14);
+  shape.lineTo(5, 14);
+  shape.lineTo(-6, 8);
+  shape.lineTo(-14, 8);
   shape.closePath();
   return shape;
 }
@@ -39,14 +51,16 @@ export class StatusGlyph {
     const shape =
       kind === "shield"
         ? shieldShape()
-        : new THREE.Shape([
-            new THREE.Vector2(-13, -12),
-            new THREE.Vector2(-1, 0),
-            new THREE.Vector2(-13, 12),
-            new THREE.Vector2(-3, 12),
-            new THREE.Vector2(9, 0),
-            new THREE.Vector2(-3, -12),
-          ]);
+        : kind === "evade"
+          ? new THREE.Shape([
+              new THREE.Vector2(-13, -12),
+              new THREE.Vector2(-1, 0),
+              new THREE.Vector2(-13, 12),
+              new THREE.Vector2(-3, 12),
+              new THREE.Vector2(9, 0),
+              new THREE.Vector2(-3, -12),
+            ])
+          : rallyShape();
     this.glow = new THREE.Mesh(
       new THREE.ShapeGeometry(shape),
       new THREE.MeshBasicMaterial({
@@ -84,24 +98,24 @@ export class StatusGlyph {
     this.group.add(this.glow, this.fill, this.outline);
   }
 
-  update(opacity: number, flash: number) {
+  update(opacity: number, flash: number, scaleFactor = 1) {
     const alpha = THREE.MathUtils.clamp(opacity, 0, 1);
     const pulse = THREE.MathUtils.clamp(flash, 0, 1);
     const bright = new THREE.Color(0xffffff);
     this.group.visible = alpha > 0.005 || pulse > 0.005;
     this.fill.material.opacity = alpha * (0.48 + 0.34 * pulse);
-    this.fill.material.color
-      .set(this.kind === "evade" ? 0xffcf54 : 0x67bce9)
-      .lerp(bright, pulse * 0.8);
+    const color =
+      this.kind === "shield"
+        ? [0x67bce9, 0xdaf5ff, 0x9be2ff]
+        : this.kind === "evade"
+          ? [0xffcf54, 0xfff2ae, 0xffdf75]
+          : [0xffa43c, 0xffedb3, 0xffc05c];
+    this.fill.material.color.set(color[0]).lerp(bright, pulse * 0.8);
     this.outline.material.opacity = alpha * (0.88 + 0.12 * pulse);
-    this.outline.material.color
-      .set(this.kind === "evade" ? 0xfff2ae : 0xdaf5ff)
-      .lerp(bright, pulse);
+    this.outline.material.color.set(color[1]).lerp(bright, pulse);
     this.glow.material.opacity = alpha * 0.16 + pulse * 0.7;
-    this.glow.material.color
-      .set(this.kind === "evade" ? 0xffdf75 : 0x9be2ff)
-      .lerp(bright, pulse);
-    const scale = 1 + pulse * 0.22;
+    this.glow.material.color.set(color[2]).lerp(bright, pulse);
+    const scale = scaleFactor * (1 + pulse * 0.22);
     this.group.scale.set(scale, scale, 1);
   }
 

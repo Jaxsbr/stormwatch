@@ -53,6 +53,21 @@ export class Sound {
       this.shieldThunk(now);
       return;
     }
+    if (type === "boss-arrival") {
+      this.tone(110, 0.48, 0.23, now, "triangle");
+      this.tone(146.8, 0.4, 0.17, now + 0.16);
+      return;
+    }
+    if (type === "rally-warning") {
+      this.tone(247, 0.12, 0.12, now, "triangle");
+      this.tone(311, 0.14, 0.14, now + 0.24, "triangle");
+      return;
+    }
+    if (type === "rally") {
+      this.tone(392, 0.1, 0.14, now);
+      this.tone(523, 0.16, 0.17, now + 0.1);
+      return;
+    }
     const tones: Record<string, [number, number, number]> = {
       ui: [440, 0.06, 0.08],
       build: [220, 0.16, 0.14],

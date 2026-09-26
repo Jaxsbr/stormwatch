@@ -13,8 +13,17 @@ export interface SaveData {
   tutorialSeen: boolean;
 }
 
-const LEVEL_IDS: readonly string[] = ["lantern-pass", "rainstone-crossing"];
-const UNLOCK_IDS: readonly string[] = ["squirrel-upgrade", "turtle"];
+const LEVEL_IDS: readonly string[] = [
+  "lantern-pass",
+  "rainstone-crossing",
+  "the-last-lantern",
+];
+const UNLOCK_IDS: readonly string[] = [
+  "squirrel-upgrade",
+  "turtle",
+  "reach",
+  "nets",
+];
 
 const DEFAULT_MUSIC = 0.5;
 const DEFAULT_EFFECTS = 0.5;
@@ -222,6 +231,10 @@ export function recordVictory(
     !nextUnlocked.includes("squirrel-upgrade")
   ) {
     nextUnlocked.push("squirrel-upgrade");
+  }
+  if (levelId === "the-last-lantern" && nextStars[levelId] > 0) {
+    if (!nextUnlocked.includes("reach")) nextUnlocked.push("reach");
+    if (!nextUnlocked.includes("nets")) nextUnlocked.push("nets");
   }
 
   return {

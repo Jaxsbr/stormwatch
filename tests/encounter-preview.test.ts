@@ -2,6 +2,7 @@ import { describe, expect, it } from "vitest";
 import { advantageScreen, encounterEnemies } from "../src/ui/advantage-screen";
 import { lanternPass } from "../src/content/lantern-pass";
 import { rainstoneCrossing } from "../src/content/rainstone-crossing";
+import { theLastLantern } from "../src/content/the-last-lantern";
 
 describe("encounter roster", () => {
   it("shows the Rat Raider trial roster on Lantern and the mixed Rat/Weasel roster on Rainstone", () => {
@@ -39,6 +40,11 @@ describe("encounter roster", () => {
     expect(screen).toContain("Squirrel archer");
     expect(screen).not.toContain("Turtle trapper");
     expect(screen).not.toContain("First watch");
+  });
+  it("does not add a separate boss directive to the Last Lantern briefing", () => {
+    const screen = advantageScreen(theLastLantern, [], "none");
+    expect(screen).not.toContain("First-board finale");
+    expect(screen).not.toContain("Defeat the Roadwarden to finish the board");
   });
   it("summarizes a sole equipped advantage and offers None", () => {
     const screen = advantageScreen(lanternPass, ["reach"], "reach");

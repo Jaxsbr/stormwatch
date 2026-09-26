@@ -14,17 +14,17 @@ flowchart LR
   U --> A
 ```
 
-| Boundary                                   | Implemented responsibility                                                                             | Extension point                                                           |
-| ------------------------------------------ | ------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------- |
-| `src/content`                              | Tower/enemy/card catalogs and two encounters                                                           | Add level data, register it, validate and test                            |
-| `src/sim/game.ts`                          | Commands, 30 Hz simulation, damage, movement, targets, waves and outcomes                              | Add a rule with focused deterministic tests                               |
-| `src/sim/economy.ts`                       | Fixed wave rewards and sell refunds                                                                    | Tune authored rewards alongside catalog costs and strategy evidence       |
-| `src/render/battlefield.ts`                | Flat orthographic painted battlefield, continuous trail, rig direction/aim, picking, range and effects | New visual without importing browser APIs into simulation                 |
-| `src/render/cutout.ts`, `character-rig.ts` | Shared native textures, per-actor joints and view-aware walking                                        | Descriptor-driven parts; side IK and front/rear projected legs            |
-| `src/main.ts`                              | Semantic HTML screens, input commands, attempt lifecycle and HUD                                       | New screen or input adapter; currently a deliberately small single module |
-| `src/audio/sound.ts`                       | Gesture-unlocked music and synthesized cue family                                                      | New licensed track or cue, preserving volume/mute lifecycle               |
-| `src/persistence/save.ts`                  | Version 2 validation/defaults, legacy save migrations, stars, settings, Squirrel upgrade and Turtle discovery                     | Explicit migration for future schema changes                              |
-| `src/qa/benchmark.ts`                      | Separate artificial browser stress fixture                                                             | Raw RAF measurement; never used by normal gameplay                        |
+| Boundary                                   | Implemented responsibility                                                                                    | Extension point                                                           |
+| ------------------------------------------ | ------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------- |
+| `src/content`                              | Tower/enemy/card catalogs and three campaign encounters                                                       | Add level data, register it, validate and test                            |
+| `src/sim/game.ts`                          | Commands, 30 Hz simulation, damage, movement, targets, waves and outcomes                                     | Add a rule with focused deterministic tests                               |
+| `src/sim/economy.ts`                       | Fixed wave rewards and sell refunds                                                                           | Tune authored rewards alongside catalog costs and strategy evidence       |
+| `src/render/battlefield.ts`                | Flat orthographic painted battlefield, continuous trail, rig direction/aim, picking, range and effects        | New visual without importing browser APIs into simulation                 |
+| `src/render/cutout.ts`, `character-rig.ts` | Shared native textures, per-actor joints and view-aware walking                                               | Descriptor-driven parts; side IK and front/rear projected legs            |
+| `src/main.ts`                              | Semantic HTML screens, input commands, attempt lifecycle and HUD                                              | New screen or input adapter; currently a deliberately small single module |
+| `src/audio/sound.ts`                       | Gesture-unlocked music and synthesized cue family                                                             | New licensed track or cue, preserving volume/mute lifecycle               |
+| `src/persistence/save.ts`                  | Version 2 validation/defaults, legacy save migrations, stars, settings, Squirrel upgrade and Turtle discovery | Explicit migration for future schema changes                              |
+| `src/qa/benchmark.ts`                      | Separate artificial browser stress fixture                                                                    | Raw RAF measurement; never used by normal gameplay                        |
 
 Simulation commands return success/failure and emit lightweight events. The UI translates commands into feedback; rendering reads state. `advance` accumulates fixed 1/30-second steps and limits long-frame catch-up. `tick` is available to deterministic tests. Randomness uses a seeded generator; current encounter rules have no random targeting or damage. Fixed seeds alone do not make browser frame timings deterministic.
 
@@ -46,7 +46,7 @@ ground picking except during construction, when the exact ground cell wins.
 4. Validate paths/placement and run an explicit strategy through the level. Add focused test coverage for new rules, not duplicate assertions for every field.
 5. Check its map position, briefing, battle readability, intended duration, win and replay in the browser.
 
-**Working extension evidence:** commit `3fbd136` adds Rainstone Crossing after foundation commit `48c9a4a`, changing only its content file and registry. No combat, renderer or UI restructuring was needed. The second reserved save id was already part of the agreed two-level scope. More than two map nodes require deliberate map layout work; this is not an unlimited campaign editor.
+**Working extension evidence:** commit `3fbd136` adds Rainstone Crossing after foundation commit `48c9a4a`, changing only its content file and registry. No combat, renderer or UI restructuring was needed. Ticket 05 registers The Last Lantern as the third board encounter, adds its final-boss rule and saves its completion. The first board is finite: no unfinished next map node is shown, and this is not an unlimited campaign editor.
 
 ## Add a tower/enemy/card
 
@@ -64,7 +64,7 @@ unlocks them.
 
 Lantern Pass teaches Rat guard and awards Squirrel upgrades. Rainstone Crossing uses four mixed Rat/Weasel waves and awards Turtle discovery. Spawn groups author internal quiet gaps, local movement multipliers and guard/evasion cycles. Evasion is deterministic at projectile impact; missed nets do not refresh slow. The renderer shares spawn-relative warning timing, then presents the yellow marker, sidestep and floating Evade text from simulation outcomes. See [decision 017](decisions/017-rainstone-evasion-and-mixed-waves.md).
 
-Completed encounters add earned Turtle discovery to their attempt roster, allowing players to improve earlier star ratings with Turtle and earned Squirrel upgrades. The briefing, build tray and simulation use that resolved roster. First attempts retain their authored teaching roster. The Last Lantern remains unregistered until its boss finale is integrated.
+Completed encounters add earned Turtle discovery to their attempt roster, allowing players to improve earlier star ratings with Turtle and earned Squirrel upgrades. The briefing, build tray and simulation use that resolved roster. First attempts retain their authored teaching roster. The Last Lantern is registered as the third encounter; its required Roadwarden defeat closes the first board. First victory persists Reach and Longer Nets for replays, without adding a placeholder for a later board.
 
 ## Planned boundaries
 

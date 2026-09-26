@@ -1,14 +1,25 @@
 import { ENEMIES, TOWERS } from "../content/catalog";
 import { towerPortrait } from "../render/portraits";
-import type { EnemyKind, GameState, TowerKind } from "../sim/types";
+import type { CardId, EnemyKind, GameState, TowerKind } from "../sim/types";
 
 /** Shared illustrated action; semantic variant classes also preserve layout hooks. */
 export const button = (action: string, label: string, cls = "", extra = "") =>
   `<button data-action="${action}" class="game-art-button ${cls.includes("primary") ? "game-art-button--primary" : ""} ${cls}" ${extra}>${label}</button>`;
 
-export type ResultReward = {
-  kind: "tower-upgrade" | "tower-unlock";
-  tower: TowerKind;
+export type ResultReward =
+  | { kind: "tower-upgrade" | "tower-unlock"; tower: TowerKind }
+  | { kind: "advantage-unlock"; card: "reach" | "nets" };
+
+const advantageRewards: Record<
+  Exclude<CardId, "none" | "thrift">,
+  { name: string; effect: string; crop: [number, number] }
+> = {
+  reach: { name: "Reach", effect: "+18% tower range", crop: [0, 565] },
+  nets: {
+    name: "Longer Nets",
+    effect: "+50% slow duration",
+    crop: [1115, 515],
+  },
 };
 
 const enemyArt: Record<EnemyKind, string> = {
@@ -24,6 +35,7 @@ export function resultCard(
     "phase" | "stars" | "goldEarned" | "kills" | "killsByKind"
   >,
   rewards: readonly ResultReward[] = [],
+  firstBoardComplete = false,
 ) {
   const won = state.phase === "won";
   const defeatedEnemies = (Object.keys(ENEMIES) as EnemyKind[])
@@ -38,8 +50,9 @@ export function resultCard(
     )
     .join("");
   return `<section class="result-card" aria-labelledby="result-title">
-    <header class="result-heading"><h1 id="result-title" tabindex="-1">${won ? "Victory!" : "Defeat"}</h1>
+    <header class="result-heading"><h1 id="result-title" tabindex="-1">${firstBoardComplete ? "First Board Complete!" : won ? "Victory!" : "Defeat"}</h1>
     ${won ? `<div class="result-stars" aria-label="${state.stars} stars">${"★".repeat(state.stars)}${"☆".repeat(3 - state.stars)}</div>` : ""}
+    ${firstBoardComplete ? '<p class="chapter-complete-copy">The Roadwarden is turned back. Your first board is complete.</p>' : ""}
     </header>
     <section class="result-summary" aria-label="Battle results">
       <span class="result-accessible-total">Enemies stopped: ${state.kills}</span>
@@ -53,6 +66,14 @@ export function resultCard(
       rewards.length
         ? `<section class="result-rewards" aria-label="Rewards" data-count="${rewards.length}">${rewards
             .map((reward) => {
+              if (reward.kind === "advantage-unlock") {
+                const {
+                  name,
+                  effect,
+                  crop: [x, width],
+                } = advantageRewards[reward.card];
+                return `<article class="result-reward advantage-reward"><div class="reward-art"><svg viewBox="${x} 0 ${width} 724" aria-hidden="true" focusable="false"><defs><clipPath id="reward-clip-${reward.card}"><rect x="${x}" y="0" width="${width}" height="724"/></clipPath></defs><image clip-path="url(#reward-clip-${reward.card})" href="${import.meta.env.BASE_URL}art/v2/advantage-icons-v1/atlas.webp" width="2172" height="724"/></svg></div><h2>${name}</h2><p>${effect}</p></article>`;
+              }
               if (
                 reward.kind === "tower-upgrade" ||
                 reward.kind === "tower-unlock"

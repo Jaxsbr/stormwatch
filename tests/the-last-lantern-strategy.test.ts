@@ -1,4 +1,5 @@
 import { describe, expect, it } from "vitest";
+import { ENEMIES } from "../src/content/catalog";
 import { theLastLantern } from "../src/content/the-last-lantern";
 import { Game } from "../src/sim/game";
 
@@ -13,13 +14,36 @@ const buildSites = [
   { x: 3, z: 7 },
   { x: 5, z: 6 },
   { x: 10, z: 1 },
+  { x: 5, z: 2 },
+  { x: 8, z: 1 },
+  { x: 11, z: 5 },
 ];
 
 function step(game: Game, seconds: number) {
   for (let i = 0; i < seconds * 30; i += 1) game.tick(DT);
 }
 
-function play(strategy: "mixed" | "squirrels" | "remote") {
+function waveProfile(checkpoints: ReturnType<typeof play>["checkpoints"]) {
+  let previousTime = 0;
+  let previousGold = 0;
+  return checkpoints.map((checkpoint) => {
+    const row = [
+      checkpoint.wave,
+      Math.round((checkpoint.time - previousTime) * 10) / 10,
+      checkpoint.lives,
+      checkpoint.leaks,
+      checkpoint.bank,
+      checkpoint.goldEarned - previousGold,
+      checkpoint.towers,
+      checkpoint.upgraded,
+    ];
+    previousTime = checkpoint.time;
+    previousGold = checkpoint.goldEarned;
+    return row;
+  });
+}
+
+function play(strategy: "mixed" | "squirrels" | "mistake") {
   const game = new Game(theLastLantern, "none", false, 42, {
     unlockedUpgrades: ["bolt"],
   });
@@ -28,15 +52,23 @@ function play(strategy: "mixed" | "squirrels" | "remote") {
       ? [
           { kind: "net" as const, site: buildSites[0] },
           { kind: "bolt" as const, site: buildSites[1] },
-        ]
-      : [
-          { kind: "bolt" as const, site: buildSites[0] },
-          { kind: "bolt" as const, site: buildSites[1] },
           { kind: "bolt" as const, site: buildSites[2] },
-        ];
+          { kind: "bolt" as const, site: buildSites[3] },
+        ]
+      : strategy === "squirrels"
+        ? [
+            { kind: "bolt" as const, site: buildSites[0] },
+            { kind: "bolt" as const, site: buildSites[1] },
+            { kind: "bolt" as const, site: buildSites[2] },
+          ]
+        : [
+            { kind: "bolt" as const, site: { x: 0, z: 6 } },
+            { kind: "bolt" as const, site: buildSites[1] },
+            { kind: "bolt" as const, site: buildSites[2] },
+          ];
   for (const tower of opening) game.place(tower.kind, tower.site);
 
-  let nextSite = strategy === "squirrels" ? 3 : 2;
+  let nextSite = strategy === "mixed" ? 4 : 3;
   let lastRecordedWave = 0;
   let elapsed = 0;
   const checkpoints: {
@@ -44,39 +76,65 @@ function play(strategy: "mixed" | "squirrels" | "remote") {
     lives: number;
     bank: number;
     time: number;
+    goldEarned: number;
+    leaks: number;
+    towers: number;
+    upgraded: number;
   }[] = [];
   while (
     elapsed < 500 &&
     game.state.phase !== "won" &&
     game.state.phase !== "lost"
   ) {
-    if (strategy === "remote") {
-      if (!game.state.towers.some((tower) => tower.kind === "net")) {
-        game.place("net", { x: 10, z: 4 });
+    if (
+      game.state.phase === "preparation" &&
+      game.state.wave > lastRecordedWave
+    ) {
+      checkpoints.push({
+        wave: game.state.wave,
+        lives: game.state.lives,
+        bank: game.state.coins,
+        time: game.state.clock,
+        goldEarned: game.state.goldEarned,
+        leaks: game.state.leaks,
+        towers: game.state.towers.length,
+        upgraded: game.state.towers.filter((tower) => tower.level === 2).length,
+      });
+      lastRecordedWave = game.state.wave;
+    }
+    if (strategy === "mixed") {
+      const net = game.state.towers.find((tower) => tower.kind === "net");
+      const upgrade = game.state.towers.find(
+        (tower) => tower.kind === "bolt" && tower.level === 1,
+      );
+      if (upgrade && game.state.coins >= game.upgradeCost(upgrade)) {
+        game.upgrade(upgrade.id);
+      } else if (net && nextSite < buildSites.length) {
+        if (game.place("bolt", buildSites[nextSite])) nextSite += 1;
+      } else if (upgrade) {
+        game.upgrade(upgrade.id);
       }
     } else {
-      if (
-        nextSite < buildSites.length &&
-        game.place("bolt", buildSites[nextSite])
-      ) {
-        nextSite += 1;
-      } else {
-        const upgrade = game.state.towers.find(
-          (tower) => tower.kind === "bolt" && tower.level === 1,
-        );
-        if (upgrade) game.upgrade(upgrade.id);
+      const upgrade = game.state.towers.find(
+        (tower) => tower.kind === "bolt" && tower.level === 1,
+      );
+      if (upgrade) {
+        if (game.state.coins >= game.upgradeCost(upgrade)) {
+          game.upgrade(upgrade.id);
+        }
+      }
+      if (!upgrade || game.state.coins < game.upgradeCost(upgrade)) {
+        if (
+          nextSite < buildSites.length &&
+          game.place("bolt", buildSites[nextSite])
+        ) {
+          nextSite += 1;
+        } else if (upgrade) {
+          game.upgrade(upgrade.id);
+        }
       }
     }
     if (game.state.phase === "preparation") {
-      if (game.state.wave > lastRecordedWave) {
-        checkpoints.push({
-          wave: game.state.wave,
-          lives: game.state.lives,
-          bank: game.state.coins,
-          time: game.state.clock,
-        });
-        lastRecordedWave = game.state.wave;
-      }
       game.startWave();
     }
     game.tick(DT);
@@ -88,6 +146,10 @@ function play(strategy: "mixed" | "squirrels" | "remote") {
       lives: game.state.lives,
       bank: game.state.coins,
       time: game.state.clock,
+      goldEarned: game.state.goldEarned,
+      leaks: game.state.leaks,
+      towers: game.state.towers.length,
+      upgraded: game.state.towers.filter((tower) => tower.level === 2).length,
     });
   }
   return {
@@ -98,6 +160,8 @@ function play(strategy: "mixed" | "squirrels" | "remote") {
     time: game.state.clock,
     towers: game.state.towers,
     checkpoints,
+    kills: game.state.kills,
+    killsByKind: game.state.killsByKind,
   };
 }
 
@@ -113,8 +177,35 @@ describe("The Last Lantern's first-board lessons", () => {
       },
     );
 
-    expect(theLastLantern.waves).toHaveLength(5);
-    expect(theLastLantern.startCoins).toBe(120);
+    expect(theLastLantern.waves).toHaveLength(6);
+    expect(theLastLantern.requiresBossDefeat).toBe(true);
+    expect(theLastLantern.startCoins).toBe(235);
+    expect(ENEMIES.boss.hp).toBe(2200);
+    const finalGroups = theLastLantern.waves[5].groups;
+    const bossIndex = finalGroups.findIndex((group) => group.kind === "boss");
+    const escortGroups = finalGroups.slice(bossIndex + 1);
+    expect(escortGroups.map((group) => [group.kind, group.count])).toEqual([
+      ["runner", 7],
+      ["raider", 5],
+      ["runner", 7],
+      ["raider", 5],
+      ["runner", 7],
+    ]);
+    let queuedAt = 0.7;
+    const groupStarts = finalGroups.map((group) => {
+      queuedAt += group.delayBefore ?? 0;
+      const start = queuedAt;
+      queuedAt += group.count * group.gap;
+      return start;
+    });
+    expect(
+      escortGroups.map(
+        (_, index) =>
+          Math.round(
+            (groupStarts[bossIndex + 1 + index] - groupStarts[bossIndex]) * 10,
+          ) / 10,
+      ),
+    ).toEqual([4.5, 14.5, 24.5, 34.5, 44.5]);
     expect(theLastLantern.availableTowers).toEqual(["bolt", "net"]);
     expect(game.place("stone", { x: 1, z: 0 })).toBe(false);
     expect(game.place("net", { x: 2, z: 0 })).toBe(true);
@@ -124,7 +215,16 @@ describe("The Last Lantern's first-board lessons", () => {
   });
 
   it("shows a net slowing a runner, freezing on pause, and expiring cleanly", () => {
-    const game = new Game(theLastLantern);
+    const game = new Game({
+      ...theLastLantern,
+      waves: [
+        {
+          title: "Net feedback",
+          reward: 0,
+          groups: [{ kind: "runner", count: 1, gap: 1 }],
+        },
+      ],
+    });
     expect(game.place("net", { x: 2, z: 0 })).toBe(true);
     expect(game.startWave()).toBe(true);
 
@@ -159,41 +259,49 @@ describe("The Last Lantern's first-board lessons", () => {
   });
 
   it.each(["mixed", "squirrels"] as const)(
-    "clears all five teaching waves using the %s line",
+    "records wave-six pressure against the %s opening line",
     (strategy) => {
       const result = play(strategy);
-      expect(result.phase).toBe("won");
-      expect(result.waves).toBe(5);
-      expect(result.lives).toBeGreaterThan(0);
-      expect(result.checkpoints).toHaveLength(5);
+      expect(result.phase).toBe("lost");
+      expect(result.waves).toBe(6);
+      expect(result.lives).toBe(strategy === "squirrels" ? 1 : 0);
+      expect(result.killsByKind.boss).toBe(0);
+      expect(result.checkpoints).toHaveLength(6);
+      expect(waveProfile(result.checkpoints)).toEqual(
+        strategy === "mixed"
+          ? [
+              [1, 68.4, 12, 0, 55, 85, 5, 1],
+              [2, 56, 12, 0, 60, 100, 6, 2],
+              [3, 61.4, 12, 0, 35, 110, 8, 3],
+              [4, 71.6, 6, 6, 67, 152, 11, 3],
+              [5, 75.1, 2, 10, 65, 203, 12, 6],
+              [6, 68.8, 0, 11, 29, 74, 12, 8],
+            ]
+          : [
+              [1, 63.9, 12, 0, 50, 85, 4, 2],
+              [2, 53.5, 12, 0, 30, 100, 7, 2],
+              [3, 46.6, 12, 0, 60, 110, 9, 2],
+              [4, 64.6, 10, 2, 45, 160, 12, 3],
+              [5, 75.5, 7, 5, 85, 205, 12, 6],
+              [6, 63.6, 1, 6, 51, 76, 12, 8],
+            ],
+      );
     },
   );
 
-  it("shows how a late remote net falls short without damage support", () => {
-    const result = play("remote");
+  it("also pressures a line with one poorly placed opening Squirrel", () => {
+    const result = play("mistake");
     expect(result.phase).toBe("lost");
     expect(result.lives).toBe(0);
-    expect(result.waves).toBe(4);
-    expect(result.towers.filter((tower) => tower.kind === "bolt")).toHaveLength(
-      3,
-    );
-    expect(result.towers.filter((tower) => tower.kind === "net")).toHaveLength(
-      1,
-    );
-    expect(
-      result.checkpoints.map((checkpoint, index) => [
-        checkpoint.wave,
-        Math.round(
-          (checkpoint.time - (result.checkpoints[index - 1]?.time ?? 0)) * 10,
-        ) / 10,
-        checkpoint.lives,
-        checkpoint.bank,
-      ]),
-    ).toEqual([
-      [1, 52.5, 12, 3],
-      [2, 29.6, 12, 55],
-      [3, 64.5, 10, 109],
-      [4, 45.5, 0, 129],
+    expect(result.killsByKind.boss).toBe(0);
+    expect(result.checkpoints).toHaveLength(6);
+    expect(waveProfile(result.checkpoints)).toEqual([
+      [1, 64.6, 12, 0, 50, 85, 4, 2],
+      [2, 51.4, 12, 0, 30, 100, 7, 2],
+      [3, 51.2, 12, 0, 60, 110, 9, 2],
+      [4, 64.6, 9, 3, 43, 158, 12, 3],
+      [5, 75.1, 2, 10, 75, 197, 12, 6],
+      [6, 63.6, 0, 11, 41, 76, 12, 8],
     ]);
   });
 });

@@ -543,7 +543,7 @@ export class Battlefield {
     views: readonly StatusGlyphView[],
   ) {
     const active = new Set<StatusGlyphKind>();
-    for (const view of views) {
+    for (const [index, view] of views.entries()) {
       active.add(view.kind);
       let glyph = figure.statusGlyphs?.get(view.kind);
       if (!glyph && (view.opacity > 0.005 || view.flash > 0.005)) {
@@ -554,8 +554,13 @@ export class Battlefield {
       }
       if (!glyph) continue;
       const center = position(point);
-      glyph.group.position.set(center.x, center.y + anchorHeight + 34, 0);
-      glyph.update(view.opacity, view.flash);
+      const horizontalOffset = (index - (views.length - 1) / 2) * 24;
+      glyph.group.position.set(
+        center.x + horizontalOffset,
+        center.y + anchorHeight + 34,
+        0,
+      );
+      glyph.update(view.opacity, view.flash, views.length > 1 ? 0.78 : 1);
     }
     for (const [kind, glyph] of figure.statusGlyphs ?? [])
       if (!active.has(kind)) glyph.update(0, 0);
@@ -745,7 +750,9 @@ export class Battlefield {
           ? 0xffc5a2
           : e.slowUntil > s.clock
             ? 0xb9dfd1
-            : 0xffffff,
+            : e.rallyUntil !== undefined && e.rallyUntil > s.clock
+              ? 0xffd28e
+              : 0xffffff,
       );
       const guard = ratShieldState(s.clock - e.spawnedAt, e.shieldCycle);
       const flashAge =
@@ -769,22 +776,29 @@ export class Battlefield {
         0,
       );
       f.sprite.position.add(evadeOffset);
-      this.updateStatusGlyphs(
-        f,
-        e,
-        height,
-        e.kind === "raider"
-          ? [{ kind: "shield", opacity: guard.strength, flash }]
-          : e.kind === "runner"
-            ? [
-                {
-                  kind: "evade",
-                  opacity: evasion.active ? 1 : evasion.warning ? 0.35 : 0,
-                  flash: evadeFlash,
-                },
-              ]
-            : [],
-      );
+      const rallyWarning =
+        e.kind === "boss" &&
+        e.nextRallyAt !== undefined &&
+        s.clock >= e.nextRallyAt - 1 &&
+        s.clock < e.nextRallyAt;
+      const statuses: StatusGlyphView[] = [];
+      if (e.kind === "raider")
+        statuses.push({ kind: "shield", opacity: guard.strength, flash });
+      if (e.kind === "runner")
+        statuses.push({
+          kind: "evade",
+          opacity: evasion.active ? 1 : evasion.warning ? 0.35 : 0,
+          flash: evadeFlash,
+        });
+      if (e.rallyUntil !== undefined && e.rallyUntil > s.clock)
+        statuses.push({ kind: "rally", opacity: 1, flash: 0 });
+      if (rallyWarning)
+        statuses.push({
+          kind: "rally",
+          opacity: 1,
+          flash: Math.sin((s.clock - (e.nextRallyAt! - 1)) * Math.PI),
+        });
+      this.updateStatusGlyphs(f, e, height, statuses);
       const next = pointOnPath(game.level.path, e.distance + 0.02);
       const vertical = Math.abs(next.z - e.z) > Math.abs(next.x - e.x);
       const desiredRig = vertical

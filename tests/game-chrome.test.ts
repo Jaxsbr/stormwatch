@@ -30,4 +30,21 @@ describe("result card discovery rewards", () => {
     expect(resultCard(result)).not.toContain("Tower Upgrade");
     expect(resultCard(result)).toContain("Back to map");
   });
+
+  it("celebrates the first-board finish and shows its two replay advantages", () => {
+    const card = resultCard(
+      { ...result, killsByKind: { ...result.killsByKind, boss: 1 } },
+      [
+        { kind: "advantage-unlock", card: "reach" },
+        { kind: "advantage-unlock", card: "nets" },
+      ],
+      true,
+    );
+    expect(card).toContain("First Board Complete!");
+    expect(card).toContain("The Roadwarden is turned back");
+    expect(card).toContain("Reach");
+    expect(card).toContain("Longer Nets");
+    expect(card).toContain("+18% tower range");
+    expect(card).toContain("+50% slow duration");
+  });
 });
