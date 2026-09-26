@@ -24,6 +24,8 @@ export interface AttemptViewOptions {
   onFinish(): void;
   onBranch?(): boolean;
   isReplayLocked?(): boolean;
+  isPreparationHeld?(): boolean;
+  onContinueReplay?(): boolean;
 }
 
 /** Presentation adapter only. The caller owns the immutable attempt and evidence. */
@@ -42,7 +44,7 @@ export function mountAttempt(
   const sound = new Sound();
   sound.unlock();
   const kinds = game.level.availableTowers ?? ["bolt", "stone", "net"];
-  host.innerHTML = `<main class="battle-screen workbench-attempt"><header class="battle-header"><div class="battle-brand"><strong>${escape(game.level.name)}</strong><small>${escape(options.label)}</small></div>${battleStats(game.level.waves.length)}<div class="battle-tools">${button("speed", "1×", "icon-button")}${button("pause", "Pause", "quiet")}${button("restart", "Restart", "quiet")}${button("exit", "Workbench", "quiet")}</div></header><div class="battle-middle"><section class="battlefield"><div id="canvas-host"></div><div id="wave-countdown" class="wave-countdown" hidden></div><div class="wb-attempt-notice" role="status"></div><div class="wb-boss" hidden></div></section><aside class="battle-aside"><div class="wave-controls">${button("start", "Start first wave", "primary")}${options.onBranch ? button("branch", "Take manual control at preparation", "quiet") : ""}</div></aside></div><footer class="build-tray"><section id="selection-panel" class="selection-panel" hidden></section><div class="tray-label"><strong id="build-label">Choose a defender</strong>${button("cancel", "Cancel", "quiet small")}</div><div class="tower-buttons">${kinds.map((kind) => `<button class="tower-button" data-action="build:${kind}" aria-pressed="false">${towerPortrait(kind)}<span><strong>${escape(game.towers[kind].name)}</strong><small>${escape(game.towers[kind].role)}</small></span><b>${game.towers[kind].cost}<small> crowns</small></b></button>`).join("")}</div></footer></main>`;
+  host.innerHTML = `<main class="battle-screen workbench-attempt"><header class="battle-header"><div class="battle-brand"><strong>${escape(game.level.name)}</strong><small>${escape(options.label)}</small></div>${battleStats(game.level.waves.length)}<div class="battle-tools">${button("speed", "1×", "icon-button")}${button("pause", "Pause", "quiet")}${button("restart", "Restart", "quiet")}${button("exit", "Workbench", "quiet")}</div></header><div class="battle-middle"><section class="battlefield"><div id="canvas-host"></div><div id="wave-countdown" class="wave-countdown" hidden></div><div class="wb-attempt-notice" role="status"></div><div class="wb-boss" hidden></div></section><aside class="battle-aside"><div class="wave-controls">${button("start", "Start first wave", "primary")}${options.onBranch ? button("branch", "Take manual control at preparation", "quiet") : ""}${options.onContinueReplay ? button("continue-replay", "Continue replay", "quiet") : ""}</div></aside></div><footer class="build-tray"><section id="selection-panel" class="selection-panel" hidden></section><div class="tray-label"><strong id="build-label">Choose a defender</strong>${button("cancel", "Cancel", "quiet small")}</div><div class="tower-buttons">${kinds.map((kind) => `<button class="tower-button" data-action="build:${kind}" aria-pressed="false">${towerPortrait(kind)}<span><strong>${escape(game.towers[kind].name)}</strong><small>${escape(game.towers[kind].role)}</small></span><b>${game.towers[kind].cost}<small> crowns</small></b></button>`).join("")}</div></footer></main>`;
   let field: Battlefield;
   try {
     field = new Battlefield(host.querySelector<HTMLElement>("#canvas-host")!);
@@ -161,6 +163,17 @@ export function mountAttempt(
       '[data-action="upgrade"],[data-action="sell"]',
     ))
       if (replayLocked) node.disabled = true;
+    const held = options.isPreparationHeld?.() ?? false;
+    host.querySelector<HTMLButtonElement>('[data-action="pause"]')!.disabled =
+      held;
+    const continueButton = host.querySelector<HTMLButtonElement>(
+      '[data-action="continue-replay"]',
+    );
+    if (continueButton) continueButton.disabled = !held;
+    if (held)
+      notice(
+        "Replay held at the selected wave preparation. Continue replay or take manual control; the preparation countdown is frozen.",
+      );
     if (branch)
       branch.disabled = !replayLocked || state.phase !== "preparation";
   }
@@ -203,7 +216,9 @@ export function mountAttempt(
       host.querySelector('[data-action="speed"]')!.textContent = `${speed}×`;
     } else if (action === "restart") options.onRestart();
     else if (action === "exit") options.onExit();
-    else if (action === "branch")
+    else if (action === "continue-replay") {
+      if (options.onContinueReplay?.()) notice("Replay continued.");
+    } else if (action === "branch")
       notice(
         options.onBranch?.()
           ? "Manual control: prior replay retained."
@@ -215,13 +230,19 @@ export function mountAttempt(
     if (disposed) return;
     const elapsed = Math.min(0.1, (now - last) / 1000);
     last = now;
-    if (game.state.phase !== "paused") {
+    if (options.isPreparationHeld?.()) accumulator = 0;
+    else if (game.state.phase !== "paused") {
       accumulator += elapsed;
       while (accumulator >= 1 / 30) {
         const steps = game.state.phase === "preparation" ? 1 : speed;
         for (let count = 0; count < steps; count++) {
+          if (options.isPreparationHeld?.()) break;
           if (count > 0 && game.state.phase === "preparation") break;
           for (const event of options.step()) sound.play(event.type);
+        }
+        if (options.isPreparationHeld?.()) {
+          accumulator = 0;
+          break;
         }
         accumulator -= 1 / 30;
       }

@@ -2,6 +2,9 @@
 import { readFile } from "node:fs/promises";
 import { createServer } from "vite";
 const server = await createServer({
+  logLevel: "silent",
+  cacheDir: "node_modules/.vite/workbench-cli",
+  optimizeDeps: { noDiscovery: true, include: [] },
   server: { middlewareMode: true, hmr: false, ws: false },
   appType: "custom",
 });

@@ -295,4 +295,68 @@ describe("workbench real attempts and evidence", () => {
       session.command({ type: "place", kind: "bolt", point: { x: 3, z: 2 } }),
     ).toBe(true);
   });
+  it("holds authentic later-wave replay preparation until continue or manual branch", () => {
+    const c = small();
+    c.enemies.raider.hp = 10;
+    c.levels[0].waves.push({
+      ...structuredClone(c.levels[0].waves[0]),
+      id: "later",
+      title: "Later",
+    });
+    const recorded = runScenario(c, scenario(), {
+      policyId: "lantern-growth",
+      maxTicks: 3000,
+    });
+    expect(recorded.success).toBe(true);
+    const held = new AttemptSession(c, scenario());
+    held.replay(recorded.trace, { stopAtPreparationWaveId: "later" });
+    for (let n = 0; n < 3000 && !held.preparationHeld; n++) held.step();
+    expect(held.preparationHeld).toBe(true);
+    expect(held.game.state.phase).toBe("preparation");
+    expect(held.game.state.wave).toBe(1);
+    expect(held.checkpoints[0]).toEqual(recorded.checkpoints[0]);
+    const tick = held.tickIndex,
+      clock = held.game.state.clock,
+      countdown = held.game.state.nextWaveCountdown,
+      trace = structuredClone(held.trace);
+    for (let n = 0; n < 100; n++) expect(held.step()).toEqual([]);
+    expect([
+      held.tickIndex,
+      held.game.state.clock,
+      held.game.state.nextWaveCountdown,
+    ]).toEqual([tick, clock, countdown]);
+    expect(held.command({ type: "pause" })).toBe(false);
+    expect(held.game.state.phase).toBe("preparation");
+    expect(held.continueReplay()).toBe(true);
+    held.step();
+    expect(held.game.state.phase).toBe("wave");
+    const branched = new AttemptSession(c, scenario());
+    branched.replay(recorded.trace, { stopAtPreparationWaveId: "later" });
+    while (!branched.preparationHeld) branched.step();
+    expect(branched.branch()).toBe(true);
+    expect(branched.trace).toEqual(trace);
+    expect(branched.preparationHeld).toBe(false);
+    expect(branched.replayLocked).toBe(false);
+    expect(branched.command({ type: "start" })).toBe(true);
+  });
+  it("holds initial isolated-wave preparation and rejects unknown replay targets", () => {
+    const c = small();
+    const session = new AttemptSession(c, {
+      ...scenario(),
+      mode: "wave",
+      waveId: "short",
+    });
+    expect(() =>
+      session.replay([], { stopAtPreparationWaveId: "missing" }),
+    ).toThrow(/Unknown/);
+    session.replay([{ tick: 0, command: { type: "start" }, accepted: true }], {
+      stopAtPreparationWaveId: "short",
+    });
+    expect(session.preparationHeld).toBe(true);
+    session.step();
+    expect(session.tickIndex).toBe(0);
+    session.continueReplay();
+    session.step();
+    expect(session.game.state.phase).toBe("wave");
+  });
 });

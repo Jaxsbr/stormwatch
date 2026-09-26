@@ -23,6 +23,9 @@ if (
   process.exitCode = 1;
 } else {
   const server = await createServer({
+    logLevel: "silent",
+    cacheDir: "node_modules/.vite/workbench-cli",
+    optimizeDeps: { noDiscovery: true, include: [] },
     root,
     server: { middlewareMode: true, hmr: false, ws: false },
     appType: "custom",

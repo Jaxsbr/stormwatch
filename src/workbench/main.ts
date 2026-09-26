@@ -480,7 +480,8 @@ function launch(replay = false) {
   } else scenario = readScenario();
   const commandsToReplay = replay ? replayTrace : undefined;
   const session = new AttemptSession(content, scenario);
-  if (commandsToReplay) session.replay(commandsToReplay);
+  if (commandsToReplay)
+    session.replay(commandsToReplay, { stopAtPreparationWaveId: waveId });
   lastAttemptContent = clone(content);
   lastAttemptScenario = clone(scenario);
   lastAttemptRevision = revision;
@@ -497,6 +498,8 @@ function launch(replay = false) {
     label: `${revision?.name ?? "Released"} · ${session.synthetic ? (scenario.mode === "wave" ? "Synthetic isolated wave" : "Full encounter · overridden setup") : "Full encounter"} · ${scenario.progression}`,
     command: (command) => session.command(command),
     isReplayLocked: () => session.replayLocked,
+    isPreparationHeld: () => session.preparationHeld,
+    ...(replay ? { onContinueReplay: () => session.continueReplay() } : {}),
     step: () => session.step(),
     onExit: () => {
       saveReport(

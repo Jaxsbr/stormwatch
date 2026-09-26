@@ -131,6 +131,8 @@ export class AttemptSession {
   events: RunReport["events"] = [];
   private pending: RecordedCommand[] = [];
   replayLocked = false;
+  preparationHeld = false;
+  private stopAtPreparationWaveId?: string;
   constructor(content: AuthoringContent, scenario: Scenario) {
     const resolved = resolveScenario(content, scenario);
     this.scenario = resolved.scenario;
@@ -169,6 +171,7 @@ export class AttemptSession {
     this.game.drainEvents();
   }
   command(command: LegalCommand): boolean {
+    if (this.preparationHeld) return false;
     if (this.replayLocked && command.type !== "pause") return false;
     return this.applyCommand(command);
   }
@@ -190,21 +193,52 @@ export class AttemptSession {
       });
     return accepted;
   }
-  replay(trace: RecordedCommand[]) {
+  replay(
+    trace: RecordedCommand[],
+    options: { stopAtPreparationWaveId?: string } = {},
+  ) {
+    if (
+      options.stopAtPreparationWaveId &&
+      !this.game.level.waves.some(
+        (w) => w.id === options.stopAtPreparationWaveId,
+      )
+    )
+      throw new Error("Unknown replay preparation wave");
     validateTrace(trace);
     if (trace.some((c) => c.tick < this.tickIndex))
       throw new Error("Replay begins before current tick");
     this.pending = structuredClone(trace);
     this.replayLocked = true;
+    this.stopAtPreparationWaveId = options.stopAtPreparationWaveId;
+    this.checkPreparationHold();
+  }
+  private checkPreparationHold() {
+    if (
+      this.stopAtPreparationWaveId &&
+      this.game.state.phase === "preparation" &&
+      this.game.level.waves[this.game.state.wave]?.id ===
+        this.stopAtPreparationWaveId
+    )
+      this.preparationHeld = true;
+  }
+  continueReplay() {
+    if (!this.preparationHeld) return false;
+    this.preparationHeld = false;
+    this.stopAtPreparationWaveId = undefined;
+    return true;
   }
   branch() {
     if (this.game.state.phase !== "preparation")
       throw new Error("Branching requires preparation");
     this.pending = [];
     this.replayLocked = false;
+    this.preparationHeld = false;
+    this.stopAtPreparationWaveId = undefined;
     return true;
   }
   step(): GameEvent[] {
+    this.checkPreparationHold();
+    if (this.preparationHeld) return [];
     while (this.pending.length && this.pending[0].tick === this.tickIndex)
       this.applyCommand(this.pending.shift()!.command);
     this.game.tick(FIXED_STEP);
@@ -227,6 +261,7 @@ export class AttemptSession {
         });
       }
     }
+    this.checkPreparationHold();
     return events;
   }
   report(
