@@ -1,3 +1,4 @@
+import { engineRevision } from "./tools/engine-revision.mjs";
 import { defineConfig, type Plugin } from "vite";
 
 const utilityModule =
@@ -28,6 +29,7 @@ export default defineConfig(({ command, mode }) => {
   return {
     base: "./",
     define: {
+      __STORMWATCH_ENGINE_REVISION__: JSON.stringify(engineRevision()),
       __STORMWATCH_QA__: JSON.stringify(command === "serve" || target === "qa"),
     },
     plugins:
