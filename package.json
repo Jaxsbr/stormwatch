@@ -19,7 +19,8 @@
     "build:workbench": "tsc --noEmit && vite build --mode workbench",
     "build:qa": "tsc --noEmit && vite build --mode qa",
     "check:artifact": "node tools/check-production-artifact.mjs",
-    "workbench:promote": "node tools/promote-workbench.mjs"
+    "workbench:promote": "node tools/promote-workbench.mjs",
+    "workbench": "node tools/workbench.mjs"
   },
   "dependencies": {
     "three": "0.186.0"

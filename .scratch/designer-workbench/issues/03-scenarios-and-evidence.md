@@ -1,6 +1,6 @@
 # 03: scenarios and evidence
 
-Status: ready-for-agent
+Status: resolved
 Type: task
 Blocked by: 01
 
@@ -15,3 +15,5 @@ Follow the applicable implementation and testing decisions in the spec. No campa
 ## Comments
 
 - Implementation task graph synthesized from the authorized specification.
+
+- Implemented scenario/progression resolution, legal formations and recorded/replayed commands, preparation branching, named policies, completion goals, bounded search, matched comparisons and reproducible report/CLI operations in `cb8e10c` plus offline CLI followup `5915d32`. Nine focused scenario/evidence tests pass; final UI interface and persisted-envelope hardening are integrated before handoff.
