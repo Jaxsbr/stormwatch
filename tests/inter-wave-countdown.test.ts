@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { lanternPass } from "../src/content/lantern-pass";
 import { INTER_WAVE_COUNTDOWN_SECONDS, Game } from "../src/sim/game";
+import { advanceBattleFrame } from "../src/ui/battle-clock";
 
 const DT = 1 / 30;
 
@@ -32,7 +33,7 @@ function clearFirstWave(game: Game) {
 }
 
 describe("between-wave countdown", () => {
-  it("only starts after wave one, then starts wave two automatically after five seconds", () => {
+  it("only starts after wave one, then starts wave two automatically after ten seconds", () => {
     const game = gameWithTwoQuickWaves();
     step(game, 8);
     expect(game.state.phase).toBe("preparation");
@@ -40,7 +41,7 @@ describe("between-wave countdown", () => {
     expect(game.state.nextWaveCountdown).toBeNull();
 
     clearFirstWave(game);
-    step(game, 4.9);
+    step(game, 9.9);
     expect(game.state.phase).toBe("preparation");
     expect(game.state.nextWaveCountdown).toBeCloseTo(0.1, 5);
     step(game, 0.2);
@@ -54,7 +55,7 @@ describe("between-wave countdown", () => {
     clearFirstWave(game);
     step(game, 2);
     const remaining = game.state.nextWaveCountdown;
-    expect(remaining).toBeCloseTo(3, 5);
+    expect(remaining).toBeCloseTo(8, 5);
 
     game.pause();
     step(game, 8);
@@ -67,5 +68,18 @@ describe("between-wave countdown", () => {
     expect(game.state.phase).toBe("wave");
     expect(game.state.wave).toBe(2);
     expect(game.state.nextWaveCountdown).toBeNull();
+  });
+
+  it("uses real seconds for the countdown even when combat is set to 2×", () => {
+    const game = gameWithTwoQuickWaves();
+    clearFirstWave(game);
+
+    for (let i = 0; i < 50; i++) advanceBattleFrame(game, 0.1, 2);
+    expect(game.state.phase).toBe("preparation");
+    expect(game.state.nextWaveCountdown).toBeCloseTo(5, 5);
+
+    for (let i = 0; i < 51; i++) advanceBattleFrame(game, 0.1, 2);
+    expect(game.state.phase).toBe("wave");
+    expect(game.state.wave).toBe(2);
   });
 });

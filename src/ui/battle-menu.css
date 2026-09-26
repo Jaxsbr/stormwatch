@@ -8,7 +8,7 @@
   isolation: isolate;
   width: min(480px, calc(100vw - 32px));
   height: 440px;
-  max-height: calc(100dvh - 28px);
+  max-height: calc(var(--app-height, 100dvh) - 28px);
   padding: 32px 38px;
   color: #fff0ce;
   display: flex;

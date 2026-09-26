@@ -7,34 +7,56 @@ import "./ui/battle-menu.css";
 import { BattleMenu } from "./ui/battle-menu";
 import { battleStats, defenderPanel, displayedWave } from "./ui/battle-ui";
 import { button, resultCard } from "./ui/game-chrome";
+import { fitVisibleViewport } from "./ui/visible-viewport";
+import { advanceBattleFrame } from "./ui/battle-clock";
 import { advantageScreen } from "./ui/advantage-screen";
 import { Game } from "./sim/game";
 import type { CardId, Point, TowerKind } from "./sim/types";
-import { TOWERS, CARDS } from "./content/catalog";
+import { TOWERS } from "./content/catalog";
 import { LEVELS } from "./content/levels";
+import {
+  availableCards,
+  initialCard,
+  levelUnlocked,
+} from "./content/progression";
 import { Battlefield } from "./render/battlefield";
 import { attachRecording } from "./render/recording";
 import { towerPortrait, paintTowerPortraits } from "./render/portraits";
 import { Sound } from "./audio/sound";
+import { recordVictory, SAVE_KEY } from "./persistence/save";
 import {
-  freshSave,
-  parseSave,
-  recordVictory,
-  SAVE_KEY,
-} from "./persistence/save";
+  loadProfiles,
+  PROFILES_KEY,
+  type PlayerSlot,
+} from "./persistence/profiles";
 
 const app = document.querySelector<HTMLDivElement>("#app")!;
-let save = freshSave();
+function updateVisibleViewport() {
+  fitVisibleViewport(document.documentElement.style, window);
+}
+updateVisibleViewport();
+window.addEventListener("resize", updateVisibleViewport);
+window.addEventListener("orientationchange", updateVisibleViewport);
+window.visualViewport?.addEventListener("resize", updateVisibleViewport);
+window.visualViewport?.addEventListener("scroll", updateVisibleViewport);
+let profiles = loadProfiles(null, null);
 try {
-  save = parseSave(localStorage.getItem(SAVE_KEY));
+  profiles = loadProfiles(
+    localStorage.getItem(PROFILES_KEY),
+    localStorage.getItem(SAVE_KEY),
+  );
 } catch {
   /* Storage is optional; play continues in memory. */
+}
+let save = profiles.slots[profiles.active];
+function initialCardForLevel(index: number): CardId {
+  return initialCard(availableCards(LEVELS[index], save));
 }
 const sound = new Sound();
 sound.musicVolume = save.music;
 sound.effectsVolume = save.effects;
 sound.muted = save.muted;
-type Screen = "title" | "map" | "briefing" | "battle";
+type Screen = "title" | "map" | "briefing" | "battle" | "result";
 let screen: Screen = "title",
   levelIndex = 0,
   card: CardId = "none",
@@ -44,7 +66,6 @@ let screen: Screen = "title",
   selected: number | null = null,
   settings = false,
   settingsPaused = false,
-  assisted = false,
   resultSaved = false,
   resultUnlockedUpgrade = false,
   speed = 1;
@@ -52,6 +73,7 @@ let lastTime = 0,
   lastHud = 0,
   noticeUntil = 0;
 let noticeText = "";
+let lastDefeatLevelId: string | null = null;
 let frameHandle = 0;
 let battleMenu: BattleMenu | null = null;
 let disposeRecording: (() => void) | undefined;
@@ -62,8 +84,9 @@ const portrait = (index: number, cls = "") =>
     : `<img class="portrait character-portrait ${cls}" src="${import.meta.env.BASE_URL}art/v2/${["rat", "weasel", "boar", "badger"][index - 4]}-rig-v1/body.webp" alt="" aria-hidden="true">`;
 const stars = (n: number) => "★".repeat(n) + "☆".repeat(3 - n);
 function persist() {
+  profiles.slots[profiles.active] = save;
   try {
-    localStorage.setItem(SAVE_KEY, JSON.stringify(save));
+    localStorage.setItem(PROFILES_KEY, JSON.stringify(profiles));
   } catch {
     toast("Progress is kept for this visit. Browser storage is unavailable.");
   }
@@ -92,23 +115,25 @@ function render() {
   if (screen === "title")
     app.innerHTML = `<main class="title-screen"><div class="title-shade"></div><div class="title-top"><span></span>${button("settings", "Settings", "quiet")}</div><section class="title-copy"><h1>STORM<span>WATCH</span></h1>${button("map", "Play", "primary large")}</section></main>`;
   if (screen === "map")
-    app.innerHTML = `<main class="menu-screen expedition"><section class="map-heading"><h1>Choose your crossing</h1></section><div class="expedition-map"><div class="map-land"></div>${LEVELS.map(
+    app.innerHTML = `<main class="menu-screen expedition"><section class="map-heading"><h1>Choose your crossing</h1><nav class="player-slots" aria-label="Player progress">${([0, 1] as const).map((slot) => `<button data-action="profile:${slot}" aria-pressed="${profiles.active === slot}">Player ${slot + 1}</button>`).join("")}</nav></section><div class="expedition-map"><div class="map-land"></div>${LEVELS.map(
       (l, i) => {
-        const unlocked = i === 0 || (save.stars[LEVELS[i - 1].id] ?? 0) > 0;
-        return `<button class="map-node node-${i} ${unlocked ? "" : "locked"}" data-action="level:${i}" ${unlocked ? "" : "disabled"}><span class="node-medallion">${unlocked ? "♜" : "⌑"}</span><span class="node-number">0${i + 1}</span><strong>${l.name}</strong><span class="map-stars">${stars(save.stars[l.id] ?? 0)}</span><small>${unlocked ? "" : "Complete Lantern Pass"}</small></button>`;
+        const unlocked = levelUnlocked(LEVELS, i, save);
+        return `<button class="map-node node-${i} ${unlocked ? "" : "locked"}" data-action="level:${i}" ${unlocked ? "" : "disabled"}><span class="node-medallion">${unlocked ? "♜" : "⌑"}</span><span class="node-number">0${i + 1}</span><strong>${l.name}</strong><span class="map-stars">${stars(save.stars[l.id] ?? 0)}</span><small>${unlocked ? "" : `Complete ${LEVELS[i - 1].name}`}</small></button>`;
       },
     ).join(
       "",
     )}</div><footer class="menu-footer">${button("title", "Back", "quiet")}</footer></main>`;
   if (screen === "briefing") {
-    const cards = CARDS.filter((c) => save.unlocked.includes(c.id));
     app.innerHTML = advantageScreen(
       LEVELS[levelIndex],
-      cards.map((c) => c.id),
+      availableCards(LEVELS[levelIndex], save),
       card,
+      lastDefeatLevelId === LEVELS[levelIndex].id,
     );
   }
   if (screen === "battle") renderBattle();
+  if (screen === "result" && game)
+    app.innerHTML = `<main class="result-screen">${resultCard(game.state, resultUnlockedUpgrade ? [{ kind: "tower-upgrade", tower: "bolt" }] : [])}</main>`;
   void paintTowerPortraits(app);
   app.insertAdjacentHTML(
     "beforeend",
@@ -119,7 +144,7 @@ function renderBattle() {
   const l = LEVELS[levelIndex];
   const availableTowers =
     l.availableTowers ?? (Object.keys(TOWERS) as TowerKind[]);
-  app.innerHTML = `<main class="battle-screen"><header class="battle-header"><div class="battle-brand"><div><strong>${l.name}</strong></div></div>${battleStats(l.waves.length)}<div class="battle-tools">${button("speed", "1×", "icon-button", 'aria-label="Game speed" id="speed"')}${button("menu", "Menu", "icon-button", 'aria-label="Menu" id="battle-menu"')}</div></header><div class="battle-middle"><section class="battlefield"><div id="canvas-host"></div><div class="field-heading"><span class="eyebrow" id="phase-label">PREPARATION</span><p id="field-instruction">Choose a structure below, then tap open ground.</p></div><div id="result-overlay" class="result-overlay" hidden></div></section><aside class="battle-aside"><div class="wave-controls"><p id="wave-countdown" class="wave-countdown" role="status" aria-live="polite" hidden></p>${button("start", "Start wave", "primary", 'id="start-wave"')}</div></aside></div><footer class="build-tray"><section id="selection-panel" class="selection-panel"></section><div class="tray-label"><strong id="build-label">Choose a structure</strong>${button("cancel", "Cancel", "quiet small", 'id="cancel" hidden')}</div><div class="tower-buttons">${availableTowers.map((k) => `<button class="tower-button" data-action="build:${k}" id="build-${k}">${portrait(TOWERS[k].sprite)}<span><strong>${TOWERS[k].name}</strong><small>${TOWERS[k].role}</small></span><b>${TOWERS[k].cost}<small> gold</small></b></button>`).join("")}</div></footer></main>`;
+  app.innerHTML = `<main class="battle-screen"><header class="battle-header"><div class="battle-brand"><div><strong>${l.name}</strong></div></div>${battleStats(l.waves.length)}<div class="battle-tools">${button("speed", "1×", "icon-button", 'aria-label="Game speed" id="speed"')}${button("menu", "Menu", "icon-button", 'aria-label="Menu" id="battle-menu"')}</div></header><div class="battle-middle"><section class="battlefield"><div id="canvas-host"></div><div id="wave-countdown" class="wave-countdown" role="status" aria-live="polite" hidden><span>Next wave in</span> <strong id="countdown-number">10</strong></div></section><aside class="battle-aside"><div class="wave-controls">${button("start", "Start first wave", "primary", 'id="start-wave"')}</div></aside></div><footer class="build-tray"><section id="selection-panel" class="selection-panel"></section><div class="tray-label"><strong id="build-label">Choose a structure</strong>${button("cancel", "Cancel", "quiet small", 'id="cancel" hidden')}</div><div class="tower-buttons">${availableTowers.map((k) => `<button class="tower-button" data-action="build:${k}" id="build-${k}">${portrait(TOWERS[k].sprite)}<span><strong>${TOWERS[k].name}</strong><small>${TOWERS[k].role}</small></span><b>${TOWERS[k].cost}<small> gold</small></b></button>`).join("")}</div></footer></main>`;
   try {
     field = new Battlefield(document.querySelector("#canvas-host")!);
     field.load(l);
@@ -170,9 +195,18 @@ function refreshHud(now: number) {
   lastHud = now;
 }
 function begin(assist = false) {
+  if (!levelUnlocked(LEVELS, levelIndex, save)) {
+    screen = "map";
+    render();
+    return;
+  }
+  if (
+    card !== "none" &&
+    !availableCards(LEVELS[levelIndex], save).includes(card)
+  )
+    card = "none";
   sound.pause(false);
   sound.unlock();
-  assisted = assist;
   game = new Game(LEVELS[levelIndex], card, assist, 42, {
     unlockedUpgrades: save.unlocked.includes("squirrel-upgrade")
       ? ["bolt"]
@@ -204,22 +238,6 @@ function updateHud() {
     .querySelector(".battle-screen")
     ?.classList.toggle("is-paused", s.phase === "paused");
   text(
-    "phase-label",
-    s.phase === "preparation"
-      ? `PREPARE FOR WAVE ${s.wave + 1}`
-      : s.phase === "wave"
-        ? l.waves[s.wave - 1].title.toUpperCase()
-        : s.phase.toUpperCase(),
-  );
-  text(
-    "field-instruction",
-    build
-      ? `Tap open ground to place ${TOWERS[build].name.toLowerCase()}.`
-      : s.phase === "preparation"
-        ? ""
-        : "",
-  );
-  text(
     "build-label",
     build ? `Placing ${TOWERS[build].name}` : "Choose a structure",
   );
@@ -236,15 +254,15 @@ function updateHud() {
         : activeWave
           ? `${s.enemies.length} on the trail`
           : s.wave > 0
-            ? `Start wave ${s.wave + 1} now`
-            : `Start wave ${s.wave + 1}`;
+            ? `Start wave ${s.wave + 1} early`
+            : "Start first wave";
   const countdown = document.getElementById("wave-countdown")!;
   const showCountdown =
     s.phase === "preparation" && s.nextWaveCountdown !== null;
   countdown.hidden = !showCountdown;
   if (showCountdown) {
     const seconds = Math.ceil(s.nextWaveCountdown!);
-    countdown.textContent = `Next wave starts in ${seconds} ${seconds === 1 ? "second" : "seconds"}`;
+    text("countdown-number", String(seconds));
   }
   if (s.phase === "paused" && !battleMenu) openBattleMenu();
   for (const k of Object.keys(TOWERS) as TowerKind[]) {
@@ -285,7 +303,7 @@ function updateHud() {
   if (s.phase === "won" || s.phase === "lost") showResult();
 }
 function showResult() {
-  if (!game) return;
+  if (!game || screen !== "battle") return;
   const s = game.state,
     won = s.phase === "won";
   if (won && !resultSaved) {
@@ -296,10 +314,10 @@ function showResult() {
     persist();
     resultSaved = true;
   }
-  const el = document.getElementById("result-overlay")!;
-  el.hidden = false;
-  if (el.innerHTML) return;
-  el.innerHTML = resultCard(s, resultUnlockedUpgrade, assisted);
+  lastDefeatLevelId = won ? null : game.level.id;
+  screen = "result";
+  render();
+  document.getElementById("result-title")?.focus();
 }
 function openBattleMenu() {
   if (!game || battleMenu || screen !== "battle") return;
@@ -392,6 +410,22 @@ app.addEventListener("click", (e) => {
     closeSettings();
     return;
   }
+  if (action === "profile" && screen === "map") {
+    if (value !== "0" && value !== "1") return;
+    profiles.active = Number(value) as PlayerSlot;
+    save = profiles.slots[profiles.active];
+    sound.musicVolume = save.music;
+    sound.effectsVolume = save.effects;
+    sound.muted = save.muted;
+    sound.apply();
+    sound.pause(false);
+    levelIndex = 0;
+    card = "none";
+    lastDefeatLevelId = null;
+    persist();
+    render();
+    return;
+  }
   if (action === "title" || action === "map") {
     sound.pause(false);
     sound.unlock();
@@ -401,13 +435,20 @@ app.addEventListener("click", (e) => {
     return;
   }
   if (action === "level") {
-    levelIndex = Number(value);
-    card = "none";
+    const nextLevel = Number(value);
+    if (!levelUnlocked(LEVELS, nextLevel, save)) return;
+    levelIndex = nextLevel;
+    card = initialCardForLevel(levelIndex);
     screen = "briefing";
     render();
     return;
   }
   if (action === "card") {
+    if (
+      value !== "none" &&
+      !availableCards(LEVELS[levelIndex], save).includes(value as CardId)
+    )
+      return;
     card = value as CardId;
     for (const option of app.querySelectorAll<HTMLButtonElement>(
       ".advantage-option",
@@ -419,11 +460,15 @@ app.addEventListener("click", (e) => {
     }
     return;
   }
-  if (action === "begin" || action === "retry") {
+  if (action === "begin") {
     begin();
     return;
   }
-  if (action === "assist") {
+  if (
+    action === "assist" &&
+    screen === "briefing" &&
+    lastDefeatLevelId === LEVELS[levelIndex].id
+  ) {
     begin(true);
     return;
   }
@@ -570,7 +615,7 @@ function frame(now: number) {
   syncOrientation();
   if (game && field) {
     const preparing = game.state.phase === "preparation";
-    game.advance(dt * speed);
+    advanceBattleFrame(game, rawDt, speed);
     if (preparing && game.state.phase === "wave") {
       clearBattleSelection();
       refreshHud(now);

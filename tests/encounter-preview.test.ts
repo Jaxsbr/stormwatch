@@ -38,4 +38,28 @@ describe("encounter roster", () => {
     expect(screen).not.toContain("Choose one advantage");
     expect(screen).not.toContain('data-action="card:');
   });
+  it("uses the map's actual defenders in later no-card briefings", () => {
+    const screen = advantageScreen(rainstoneCrossing, [], "none");
+    expect(screen).toContain("Ready for the crossing");
+    expect(screen).toContain("Squirrel archer");
+    expect(screen).toContain("Turtle trapper");
+    expect(screen).not.toContain("First watch");
+  });
+  it("summarizes a sole equipped advantage and offers None", () => {
+    const screen = advantageScreen(lanternPass, ["reach"], "reach");
+    expect(screen).toContain("Equipped advantage");
+    expect(screen).toContain('data-action="card:none" aria-pressed="false"');
+    expect(screen).toContain('data-action="card:reach" aria-pressed="true"');
+  });
+  it("asks for a choice between two applicable advantages", () => {
+    const screen = advantageScreen(
+      rainstoneCrossing,
+      ["reach", "nets"],
+      "none",
+    );
+    expect(screen).toContain("Choose one advantage");
+    expect(screen).toContain('data-action="card:none" aria-pressed="true"');
+    expect(screen).toContain('data-action="card:reach"');
+    expect(screen).toContain('data-action="card:nets"');
+  });
 });

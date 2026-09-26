@@ -1,4 +1,4 @@
-import { ENEMIES } from "../content/catalog";
+import { ENEMIES, TOWERS } from "../content/catalog";
 import type { CardId, EnemyKind, LevelDef } from "../sim/types";
 
 const advantages: Record<
@@ -55,7 +55,11 @@ export function advantageScreen(
   level: LevelDef,
   cards: CardId[],
   selected: CardId,
+  assistAvailable = false,
 ) {
+  const defenders = (level.availableTowers ?? ["bolt", "stone", "net"])
+    .map((kind) => TOWERS[kind].name)
+    .join(", ");
   return `<main class="advantage-screen" aria-labelledby="encounter-title">
     <h1 id="encounter-title">${level.name}</h1>
     <section class="encounter-roster" aria-labelledby="roster-title">
@@ -72,8 +76,10 @@ export function advantageScreen(
     ${
       cards.length
         ? `<section class="advantage-choice" aria-labelledby="advantage-title">
-      <h2 id="advantage-title">Choose one advantage</h2>
+      <h2 id="advantage-title">${cards.length === 1 ? "Equipped advantage" : "Choose one advantage"}</h2>
+      ${cards.length === 1 ? "<p>Your earned aid is ready for this encounter. Choose No advantage to leave it behind.</p>" : ""}
       <div class="advantage-options" role="group" aria-labelledby="advantage-title">
+        <button class="advantage-option no-advantage" data-action="card:none" aria-pressed="${selected === "none"}"><strong>No advantage</strong><span>Play with your usual defenders</span></button>
         ${cards
           .map((id) => {
             const {
@@ -90,11 +96,12 @@ export function advantageScreen(
           .join("")}
       </div>
     </section>`
-        : '<section class="first-watch-brief"><strong>First watch</strong><p>Begin with the Squirrel archer. More defenders and advantages are discovered as the expedition continues.</p></section>'
+        : `<section class="first-watch-brief"><strong>${level.id === "lantern-pass" ? "First watch" : "Ready for the crossing"}</strong><p>${level.id === "lantern-pass" ? "Begin with the Squirrel archer. More defenders and advantages are discovered as the expedition continues." : `Available defenders: ${defenders}. Watch the threats above and choose where to build.`}</p></section>`
     }
     <nav class="advantage-actions" aria-label="Encounter navigation">
       <button class="game-art-button" data-action="map">Back</button>
       <button class="game-art-button game-art-button--primary" data-action="begin">Play</button>
+      ${assistAvailable ? '<button class="game-art-button" data-action="assist">Easier retry</button>' : ""}
     </nav>
   </main>`;
 }

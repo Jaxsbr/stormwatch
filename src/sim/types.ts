@@ -129,6 +129,10 @@ export interface GameState {
   lives: number;
   maxLives: number;
   kills: number;
+  killsByKind: Record<EnemyKind, number>;
+  leaks: number;
+  /** Kill rewards plus fixed wave rewards; excludes starting gold and sales. */
+  goldEarned: number;
   towers: Tower[];
   enemies: Enemy[];
   shots: Shot[];

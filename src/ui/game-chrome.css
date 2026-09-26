@@ -51,7 +51,7 @@
   color: #f2dfb7;
 }
 .expedition .expedition-map {
-  width: min(88vw, calc((100dvh - 225px) * 1.7768));
+  width: min(88vw, calc((var(--app-height, 100dvh) - 225px) * 1.7768));
   max-width: 1100px;
 }
 .expedition .menu-footer {
@@ -62,7 +62,7 @@
 }
 .settings-card {
   width: 450px;
-  max-height: calc(100dvh - 24px);
+  max-height: calc(var(--app-height, 100dvh) - 24px);
   overflow: auto;
 }
 .settings-card label {
@@ -85,43 +85,6 @@
 .game-credits p {
   font-size: 13px;
   line-height: 1.5;
-}
-.result-card {
-  width: min(680px, 100%);
-}
-.result-card .unlock-note {
-  margin: 14px 0;
-  padding: 14px 18px;
-  border: 1px solid #d0a85c;
-  border-radius: 9px;
-  background: #29402fe8;
-  line-height: 1.5;
-}
-.result-card .unlock-note small {
-  color: #f6d987;
-  font:
-    800 12px/1 "DM Sans",
-    sans-serif;
-  letter-spacing: 1.4px;
-}
-.result-card .unlock-note h2 {
-  margin: 5px 0;
-  color: #fff0c0;
-  font-size: 26px;
-}
-.result-card .unlock-note p {
-  margin: 0;
-  font-size: 16px;
-}
-.result-card .assist-help {
-  margin-top: 16px !important;
-  font-size: 15px !important;
-}
-.result-card > small {
-  font-size: 14px;
-}
-.result-actions .game-art-button {
-  min-width: 140px;
 }
 .battle-screen .game-art-button {
   min-width: 0;
@@ -168,10 +131,6 @@
 .battle-screen .selection-actions {
   flex-wrap: wrap;
 }
-.field-instruction:empty,
-#field-instruction:empty {
-  display: none;
-}
 .battle-screen .economy-panel {
   border: solid transparent;
   border-width: 12px 11px 10px;
@@ -203,7 +162,7 @@
     font-size: 23px;
   }
   .title-screen {
-    min-height: 100dvh;
+    min-height: var(--app-height, 100dvh);
   }
   .title-screen .title-copy {
     top: 14%;
@@ -222,7 +181,7 @@
     font-size: 30px;
   }
   .expedition .expedition-map {
-    width: min(86vw, calc((100dvh - 140px) * 1.7768));
+    width: min(86vw, calc((var(--app-height, 100dvh) - 140px) * 1.7768));
   }
   .expedition .map-node {
     width: 155px;
@@ -287,5 +246,403 @@
   .battle-screen .result-card .game-art-button {
     min-height: 44px;
     font-size: 20px;
+  }
+}
+
+.expedition .player-slots {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 8px;
+}
+.player-slots button {
+  min-width: 112px;
+  min-height: 44px;
+  padding: 5px 14px;
+  border: 1px solid #b2955f;
+  border-radius: 6px;
+  background: #243129e8;
+  color: #e6d6b3;
+  font:
+    700 16px "DM Sans",
+    sans-serif;
+}
+.player-slots button[aria-pressed="true"] {
+  background: #806337;
+  color: #fff3cb;
+  box-shadow: inset 0 0 0 2px #e8c681;
+}
+
+.battle-screen .wave-countdown {
+  position: absolute;
+  top: 8px;
+  left: 50%;
+  z-index: 4;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 4px 16px;
+  border: 2px solid #d9b66d;
+  border-radius: 10px;
+  background: #172b27f2;
+  box-shadow: 0 7px 24px #000a;
+  pointer-events: none;
+  color: #ffedc6;
+  text-align: left;
+}
+.wave-countdown span {
+  font:
+    800 18px "DM Sans",
+    sans-serif;
+  white-space: nowrap;
+}
+.wave-countdown strong {
+  font: 700 40px/1 var(--serif);
+  color: #ffdc84;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Option C: open reward stage with a compact layout for repeat victories. */
+.result-screen {
+  height: var(--app-height, 100dvh);
+  display: flex;
+  overflow: auto;
+  padding: 24px;
+  background:
+    linear-gradient(#071b1dcc, #071516df),
+    url("../../public/art/v2/expedition-map-v1/atlas.webp") center/cover;
+}
+.result-screen .result-card {
+  width: min(940px, 100%);
+  max-width: none;
+  margin: auto;
+  padding: 0;
+  border: 0;
+  border-image: none;
+  border-radius: 0;
+  background: none;
+  box-shadow: none;
+  display: grid;
+  grid-template-columns: 180px minmax(0, 1fr);
+  gap: 30px;
+  align-items: center;
+  text-align: center;
+}
+.result-heading,
+.result-screen .result-actions {
+  grid-column: 1 / -1;
+}
+.result-screen .result-card h1 {
+  margin: 0;
+  color: #fff0c8;
+  font: 700 clamp(36px, 5vw, 58px)/1 var(--serif);
+  text-shadow: 0 4px 20px #000;
+}
+.result-screen .result-stars {
+  margin: 10px 0 0;
+  font-size: 31px;
+  letter-spacing: 5px;
+  line-height: 1.1;
+}
+.result-summary {
+  border-block: 1px solid #baa16655;
+  padding: 14px 0;
+  min-width: 0;
+}
+.result-accessible-total {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+.result-enemies {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.result-enemies li {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 5px;
+  padding-right: 12px;
+}
+.result-enemies img {
+  width: 55px;
+  height: 61px;
+  object-fit: contain;
+  filter: drop-shadow(0 5px 4px #0006);
+}
+.result-enemies strong {
+  color: #e9ddbc;
+  font:
+    700 18px/1 "DM Sans",
+    sans-serif;
+  font-variant-numeric: tabular-nums;
+}
+.result-gold-total {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  border-top: 1px solid #baa16633;
+  margin-top: 9px;
+  padding-top: 10px;
+}
+.result-gold-total strong {
+  color: #f8edce;
+  font: 700 35px/1 var(--serif);
+  font-variant-numeric: tabular-nums;
+}
+.result-gold-total img {
+  width: 46px;
+  height: 42px;
+  object-fit: contain;
+}
+.result-rewards {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 13px;
+  min-width: 0;
+}
+.result-reward {
+  position: relative;
+  flex: 0 0 170px;
+  width: 170px;
+  min-height: 222px;
+  padding: 13px 8px 10px;
+  border: 2px solid #a08045;
+  border-radius: 52px 52px 9px 9px;
+  background:
+    radial-gradient(ellipse at 50% 25%, #dfb55344, transparent 72%),
+    linear-gradient(#2d3c2eea, #142521ee);
+  box-shadow: 0 12px 40px #0008;
+  animation: reward-reveal 0.6s both;
+}
+.result-reward::before {
+  content: "✦";
+  position: absolute;
+  top: 5px;
+  right: 9px;
+  color: #e5be69;
+}
+.result-reward:nth-child(2) {
+  animation-delay: 0.1s;
+}
+.result-reward:nth-child(3) {
+  animation-delay: 0.2s;
+}
+.reward-art {
+  display: grid;
+  place-items: center;
+  height: 137px;
+}
+.reward-art .portrait {
+  width: 116px;
+  height: 130px;
+  filter: drop-shadow(0 5px 8px #0008);
+}
+.result-reward h2 {
+  margin: 5px 0 0;
+  color: #f8edce;
+  font: 700 23px/1.05 var(--serif);
+}
+.result-reward p {
+  margin: 5px 0 0;
+  color: #c8ba94;
+  font:
+    400 12px/1.2 "DM Sans",
+    sans-serif;
+}
+.result-screen .result-actions {
+  margin: 0;
+}
+.result-screen .result-actions .game-art-button {
+  min-width: 202px;
+  min-height: 58px;
+  font-size: 23px;
+}
+.result-screen .result-card:not(:has(.result-rewards)) {
+  width: min(450px, 100%);
+  display: flex;
+  flex-direction: column;
+  gap: 26px;
+}
+.result-card:not(:has(.result-rewards)) .result-summary {
+  width: 100%;
+  padding: 12px 28px;
+}
+.result-card:not(:has(.result-rewards)) .result-enemies {
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 12px;
+}
+.result-card:not(:has(.result-rewards)) .result-enemies img {
+  width: 94px;
+  height: 100px;
+}
+.result-card:not(:has(.result-rewards)) .result-enemies strong {
+  font-size: 28px;
+}
+@keyframes reward-reveal {
+  from {
+    opacity: 0;
+    transform: translateY(9px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .result-reward {
+    animation: none;
+  }
+}
+@media (max-height: 650px) {
+  .result-screen {
+    padding: 16px;
+  }
+  .result-screen .result-card {
+    gap: 15px 25px;
+  }
+  .result-screen .result-card h1 {
+    font-size: 42px;
+  }
+  .result-screen .result-stars {
+    font-size: 25px;
+    margin-top: 6px;
+  }
+  .result-reward {
+    flex-basis: 150px;
+    width: 150px;
+    min-height: 185px;
+  }
+  .reward-art {
+    height: 101px;
+  }
+  .reward-art .portrait {
+    width: 100px;
+    height: 100px;
+  }
+  .result-enemies img {
+    height: 47px;
+  }
+  .result-gold-total strong {
+    font-size: 30px;
+  }
+}
+@media (max-height: 450px) and (min-width: 620px) {
+  .result-screen {
+    padding: 12px;
+  }
+  .result-screen .result-card {
+    grid-template-columns: 140px minmax(0, 1fr);
+    gap: 10px 20px;
+  }
+  .result-screen .result-card h1 {
+    font-size: 34px;
+  }
+  .result-screen .result-stars {
+    font-size: 23px;
+  }
+  .result-reward {
+    flex-basis: 138px;
+    width: 138px;
+    min-height: 155px;
+    padding-top: 8px;
+  }
+  .reward-art {
+    height: 75px;
+  }
+  .reward-art .portrait {
+    width: 85px;
+    height: 75px;
+  }
+  .result-reward h2 {
+    font-size: 20px;
+  }
+  .result-summary {
+    padding: 5px 0;
+  }
+  .result-enemies img {
+    height: 34px;
+    width: 40px;
+  }
+  .result-gold-total {
+    margin-top: 4px;
+    padding-top: 4px;
+  }
+  .result-gold-total strong {
+    font-size: 25px;
+  }
+  .result-gold-total img {
+    width: 33px;
+    height: 30px;
+  }
+  .result-screen .result-actions .game-art-button {
+    min-height: 48px;
+  }
+  .result-screen .result-card:not(:has(.result-rewards)) {
+    gap: 12px;
+  }
+  .result-card:not(:has(.result-rewards)) .result-enemies img {
+    height: 66px;
+    width: 65px;
+  }
+  .result-card:not(:has(.result-rewards)) .result-summary {
+    padding: 4px 30px;
+  }
+}
+@media (max-width: 600px) {
+  .result-screen {
+    padding: 14px;
+  }
+  .result-screen .result-card {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 20px;
+  }
+  .result-enemies {
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  .result-enemies li {
+    padding: 0;
+  }
+  .result-reward {
+    flex-basis: 134px;
+    width: 134px;
+    min-height: 180px;
+  }
+  .reward-art {
+    height: 94px;
+  }
+  .reward-art .portrait {
+    width: 92px;
+    height: 94px;
+  }
+  .result-reward h2 {
+    font-size: 20px;
+  }
+}
+@media (orientation: landscape) and (max-height: 600px) {
+  .battle-screen .wave-countdown {
+    top: 3px;
+    padding: 3px 10px;
+  }
+  .wave-countdown strong {
+    font-size: 34px;
+  }
+  .expedition .player-slots {
+    margin-top: 2px;
   }
 }

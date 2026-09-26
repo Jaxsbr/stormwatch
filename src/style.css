@@ -14,6 +14,9 @@
 }
 body {
   margin: 0;
+  width: var(--app-width, 100%);
+  height: var(--app-height, 100dvh);
+  overflow: hidden;
 }
 button,
 a,
@@ -149,7 +152,7 @@ button:active:not(:disabled) {
   min-height: 58px;
 }
 .title-screen {
-  height: 100dvh;
+  height: var(--app-height, 100dvh);
   min-height: 560px;
   position: relative;
   background: #15252a url("/art/title-background.webp") center/cover no-repeat;
@@ -226,7 +229,7 @@ button:active:not(:disabled) {
   letter-spacing: 1.3px;
 }
 .menu-screen {
-  min-height: 100dvh;
+  min-height: var(--app-height, 100dvh);
   position: relative;
   background:
     radial-gradient(ellipse at 65% 30%, #36544655, transparent 65%), #12252a;
@@ -401,7 +404,7 @@ button:active:not(:disabled) {
   grid-template-columns: 1fr 1.55fr;
   gap: 6%;
   padding: 5% 6% 4%;
-  min-height: calc(100dvh - 194px);
+  min-height: calc(var(--app-height, 100dvh) - 194px);
 }
 .briefing-intro h1 {
   margin: 12px 0 18px;
@@ -541,7 +544,7 @@ button:active:not(:disabled) {
   background-repeat: no-repeat;
 }
 .battle-screen {
-  height: 100dvh;
+  height: var(--app-height, 100dvh);
   display: grid;
   grid-template-rows: 76px minmax(0, 1fr) 112px;
   overflow: hidden;
@@ -622,23 +625,6 @@ button:active:not(:disabled) {
   display: block;
   width: 100%;
   height: 100%;
-}
-.field-heading {
-  position: absolute;
-  left: 25px;
-  top: 20px;
-  pointer-events: none;
-  z-index: 1;
-}
-.field-heading .eyebrow {
-  color: #d1bd8e;
-}
-.field-heading p {
-  color: #aebfb0;
-  font-size: 11px;
-  margin-top: 5px;
-  max-width: 400px;
-  text-shadow: 0 2px 5px #13271e;
 }
 .field-compass {
   position: absolute;
@@ -1089,7 +1075,7 @@ button:active:not(:disabled) {
 }
 @media (max-height: 600px) and (min-width: 650px) {
   .title-screen {
-    min-height: 100dvh;
+    min-height: var(--app-height, 100dvh);
   }
   .title-copy {
     top: 15%;
@@ -1183,7 +1169,7 @@ button:active:not(:disabled) {
   }
   .briefing-body {
     padding: 20px 4%;
-    min-height: calc(100dvh - 135px);
+    min-height: calc(var(--app-height, 100dvh) - 135px);
     grid-template-columns: 1fr 1.6fr;
     gap: 3%;
   }
@@ -1370,17 +1356,6 @@ button:active:not(:disabled) {
   }
   .wave-controls:has(.rescue-button:disabled) {
     gap: 3px;
-  }
-  .field-heading {
-    top: 10px;
-    left: 15px;
-  }
-  .field-heading .eyebrow {
-    font-size: 7px;
-  }
-  .field-heading p {
-    font-size: 9px;
-    max-width: 350px;
   }
   .field-compass {
     bottom: 10px;
@@ -1668,14 +1643,6 @@ button:active:not(:disabled) {
     font-size: 11px;
     padding: 0;
   }
-  .field-heading {
-    top: 12px;
-    left: 10px;
-    right: 10px;
-  }
-  .field-heading p {
-    font-size: 9px;
-  }
   .toast {
     bottom: 170px;
   }
@@ -1926,21 +1893,6 @@ button:active:not(:disabled) {
   border: 2px ridge #8aa287;
   min-height: 42px;
 }
-.field-heading {
-  top: 12px;
-  left: 18px;
-  max-width: 430px;
-  text-shadow:
-    0 2px 4px #000,
-    0 0 12px #000;
-}
-.field-heading p {
-  font-size: 12px;
-  color: #f0e5c9;
-}
-.field-heading .eyebrow {
-  color: #ffe1a0;
-}
 .field-message {
   bottom: 16px;
   max-width: calc(100% - 610px);
@@ -2007,14 +1959,6 @@ button:active:not(:disabled) {
   }
   .battle-tools #speed {
     display: block;
-  }
-  .field-heading {
-    left: 10px;
-    top: 8px;
-  }
-  .field-heading p {
-    font-size: 10px;
-    max-width: 300px;
   }
   .economy-panel {
     top: 8px;
@@ -2095,7 +2039,6 @@ button:active:not(:disabled) {
 
 /* A common timber-and-brass material language across the expedition screens. */
 .settings-card,
-.result-card,
 .pause-overlay > div {
   border: solid transparent;
   border-width: 42px 35px 28px;
@@ -2182,7 +2125,7 @@ button:active:not(:disabled) {
 .expedition {
   display: grid;
   grid-template-rows: 68px 64px minmax(0, 1fr) 64px;
-  height: 100dvh;
+  height: var(--app-height, 100dvh);
 }
 .expedition .screen-header {
   height: 68px;
@@ -2198,7 +2141,7 @@ button:active:not(:disabled) {
   margin: 0;
 }
 .expedition .expedition-map {
-  width: min(92vw, calc((100dvh - 220px) * 1.7768));
+  width: min(92vw, calc((var(--app-height, 100dvh) - 220px) * 1.7768));
   height: auto;
   aspect-ratio: 1672/941;
   max-width: 1100px;
@@ -2302,7 +2245,7 @@ button:active:not(:disabled) {
     font-size: 27px;
   }
   .expedition .expedition-map {
-    width: min(90vw, calc((100dvh - 156px) * 1.7768));
+    width: min(90vw, calc((var(--app-height, 100dvh) - 156px) * 1.7768));
   }
   .expedition .map-node {
     width: 145px;
@@ -2426,7 +2369,7 @@ button:active:not(:disabled) {
 }
 /* Keep the mission decision and its action together at supported sizes. */
 .briefing {
-  height: 100dvh;
+  height: var(--app-height, 100dvh);
   min-height: 0;
   display: grid;
   grid-template-rows: 68px minmax(0, 1fr) 76px;
@@ -2659,7 +2602,7 @@ button:active:not(:disabled) {
   .settings-card {
     border-width: 24px 24px 18px;
     padding: 4px 16px 10px;
-    max-height: calc(100dvh - 24px);
+    max-height: calc(var(--app-height, 100dvh) - 24px);
     overflow-y: auto;
   }
   .modal-backdrop {

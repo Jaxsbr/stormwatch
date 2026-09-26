@@ -21,7 +21,7 @@ import type {
   WaveGroupDef,
 } from "./types";
 
-export const INTER_WAVE_COUNTDOWN_SECONDS = 5;
+export const INTER_WAVE_COUNTDOWN_SECONDS = 10;
 export interface AttemptRules {
   unlockedUpgrades?: readonly TowerKind[];
 }
@@ -62,6 +62,9 @@ export class Game {
       lives: assist ? 20 : 12,
       maxLives: assist ? 20 : 12,
       kills: 0,
+      killsByKind: { raider: 0, runner: 0, armored: 0, boss: 0 },
+      leaks: 0,
+      goldEarned: 0,
       towers: [],
       enemies: [],
       shots: [],
@@ -265,6 +268,7 @@ export class Game {
       if (e.distance >= len) {
         e.alive = false;
         s.lives = Math.max(0, s.lives - ENEMIES[e.kind].leak);
+        s.leaks++;
         this.emit("leak");
       }
     }
@@ -336,6 +340,7 @@ export class Game {
     if (!this.queue.length && !s.enemies.length) {
       const reward = waveReward(this.level.waves[s.wave - 1].reward);
       s.coins += reward;
+      s.goldEarned += reward;
       s.lastPayout = { reward, total: reward };
       s.shots = [];
       s.effects = [];
@@ -374,9 +379,12 @@ export class Game {
     if (e.hp <= 0) {
       e.alive = false;
       s.kills++;
-      s.coins += Math.floor(
+      s.killsByKind[e.kind]++;
+      const reward = Math.floor(
         ENEMIES[e.kind].reward * (this.level.enemyRewardScale ?? 1),
       );
+      s.coins += reward;
+      s.goldEarned += reward;
       this.emit("kill");
     }
   }

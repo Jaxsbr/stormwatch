@@ -17,3 +17,5 @@ Read the accepted records before changing consequential behavior. For a new deci
 - [012: Rat Raider five-wave trial](012-rat-raider-five-wave-trial.md)
 - [013: Battle feedback and inter-wave pacing](013-battle-feedback-and-inter-wave-pacing.md)
 - [014: Progressive discovery and simple wave economy](014-progressive-discovery-and-simple-wave-economy.md)
+- [015: Family progress and encounter results](015-family-progress-and-results.md)
+- [016: Illustrated encounter results](016-illustrated-encounter-results.md)

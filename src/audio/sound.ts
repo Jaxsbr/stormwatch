@@ -19,7 +19,7 @@ export class Sound {
     if (!this.muted && !this.paused) void this.music.play().catch(() => {});
   }
   apply() {
-    this.music.volume = this.musicVolume * 0.5;
+    this.music.volume = this.musicVolume * 0.35;
     this.music.muted = this.muted;
   }
   pause(paused: boolean) {
@@ -58,7 +58,7 @@ export class Sound {
       upgrade: [660, 0.24, 0.14],
       sell: [330, 0.1, 0.1],
       shot: [150, 0.035, 0.025],
-      hit: [80, 0.045, 0.045],
+      hit: [80, 0.045, 0.22],
       kill: [300, 0.06, 0.05],
       leak: [100, 0.26, 0.1],
       start: [294, 0.25, 0.12],
@@ -102,7 +102,7 @@ export class Sound {
     const impact = ctx.createGain();
     impact.gain.setValueAtTime(0.001, now);
     impact.gain.exponentialRampToValueAtTime(
-      Math.max(0.001, 0.11 * this.effectsVolume),
+      Math.max(0.001, 0.3 * this.effectsVolume),
       now + 0.004,
     );
     impact.gain.exponentialRampToValueAtTime(0.001, now + 0.085);
@@ -111,7 +111,7 @@ export class Sound {
     impact.connect(ctx.destination);
     noise.start(now);
     noise.stop(now + 0.09);
-    this.tone(125, 0.11, 0.09, now, "triangle");
+    this.tone(125, 0.11, 0.16, now, "triangle");
   }
   private tone(
     hz: number,
