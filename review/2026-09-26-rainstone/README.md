@@ -2,6 +2,14 @@
 
 Implements the owner-approved three-wave amendment; see [decision 017](../../docs/decisions/017-rainstone-evasion-and-mixed-waves.md).
 
+## Candidate and checks
+
+Gameplay build: `4ee0534` on `main`. Run `npm run dev` and open the local URL printed by Vite for the ordinary game; append `/review/2026-09-26-rainstone/index.html` for the focused fixture. This preview requires the hosting computer and server to remain running. No public release is established by this ticket.
+
+Type check and production build passed. The full suite passed 173 tests in 33 files; an additional focused spawn-cadence test subsequently passed, along with type checking. Standards review found no actionable findings. Spec review found gameplay aligned and requested the capture/checkpoint handoff supplied here.
+
+[Normal-speed evasion capture, 20 seconds](weasel-evasion-20s.webm) — actual wave-two renderer at 1024×620 viewport (1024×540 canvas), with three base Squirrels. Video contains no audio and does not establish physical device performance. Capture uses the fixture's declared wave-two starting state.
+
 ## What to try
 
 Win Lantern, then enter Rainstone with Squirrels and the earned upgrade. Wave one mixes shielded Rats and non-evasive fast Weasels. Wave two introduces the yellow chevron and floating Evade label. Wave three repeats compact mixed bursts with longer evasion windows. Winning Rainstone discovers Turtle; its first usable encounter arrives in ticket 04.

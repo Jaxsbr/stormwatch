@@ -1,13 +1,17 @@
 # 03 — Teach the Weasel sprint in Rainstone
 
-Status: needs-triage
+Status: implemented — awaiting owner playtest
 
 Scope: follow-on encounter work. Ticket 01 is complete; ticket 02 first-watch polish is being closed separately. This ticket owns the Weasel/Rainstone lesson and Turtle progression needed by later maps.
 
 Depends on: 02
 
-Implement the sprint contract in `../spec.md` through deterministic simulation state. Use a readable anticipation and speed tell from the current rig/effects. No dodge, missed-shot probability, invulnerability, or new sprite-set dependency. Shots and slow keep their existing meanings; movement bonuses later share a bounded composition rule with rally.
+Historical brief (superseded by the approved amendment below): implement the sprint contract in `../spec.md` through deterministic simulation state. Use a readable anticipation and speed tell from the current rig/effects. No dodge, missed-shot probability, invulnerability, or new sprite-set dependency. Shots and slow keep their existing meanings; movement bonuses later share a bounded composition rule with rally.
 
 Replace Rainstone's current eight mixed waves with its five-wave recipe. Remove early Boars, bosses and other tower choices from the first-arrival roster. Tune for Squirrels with their earned upgrade. The first three Weasels are separated and forgiving; later waves use guards and fast followers. Do not require Turtle before it is earned.
 
 Done when two viable placement/spending approaches can clear the map, a poor coverage choice produces understandable pressure, and the player sees and uses the upgrade/Turtle progression correctly. Verify sprint boundaries, pause, slow interaction, replay reset, and actual first-arrival unlocks. Supply the day-one playable checkpoint, a short sprint capture, and at most three questions about understanding or feel.
+
+## Approved amendment — 26 September 2026
+
+The owner approved three longer mixed Rat/Weasel waves and deterministic evasion instead of sprint-only movement. Wave 1 repeats steady Rats, a 3–4s quiet gap and four closely spaced non-evasive Weasels. Wave 2 alternates Rats and Weasels 1:1, with Rats shielding 5s up/5s down and periodic Weasel evasion. Wave 3 repeats three Rats 1s apart, followed by two Weasels, then 3s quiet. Use a yellow evasion marker, anticipation, miss flash, brief sidestep and floating Evade text. Retain the Squirrel-only arrival and earned upgrade, Turtle victory reward, deterministic/pause/replay checks and playable checkpoint. Existing five-wave/no-evasion wording is superseded.

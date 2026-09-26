@@ -2,6 +2,10 @@
 
 Status: ready-for-agent
 
+## Owner amendment — 26 September 2026
+
+Ticket 03 now uses three longer mixed Rainstone waves and deterministic projectile evasion, replacing its former five-wave sprint-only/no-evasion contract. See decision 017 and ticket 03 for the approved sequence. Weasel warning/evasion and any speed change remain spawn-relative simulation state; missed nets do not apply slow, existing slow remains active. Turtle remains the Rainstone victory reward and is first used in the later final encounter.
+
 ## Problem Statement
 
 The owner wants Stormwatch ready for two children aged six and nine during their ten-day school holiday. Work on the Rat Raider showed that a readable enemy action, clear combat feedback, and meaningful tower placement can make a small encounter enjoyable. The game now needs a short, complete journey with a boss-map finish line and useful rewards, rather than a wider unfinished roster.

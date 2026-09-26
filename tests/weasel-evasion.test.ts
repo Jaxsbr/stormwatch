@@ -89,3 +89,54 @@ describe("Weasel evasion through real attacks", () => {
     expect(replay.state.enemies[0].evadeAt).toBe(-1);
   });
 });
+
+it("authors quiet introductions, alternating pairs, and repeating mixed bursts through real spawns", () => {
+  function arrivals(wave: number, seconds: number) {
+    const game = new Game(rainstoneCrossing);
+    game.state.wave = wave - 1;
+    game.startWave();
+    const seen = new Set<number>();
+    const spawned: { kind: string; at: number }[] = [];
+    for (let i = 0; i < seconds * 30; i++) {
+      game.tick(dt);
+      for (const enemy of game.state.enemies) {
+        if (seen.has(enemy.id)) continue;
+        seen.add(enemy.id);
+        spawned.push({ kind: enemy.kind, at: enemy.spawnedAt });
+      }
+    }
+    return spawned;
+  }
+  const opening = arrivals(1, 16);
+  expect(opening.map((enemy) => enemy.kind)).toEqual([
+    "raider",
+    "raider",
+    "raider",
+    "raider",
+    "raider",
+    "raider",
+    "runner",
+    "runner",
+    "runner",
+    "runner",
+  ]);
+  expect(opening[6].at - opening[5].at).toBeCloseTo(3.5, 1);
+  const alternating = arrivals(2, 7);
+  expect(alternating.map((enemy) => enemy.kind)).toEqual([
+    "raider",
+    "runner",
+    "raider",
+    "runner",
+  ]);
+  const burst = arrivals(3, 8);
+  expect(burst.map((enemy) => enemy.kind)).toEqual([
+    "raider",
+    "raider",
+    "raider",
+    "runner",
+    "runner",
+    "raider",
+  ]);
+  expect(burst[1].at - burst[0].at).toBeCloseTo(1, 1);
+  expect(burst[5].at - burst[4].at).toBeCloseTo(3, 1);
+});

@@ -26,17 +26,15 @@ Existing route; Squirrel only. Start at 100 gold. First-arrival upgrades locked.
 
 ## Map 2 — Rainstone Crossing
 
-Reauthor the current eight-wave encounter. Squirrel only, upgrades available. Start at 100 gold. Retain the different route and separate bends so successive firing areas matter. Victory earns Turtle and Map 3. The opening clear funds an upgrade after a two-Squirrel opening.
+Owner-approved amendment, 26 September 2026: three longer mixed waves. Squirrel only, earned Squirrel upgrade, 120 starting gold, 2 gold per kill, health scale 1. Turtle is awarded on victory and first used in the later final encounter.
 
-| Wave | Recipe                | Fixed reward / total income | Lesson                                               |
-| ---- | --------------------- | --------------------------- | ---------------------------------------------------- |
-| 1    | R16@2.8               | 25 / 57                     | Try an upgrade or extend coverage                    |
-| 2    | W3@6 + R10@2.5        | 28 / 54                     | Three separated, forgiving first sprints             |
-| 3    | R10@2 + W8@2.5        | 30 / 66                     | Continue firing after a runner leaves the first bend |
-| 4    | G12[2]@3 + W10@2      | 32 / 76                     | Guarded Rats occupy towers as runners catch up       |
-| 5    | W12[2]@3 + R16[2]@2.5 | 35 / 91                     | Sustain a defense across the route                   |
+| Wave | Cycles | Lesson | Clear reward |
+| --- | --- | --- | --- |
+| 1 | Five cycles of six Rats 2s apart, 3.5s quiet, four non-evasive Weasels 0.45s apart; 3.45s before the next cycle | Fast arrivals without evasion | 35 |
+| 2 | Eighteen alternating Rat/Weasel pairs, 1.1s Rat-to-Weasel and 2.2s until the next Rat | 1:1 mixed guard/evasion | 40 |
+| 3 | Twelve cycles of three Rats 1s apart, then two Weasels 0.45s apart; 3s quiet after the second Weasel | Repeated overlapping bursts | 0 |
 
-Compare several base Squirrels against fewer upgraded Squirrels. Neither must require an exact memorized timing. Turtle is unavailable and cannot be required for a win. Check whether the final wave awards too much unused money; tune pressure and income together.
+Rats use 5s shield down/5s up on Rainstone only. Weasels run at 85% of catalog speed, with a 15% relative bonus during evasion. Wave 2: 3s exposed/2s evasive. Wave 3: 2.6s exposed/2.4s evasive. A 0.6s warning precedes each evasion window. Exact values are initial tuning for owner playtest; Lantern is unchanged.
 
 ## Map 3 — The Last Lantern
 
