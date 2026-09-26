@@ -123,6 +123,9 @@ export interface Effect extends Point {
   ttl: number;
 }
 export interface GameEvent {
+  enemyId?: number;
+  enemyKind?: EnemyKind;
+  wave?: number;
   type:
     | "build"
     | "upgrade"

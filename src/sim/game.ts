@@ -301,6 +301,11 @@ export class Game {
         s.lives = Math.max(0, s.lives - this.enemies[e.kind].leak);
         s.leaks++;
         this.emit("leak");
+        Object.assign(this.events[this.events.length - 1], {
+          enemyId: e.id,
+          enemyKind: e.kind,
+          wave: s.wave,
+        });
         if (this.level.requiresBossDefeat && e.kind === "boss") {
           s.phase = "lost";
           this.emit("loss");
