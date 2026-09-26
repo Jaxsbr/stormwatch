@@ -21,7 +21,6 @@ import {
   levelForAttempt,
 } from "./content/progression";
 import { Battlefield } from "./render/battlefield";
-import { attachRecording } from "./render/recording";
 import { towerPortrait, paintTowerPortraits } from "./render/portraits";
 import { Sound } from "./audio/sound";
 import { recordVictory, SAVE_KEY } from "./persistence/save";
@@ -150,8 +149,15 @@ function renderBattle() {
   try {
     field = new Battlefield(document.querySelector("#canvas-host")!);
     field.load(l);
-    if (new URLSearchParams(location.search).has("record")) {
-      disposeRecording = attachRecording(field.renderer.domElement);
+    if (
+      import.meta.env.DEV &&
+      new URLSearchParams(location.search).has("record")
+    ) {
+      const canvas = field.renderer.domElement;
+      void import("./render/recording").then(({ attachRecording }) => {
+        if (field?.renderer.domElement === canvas)
+          disposeRecording = attachRecording(canvas);
+      });
     }
     field.onPick = pick;
     field.onHover = (p) => {
@@ -668,7 +674,7 @@ function frame(now: number) {
     if (now - lastHud > 100) {
       refreshHud(now);
     }
-    if (frames.length < 40000) frames.push(rawDt * 1000);
+    if (import.meta.env.DEV && frames.length < 40000) frames.push(rawDt * 1000);
   }
   const toastEl = document.getElementById("toast");
   if (toastEl && now > noticeUntil) toastEl.classList.remove("visible");
@@ -701,5 +707,5 @@ window.addEventListener("pageshow", (e) => {
     resumeAudioIfAllowed();
   }
 });
-if (new URLSearchParams(location.search).has("measure"))
+if (import.meta.env.DEV && new URLSearchParams(location.search).has("measure"))
   void import("./qa/load-report").then((m) => m.showLoadReport());

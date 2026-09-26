@@ -6,3 +6,5 @@ dist/
 coverage/
 captures/raw/
 assets/source/
+dist-workbench/
+dist-qa/

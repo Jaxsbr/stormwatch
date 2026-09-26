@@ -64,14 +64,14 @@ function material(color: number, opacity = 1) {
 }
 export class Battlefield {
   readonly renderer: THREE.WebGLRenderer;
-  // Opt-in QA diagnostics; normal play does not collect phase timestamps.
-  profileTiming = false;
-  readonly frameProfile = {
-    figuresMs: 0,
-    effectsMs: 0,
-    submissionMs: 0,
-    createdRigs: 0,
-    drawCalls: 0,
+  // The build constant removes instrumentation entirely from the game artifact.
+  declare profileTiming: boolean;
+  declare readonly frameProfile: {
+    figuresMs: number;
+    effectsMs: number;
+    submissionMs: number;
+    createdRigs: number;
+    drawCalls: number;
   };
   readonly scene = new THREE.Scene();
   readonly camera = new THREE.OrthographicCamera();
@@ -165,6 +165,16 @@ export class Battlefield {
   onPick: (p: Point) => void = () => {};
   onHover: (p: Point | null) => void = () => {};
   constructor(readonly host: HTMLElement) {
+    if (__STORMWATCH_QA__) {
+      this.profileTiming = false;
+      this.frameProfile = {
+        figuresMs: 0,
+        effectsMs: 0,
+        submissionMs: 0,
+        createdRigs: 0,
+        drawCalls: 0,
+      };
+    }
     this.placementTile = this.texture(
       "art/v2/defender-placement-tile/tile.webp",
     );
@@ -618,18 +628,6 @@ export class Battlefield {
       );
     }
   }
-  diagnostics() {
-    return {
-      rigs: [...this.figures.entries()]
-        .filter(([, f]) => !!f.rig || !!f.defender)
-        .map(([id, f]) => ({
-          id,
-          parts: [...(f.defender?.cutout.parts ?? f.rig!.parts).keys()],
-          fired: this.fired.get(id),
-        })),
-      textures: this.renderer.info.memory.textures,
-    };
-  }
   update(game: Game, selected: number | null, _dt: number) {
     const reducedMotion = matchMedia(
       "(prefers-reduced-motion: reduce)",
@@ -639,8 +637,10 @@ export class Battlefield {
     for (const mesh of [this.range, this.baseGlow])
       (mesh.material as THREE.ShaderMaterial).uniforms.time.value =
         this.selectionClock;
-    const profileStart = this.profileTiming ? performance.now() : 0;
-    if (this.profileTiming) this.frameProfile.createdRigs = 0;
+    const profileStart =
+      __STORMWATCH_QA__ && this.profileTiming ? performance.now() : 0;
+    if (__STORMWATCH_QA__ && this.profileTiming)
+      this.frameProfile.createdRigs = 0;
     const s = game.state,
       ids = new Set<number>();
     for (const t of s.towers) {
@@ -696,7 +696,8 @@ export class Battlefield {
             f.defender = this.defenderPool.acquire(
               `${resource!.definition!.id}:${height}:${mirrored}`,
               () => {
-                if (this.profileTiming) this.frameProfile.createdRigs++;
+                if (__STORMWATCH_QA__ && this.profileTiming)
+                  this.frameProfile.createdRigs++;
                 return new DefenderRig(resource!, height, mirrored);
               },
             );
@@ -819,7 +820,8 @@ export class Battlefield {
           f.character = this.characterPool.acquire(
             `${characterResource.definition.id}:${height}`,
             () => {
-              if (this.profileTiming) this.frameProfile.createdRigs++;
+              if (__STORMWATCH_QA__ && this.profileTiming)
+                this.frameProfile.createdRigs++;
               return new CharacterRig(characterResource, height);
             },
           );
@@ -917,7 +919,8 @@ export class Battlefield {
         this.selection.visible = true;
       }
     }
-    const figuresEnd = this.profileTiming ? performance.now() : 0;
+    const figuresEnd =
+      __STORMWATCH_QA__ && this.profileTiming ? performance.now() : 0;
     const shotIds = new Set<number>();
     for (const p of s.shots) {
       shotIds.add(p.id);
@@ -987,9 +990,10 @@ export class Battlefield {
     this.combatText.update(s.effects, position);
     if (!this.combatText.group.parent) this.scene.add(this.combatText.group);
     if (!this.effects.mesh.parent) this.scene.add(this.effects.mesh);
-    const effectsEnd = this.profileTiming ? performance.now() : 0;
+    const effectsEnd =
+      __STORMWATCH_QA__ && this.profileTiming ? performance.now() : 0;
     this.renderer.render(this.scene, this.camera);
-    if (this.profileTiming) {
+    if (__STORMWATCH_QA__ && this.profileTiming) {
       this.frameProfile.figuresMs = figuresEnd - profileStart;
       this.frameProfile.effectsMs = effectsEnd - figuresEnd;
       this.frameProfile.submissionMs = performance.now() - effectsEnd;

@@ -1,3 +1,4 @@
+import "./recording.css";
 /** Opt-in review capture. Records the live canvas without changing simulation state. */
 export function attachRecording(canvas: HTMLCanvasElement): () => void {
   const panel = document.createElement("div");
