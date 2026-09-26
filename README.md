@@ -1,10 +1,16 @@
 # Stormwatch
 
-A small, atmospheric woodland tower-defense game: protect the lantern line, build defenses, and choose between spending now and saving for wave-end interest. Dark, child-friendly art; no occult themes or gore.
+A small, atmospheric woodland tower-defense expedition: protect the lantern line,
+build animal defenses and choose when to spend wave rewards on reinforcements and
+upgrades. Dark, child-friendly art; no occult themes or gore.
 
-Two encounters, squirrel archers, skunk slingers, turtle trappers and donkey traders, plus support cards, a targeted supply drop, upgrades, local progress and optional assistance. Three.js draws a close orthographic battlefield with cohesive painted scenery and articulated directional characters. Landscape phones/tablets and desktop are supported layouts. The visual reboot passes its original desktop performance profile; Chrome 153 stress stalls and unverified physical-device/audio checks are documented in the current review. The published link below still serves the earlier foundation build.
-
-[Published foundation build](https://jaxsbr.github.io/stormwatch/) · [Source repository](https://github.com/Jaxsbr/stormwatch)
+The current first board follows Lantern Pass → Rainstone Crossing → The Last
+Lantern. Discover Squirrel upgrades, Turtle control and earned replay advantages
+through the expedition. Three.js draws the close orthographic battlefield with
+painted scenery and articulated directional characters. Landscape phone/tablet
+and desktop layouts are supported; physical-device and family-play verification
+remain distinct from automated checks.
+[Project game link](https://jaxsbr.github.io/stormwatch/) · [Source repository](https://github.com/Jaxsbr/stormwatch)
 
 ## Run
 
@@ -29,9 +35,31 @@ Serve `dist/` over HTTP; opening its HTML as a filesystem URL is unsupported. Th
 
 ## Play
 
-Choose an encounter and one support card. Select a structure, then click/tap clear ground beside the trail. Placement stays active until **Cancel**. Cancel and select an existing structure to inspect its range, upgrade or sell. Start each wave when ready. During a wave, choose **Supply drop** and tap the trail. Pause and sound settings are always available. Defeat offers a free retry or assistance.
+Choose an unlocked encounter. First arrival uses its teaching roster; completed
+encounters can use earned discoveries on replay. Select a defender, then click/tap
+clear ground beside the trail. Placement stays active until **Cancel**. Cancel and
+select an existing defender to inspect range, upgrade or sell. Start the first wave
+when ready; subsequent waves have a preparation countdown with an early-start
+button. Pause and sound settings are available. Defeat offers a free retry or
+assistance. Fixed wave rewards and enemy rewards supply crowns; waiting and
+pausing earn nothing. Two local player profiles retain progress and settings.
 
-Interest pays 10% of your unspent gold, rounded down and capped at 20, when a wave ends. Donkey traders pay 12 gold per wave, or 22 when upgraded. Interest is calculated before any wave payout. Waiting and pausing earn nothing. Progress and settings stay in this browser's local storage; clearing site data removes them.
+## Local designer workbench
+
+```sh
+npm run dev:workbench
+# or a separate built preview:
+npm run build:workbench
+npm run preview:workbench
+```
+
+Open `/workbench.html` on the printed local URL. Inspect waves, fork/edit named
+drafts, play through the actual battlefield, replay legal commands, run policies
+or bounded goal search, and export validated experiments. Drafts never write family
+profiles or released recipes. Deliberate local promotion previews selected authored
+changes and rejects stale baselines. See [workbench usage](docs/WORKBENCH.md),
+[verification](docs/evidence/designer-workbench.md) and
+[architecture](docs/ARCHITECTURE.md). The workbench is excluded from `dist`.
 
 ## Project guide
 
@@ -49,4 +77,4 @@ Music: **Treasure Hunter** by TAD, CC0. Fonts: Cormorant Garamond and DM Sans, S
 
 ## Publishing
 
-The pinned GitHub Actions workflow checks, tests and builds every main-branch push, then publishes `dist/` to GitHub Pages. Pages must use the GitHub Actions build source. Failed checks prevent deployment. The optional `/qa.html` route is a clearly labeled performance laboratory, separate from normal play.
+The pinned GitHub Actions workflow checks, tests and builds every main-branch push, then publishes `dist/` to GitHub Pages. Pages must use the GitHub Actions build source. Failed checks prevent deployment. The optional performance laboratory builds separately with `npm run build:qa` into `dist-qa`; its `/qa.html` entry and diagnostic controls are excluded from the published game.

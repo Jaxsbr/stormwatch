@@ -30,7 +30,8 @@ preceding campaign could afford them.
 Play uses the actual battlefield, defender inspection, placement, upgrades,
 selling, range, wave start, pause and sound. Combat acceleration uses fixed steps;
 preparation retains its real-time decision window. Return to the workbench to
-preserve evidence. A recorded replay can branch to manual control at preparation.
+preserve evidence. A recorded replay holds at the selected wave preparation without advancing its
+countdown. Choose Continue replay or Take manual control at preparation.
 Saved traces/results can be selected after reload or import and replayed in fresh
 attempts. The workbench never awards stars/discoveries or writes family profiles.
 
@@ -74,7 +75,8 @@ Run options include `policyId`, `cadenceTicks`, `maxTicks` and
 `trace` instead of a policy. Policies are `lantern-growth`, `coverage-first`,
 `upgrades-first` and `finale-mixed`. Compare takes `candidate` authored content;
 search takes `goal`, `budget` and `maxTicks`. Optional `content` supplies a draft;
-otherwise canonical content is used. JSON output records effective identity,
+otherwise canonical content is used. Use `npm run --silent workbench -- ...` or `node tools/workbench.mjs ...` for clean
+machine-readable output. JSON output records effective identity,
 engine revision, fixed step, seed/setup, actions, checkpoints and outcomes.
 
 ## Deliberate canonical promotion

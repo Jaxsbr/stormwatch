@@ -15,3 +15,5 @@ Done when both children can start their own progress, complete an understandable
 ## Comments
 
 Published ready-for-agent as Day 3 of the chapter plan. Preserve the final day for feedback, integration and release evidence. This ticket does not authorize a new public deployment destination.
+
+- Designer workbench implementation now supplies local scenario/replay/comparison evidence; see `docs/evidence/designer-workbench.md`. This adds no physical-device or child-comprehension observation and does not replace prior owner play evidence. Collect that evidence here before repeating checks.

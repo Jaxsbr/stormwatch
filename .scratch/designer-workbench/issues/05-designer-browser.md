@@ -1,6 +1,6 @@
 # 05: designer browser
 
-Status: ready-for-agent
+Status: resolved
 Type: task
 Blocked by: 01, 02, 03, 04
 
@@ -15,3 +15,7 @@ Follow the applicable implementation and testing decisions in the spec. No campa
 ## Comments
 
 - Implementation task graph synthesized from the authorized specification.
+
+## Answer
+
+Register, direct packet editing, effective timeline/map/settings, progression/difficulty scenarios, real battlefield controls, preserved revisions and evidence playback implemented. Browser verification is recorded in `docs/evidence/designer-workbench.md`; no family profile or released recipe was promoted during verification.

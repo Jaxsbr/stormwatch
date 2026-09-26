@@ -1,6 +1,6 @@
 # Stormwatch designer workbench
 
-Status: ready-for-agent
+Status: ready-for-human
 
 The owner approved the approach on 27 September 2026 and requested synthesis through the to-spec skill. This specification is the implementation contract for that approach. Implementation has not started. The proposed verification seams were carried forward from the approved plan and explicitly checked with the owner during synthesis; an additional response is not yet recorded.
 
@@ -163,3 +163,5 @@ No game implementation, tuning, promotion, upstream setup or deployment occurs a
 ## Comments
 
 - 27 September 2026: The owner approved the proposed approach and requested to-spec if it adds value. Published ready-for-agent with extensive user stories, staged implementation and behavior-based verification. The skill's verification-seam check was sent during drafting; no additional response is recorded at publication time.
+
+- Implementation subsequently authorized through implement-spec. Local designer workflow and review are complete; verification is recorded in `docs/evidence/designer-workbench.md`. Remote PR handoff is pending. The original specification-only drafting note above records the earlier task boundary.

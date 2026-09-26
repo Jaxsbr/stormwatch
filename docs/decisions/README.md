@@ -24,3 +24,5 @@ Read the accepted records before changing consequential behavior. For a new deci
 - [018: Map-board progression and finale](018-map-board-progression-and-finale.md)
 - [019: Last Lantern wave pressure and budget](019-last-lantern-wave-pressure-and-budget.md)
 - [020: Last Lantern boss pressure and copy](020-last-lantern-boss-pressure-and-copy.md)
+
+- [021: Local designer workbench and canonical attempt configuration](021-designer-workbench.md)

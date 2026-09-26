@@ -1,6 +1,6 @@
 # 06: verification and handoff
 
-Status: ready-for-agent
+Status: ready-for-human
 Type: task
 Blocked by: 03, 04, 05
 
@@ -15,3 +15,7 @@ Follow the applicable implementation and testing decisions in the spec. No campa
 ## Comments
 
 - Implementation task graph synthesized from the authorized specification.
+
+## Answer
+
+Local implementation, checks, production separation, browser journey and two-axis review completed; see `docs/evidence/designer-workbench.md` and `../review.md`. Remote PR handoff remains pending authorization. Family-release observation and physical-device acceptance remain the separate holiday-expedition ticket.
