@@ -1,6 +1,6 @@
 # 04: drafts and promotion
 
-Status: implemented
+Status: resolved
 Type: task
 Blocked by: 01
 
@@ -16,6 +16,4 @@ Follow the applicable implementation and testing decisions in the spec. No campa
 
 - Implementation task graph synthesized from the authorized specification.
 
-- Implemented namespaced revision/evidence persistence with honest in-memory failure status; complete-content and stable-reference validated export/import; explicit authored-scope promotion preview and local atomic apply. Seven focused persistence/promotion tests include disposable-workspace writes and stale/error preservation. Scenario payload validation is integrated as the scenario contract lands.
-
-- Integrated draft storage, export/import and local scoped preview/apply in `191a5ad`. Dedicated storage reports unsaved memory fallback; promotion validates complete content and stale baselines and writes only selected authored scopes. Record-envelope validation awaits ticket 03 final hardening; catalog/rule-only identity checking remains a final integration review item.
+- Implemented namespaced revision/evidence persistence with honest in-memory failure status, validated export/import and explicit authored-scope promotion preview and atomic apply. Disposable-workspace tests cover stale/error preservation. Scenario payloads, legal formations, traces and complete reports are validated against their referenced revision; effective identities and stable references must agree. Catalog/rule-only promotion checks all affected encounters under the same declared setup. Integrated implementation `191a5ad` and hardening `88b9123`.

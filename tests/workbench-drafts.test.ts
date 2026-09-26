@@ -140,3 +140,124 @@ describe("scoped authored promotion", () => {
     expect(preview.changes).toEqual([]);
   });
 });
+
+describe("validated evidence envelopes", () => {
+  it("rejects malformed scenario payload and mismatched stable encounter/wave references", () => {
+    const experiments = bundle();
+    const revision = experiments.revisions[0];
+    const levelId = revision.content.levels[0].id;
+    const valid = {
+      id: "setup",
+      levelId,
+      mode: "encounter" as const,
+      progression: "first-arrival" as const,
+      difficulty: "normal" as const,
+      seed: 7,
+    };
+    experiments.scenarios.push({
+      id: "setup-record",
+      revisionId: revision.id,
+      levelId,
+      scenario: valid,
+    });
+    expect(importExperiments(exportExperiments(experiments))).toEqual(
+      experiments,
+    );
+    experiments.scenarios[0].scenario = {
+      ...valid,
+      overrides: { script: "invented" },
+    };
+    expect(() => exportExperiments(experiments)).toThrow("unsupported");
+    experiments.scenarios[0].scenario = {
+      ...valid,
+      levelId: revision.content.levels[1].id,
+    };
+    expect(() => exportExperiments(experiments)).toThrow("references");
+    experiments.scenarios[0].scenario = {
+      ...valid,
+      formation: [{ kind: "bolt", point: revision.content.levels[0].path[0] }],
+    };
+    expect(() => exportExperiments(experiments)).toThrow();
+  });
+  it("rejects missing setups, invalid command types, and results detached from effective content", async () => {
+    const { AttemptSession } = await import("../src/workbench/runs");
+    const experiments = bundle();
+    const revision = experiments.revisions[0];
+    const levelId = revision.content.levels[0].id;
+    const scenario = {
+      id: "setup",
+      levelId,
+      mode: "encounter" as const,
+      progression: "first-arrival" as const,
+      difficulty: "normal" as const,
+      seed: 7,
+    };
+    experiments.traces.push({
+      id: "trace",
+      revisionId: revision.id,
+      levelId,
+      commands: [],
+    });
+    expect(() => exportExperiments(experiments)).toThrow();
+    experiments.traces[0].scenario = scenario;
+    experiments.traces[0].commands = [
+      { tick: 0, accepted: true, command: { type: "award-money" } },
+    ];
+    expect(() => exportExperiments(experiments)).toThrow("Unknown command");
+    experiments.traces = [];
+    const attempt = new AttemptSession(revision.content, scenario);
+    const report = attempt.report({ type: "encounter-win" });
+    experiments.results.push({
+      id: "result",
+      revisionId: revision.id,
+      levelId,
+      report,
+    });
+    expect(importExperiments(exportExperiments(experiments))).toEqual(
+      experiments,
+    );
+    experiments.results[0].report = {
+      ...report,
+      configurationIdentity: "wrong",
+    };
+    expect(() => exportExperiments(experiments)).toThrow();
+    experiments.results[0].report = {
+      ...report,
+      trace: [{ tick: 1, command: { type: "start" }, accepted: "yes" }],
+    };
+    expect(() => exportExperiments(experiments)).toThrow();
+  });
+});
+it("checks catalog-only promotion across affected encounters and preserves declared synthetic setups", async () => {
+  const { verifyPromotionScenarios } =
+    await import("../src/workbench/promotion");
+  const revision = bundle().revisions[0];
+  revision.content.towers.bolt.damage += 1;
+  revision.content.levels[1].startCoins += 10;
+  const catalogOnly = previewPromotion(CANONICAL_CONTENT, revision, {
+    towers: ["bolt"],
+  });
+  expect(() => verifyPromotionScenarios(catalogOnly, revision)).toThrow(
+    "tested scenario",
+  );
+  const complete = previewPromotion(CANONICAL_CONTENT, revision, {
+    towers: ["bolt"],
+    levels: [revision.content.levels[1].id],
+  });
+  const scenario = {
+    id: "synthetic-check",
+    levelId: revision.content.levels[1].id,
+    mode: "encounter" as const,
+    progression: "replay" as const,
+    difficulty: "assist" as const,
+    seed: 3,
+    overrides: { coins: 5000, lives: 30 },
+  };
+  expect(verifyPromotionScenarios(complete, revision, [scenario])).toHaveLength(
+    CANONICAL_CONTENT.levels.length,
+  );
+  expect(complete.content.levels[1].startCoins).toBe(
+    revision.content.levels[1].startCoins,
+  );
+  expect(complete.content.levels[1].startCoins).not.toBe(5000);
+});

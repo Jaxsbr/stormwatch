@@ -32,7 +32,7 @@ if (
     const { importExperiments } = await server.ssrLoadModule(
       "/src/workbench/drafts.ts",
     );
-    const { previewPromotion, verifyPromotionIdentity } =
+    const { previewPromotion, verifyPromotionScenarios } =
       await server.ssrLoadModule("/src/workbench/promotion.ts");
     const file = resolve(workspace, "src/content/recipes.json");
     const original = await readFile(file, "utf8");
@@ -46,8 +46,13 @@ if (
       await readFile(resolve(selectionPath), "utf8"),
     );
     const preview = previewPromotion(baseline, revision, selection);
-    for (const levelId of selection.levels ?? [])
-      verifyPromotionIdentity(preview, revision, levelId);
+    verifyPromotionScenarios(
+      preview,
+      revision,
+      bundle.scenarios
+        .filter((record) => record.revisionId === revision.id)
+        .map((record) => record.scenario),
+    );
     console.log(
       JSON.stringify(
         {

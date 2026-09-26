@@ -41,6 +41,15 @@ it("previews and atomically applies only canonical content in a disposable works
     const output = execFileSync(process.execPath, args, { encoding: "utf8" });
     expect(output).toContain("candidateIdentity");
     expect(await readFile(destination, "utf8")).toBe(original);
+    await writeFile(selectionFile, JSON.stringify({ towers: ["bolt"] }));
+    expect(() =>
+      execFileSync(process.execPath, [...args, "--apply"], { stdio: "pipe" }),
+    ).toThrow();
+    expect(await readFile(destination, "utf8")).toBe(original);
+    await writeFile(
+      selectionFile,
+      JSON.stringify({ levels: [revision.content.levels[0].id] }),
+    );
     execFileSync(process.execPath, [...args, "--apply"], { encoding: "utf8" });
     const accepted = await readFile(destination, "utf8");
     expect(JSON.parse(accepted).levels[0].startCoins).toBe(

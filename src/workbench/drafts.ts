@@ -5,6 +5,9 @@ import {
   type AuthoringContent,
 } from "../config/configuration";
 
+import { validateScenario, resolveScenario, type Scenario } from "./scenarios";
+import { AttemptSession, validateTrace, validateRunReport } from "./runs";
+
 export const WORKBENCH_STORAGE_KEY = "stormwatch.designer-workbench.v1";
 export interface DraftRevision {
   id: string;
@@ -68,7 +71,8 @@ export function validateBundle(input: unknown): ExperimentBundle {
       !object(revision) ||
       typeof revision.name !== "string" ||
       !revision.name.trim() ||
-      typeof revision.baseIdentity !== "string"
+      typeof revision.baseIdentity !== "string" ||
+      !/^v1-[0-9a-f]{8}$/.test(revision.baseIdentity)
     )
       throw new Error("Invalid draft revision");
     validateContent(revision.content);
@@ -96,10 +100,64 @@ export function validateBundle(input: unknown): ExperimentBundle {
         !level.waves.some((wave) => wave.id === record.waveId)
       )
         throw new Error(`${key}: unknown wave ${record.waveId}`);
+      if (key === "scenarios") {
+        validateRecordScenario(record, record.scenario, revision.content);
+      } else if (key === "traces") {
+        const scenarioRecord =
+          record.scenarioId === undefined
+            ? undefined
+            : bundle.scenarios.find((entry) => entry.id === record.scenarioId);
+        if (
+          record.scenarioId !== undefined &&
+          (!scenarioRecord ||
+            scenarioRecord.revisionId !== record.revisionId ||
+            scenarioRecord.levelId !== record.levelId ||
+            scenarioRecord.waveId !== record.waveId)
+        )
+          throw new Error("Trace references a different or unknown scenario");
+        const scenario = record.scenario ?? scenarioRecord?.scenario;
+        validateRecordScenario(record, scenario, revision.content);
+        validateTrace(record.commands);
+      } else {
+        validateRunReport(record.report, revision.content);
+        const report = record.report;
+        validateRecordScenario(record, report.scenario, revision.content);
+        if (record.scenarioId !== undefined) {
+          const referenced = bundle.scenarios.find(
+            (entry) => entry.id === record.scenarioId,
+          );
+          if (
+            !referenced ||
+            referenced.revisionId !== record.revisionId ||
+            contentIdentity(referenced.scenario) !==
+              contentIdentity(report.scenario)
+          )
+            throw new Error(
+              "Result references a different or unknown scenario",
+            );
+        }
+      }
     }
     unique(bundle[key], key);
   }
   return clone(bundle);
+}
+function validateRecordScenario(
+  record: ExperimentRecord,
+  input: unknown,
+  content: AuthoringContent,
+): Scenario {
+  validateScenario(input);
+  if (input.levelId !== record.levelId || input.waveId !== record.waveId)
+    throw new Error(
+      "Evidence scenario does not match encounter/wave references",
+    );
+  if (input.mode === "encounter" && input.waveId !== undefined)
+    throw new Error("Full encounter must not carry an isolated wave reference");
+  resolveScenario(content, input);
+  // The real game's legal commands also validate resources, placement and formation upgrades.
+  new AttemptSession(content, input);
+  return input;
 }
 export function importExperiments(serialized: string): ExperimentBundle {
   return validateBundle(JSON.parse(serialized));

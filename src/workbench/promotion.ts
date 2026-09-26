@@ -1,3 +1,4 @@
+import { resolveScenario, type Scenario } from "./scenarios";
 import {
   resolveConfiguration,
   validateContent,
@@ -117,4 +118,58 @@ export function verifyPromotionIdentity(
       "Selected authored scopes do not reproduce the tested configuration; include the remaining authored changes.",
     );
   return promoted;
+}
+
+/** Validate selected authored changes in every affected encounter, with declared synthetic setup kept separate. */
+export function verifyPromotionScenarios(
+  preview: PromotionPreview,
+  revision: DraftRevision,
+  scenarios: Scenario[] = [],
+): string[] {
+  const catalogOrRules = ["towers", "enemies", "rules"].some(
+    (scope) =>
+      (preview.selected[scope as keyof PromotionSelection]?.length ?? 0) > 0,
+  );
+  const affected = catalogOrRules
+    ? preview.content.levels.map((level) => level.id)
+    : (preview.selected.levels ?? []);
+  const identities: string[] = [];
+  for (const levelId of affected) {
+    const matched = scenarios.filter(
+      (scenario) => scenario.levelId === levelId,
+    );
+    const setups: Scenario[] = matched.length
+      ? matched
+      : [
+          {
+            id: "promotion-check",
+            levelId,
+            mode: "encounter",
+            progression: "first-arrival",
+            difficulty: "normal",
+            seed: 1,
+          },
+        ];
+    for (const setup of setups) {
+      if (
+        setup.difficultyCandidate &&
+        contentIdentity(setup.difficultyCandidate.content) !==
+          contentIdentity(revision.content)
+      )
+        throw new Error(
+          "Scenario tested a different authored difficulty candidate; promote its revision explicitly",
+        );
+      const scenario = { ...setup, difficultyCandidate: undefined };
+      const tested = resolveScenario(revision.content, scenario).configuration
+        .identity;
+      const promoted = resolveScenario(preview.content, scenario).configuration
+        .identity;
+      if (tested !== promoted)
+        throw new Error(
+          `Selected authored scopes do not reproduce the tested scenario for ${levelId}`,
+        );
+      identities.push(promoted);
+    }
+  }
+  return identities;
 }
