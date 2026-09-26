@@ -18,7 +18,6 @@ import {
 } from "./status-glyph";
 import { ratShieldState } from "../sim/rat-shield";
 import { netGeometry } from "./combat-shapes";
-import { ENEMIES, TOWERS } from "../content/catalog";
 import { pointOnPath } from "../sim/path";
 import type { Game } from "../sim/game";
 import type { EnemyKind, LevelDef, Point, TowerKind } from "../sim/types";
@@ -645,7 +644,7 @@ export class Battlefield {
       ids = new Set<number>();
     for (const t of s.towers) {
       ids.add(t.id);
-      const f = this.figure(t.id, TOWERS[t.kind].sprite, 150);
+      const f = this.figure(t.id, game.towers[t.kind].sprite, 150);
       f.sprite.visible = false;
       f.point = { x: t.x, z: t.z };
       f.sprite.position.copy(position(t));
@@ -734,7 +733,7 @@ export class Battlefield {
     for (const e of s.enemies) {
       ids.add(e.id);
       const height = enemyHeight(e);
-      const f = this.figure(e.id, ENEMIES[e.kind].sprite, height, true);
+      const f = this.figure(e.id, game.enemies[e.kind].sprite, height, true);
       f.sprite.visible = !!f.sprite.material.map?.image;
       const dx = e.x - f.point.x,
         dz = e.z - f.point.z;
@@ -779,7 +778,7 @@ export class Battlefield {
       const rallyWarning =
         e.kind === "boss" &&
         e.nextRallyAt !== undefined &&
-        s.clock >= e.nextRallyAt - 1 &&
+        s.clock >= e.nextRallyAt - game.rules.boss.warningSeconds &&
         s.clock < e.nextRallyAt;
       const statuses: StatusGlyphView[] = [];
       if (e.kind === "raider")
@@ -796,7 +795,10 @@ export class Battlefield {
         statuses.push({
           kind: "rally",
           opacity: 1,
-          flash: Math.sin((s.clock - (e.nextRallyAt! - 1)) * Math.PI),
+          flash: Math.sin(
+            (s.clock - (e.nextRallyAt! - game.rules.boss.warningSeconds)) *
+              Math.PI,
+          ),
         });
       this.updateStatusGlyphs(f, e, height, statuses);
       const next = pointOnPath(game.level.path, e.distance + 0.02);

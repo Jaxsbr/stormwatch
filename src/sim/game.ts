@@ -1,5 +1,11 @@
 import { ENEMIES, TOWERS } from "../content/catalog";
 import {
+  DEFAULT_RULES,
+  type AttemptConfiguration,
+  type GameplayRules,
+} from "../config/configuration";
+import { compileSpawnSchedule } from "./spawn-schedule";
+import {
   distance,
   onPath,
   pathLength,
@@ -24,10 +30,15 @@ import type {
 
 export const INTER_WAVE_COUNTDOWN_SECONDS = 10;
 export interface AttemptRules {
+  configuration?: AttemptConfiguration;
   unlockedUpgrades?: readonly TowerKind[];
 }
 
 export class Game {
+  readonly level: LevelDef;
+  readonly towers: typeof TOWERS;
+  readonly enemies: typeof ENEMIES;
+  readonly rules: GameplayRules;
   readonly state: GameState;
   readonly events: GameEvent[] = [];
   private serial = 1;
@@ -44,13 +55,31 @@ export class Game {
   private seed: number;
   private readonly unlockedUpgrades: ReadonlySet<TowerKind> | null;
   constructor(
-    readonly level: LevelDef,
+    level: LevelDef,
     card: CardId = "none",
     assist = false,
     seed = 42,
     rules: AttemptRules = {},
   ) {
+    const snapshot = rules.configuration;
+    this.level = structuredClone(snapshot?.level ?? level);
+    this.towers = structuredClone(snapshot?.towers ?? TOWERS);
+    this.enemies = structuredClone(snapshot?.enemies ?? ENEMIES);
+    this.rules = structuredClone(snapshot?.rules ?? DEFAULT_RULES);
+    const freeze = (value: object) => {
+      Object.values(value).forEach((v) => {
+        if (v && typeof v === "object") freeze(v);
+      });
+      Object.freeze(value);
+    };
+    freeze(this.level);
+    freeze(this.towers);
+    freeze(this.enemies);
+    freeze(this.rules);
+    level = this.level;
     validateLevel(level);
+    for (const wave of level.waves)
+      compileSpawnSchedule(wave, this.rules.initialSpawnDelay);
     this.seed = seed >>> 0;
     this.unlockedUpgrades = rules.unlockedUpgrades
       ? new Set(rules.unlockedUpgrades)
@@ -61,9 +90,9 @@ export class Game {
       clock: 0,
       wave: 0,
       nextWaveCountdown: null,
-      coins: level.startCoins + (assist ? 70 : 0),
-      lives: assist ? 20 : 12,
-      maxLives: assist ? 20 : 12,
+      coins: level.startCoins + (assist ? this.rules.assistCrowns : 0),
+      lives: assist ? this.rules.assistLives : this.rules.normalLives,
+      maxLives: assist ? this.rules.assistLives : this.rules.normalLives,
       kills: 0,
       killsByKind: { raider: 0, runner: 0, armored: 0, boss: 0 },
       leaks: 0,
@@ -105,7 +134,7 @@ export class Game {
     );
   }
   place(kind: TowerKind, p: Point): boolean {
-    const def = TOWERS[kind];
+    const def = this.towers[kind];
     if (
       !def ||
       (this.level.availableTowers !== undefined &&
@@ -130,7 +159,8 @@ export class Game {
   }
   upgradeCost(t: Tower) {
     return Math.floor(
-      TOWERS[t.kind].upgrade * (this.state.card === "thrift" ? 0.8 : 1),
+      this.towers[t.kind].upgrade *
+        (this.state.card === "thrift" ? this.rules.thriftScale : 1),
     );
   }
   canUpgrade(t: Tower) {
@@ -163,9 +193,9 @@ export class Game {
   }
   range(t: Tower) {
     return (
-      TOWERS[t.kind].range *
-      (t.level === 2 ? 1.15 : 1) *
-      (this.state.card === "reach" ? 1.18 : 1)
+      this.towers[t.kind].range *
+      (t.level === 2 ? this.rules.upgradeRangeScale : 1) *
+      (this.state.card === "reach" ? this.rules.reachScale : 1)
     );
   }
   startWave() {
@@ -174,30 +204,7 @@ export class Game {
       return false;
     const def = this.level.waves[s.wave];
     s.nextWaveCountdown = null;
-    this.queue = [];
-    let at = 0.7;
-    for (const g of def.groups) {
-      at += g.delayBefore ?? 0;
-      const batchSize = g.batchSize ?? 1;
-      const batchStagger = g.batchStagger ?? 0;
-      for (let n = 0; n < g.count; n += batchSize) {
-        const inBatch = Math.min(batchSize, g.count - n);
-        for (let i = 0; i < inBatch; i += 1) {
-          this.queue.push({
-            at: at + i * batchStagger,
-            kind: g.kind,
-            evasionCycle: g.evasionCycle,
-            ...(g.movementScale === undefined
-              ? {}
-              : { movementScale: g.movementScale }),
-            ...(g.shieldCycle === undefined
-              ? {}
-              : { shieldCycle: { ...g.shieldCycle } }),
-          });
-        }
-        at += g.gap;
-      }
-    }
+    this.queue = compileSpawnSchedule(def, this.rules.initialSpawnDelay);
     this.waveClock = 0;
     this.bossKillsAtWaveStart = s.killsByKind.boss;
     s.wave++;
@@ -239,7 +246,7 @@ export class Game {
     this.waveClock += dt;
     while (this.queue.length && this.queue[0].at <= this.waveClock) {
       const q = this.queue.shift()!,
-        def = ENEMIES[q.kind],
+        def = this.enemies[q.kind],
         hp = def.hp * (this.level.healthScale ?? 1);
       s.enemies.push({
         ...this.level.path[0],
@@ -256,7 +263,10 @@ export class Game {
         shieldHitAt: -1,
         evadeAt: -1,
         ...(q.kind === "boss"
-          ? { nextRallyAt: s.clock + 7, rallyWarningEmitted: false }
+          ? {
+              nextRallyAt: s.clock + this.rules.boss.firstRallySeconds,
+              rallyWarningEmitted: false,
+            }
           : {}),
         evasionCycle: q.evasionCycle,
         ...(q.movementScale === undefined
@@ -272,21 +282,23 @@ export class Game {
     for (const e of s.enemies) {
       if (!e.alive) continue;
       e.distance +=
-        ENEMIES[e.kind].speed *
+        this.enemies[e.kind].speed *
         (e.movementScale ?? 1) *
         Math.max(
           e.kind === "runner" &&
             weaselEvasionState(s.clock - e.spawnedAt, e.evasionCycle).active
-            ? 1.15
+            ? this.rules.evasionSpeedScale
             : 1,
-          e.rallyUntil !== undefined && e.rallyUntil > s.clock ? 1.25 : 1,
+          e.rallyUntil !== undefined && e.rallyUntil > s.clock
+            ? this.rules.boss.speedScale
+            : 1,
         ) *
-        (e.slowUntil > s.clock ? 0.48 : 1) *
+        (e.slowUntil > s.clock ? this.rules.slowScale : 1) *
         dt;
       Object.assign(e, pointOnPath(this.level.path, e.distance));
       if (e.distance >= len) {
         e.alive = false;
-        s.lives = Math.max(0, s.lives - ENEMIES[e.kind].leak);
+        s.lives = Math.max(0, s.lives - this.enemies[e.kind].leak);
         s.leaks++;
         this.emit("leak");
         if (this.level.requiresBossDefeat && e.kind === "boss") {
@@ -317,8 +329,9 @@ export class Game {
         .filter((e) => e.alive && distance(e, t) <= this.range(t))
         .sort((a, b) => b.distance - a.distance || a.id - b.id)[0];
       if (!target) continue;
-      const def = TOWERS[t.kind];
-      t.cooldown = def.interval * (t.level === 2 ? 0.8 : 1);
+      const def = this.towers[t.kind];
+      t.cooldown =
+        def.interval * (t.level === 2 ? this.rules.upgradeIntervalScale : 1);
       t.shots++;
       s.shots.push({
         ...t,
@@ -326,7 +339,8 @@ export class Game {
         source: { x: t.x, z: t.z },
         targetId: target.id,
         kind: t.kind,
-        damage: def.damage * (t.level === 2 ? 1.7 : 1),
+        damage:
+          def.damage * (t.level === 2 ? this.rules.upgradeDamageScale : 1),
         life: 0,
         duration: 0.22 + distance(t, target) * 0.045,
         target: { x: target.x, z: target.z },
@@ -340,7 +354,10 @@ export class Game {
       if (shot.life < shot.duration) continue;
       if (shot.kind === "stone") {
         for (const target of s.enemies)
-          if (target.alive && distance(target, shot.target) <= 1.15)
+          if (
+            target.alive &&
+            distance(target, shot.target) <= this.rules.splashRadius
+          )
             this.hurt(target, shot.damage, true);
         s.effects.push({
           ...shot.target,
@@ -354,7 +371,10 @@ export class Game {
         if (landed && shot.kind === "net")
           e.slowUntil = Math.max(
             e.slowUntil,
-            s.clock + (s.card === "nets" ? 4.5 : 3),
+            s.clock +
+              (s.card === "nets"
+                ? this.rules.longerNetSeconds
+                : this.rules.netSeconds),
           );
       }
     }
@@ -385,7 +405,7 @@ export class Game {
         this.emit("win");
       } else {
         s.phase = "preparation";
-        s.nextWaveCountdown = INTER_WAVE_COUNTDOWN_SECONDS;
+        s.nextWaveCountdown = this.rules.interWaveSeconds;
       }
     }
   }
@@ -394,7 +414,10 @@ export class Game {
     for (const boss of s.enemies) {
       if (!boss.alive || boss.kind !== "boss" || boss.nextRallyAt === undefined)
         continue;
-      if (!boss.rallyWarningEmitted && s.clock >= boss.nextRallyAt - 1) {
+      if (
+        !boss.rallyWarningEmitted &&
+        s.clock >= boss.nextRallyAt - this.rules.boss.warningSeconds
+      ) {
         boss.rallyWarningEmitted = true;
         this.emit("rally-warning");
       }
@@ -404,14 +427,17 @@ export class Game {
         if (
           !escort.alive ||
           escort.kind === "boss" ||
-          Math.abs(escort.distance - boss.distance) > 3
+          Math.abs(escort.distance - boss.distance) > this.rules.boss.radius
         )
           continue;
-        escort.rallyUntil = Math.max(escort.rallyUntil ?? 0, s.clock + 3);
+        escort.rallyUntil = Math.max(
+          escort.rallyUntil ?? 0,
+          s.clock + this.rules.boss.durationSeconds,
+        );
         recipients++;
       }
       this.emit("rally", recipients);
-      boss.nextRallyAt += 10;
+      boss.nextRallyAt += this.rules.boss.rallyIntervalSeconds;
       boss.rallyWarningEmitted = false;
     }
   }
@@ -439,7 +465,9 @@ export class Game {
       return false;
     }
     const guarded = projectile && e.kind === "raider" && e.shieldRaised;
-    e.hp -= Math.max(1, damage - ENEMIES[e.kind].armor) * (guarded ? 0.5 : 1);
+    e.hp -=
+      Math.max(1, damage - this.enemies[e.kind].armor) *
+      (guarded ? this.rules.guardDamageScale : 1);
     if (guarded) {
       e.shieldHitAt = s.clock;
       this.emit("shield-hit");
@@ -460,7 +488,7 @@ export class Game {
       s.kills++;
       s.killsByKind[e.kind]++;
       const reward = Math.floor(
-        ENEMIES[e.kind].reward * (this.level.enemyRewardScale ?? 1),
+        this.enemies[e.kind].reward * (this.level.enemyRewardScale ?? 1),
       );
       s.coins += reward;
       s.goldEarned += reward;

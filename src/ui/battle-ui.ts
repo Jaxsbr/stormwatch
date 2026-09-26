@@ -1,4 +1,3 @@
-import { TOWERS } from "../content/catalog";
 import type { Game } from "../sim/game";
 import type { GameState, Tower } from "../sim/types";
 import { refundFor } from "../sim/economy";
@@ -36,7 +35,7 @@ export function battleStats(waves: number) {
   </div>`;
 }
 export function towerAttributes(game: Game, t: Tower) {
-  const def = TOWERS[t.kind];
+  const def = game.towers[t.kind];
   const stats = (level: number) => ({
     damage: Number((def.damage * (level === 2 ? 1.7 : 1)).toFixed(1)),
     range: Number(game.range({ ...t, level }).toFixed(1)),
@@ -65,5 +64,5 @@ export function defenderPanel(game: Game, t: Tower) {
     : t.level === 2
       ? "Max rank"
       : `Upgrade · ${game.upgradeCost(t)}`;
-  return `<div class="hero-portrait">${towerPortrait(t.kind)}<div class="hero-rank">${rankBadge(t.level)}</div></div><div class="hero-identity"><h3>${TOWERS[t.kind].name}</h3><dl class="hero-attributes">${attributes}</dl>${!game.canUpgrade(t) ? '<p class="upgrade-lock">Win Lantern Pass to unlock Squirrel upgrades.</p>' : ""}</div><div class="selection-actions">${button("upgrade", upgradeLabel, "primary", `${!game.canUpgrade(t) || t.level === 2 || game.state.coins < game.upgradeCost(t) || !game.canAct() ? "disabled" : ""}`)}${button("sell", `Sell · +${refundFor(t.spent)}`, "quiet", `${!game.canAct() ? "disabled" : ""}`)}${button("inspect-close", "Close", "quiet")}</div>`;
+  return `<div class="hero-portrait">${towerPortrait(t.kind)}<div class="hero-rank">${rankBadge(t.level)}</div></div><div class="hero-identity"><h3>${game.towers[t.kind].name}</h3><dl class="hero-attributes">${attributes}</dl>${!game.canUpgrade(t) ? '<p class="upgrade-lock">Win Lantern Pass to unlock Squirrel upgrades.</p>' : ""}</div><div class="selection-actions">${button("upgrade", upgradeLabel, "primary", `${!game.canUpgrade(t) || t.level === 2 || game.state.coins < game.upgradeCost(t) || !game.canAct() ? "disabled" : ""}`)}${button("sell", `Sell · +${refundFor(t.spent)}`, "quiet", `${!game.canAct() ? "disabled" : ""}`)}${button("inspect-close", "Close", "quiet")}</div>`;
 }

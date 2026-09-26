@@ -32,6 +32,7 @@ export interface EvasionCycle {
   upSeconds: number;
 }
 export interface WaveGroupDef {
+  id?: string;
   /** Additional silence before this group, after the preceding group cadence. */
   delayBefore?: number;
   /** Opt-in Weasel evasion; omitted for the introductory wave. */
@@ -51,6 +52,7 @@ export interface WaveGroupDef {
   shieldCycle?: ShieldCycle;
 }
 export interface WaveDef {
+  id?: string;
   groups: WaveGroupDef[];
   reward: number;
   title: string;
