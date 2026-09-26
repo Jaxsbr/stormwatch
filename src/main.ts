@@ -18,6 +18,7 @@ import {
   availableCards,
   initialCard,
   levelUnlocked,
+  levelForAttempt,
 } from "./content/progression";
 import { Battlefield } from "./render/battlefield";
 import { attachRecording } from "./render/recording";
@@ -126,7 +127,7 @@ function render() {
     )}</div><footer class="menu-footer">${button("title", "Back", "quiet")}</footer></main>`;
   if (screen === "briefing") {
     app.innerHTML = advantageScreen(
-      LEVELS[levelIndex],
+      levelForAttempt(LEVELS[levelIndex], save),
       availableCards(LEVELS[levelIndex], save),
       card,
       lastDefeatLevelId === LEVELS[levelIndex].id,
@@ -142,7 +143,7 @@ function render() {
   );
 }
 function renderBattle() {
-  const l = LEVELS[levelIndex];
+  const l = game!.level;
   const availableTowers =
     l.availableTowers ?? (Object.keys(TOWERS) as TowerKind[]);
   app.innerHTML = `<main class="battle-screen"><header class="battle-header"><div class="battle-brand"><div><strong>${l.name}</strong></div></div>${battleStats(l.waves.length)}<div class="battle-tools">${button("speed", "1×", "icon-button", 'aria-label="Game speed" id="speed"')}${button("menu", "Menu", "icon-button", 'aria-label="Menu" id="battle-menu"')}</div></header><div class="battle-middle"><section class="battlefield"><div id="canvas-host"></div><div id="wave-countdown" class="wave-countdown" role="status" aria-live="polite" hidden><span>Next wave in</span> <strong id="countdown-number">10</strong></div></section><aside class="battle-aside"><div class="wave-controls">${button("start", "Start first wave", "primary", 'id="start-wave"')}</div></aside></div><footer class="build-tray"><section id="selection-panel" class="selection-panel"></section><div class="tray-label"><strong id="build-label">Choose a structure</strong>${button("cancel", "Cancel", "quiet small", 'id="cancel" hidden')}</div><div class="tower-buttons">${availableTowers.map((k) => `<button class="tower-button" data-action="build:${k}" id="build-${k}">${portrait(TOWERS[k].sprite)}<span><strong>${TOWERS[k].name}</strong><small>${TOWERS[k].role}</small></span><b>${TOWERS[k].cost}<small> gold</small></b></button>`).join("")}</div></footer></main>`;
@@ -208,7 +209,7 @@ function begin(assist = false) {
     card = "none";
   sound.pause(false);
   sound.unlock();
-  game = new Game(LEVELS[levelIndex], card, assist, 42, {
+  game = new Game(levelForAttempt(LEVELS[levelIndex], save), card, assist, 42, {
     unlockedUpgrades: save.unlocked.includes("squirrel-upgrade")
       ? ["bolt"]
       : [],

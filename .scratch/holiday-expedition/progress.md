@@ -2,9 +2,9 @@
 
 ## Current state
 
-The spec remains `ready-for-agent` for the unfinished campaign. Tickets 01–03 are complete at the owner-approved scope; tickets 04–06 remain. The initial planning handoff did not implement gameplay; historical ticket 02 review and current closeout are recorded below.
+The spec remains `ready-for-agent` for the unfinished campaign. Tickets 01–04 are complete at the owner-approved scope; tickets 05–06 remain. The Last Lantern's five teaching waves and Turtle cue are complete, but the map remains unregistered until the Roadwarden finale is integrated. The initial planning handoff did not implement gameplay; historical ticket 02 review and current closeout are recorded below.
 
-Current gameplay baseline is `1c72f84`; owner playtest completion is recorded in `153e1b9`. Two player slots, Squirrel upgrade discovery, four-wave mixed Rainstone, deterministic Weasel evasion and Turtle discovery are implemented. The Last Lantern, attached-net feedback, boss ending and replay advantages remain tickets 04–05. Earlier observations below are historical snapshots.
+Two player slots, Squirrel upgrade discovery, four-wave mixed Rainstone, deterministic Weasel evasion and Turtle discovery are implemented. The owner confirmed Turtle unlock after Rainstone. Completed Lantern Pass and Rainstone replays now use earned Turtle and Squirrel upgrades to support star improvement. Earlier observations below are historical snapshots.
 
 ## Owner context
 
@@ -18,25 +18,25 @@ Current gameplay baseline is `1c72f84`; owner playtest completion is recorded in
 
 - `spec.md`: canonical Day 2-onward specification, using the requested template and extensive user stories.
 - `wave-plan.md`: Map 3 implementation recipes plus Maps 1–2 prerequisite context; numeric values untested and tunable.
-- `issues/04-turtle-and-final-route.md`: Day 2 entry ticket; prerequisite audit, net feedback, route and teaching waves.
+- `issues/04-turtle-and-final-route.md`: complete; route, teaching waves, woven slow cue and earned-defender replay behavior are implemented.
 - `issues/05-boss-and-chapter-ending.md`: Day 2 boss, required defeat, ending and replay rewards.
 - `issues/06-family-release.md`: Day 3 corrective feedback, broader integration and family-device readiness.
-- Tickets 01–03: complete at the owner-approved scope. Tickets 04–06 remain ahead.
+- Tickets 01–04: complete at the owner-approved scope. Tickets 05–06 remain ahead.
 - `expanded-wave-plan.md`: optional future design, excluded from this release.
 
 ## Next execution step
 
-Begin ticket 04, Turtle feedback and The Last Lantern route/teaching waves. Preserve the completed Lantern/Rainstone lessons and earned progress. Integrate ticket 05 before making the final encounter a normal campaign destination. Maintain a candidate/version and append evidence, next action and owner feedback after each playable slice.
+Begin ticket 05, the Roadwarden boss wave, chapter ending and replay rewards. Preserve the completed Lantern/Rainstone lessons, earned-defender replay behavior and star records. Integrate the boss before making The Last Lantern a normal campaign destination. Maintain a candidate/version and append evidence, next action and owner feedback after each playable slice.
 
 ## Known release dependencies
 
 - No public holiday deployment route is established by this planning work.
 - Actual tablet models/browser behavior and physical performance require owner/device evidence.
-- Proposed wave balance, rally, boss objective and final rewards have not been implemented or verified by this spec-writing task.
+- Ticket 05's boss wave, rally, chapter ending and replay advantages remain to be implemented and verified. Ticket 06 owns family-device checks and release readiness.
 
 ## Resume prompt
 
-Implement the remaining campaign in `.scratch/holiday-expedition/spec.md`, starting at ticket 04 and continuing through 05–06. Preserve existing progress and leave CuteDefense unchanged. Use existing Game and persistence test boundaries, keep playable candidates, and maintain this progress record. Tune routine details from evidence and incorporate simple owner feedback. Report missing dependencies and required physical-device observations precisely. Do not create a new public deployment destination or buy assets without authorization.
+Implement the remaining campaign in `.scratch/holiday-expedition/spec.md`, starting at ticket 05 and continuing through 06. Preserve completed ticket 04 and earned replay capabilities. Leave CuteDefense unchanged. Use existing Game and persistence test boundaries, keep playable candidates, and maintain this progress record. Tune routine details from evidence and incorporate simple owner feedback. Report missing dependencies and required physical-device observations precisely. Do not create a new public deployment destination or buy assets without authorization.
 
 ## Explicit historical-ticket review — 02 (25 September 2026)
 
@@ -134,3 +134,7 @@ The Last Lantern starts at 120 gold with base Turtle and Squirrel, and only the 
 The original full-body net was rejected by the owner. A live browser prototype offered three floor-level variations on A's aura: woven lattice, tightening loops, and ground tethers. The owner selected woven underfoot. That floor cue now tracks active slow state, remains during pause, and clears with expiry/death; it sits below characters and overhead status markers. Browser review at 1024×620 showed it active in wave 4 with no symbol overlap. This is a browser observation, not physical-device or child-play evidence.
 
 Ticket 04 is complete at its content/rendering scope. `npm run check`, all 181 tests, `npm run build`, and formatting checks for changed code passed. The production build still reports the large battlefield bundle advisory. The Last Lantern remains unregistered until ticket 05 integrates the Roadwarden boss, required defeat, board advance and ending. Ticket 06 still owns family-device checks and release readiness.
+
+## Earned defenders on replay — 26 September 2026
+
+The owner confirmed Turtle discovery after winning Rainstone and clarified that earned defenders and Squirrel upgrades should help players replay completed maps for better stars. Completed Lantern and Rainstone attempts now add unlocked Turtle to their roster; briefing and battle use the same resolved roster. First attempts keep their authored lesson roster. Squirrel upgrades remain available through the existing saved unlock. Best stars are retained when a replay earns fewer stars, and player slots retain their own unlocks. Regression coverage exercises replay after save reload, placement, upgrades, briefing, first-attempt restrictions and best-star retention.

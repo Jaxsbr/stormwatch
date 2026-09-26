@@ -4,8 +4,54 @@ import {
   availableCards,
   initialCard,
   levelUnlocked,
+  levelForAttempt,
 } from "../src/content/progression";
 import { freshSave, recordVictory, parseSave } from "../src/persistence/save";
+import { Game } from "../src/sim/game";
+import { advantageScreen } from "../src/ui/advantage-screen";
+
+it("uses earned Turtle and Squirrel upgrades on completed maps after reload", () => {
+  const earned = parseSave(
+    JSON.stringify(
+      recordVictory(
+        recordVictory(freshSave(), "lantern-pass", 1),
+        "rainstone-crossing",
+        1,
+      ),
+    ),
+  );
+  for (const level of LEVELS) {
+    const replay = levelForAttempt(level, earned);
+    const game = new Game({ ...replay, startCoins: 500 }, "none", false, 42, {
+      unlockedUpgrades: earned.unlocked.includes("squirrel-upgrade")
+        ? ["bolt"]
+        : [],
+    });
+    expect(game.place("net", { x: 1, z: 2 })).toBe(true);
+    expect(game.place("bolt", { x: 3, z: 0 })).toBe(true);
+    expect(game.upgrade(game.state.towers[1].id)).toBe(true);
+    expect(game.upgrade(game.state.towers[0].id)).toBe(false);
+    expect(advantageScreen(replay, [], "none")).toContain("Turtle");
+    expect(level.availableTowers).toEqual(["bolt"]);
+  }
+  const improved = recordVictory(earned, "lantern-pass", 3);
+  expect(recordVictory(improved, "lantern-pass", 1).stars["lantern-pass"]).toBe(
+    3,
+  );
+});
+
+it("keeps first attempts and another player's roster restricted", () => {
+  for (const level of LEVELS) {
+    expect(levelForAttempt(level, freshSave())).toBe(level);
+    expect(
+      levelForAttempt(level, { ...freshSave(), unlocked: ["turtle"] }),
+    ).toBe(level);
+  }
+  const lanternOnly = recordVictory(freshSave(), "lantern-pass", 1);
+  expect(levelForAttempt(LEVELS[0], lanternOnly).availableTowers).toEqual([
+    "bolt",
+  ]);
+});
 
 describe("campaign gates", () => {
   it("opens only Lantern for a fresh slot, then Rainstone after a Lantern victory", () => {

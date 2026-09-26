@@ -72,7 +72,7 @@ The supporting wave plan supplies complete initial recipes. Its figures are tuna
 38. As a player, I want to choose no advantage, so that I can replay the original challenge.
 39. As a player, I want advantages to stay hidden until I defeat the boss, so that new decisions arrive after I understand the basic tools.
 40. As a player, I want ordinary and assisted victories to earn the chapter rewards without perfect stars, so that discovery does not require flawless play.
-41. As a returning player, I want my best stars and earned capabilities to survive replay and reload, so that experimentation does not erase progress.
+41. As a returning player, I want my best stars and earned capabilities to survive replay and reload, so that experimentation does not erase progress. Completed maps allow earned Squirrel upgrades and Turtle, so I can return with new tools to improve my star rating.
 42. As a sibling sharing a device, I want my rewards to remain separate from the other player's rewards, so that we each discover the campaign ourselves.
 43. As a player with an existing save, I want new encounter and reward support to preserve my earlier progress, so that updating the game does not force me to restart.
 44. As a tablet player, I want placement, selection, cancel, upgrade, pause, and replay to work through clear touch controls, so that I do not need hover or a keyboard.

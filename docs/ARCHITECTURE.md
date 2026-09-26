@@ -64,7 +64,7 @@ unlocks them.
 
 Lantern Pass teaches Rat guard and awards Squirrel upgrades. Rainstone Crossing uses four mixed Rat/Weasel waves and awards Turtle discovery. Spawn groups author internal quiet gaps, local movement multipliers and guard/evasion cycles. Evasion is deterministic at projectile impact; missed nets do not refresh slow. The renderer shares spawn-relative warning timing, then presents the yellow marker, sidestep and floating Evade text from simulation outcomes. See [decision 017](decisions/017-rainstone-evasion-and-mixed-waves.md).
 
-Turtle's first campaign use and The Last Lantern are planned final-encounter work, not a registered third map yet.
+Completed encounters add earned Turtle discovery to their attempt roster, allowing players to improve earlier star ratings with Turtle and earned Squirrel upgrades. The briefing, build tray and simulation use that resolved roster. First attempts retain their authored teaching roster. The Last Lantern remains unregistered until its boss finale is integrated.
 
 ## Planned boundaries
 

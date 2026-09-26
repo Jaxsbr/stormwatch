@@ -24,6 +24,17 @@ export function availableCards(level: LevelDef, save: SaveData): CardId[] {
   ).map(({ id }) => id);
 }
 
+export function levelForAttempt(level: LevelDef, save: SaveData): LevelDef {
+  if (
+    !(save.stars[level.id] > 0) ||
+    !save.unlocked.includes("turtle") ||
+    !level.availableTowers ||
+    level.availableTowers.includes("net")
+  )
+    return level;
+  return { ...level, availableTowers: [...level.availableTowers, "net"] };
+}
+
 export function initialCard(cards: readonly CardId[]): CardId {
   return cards.length === 1 ? cards[0] : "none";
 }

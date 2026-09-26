@@ -60,6 +60,8 @@ export function advantageScreen(
   const defenders = (level.availableTowers ?? ["bolt", "stone", "net"])
     .map((kind) => TOWERS[kind].name)
     .join(", ");
+  const firstWatch =
+    level.id === "lantern-pass" && !level.availableTowers?.includes("net");
   return `<main class="advantage-screen" aria-labelledby="encounter-title">
     <h1 id="encounter-title">${level.name}</h1>
     <section class="encounter-roster" aria-labelledby="roster-title">
@@ -96,7 +98,7 @@ export function advantageScreen(
           .join("")}
       </div>
     </section>`
-        : `<section class="first-watch-brief"><strong>${level.id === "lantern-pass" ? "First watch" : "Ready for the crossing"}</strong><p>${level.id === "lantern-pass" ? "Begin with the Squirrel archer. More defenders and advantages are discovered as the expedition continues." : `Available defenders: ${defenders}. Watch the threats above and choose where to build.`}</p></section>`
+        : `<section class="first-watch-brief"><strong>${firstWatch ? "First watch" : "Ready for the crossing"}</strong><p>${firstWatch ? "Begin with the Squirrel archer. More defenders and advantages are discovered as the expedition continues." : `Available defenders: ${defenders}. Watch the threats above and choose where to build.`}</p></section>`
     }
     <nav class="advantage-actions" aria-label="Encounter navigation">
       <button class="game-art-button" data-action="map">Back</button>

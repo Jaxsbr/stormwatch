@@ -14,7 +14,7 @@ Agents may tune count, gap, starting gold, health, and reward data based on real
 
 ## Map 1 — Lantern Pass
 
-Existing route; Squirrel only. Start at 100 gold. First-arrival upgrades locked. Victory earns Squirrel upgrades and Map 2. A replay may use earned Squirrel upgrades; other towers remain unavailable.
+Existing route; Squirrel only. Start at 100 gold. First-arrival upgrades locked. Victory earns Squirrel upgrades and Map 2. A replay may use earned Squirrel upgrades and, after Rainstone victory, the unlocked Turtle to improve its star rating.
 
 | Wave | Recipe   | Guard / movement      | Fixed reward / total income | Lesson                                         |
 | ---- | -------- | --------------------- | --------------------------- | ---------------------------------------------- |
@@ -26,7 +26,7 @@ Existing route; Squirrel only. Start at 100 gold. First-arrival upgrades locked.
 
 ## Map 2 — Rainstone Crossing
 
-Owner-approved amendment and playtest revision, 26 September 2026: four mixed waves. Squirrel only, earned Squirrel upgrade, 120 starting gold, 2 gold per kill, health scale 1. Turtle is awarded on victory and first used in the later final encounter.
+Owner-approved amendment and playtest revision, 26 September 2026: four mixed waves. Squirrel only, earned Squirrel upgrade, 120 starting gold, 2 gold per kill, health scale 1. Turtle is awarded on victory and becomes available on completed-map replays as well as the later final encounter.
 
 | Wave | Cycles | Lesson | Clear reward |
 | --- | --- | --- | --- |
