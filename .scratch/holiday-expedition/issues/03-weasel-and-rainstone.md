@@ -19,3 +19,9 @@ The owner approved three longer mixed Rat/Weasel waves and deterministic evasion
 ## Owner playtest revision — 26 September 2026
 
 Opening difficulty reduced: six-second Rat-to-Weasel pause, four seconds guard up/six seconds down. Add wave four: repeat the entire (1 Rat/5 Weasels → 2 Rats/4 Weasels → 3 Rats/3 Weasels) sequence three times. Within each mini cycle, spawns are 0.2s apart; five seconds from the last spawn to the next mini cycle. Finale Rats use 5s up/5s down; Weasels run extra fast at 1.1× catalog movement and evade 2s every 5s. Existing cues and discovery progression continue.
+
+## Fourth-wave expansion — 26 September 2026
+
+Owner requested one additional full set and revised mini cycles: 1 Rat/6 Weasels, 2 Rats/5 Weasels, 4 Rats/4 Weasels. Repeat the entire pattern four times: twelve mini cycles, twenty-eight Rats and sixty Weasels (88 enemies). Retain 0.2s between spawns and five seconds from a mini cycle's last spawn to the next one's first spawn. Shield timing, extra-fast movement and two-second evasion every five seconds are unchanged. The prior nine-cycle recipe and its balance figures are historical.
+
+Real Game spawn coverage verifies all twelve variable-size mini cycles and pauses. Both existing Squirrel spending strategies still clear all four waves; owner playtest remains the balance check.

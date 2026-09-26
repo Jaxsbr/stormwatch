@@ -64,3 +64,9 @@ Victory shows the chapter-complete celebration and awards Reach (+18% range) and
 For each map, record two viable defenses with actual arrival unlocks, weak placement and delayed-spending observations, and per-wave bank, income, builds/upgrades, lives/leaks, and duration. On Map 3 compare well-placed Turtle support against extra Squirrel spending. The goal is visible value and overlapping solutions, not a requirement that every tower type can win alone.
 
 Use actual family devices for touch/readability checks and a short child play observation before calling a lesson understood. Do not infer enjoyment or a beginner win rate from an optimized scripted strategy.
+
+## Fourth-wave expansion — 26 September 2026
+
+Owner requested one additional full set and revised mini cycles: 1 Rat/6 Weasels, 2 Rats/5 Weasels, 4 Rats/4 Weasels. Repeat the entire pattern four times: twelve mini cycles, twenty-eight Rats and sixty Weasels (88 enemies). Retain 0.2s between spawns and five seconds from a mini cycle's last spawn to the next one's first spawn. Shield timing, extra-fast movement and two-second evasion every five seconds are unchanged. The prior nine-cycle recipe and its balance figures are historical.
+
+Real Game spawn coverage verifies all twelve variable-size mini cycles and pauses. Both existing Squirrel spending strategies still clear all four waves; owner playtest remains the balance check.

@@ -114,3 +114,9 @@ Two real Game strategies win with actual arrival tools: wider coverage (11 heart
 Owner feedback: wave one slightly too hard. Rat-to-Weasel quiet gap increased to six seconds; opening Rats shield for four seconds and remain exposed for six. Added wave four: the whole 1 Rat/5 Weasels, 2 Rats/4 Weasels, 3 Rats/3 Weasels sequence repeats three times. Each mini cycle has six enemies 0.2s apart; five seconds from the last spawn to the next mini cycle. Finale Rats guard 5s/rest 5s; Weasels use 1.1× catalog movement and 2s evasion every 5s. Wave three awards 35 gold ahead of the finale.
 
 Both actual-earned-tool scenarios clear all four waves at twelve hearts: coverage 323.97 combat seconds; upgrades 317.23 seconds. Both now finish wave one at full hearts. Poor coverage still loses. All 176 tests in 33 files, type check and production build pass. Normal-speed 1024×620 browser fixture shows tightly spaced finale groups with active yellow markers/Evade text and blue Rat shields; no browser errors observed. These are automated and browser observations, not proof of family-device balance or child understanding. Owner playtest remains the next step.
+
+## Fourth-wave expansion — 26 September 2026
+
+Owner requested one additional full set and revised mini cycles: 1 Rat/6 Weasels, 2 Rats/5 Weasels, 4 Rats/4 Weasels. Repeat the entire pattern four times: twelve mini cycles, twenty-eight Rats and sixty Weasels (88 enemies). Retain 0.2s between spawns and five seconds from a mini cycle's last spawn to the next one's first spawn. Shield timing, extra-fast movement and two-second evasion every five seconds are unchanged. The prior nine-cycle recipe and its balance figures are historical.
+
+Real Game spawn coverage verifies all twelve variable-size mini cycles and pauses. Both existing Squirrel spending strategies still clear all four waves; owner playtest remains the balance check.

@@ -45,3 +45,9 @@ Owner playtest requested easier wave one and a fourth wave. Wave one now pauses 
 The earlier three-wave strategy table is historical. Current coverage line: four-wave victory, twelve hearts, 323.97 combat seconds, twelve Squirrels/two upgraded, forty gold remaining. Upgrade line: victory, twelve hearts, 317.23 seconds, seven Squirrels/six upgraded, twenty gold remaining. Both finish wave one at twelve hearts. Poor coverage still loses. The review fixture adds Wave 1 and Wave 4 buttons; these deliberately start with only three base Squirrels rather than campaign-earned wave-four defenses. The existing clip shows wave two, whose behavior remains current.
 
 Revision verification: all 176 tests in 33 files, type checking and production build passed. Normal-speed fourth-wave fixture review at 1024×620 showed the compact groups, yellow evasion markers/Evade text and blue Rat shields without browser errors. Family playtest remains pending.
+
+## Fourth-wave expansion — 26 September 2026
+
+Owner requested one additional full set and revised mini cycles: 1 Rat/6 Weasels, 2 Rats/5 Weasels, 4 Rats/4 Weasels. Repeat the entire pattern four times: twelve mini cycles, twenty-eight Rats and sixty Weasels (88 enemies). Retain 0.2s between spawns and five seconds from a mini cycle's last spawn to the next one's first spawn. Shield timing, extra-fast movement and two-second evasion every five seconds are unchanged. The prior nine-cycle recipe and its balance figures are historical.
+
+Real Game spawn coverage verifies all twelve variable-size mini cycles and pauses. Both existing Squirrel spending strategies still clear all four waves; owner playtest remains the balance check.

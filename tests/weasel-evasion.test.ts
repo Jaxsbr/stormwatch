@@ -141,7 +141,7 @@ it("authors quiet introductions, alternating pairs, and repeating mixed bursts t
   expect(burst[5].at - burst[4].at).toBeCloseTo(3, 1);
 });
 
-it("sends nine six-enemy mini cycles with fast Weasels and five-second rests", () => {
+it("sends four sets of revised mini cycles with fast Weasels and five-second rests", () => {
   const game = new Game({
     ...rainstoneCrossing,
     width: 202,
@@ -152,28 +152,39 @@ it("sends nine six-enemy mini cycles with fast Weasels and five-second rests", (
   });
   game.state.wave = 3;
   expect(game.startWave()).toBe(true);
-  step(game, 60);
+  step(game, 80);
   const enemies = game.state.enemies;
-  expect(enemies).toHaveLength(54);
+  expect(enemies).toHaveLength(88);
   const pattern = [
-    ["raider", "runner", "runner", "runner", "runner", "runner"],
-    ["raider", "raider", "runner", "runner", "runner", "runner"],
-    ["raider", "raider", "raider", "runner", "runner", "runner"],
+    ["raider", "runner", "runner", "runner", "runner", "runner", "runner"],
+    ["raider", "raider", "runner", "runner", "runner", "runner", "runner"],
+    [
+      "raider",
+      "raider",
+      "raider",
+      "raider",
+      "runner",
+      "runner",
+      "runner",
+      "runner",
+    ],
   ];
-  for (let cycle = 0; cycle < 9; cycle++) {
-    const group = enemies.slice(cycle * 6, cycle * 6 + 6);
-    expect(group.map((enemy) => enemy.kind)).toEqual(pattern[cycle % 3]);
+  let offset = 0;
+  for (let cycle = 0; cycle < 12; cycle++) {
+    const expected = pattern[cycle % 3];
+    const group = enemies.slice(offset, offset + expected.length);
+    expect(group.map((enemy) => enemy.kind)).toEqual(expected);
     for (let i = 1; i < group.length; i++)
       expect(group[i].spawnedAt - group[i - 1].spawnedAt).toBeCloseTo(0.2, 1);
     if (cycle > 0)
-      expect(group[0].spawnedAt - enemies[cycle * 6 - 1].spawnedAt).toBeCloseTo(
+      expect(group[0].spawnedAt - enemies[offset - 1].spawnedAt).toBeCloseTo(
         5,
         1,
       );
+    offset += expected.length;
   }
-  // The first Weasel's 59-second walk includes eleven complete evasion windows.
-  expect(enemies[1].distance).toBeGreaterThan(85);
-  expect(enemies[1].distance).toBeLessThan(89);
+  expect(enemies[1].distance).toBeGreaterThan(115);
+  expect(enemies[1].distance).toBeLessThan(119);
 });
 
 it("gives the first-wave Rats a shorter shield window while keeping the finale at five on/five off", () => {

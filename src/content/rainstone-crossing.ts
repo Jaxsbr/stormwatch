@@ -88,12 +88,16 @@ export const rainstoneCrossing: LevelDef = {
     {
       title: "Fleetwater Finale",
       reward: 0,
-      // Repeat all three six-enemy mini cycles three times. The final group gap
+      // Repeat the full three-part mini-cycle pattern four times. The final group gap
       // plus the next Rat group's delay puts five seconds between mini cycles.
-      groups: Array.from({ length: 3 }, (_, repeat) =>
-        [1, 2, 3].flatMap((rats, cycle) => [
+      groups: Array.from({ length: 4 }, (_, repeat) =>
+        [
+          { rats: 1, weasels: 6 },
+          { rats: 2, weasels: 5 },
+          { rats: 4, weasels: 4 },
+        ].flatMap(({ rats, weasels }, cycle) => [
           rat(rats, 0.2, repeat === 0 && cycle === 0 ? 0 : 4.8),
-          { ...weasel(6 - rats, 0.2, evade), movementScale: 1.1 },
+          { ...weasel(weasels, 0.2, evade), movementScale: 1.1 },
         ]),
       ).flat(),
     },

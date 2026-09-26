@@ -35,3 +35,9 @@ The owner found the opening slightly too hard and requested a fourth wave. The o
 Wave four repeats this entire sequence three times: one Rat/five Weasels, two Rats/four Weasels, three Rats/three Weasels. Each six-enemy mini cycle has 0.2-second spawn intervals and five seconds from its final spawn to the next mini cycle. There are nine mini cycles, eighteen Rats and thirty-six Weasels. Rats retain five seconds up/five seconds down. Weasels use 1.1× catalog movement (1.375 units/s exposed; 1.58125 during evasion), with two-second evasion windows every five seconds and the existing advance warning.
 
 Real-spawn tests verify all nine cycles, rests, order, fast movement and shortened opening guards. Both existing earned-tool strategies now win all four waves at full hearts. See the updated candidate evidence; these scripted outcomes remain separate from owner/child play.
+
+## Fourth-wave expansion — 26 September 2026
+
+Owner requested one additional full set and revised mini cycles: 1 Rat/6 Weasels, 2 Rats/5 Weasels, 4 Rats/4 Weasels. Repeat the entire pattern four times: twelve mini cycles, twenty-eight Rats and sixty Weasels (88 enemies). Retain 0.2s between spawns and five seconds from a mini cycle's last spawn to the next one's first spawn. Shield timing, extra-fast movement and two-second evasion every five seconds are unchanged. The prior nine-cycle recipe and its balance figures are historical.
+
+Real Game spawn coverage verifies all twelve variable-size mini cycles and pauses. Both existing Squirrel spending strategies still clear all four waves; owner playtest remains the balance check.
