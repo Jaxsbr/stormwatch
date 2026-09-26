@@ -94,3 +94,5 @@ The owner confirmed the corrected slider interpretation: both visible defaults a
 ## Ticket 02 closeout — 26 September 2026
 
 The owner confirmed the revised default mix sounds better. Together with the previously recorded new-profile first-wave, reward, progression, map, result, viewport, and countdown checks, this closes Ticket 02. The completion evidence and remaining family-device scope are recorded in `issues/02-first-watch-feedback.md`.
+
+A fresh Player 2 browser run at 1× showed Squirrel draw/aim and arrow impact, the Rat guard icon/hit spark, kill gold, and mid-wave placement. It entered intermission with “Next wave in 3” and Start Early visible, then automatically started the next wave. The owner-requested 10-second timing independent of 2× combat speed is covered by a focused test and an earlier 2× browser observation. For weak-placement evidence, a deliberate single-tower layout near the late bend left the earlier route uncovered; after raiders passed, lives fell from 12 to 10 with ten still on the trail. This under-covered trial complements the two-Squirrel successful first-wave and full-clear evidence above; it does not generalize novice behavior.
