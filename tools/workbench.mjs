@@ -2,7 +2,7 @@
 import { readFile } from "node:fs/promises";
 import { createServer } from "vite";
 const server = await createServer({
-  server: { middlewareMode: true, hmr: false },
+  server: { middlewareMode: true, hmr: false, ws: false },
   appType: "custom",
 });
 try {
