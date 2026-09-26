@@ -6,7 +6,10 @@ import type { EnemyKind, GameState, TowerKind } from "../sim/types";
 export const button = (action: string, label: string, cls = "", extra = "") =>
   `<button data-action="${action}" class="game-art-button ${cls.includes("primary") ? "game-art-button--primary" : ""} ${cls}" ${extra}>${label}</button>`;
 
-export type ResultReward = { kind: "tower-upgrade"; tower: TowerKind };
+export type ResultReward = {
+  kind: "tower-upgrade" | "tower-unlock";
+  tower: TowerKind;
+};
 
 const enemyArt: Record<EnemyKind, string> = {
   raider: "rat-rig-v3",
@@ -50,8 +53,11 @@ export function resultCard(
       rewards.length
         ? `<section class="result-rewards" aria-label="Rewards" data-count="${rewards.length}">${rewards
             .map((reward) => {
-              if (reward.kind === "tower-upgrade")
-                return `<article class="result-reward"><div class="reward-art">${towerPortrait(reward.tower)}</div><h2>Tower Upgrade</h2><p>${TOWERS[reward.tower].name}</p></article>`;
+              if (
+                reward.kind === "tower-upgrade" ||
+                reward.kind === "tower-unlock"
+              )
+                return `<article class="result-reward"><div class="reward-art">${towerPortrait(reward.tower)}</div><h2>${reward.kind === "tower-upgrade" ? "Tower Upgrade" : "New Defender"}</h2><p>${TOWERS[reward.tower].name}</p></article>`;
               return "";
             })
             .join("")}</section>`

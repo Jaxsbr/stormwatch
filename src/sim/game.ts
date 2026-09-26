@@ -7,6 +7,7 @@ import {
   validateLevel,
 } from "./path";
 import { refundFor, waveReward } from "./economy";
+import { weaselEvasionState } from "./weasel-evasion";
 import { ratShieldState } from "./rat-shield";
 import type {
   CardId,
@@ -35,6 +36,7 @@ export class Game {
     kind: EnemyKind;
     movementScale?: number;
     shieldCycle?: WaveGroupDef["shieldCycle"];
+    evasionCycle?: WaveGroupDef["evasionCycle"];
   }[] = [];
   private waveClock = 0;
   private accumulator = 0;
@@ -174,6 +176,7 @@ export class Game {
     this.queue = [];
     let at = 0.7;
     for (const g of def.groups) {
+      at += g.delayBefore ?? 0;
       const batchSize = g.batchSize ?? 1;
       const batchStagger = g.batchStagger ?? 0;
       for (let n = 0; n < g.count; n += batchSize) {
@@ -182,6 +185,7 @@ export class Game {
           this.queue.push({
             at: at + i * batchStagger,
             kind: g.kind,
+            evasionCycle: g.evasionCycle,
             ...(g.movementScale === undefined
               ? {}
               : { movementScale: g.movementScale }),
@@ -248,6 +252,8 @@ export class Game {
         spawnedAt: s.clock,
         shieldRaised: false,
         shieldHitAt: -1,
+        evadeAt: -1,
+        evasionCycle: q.evasionCycle,
         ...(q.movementScale === undefined
           ? {}
           : { movementScale: q.movementScale }),
@@ -262,6 +268,10 @@ export class Game {
       e.distance +=
         ENEMIES[e.kind].speed *
         (e.movementScale ?? 1) *
+        (e.kind === "runner" &&
+        weaselEvasionState(s.clock - e.spawnedAt, e.evasionCycle).active
+          ? 1.15
+          : 1) *
         (e.slowUntil > s.clock ? 0.48 : 1) *
         dt;
       Object.assign(e, pointOnPath(this.level.path, e.distance));
@@ -325,8 +335,8 @@ export class Game {
           ttl: 0.45,
         });
       } else if (e) {
-        this.hurt(e, shot.damage, true);
-        if (shot.kind === "net")
+        const landed = this.hurt(e, shot.damage, true);
+        if (landed && shot.kind === "net")
           e.slowUntil = Math.max(
             e.slowUntil,
             s.clock + (s.card === "nets" ? 4.5 : 3),
@@ -357,8 +367,28 @@ export class Game {
     }
   }
   private hurt(e: Enemy, damage: number, projectile = false) {
-    if (!e.alive) return;
+    if (!e.alive) return false;
     const s = this.state;
+    if (
+      projectile &&
+      e.kind === "runner" &&
+      weaselEvasionState(s.clock - e.spawnedAt, e.evasionCycle).active
+    ) {
+      // Coalesce simultaneous misses so a volley produces one readable cue.
+      if (e.evadeAt === undefined || s.clock - e.evadeAt >= 0.18) {
+        e.evadeAt = s.clock;
+        s.effects.push({
+          x: e.x,
+          z: e.z,
+          id: this.serial++,
+          kind: "evade",
+          age: 0,
+          ttl: 0.7,
+        });
+        this.emit("evade");
+      }
+      return false;
+    }
     const guarded = projectile && e.kind === "raider" && e.shieldRaised;
     e.hp -= Math.max(1, damage - ENEMIES[e.kind].armor) * (guarded ? 0.5 : 1);
     if (guarded) {
@@ -387,5 +417,6 @@ export class Game {
       s.goldEarned += reward;
       this.emit("kill");
     }
+    return true;
   }
 }

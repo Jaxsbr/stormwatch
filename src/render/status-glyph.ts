@@ -1,6 +1,6 @@
 import * as THREE from "three";
 
-export type StatusGlyphKind = "shield";
+export type StatusGlyphKind = "shield" | "evade";
 
 export interface StatusGlyphView {
   kind: StatusGlyphKind;
@@ -36,7 +36,17 @@ export class StatusGlyph {
   >;
 
   constructor(readonly kind: StatusGlyphKind) {
-    const shape = shieldShape();
+    const shape =
+      kind === "shield"
+        ? shieldShape()
+        : new THREE.Shape([
+            new THREE.Vector2(-13, -12),
+            new THREE.Vector2(-1, 0),
+            new THREE.Vector2(-13, 12),
+            new THREE.Vector2(-3, 12),
+            new THREE.Vector2(9, 0),
+            new THREE.Vector2(-3, -12),
+          ]);
     this.glow = new THREE.Mesh(
       new THREE.ShapeGeometry(shape),
       new THREE.MeshBasicMaterial({
@@ -80,11 +90,17 @@ export class StatusGlyph {
     const bright = new THREE.Color(0xffffff);
     this.group.visible = alpha > 0.005 || pulse > 0.005;
     this.fill.material.opacity = alpha * (0.48 + 0.34 * pulse);
-    this.fill.material.color.set(0x67bce9).lerp(bright, pulse * 0.8);
+    this.fill.material.color
+      .set(this.kind === "evade" ? 0xffcf54 : 0x67bce9)
+      .lerp(bright, pulse * 0.8);
     this.outline.material.opacity = alpha * (0.88 + 0.12 * pulse);
-    this.outline.material.color.set(0xdaf5ff).lerp(bright, pulse);
+    this.outline.material.color
+      .set(this.kind === "evade" ? 0xfff2ae : 0xdaf5ff)
+      .lerp(bright, pulse);
     this.glow.material.opacity = alpha * 0.16 + pulse * 0.7;
-    this.glow.material.color.set(0x9be2ff).lerp(bright, pulse);
+    this.glow.material.color
+      .set(this.kind === "evade" ? 0xffdf75 : 0x9be2ff)
+      .lerp(bright, pulse);
     const scale = 1 + pulse * 0.22;
     this.group.scale.set(scale, scale, 1);
   }

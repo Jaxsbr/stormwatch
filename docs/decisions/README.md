@@ -19,3 +19,5 @@ Read the accepted records before changing consequential behavior. For a new deci
 - [014: Progressive discovery and simple wave economy](014-progressive-discovery-and-simple-wave-economy.md)
 - [015: Family progress and encounter results](015-family-progress-and-results.md)
 - [016: Illustrated encounter results](016-illustrated-encounter-results.md)
+
+- [017: Rainstone evasion and mixed waves](017-rainstone-evasion-and-mixed-waves.md)

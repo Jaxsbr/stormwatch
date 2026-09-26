@@ -2,77 +2,78 @@ import { describe, expect, it } from "vitest";
 import { rainstoneCrossing } from "../src/content/rainstone-crossing";
 import { Game } from "../src/sim/game";
 
-const DT = 1 / 30;
-type Strategy = (game: Game, wave: number) => void;
-
-interface AttemptResult {
-  phase: Game["state"]["phase"];
-  wave: number;
-  lives: number;
-  coins: number;
-  duration: number;
-}
-
-const boltA = { x: 0, z: 4 };
-const boltB = { x: 3, z: 2 };
-const boltC = { x: 6, z: 2 };
-const boltD = { x: 9, z: 5 };
-const stoneA = { x: 2, z: 6 };
-const stoneB = { x: 9, z: 4 };
-const netA = { x: 7, z: 5 };
-function runAttempt(card: "reach" | "none", strategy: Strategy): AttemptResult {
-  const game = new Game(rainstoneCrossing, card, false, 42);
-  for (let wave = 0; wave < rainstoneCrossing.waves.length; wave += 1) {
-    strategy(game, wave);
-    expect(game.startWave()).toBe(true);
-    for (let i = 0; i < 240 * 30 && game.state.phase === "wave"; i += 1) {
-      game.tick(DT);
+const positions = [
+  { x: 0, z: 4 },
+  { x: 3, z: 2 },
+  { x: 6, z: 2 },
+  { x: 9, z: 5 },
+  { x: 2, z: 6 },
+  { x: 9, z: 4 },
+  { x: 5, z: 4 },
+  { x: 7, z: 2 },
+  { x: 3, z: 4 },
+  { x: 9, z: 2 },
+  { x: 7, z: 5 },
+  { x: 2, z: 4 },
+];
+function attempt(upgradesFirst: boolean, poor = false) {
+  const game = new Game(rainstoneCrossing, "none", false, 42, {
+    unlockedUpgrades: ["bolt"],
+  });
+  let next = 0;
+  let elapsed = 0;
+  const waves: { wave: number; lives: number; coins: number; time: number }[] =
+    [];
+  while (
+    elapsed < 400 &&
+    game.state.phase !== "won" &&
+    game.state.phase !== "lost"
+  ) {
+    if (!poor) {
+      const tower = game.state.towers.find((tower) => tower.level === 1);
+      if (upgradesFirst && game.state.towers.length >= 3 && tower)
+        game.upgrade(tower.id);
+      else if (next < positions.length && game.place("bolt", positions[next]))
+        next++;
+      else if (tower) game.upgrade(tower.id);
+    } else if (!game.state.towers.length) game.place("bolt", { x: 0, z: 1 });
+    if (game.state.phase === "preparation") {
+      if (game.state.wave)
+        waves.push({
+          wave: game.state.wave,
+          lives: game.state.lives,
+          coins: game.state.coins,
+          time: game.state.clock,
+        });
+      game.startWave();
     }
-    if (game.state.phase === "won" || game.state.phase === "lost") break;
+    game.tick(1 / 30);
+    elapsed += 1 / 30;
   }
   return {
     phase: game.state.phase,
-    wave: game.state.wave,
     lives: game.state.lives,
-    coins: game.state.coins,
+    waves: game.state.wave,
     duration: game.state.clock,
+    bank: game.state.coins,
+    towers: game.state.towers.length,
+    upgraded: game.state.towers.filter((tower) => tower.level === 2).length,
+    checkpoints: waves,
   };
 }
+describe("Rainstone's earned-tool strategies", () => {
+  it.each([false, true])(
+    "clears three mixed waves with upgrades-first=%s",
+    (upgradesFirst) => {
+      const result = attempt(upgradesFirst);
 
-function spendingLed(game: Game, wave: number): void {
-  if (wave === 0) {
-    game.place("bolt", boltA);
-    game.place("bolt", boltB);
-    game.place("stone", stoneA);
-  }
-  if (wave === 1) {
-    game.place("bolt", boltC);
-    game.upgrade(game.state.towers[0].id);
-  }
-  if (wave === 2) {
-    game.place("net", netA);
-    game.upgrade(game.state.towers[1].id);
-  }
-  if (wave === 3) {
-    game.place("bolt", boltD);
-    game.upgrade(game.state.towers[2].id);
-  }
-  if (wave === 4) {
-    game.place("stone", stoneB);
-    game.upgrade(game.state.towers[3].id);
-  }
-  if (wave === 5) game.upgrade(game.state.towers[4].id);
-  if (wave === 6) game.upgrade(game.state.towers[5].id);
-}
-
-describe("Rainstone Crossing strategy evidence", () => {
-  it("supports a spending-led line through all eight waves with no leaks", () => {
-    const result = runAttempt("reach", spendingLed);
-
-    expect(result.phase).toBe("won");
-    expect(result.wave).toBe(8);
-    expect(result.lives).toBe(12);
-    expect(result.duration).toBeGreaterThanOrEqual(240);
-    expect(result.duration).toBeLessThanOrEqual(330);
+      expect(result.phase).toBe("won");
+      expect(result.waves).toBe(3);
+      expect(result.duration).toBeGreaterThan(180);
+      expect(result.duration).toBeLessThan(400);
+    },
+  );
+  it("loses with poor coverage and delayed spending", () => {
+    expect(attempt(false, true).phase).toBe("lost");
   });
 });

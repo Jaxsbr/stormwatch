@@ -14,7 +14,7 @@ export interface SaveData {
 }
 
 const LEVEL_IDS: readonly string[] = ["lantern-pass", "rainstone-crossing"];
-const UNLOCK_IDS: readonly string[] = ["squirrel-upgrade"];
+const UNLOCK_IDS: readonly string[] = ["squirrel-upgrade", "turtle"];
 
 const DEFAULT_MUSIC = 0.5;
 const DEFAULT_EFFECTS = 0.5;
@@ -108,6 +108,7 @@ function deriveUnlocked(
   if ((stars["lantern-pass"] ?? 0) > 0) {
     out.add("squirrel-upgrade");
   }
+  if ((stars["rainstone-crossing"] ?? 0) > 0) out.add("turtle");
   return Array.from(out);
 }
 
@@ -208,6 +209,12 @@ export function recordVictory(
   }
 
   const nextUnlocked = [...save.unlocked];
+  if (
+    levelId === "rainstone-crossing" &&
+    nextStars[levelId] > 0 &&
+    !nextUnlocked.includes("turtle")
+  )
+    nextUnlocked.push("turtle");
   // First Lantern Pass win unlocks Squirrel upgrades.
   if (
     levelId === "lantern-pass" &&

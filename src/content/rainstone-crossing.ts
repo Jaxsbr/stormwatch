@@ -1,4 +1,28 @@
-import type { LevelDef } from "../sim/types";
+import type { LevelDef, WaveGroupDef } from "../sim/types";
+
+const guard = { upSeconds: 5, downSeconds: 5 };
+const evade = { downSeconds: 3, upSeconds: 2 };
+const hardEvade = { downSeconds: 2.6, upSeconds: 2.4 };
+const rat = (count: number, gap: number, delayBefore = 0): WaveGroupDef => ({
+  kind: "raider",
+  count,
+  gap,
+  delayBefore,
+  shieldCycle: guard,
+});
+const weasel = (
+  count: number,
+  gap: number,
+  evasionCycle?: WaveGroupDef["evasionCycle"],
+  delayBefore = 0,
+): WaveGroupDef => ({
+  kind: "runner",
+  count,
+  gap,
+  delayBefore,
+  movementScale: 0.85,
+  evasionCycle,
+});
 
 export const rainstoneCrossing: LevelDef = {
   id: "rainstone-crossing",
@@ -26,73 +50,37 @@ export const rainstoneCrossing: LevelDef = {
     { x: 11, z: 0 },
     { x: 11, z: 7 },
   ],
-  startCoins: 185,
-  availableTowers: ["bolt", "stone", "net"],
-  healthScale: 1.12,
+  startCoins: 120,
+  availableTowers: ["bolt"],
+  enemyRewardScale: 0.4,
+  healthScale: 1,
   accent: "#91b9ac",
   waves: [
     {
-      title: "First Drizzle",
-      reward: 28,
-      groups: [{ kind: "raider", count: 10, gap: 2.2 }],
+      title: "Quiet, Then Quick",
+      reward: 35,
+      // Five little stories: steady Rats, 3.5 seconds of quiet, then four runners.
+      groups: Array.from({ length: 5 }, (_, i) => [
+        rat(6, 2, i === 0 ? 0 : 3),
+        weasel(4, 0.45, undefined, 1.5),
+      ]).flat(),
     },
     {
-      title: "Rising Weeds",
-      reward: 30,
-      groups: [
-        { kind: "raider", count: 7, gap: 1.7 },
-        { kind: "runner", count: 6, gap: 1.8 },
-      ],
+      title: "Shields and Sidesteps",
+      reward: 40,
+      groups: Array.from({ length: 18 }, () => [
+        rat(1, 1.1),
+        weasel(1, 2.2, evade),
+      ]).flat(),
     },
     {
-      title: "Low Water Drums",
-      reward: 34,
-      groups: [
-        { kind: "armored", count: 5, gap: 2.4 },
-        { kind: "raider", count: 10, gap: 1.4 },
-      ],
-    },
-    {
-      title: "Mud Runners",
-      reward: 38,
-      groups: [
-        { kind: "runner", count: 12, gap: 1.4 },
-        { kind: "raider", count: 10, gap: 1.5 },
-      ],
-    },
-    {
-      title: "Falling Rain",
-      reward: 42,
-      groups: [
-        { kind: "armored", count: 8, gap: 2 },
-        { kind: "runner", count: 10, gap: 1.2 },
-      ],
-    },
-    {
-      title: "River Swell",
-      reward: 48,
-      groups: [
-        { kind: "armored", count: 5, gap: 2 },
-        { kind: "boss", count: 1, gap: 4 },
-        { kind: "raider", count: 12, gap: 1.3 },
-      ],
-    },
-    {
-      title: "Stonefall Thunder",
-      reward: 55,
-      groups: [
-        { kind: "armored", count: 10, gap: 1.5 },
-        { kind: "runner", count: 16, gap: 1 },
-      ],
-    },
-    {
-      title: "The Long Downpour",
-      reward: 70,
-      groups: [
-        { kind: "armored", count: 8, gap: 1.8 },
-        { kind: "boss", count: 2, gap: 4 },
-        { kind: "raider", count: 20, gap: 1.2 },
-      ],
+      title: "The River Rush",
+      reward: 0,
+      // Three Rats one second apart; two Weasels immediately behind, then 3 seconds quiet.
+      groups: Array.from({ length: 12 }, (_, i) => [
+        rat(3, 1, i === 0 ? 0 : 2.55),
+        weasel(2, 0.45, hardEvade),
+      ]).flat(),
     },
   ],
 };

@@ -5,6 +5,8 @@ import { CutoutResource, type CutoutInstance } from "./cutout";
 import { projectedPathSampler } from "./path-sampler";
 import { OverlayBatch, enemyHeight } from "./overlay-batch";
 import { ResourcePool } from "./resource-pool";
+import { CombatText } from "./combat-text";
+import { weaselEvasionState } from "../sim/weasel-evasion";
 import { EffectBatch } from "./effect-batch";
 import { DefenderRig } from "./defender-rig";
 import { CharacterRig } from "./character-rig";
@@ -88,6 +90,7 @@ export class Battlefield {
   private defenderPool = new ResourcePool<DefenderRig>();
   private shots = new Map<number, THREE.Mesh>();
   private effects = new EffectBatch();
+  private combatText = new CombatText();
   private overlays = new OverlayBatch();
   private textures: THREE.Texture[] = [];
   private owned: THREE.Texture[] = [];
@@ -488,13 +491,17 @@ export class Battlefield {
           this.scene.remove(o);
           this.releaseObject(o);
         }
-      for (const glyph of f.statusGlyphs?.values() ?? []) glyph.dispose();
+      for (const glyph of f.statusGlyphs?.values() ?? []) {
+        this.scene.remove(glyph.group);
+        glyph.dispose();
+      }
     }
     this.figures.clear();
     this.fired.clear();
     this.aim.clear();
     this.trimMeshes(this.shots, new Set());
     this.effects.update([], position);
+    this.combatText.update([], position);
     this.overlays.update([], [], position);
     if (retainScenery) return;
     this.releaseObject(this.world);
@@ -741,13 +748,39 @@ export class Battlefield {
       const flashAge =
         e.shieldHitAt === undefined ? Infinity : s.clock - e.shieldHitAt;
       const flash = flashAge >= 0 && flashAge < 0.24 ? 1 - flashAge / 0.24 : 0;
+      const evasion = weaselEvasionState(s.clock - e.spawnedAt, e.evasionCycle);
+      const evadeAge =
+        e.evadeAt === undefined || e.evadeAt < 0
+          ? Infinity
+          : s.clock - e.evadeAt;
+      const evadeFlash = evadeAge < 0.25 ? 1 - evadeAge / 0.25 : 0;
+      const sidestep =
+        reducedMotion || evadeAge >= 0.28
+          ? 0
+          : Math.sin((evadeAge / 0.28) * Math.PI) * 18;
+      const direction = f.direction ?? { x: 1, y: 0 };
+      const directionLength = Math.hypot(direction.x, direction.y);
+      const evadeOffset = new THREE.Vector3(
+        (-direction.y / directionLength) * sidestep,
+        (direction.x / directionLength) * sidestep,
+        0,
+      );
+      f.sprite.position.add(evadeOffset);
       this.updateStatusGlyphs(
         f,
         e,
         height,
         e.kind === "raider"
           ? [{ kind: "shield", opacity: guard.strength, flash }]
-          : [],
+          : e.kind === "runner"
+            ? [
+                {
+                  kind: "evade",
+                  opacity: evasion.active ? 1 : evasion.warning ? 0.35 : 0,
+                  flash: evadeFlash,
+                },
+              ]
+            : [],
       );
       const next = pointOnPath(game.level.path, e.distance + 0.02);
       const vertical = Math.abs(next.z - e.z) > Math.abs(next.x - e.x);
@@ -776,7 +809,7 @@ export class Battlefield {
           this.scene.add(f.character.group);
         }
         f.sprite.visible = false;
-        f.character.group.position.copy(position(e));
+        f.character.group.position.copy(position(e)).add(evadeOffset);
         f.character.update(
           e.distance,
           this.gaitSampler,
@@ -808,7 +841,10 @@ export class Battlefield {
             this.scene.remove(o);
             this.releaseObject(o);
           }
-        for (const glyph of f.statusGlyphs?.values() ?? []) glyph.dispose();
+        for (const glyph of f.statusGlyphs?.values() ?? []) {
+          this.scene.remove(glyph.group);
+          glyph.dispose();
+        }
         this.figures.delete(id);
       }
     this.overlays.update(s.towers, s.enemies, position);
@@ -925,7 +961,12 @@ export class Battlefield {
       m.position.y += Math.sin(k * Math.PI) * (p.kind === "stone" ? 95 : 6);
     }
     this.trimMeshes(this.shots, shotIds);
-    this.effects.update(s.effects, position);
+    this.effects.update(
+      s.effects.filter((effect) => effect.kind !== "evade"),
+      position,
+    );
+    this.combatText.update(s.effects, position);
+    if (!this.combatText.group.parent) this.scene.add(this.combatText.group);
     if (!this.effects.mesh.parent) this.scene.add(this.effects.mesh);
     const effectsEnd = this.profileTiming ? performance.now() : 0;
     this.renderer.render(this.scene, this.camera);
@@ -948,6 +989,7 @@ export class Battlefield {
     this.observer.disconnect();
     this.clearWorld();
     this.effects.dispose();
+    this.combatText.dispose();
     this.overlays.dispose();
     this.characterPool.dispose();
     this.defenderPool.dispose();

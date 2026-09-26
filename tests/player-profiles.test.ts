@@ -16,7 +16,7 @@ describe("two local player slots", () => {
     expect(profiles.active).toBe(0);
     expect(profiles.slots[0]).toEqual({
       ...legacy,
-      unlocked: ["squirrel-upgrade"],
+      unlocked: ["squirrel-upgrade", "turtle"],
     });
     expect(profiles.slots[1]).toEqual(freshSave());
     expect(loadProfiles(JSON.stringify(profiles), null)).toEqual(profiles);

@@ -27,7 +27,15 @@ export interface ShieldCycle {
   upSeconds: number;
   downSeconds: number;
 }
+export interface EvasionCycle {
+  downSeconds: number;
+  upSeconds: number;
+}
 export interface WaveGroupDef {
+  /** Additional silence before this group, after the preceding group cadence. */
+  delayBefore?: number;
+  /** Opt-in Weasel evasion; omitted for the introductory wave. */
+  evasionCycle?: EvasionCycle;
   kind: EnemyKind;
   /** Total enemies in the group, including every batch. */
   count: number;
@@ -83,6 +91,8 @@ export interface Enemy extends Point {
   spawnedAt: number;
   shieldRaised: boolean;
   shieldHitAt?: number;
+  evasionCycle?: EvasionCycle;
+  evadeAt?: number;
   movementScale?: number;
   shieldCycle?: ShieldCycle;
 }
@@ -98,7 +108,7 @@ export interface Shot extends Point {
 }
 export interface Effect extends Point {
   id: number;
-  kind: "hit" | "splash" | "slow" | "coin";
+  kind: "hit" | "splash" | "slow" | "coin" | "evade";
   age: number;
   ttl: number;
 }
@@ -110,6 +120,7 @@ export interface GameEvent {
     | "shot"
     | "hit"
     | "shield-hit"
+    | "evade"
     | "kill"
     | "leak"
     | "start"

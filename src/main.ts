@@ -68,6 +68,7 @@ let screen: Screen = "title",
   settingsPaused = false,
   resultSaved = false,
   resultUnlockedUpgrade = false,
+  resultUnlockedTurtle = false,
   speed = 1;
 let lastTime = 0,
   lastHud = 0,
@@ -133,7 +134,7 @@ function render() {
   }
   if (screen === "battle") renderBattle();
   if (screen === "result" && game)
-    app.innerHTML = `<main class="result-screen">${resultCard(game.state, resultUnlockedUpgrade ? [{ kind: "tower-upgrade", tower: "bolt" }] : [])}</main>`;
+    app.innerHTML = `<main class="result-screen">${resultCard(game.state, resultUnlockedUpgrade ? [{ kind: "tower-upgrade", tower: "bolt" }] : resultUnlockedTurtle ? [{ kind: "tower-unlock", tower: "net" }] : [])}</main>`;
   void paintTowerPortraits(app);
   app.insertAdjacentHTML(
     "beforeend",
@@ -216,6 +217,7 @@ function begin(assist = false) {
   selected = null;
   resultSaved = false;
   resultUnlockedUpgrade = false;
+  resultUnlockedTurtle = false;
   speed = 1;
   screen = "battle";
   render();
@@ -310,6 +312,9 @@ function showResult() {
     resultUnlockedUpgrade =
       game.level.id === "lantern-pass" &&
       !save.unlocked.includes("squirrel-upgrade");
+    resultUnlockedTurtle =
+      game.level.id === "rainstone-crossing" &&
+      !save.unlocked.includes("turtle");
     save = recordVictory(save, game.level.id, s.stars);
     persist();
     resultSaved = true;

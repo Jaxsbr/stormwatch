@@ -4,14 +4,9 @@ import { lanternPass } from "../src/content/lantern-pass";
 import { rainstoneCrossing } from "../src/content/rainstone-crossing";
 
 describe("encounter roster", () => {
-  it("shows the Rat Raider trial roster on Lantern and the full roster on Rainstone", () => {
+  it("shows the Rat Raider trial roster on Lantern and the mixed Rat/Weasel roster on Rainstone", () => {
     expect(encounterEnemies(lanternPass)).toEqual(["raider"]);
-    expect(encounterEnemies(rainstoneCrossing)).toEqual([
-      "raider",
-      "runner",
-      "armored",
-      "boss",
-    ]);
+    expect(encounterEnemies(rainstoneCrossing)).toEqual(["raider", "runner"]);
   });
   it("reflects a different map roster instead of always displaying every enemy", () => {
     expect(
@@ -42,7 +37,7 @@ describe("encounter roster", () => {
     const screen = advantageScreen(rainstoneCrossing, [], "none");
     expect(screen).toContain("Ready for the crossing");
     expect(screen).toContain("Squirrel archer");
-    expect(screen).toContain("Turtle trapper");
+    expect(screen).not.toContain("Turtle trapper");
     expect(screen).not.toContain("First watch");
   });
   it("summarizes a sole equipped advantage and offers None", () => {
