@@ -2,7 +2,7 @@
 
 ## Current state
 
-The spec remains `ready-for-agent` for the unfinished campaign. Tickets 01 and 02 are complete at the owner-approved scope; ticket 03 and tickets 04–06 remain. The initial planning handoff did not implement gameplay; historical ticket 02 review and current closeout are recorded below.
+The spec remains `ready-for-agent` for the unfinished campaign. Tickets 01–03 are complete at the owner-approved scope; tickets 04–06 remain. The initial planning handoff did not implement gameplay; historical ticket 02 review and current closeout are recorded below.
 
 The planning-time gameplay baseline is local main at `4e25438`. Inspection still found only two registered encounters, the old eight-wave Rainstone roster, and only the Squirrel-upgrade entitlement. Weasel sprint, player slots and the full Day 1 progression work were not found. Day 1 is an assumed prerequisite, not verified completion. Integration may need work produced elsewhere; report exact missing dependencies rather than claiming an all-unlocked debug run proves readiness.
 
@@ -120,3 +120,7 @@ Both actual-earned-tool scenarios clear all four waves at twelve hearts: coverag
 Owner requested one additional full set and revised mini cycles: 1 Rat/6 Weasels, 2 Rats/5 Weasels, 4 Rats/4 Weasels. Repeat the entire pattern four times: twelve mini cycles, twenty-eight Rats and sixty Weasels (88 enemies). Retain 0.2s between spawns and five seconds from a mini cycle's last spawn to the next one's first spawn. Shield timing, extra-fast movement and two-second evasion every five seconds are unchanged. The prior nine-cycle recipe and its balance figures are historical.
 
 Real Game spawn coverage verifies all twelve variable-size mini cycles and pauses. Both existing Squirrel spending strategies still clear all four waves; owner playtest remains the balance check.
+
+## Ticket 03 closeout — 26 September 2026
+
+The owner reported the final playtest completed. Ticket 03 is complete at the amended four-wave scope, gameplay revision 1c72f84. Implementation, scenarios, committed capture, checks and both review axes are complete. Next is ticket 04: Turtle feedback and The Last Lantern route/teaching waves; ticket 05 integrates the boss and chapter ending. Actual family-device release evidence remains ticket 06.

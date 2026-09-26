@@ -1,6 +1,6 @@
 # 03 — Teach the Weasel sprint in Rainstone
 
-Status: implemented — awaiting owner playtest
+Status: complete
 
 Scope: follow-on encounter work. Ticket 01 is complete; ticket 02 first-watch polish is being closed separately. This ticket owns the Weasel/Rainstone lesson and Turtle progression needed by later maps.
 
@@ -25,3 +25,7 @@ Opening difficulty reduced: six-second Rat-to-Weasel pause, four seconds guard u
 Owner requested one additional full set and revised mini cycles: 1 Rat/6 Weasels, 2 Rats/5 Weasels, 4 Rats/4 Weasels. Repeat the entire pattern four times: twelve mini cycles, twenty-eight Rats and sixty Weasels (88 enemies). Retain 0.2s between spawns and five seconds from a mini cycle's last spawn to the next one's first spawn. Shield timing, extra-fast movement and two-second evasion every five seconds are unchanged. The prior nine-cycle recipe and its balance figures are historical.
 
 Real Game spawn coverage verifies all twelve variable-size mini cycles and pauses. Both existing Squirrel spending strategies still clear all four waves; owner playtest remains the balance check.
+
+## Closeout — 26 September 2026
+
+The owner reported the final playtest completed after the fourth-wave expansion. This closes ticket 03 at the approved four-wave scope. The final gameplay revision is 1c72f84; all 176 tests, type check, build, standards and spec reviews passed. Rainstone earns Turtle on victory; first Turtle use and the final map belong to tickets 04/05. Family-device release evidence remains ticket 06. No specific device, audio or child-observation result is inferred from the owner's completion message.
