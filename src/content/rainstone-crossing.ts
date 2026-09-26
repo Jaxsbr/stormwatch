@@ -59,10 +59,13 @@ export const rainstoneCrossing: LevelDef = {
     {
       title: "Quiet, Then Quick",
       reward: 35,
-      // Five little stories: steady Rats, 3.5 seconds of quiet, then four runners.
+      // Five little stories: steady Rats, six seconds of quiet, then four runners.
       groups: Array.from({ length: 5 }, (_, i) => [
-        rat(6, 2, i === 0 ? 0 : 3),
-        weasel(4, 0.45, undefined, 1.5),
+        {
+          ...rat(6, 2, i === 0 ? 0 : 3),
+          shieldCycle: { upSeconds: 4, downSeconds: 6 },
+        },
+        weasel(4, 0.45, undefined, 4),
       ]).flat(),
     },
     {
@@ -75,12 +78,24 @@ export const rainstoneCrossing: LevelDef = {
     },
     {
       title: "The River Rush",
-      reward: 0,
+      reward: 35,
       // Three Rats one second apart; two Weasels immediately behind, then 3 seconds quiet.
       groups: Array.from({ length: 12 }, (_, i) => [
         rat(3, 1, i === 0 ? 0 : 2.55),
         weasel(2, 0.45, hardEvade),
       ]).flat(),
+    },
+    {
+      title: "Fleetwater Finale",
+      reward: 0,
+      // Repeat all three six-enemy mini cycles three times. The final group gap
+      // plus the next Rat group's delay puts five seconds between mini cycles.
+      groups: Array.from({ length: 3 }, (_, repeat) =>
+        [1, 2, 3].flatMap((rats, cycle) => [
+          rat(rats, 0.2, repeat === 0 && cycle === 0 ? 0 : 4.8),
+          { ...weasel(6 - rats, 0.2, evade), movementScale: 1.1 },
+        ]),
+      ).flat(),
     },
   ],
 };

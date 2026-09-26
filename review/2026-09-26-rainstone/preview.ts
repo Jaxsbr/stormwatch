@@ -7,22 +7,24 @@ const field = new Battlefield(
 );
 field.load(rainstoneCrossing);
 let game: Game;
-function reset() {
+function reset(wave = 2) {
   game = new Game(rainstoneCrossing, "none", false, 42, {
     unlockedUpgrades: ["bolt"],
   });
-  // Review only: begin at wave two with three base Squirrels and no extra tools.
+  // Review only: begin at the selected wave with three base Squirrels and no extra tools.
   for (const point of [
     { x: 0, z: 4 },
     { x: 3, z: 2 },
     { x: 6, z: 2 },
   ])
     game.place("bolt", point);
-  game.state.wave = 1;
+  game.state.wave = wave - 1;
   game.startWave();
 }
 reset();
-document.querySelector<HTMLButtonElement>("#reset")!.onclick = reset;
+document.querySelector<HTMLButtonElement>("#reset")!.onclick = () => reset();
+document.querySelector<HTMLButtonElement>("#opening")!.onclick = () => reset(1);
+document.querySelector<HTMLButtonElement>("#finale")!.onclick = () => reset(4);
 document.querySelector<HTMLButtonElement>("#pause")!.onclick = () =>
   game.pause();
 attachRecording(field.renderer.domElement);
@@ -32,7 +34,7 @@ function frame(now: number) {
   last = now;
   field.update(game, null, 1 / 30);
   document.querySelector("#state")!.textContent =
-    `${game.state.phase} · ${game.state.clock.toFixed(1)}s · ${game.state.effects.filter((fx) => fx.kind === "evade").length} misses visible`;
+    `Wave ${game.state.wave} · ${game.state.phase} · ${game.state.clock.toFixed(1)}s · ${game.state.effects.filter((fx) => fx.kind === "evade").length} misses visible`;
   requestAnimationFrame(frame);
 }
 requestAnimationFrame(frame);

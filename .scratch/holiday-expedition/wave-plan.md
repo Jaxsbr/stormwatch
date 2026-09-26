@@ -26,15 +26,17 @@ Existing route; Squirrel only. Start at 100 gold. First-arrival upgrades locked.
 
 ## Map 2 — Rainstone Crossing
 
-Owner-approved amendment, 26 September 2026: three longer mixed waves. Squirrel only, earned Squirrel upgrade, 120 starting gold, 2 gold per kill, health scale 1. Turtle is awarded on victory and first used in the later final encounter.
+Owner-approved amendment and playtest revision, 26 September 2026: four mixed waves. Squirrel only, earned Squirrel upgrade, 120 starting gold, 2 gold per kill, health scale 1. Turtle is awarded on victory and first used in the later final encounter.
 
 | Wave | Cycles | Lesson | Clear reward |
 | --- | --- | --- | --- |
-| 1 | Five cycles of six Rats 2s apart, 3.5s quiet, four non-evasive Weasels 0.45s apart; 3.45s before the next cycle | Fast arrivals without evasion | 35 |
+| 1 | Five cycles of six Rats 2s apart, 6s quiet, four non-evasive Weasels 0.45s apart; 3.45s before the next cycle | Fast arrivals without evasion | 35 |
 | 2 | Eighteen alternating Rat/Weasel pairs, 1.1s Rat-to-Weasel and 2.2s until the next Rat | 1:1 mixed guard/evasion | 40 |
-| 3 | Twelve cycles of three Rats 1s apart, then two Weasels 0.45s apart; 3s quiet after the second Weasel | Repeated overlapping bursts | 0 |
+| 3 | Twelve cycles of three Rats 1s apart, then two Weasels 0.45s apart; 3s quiet after the second Weasel | Repeated overlapping bursts | 35 |
 
-Rats use 5s shield down/5s up on Rainstone only. Weasels run at 85% of catalog speed, with a 15% relative bonus during evasion. Wave 2: 3s exposed/2s evasive. Wave 3: 2.6s exposed/2.4s evasive. A 0.6s warning precedes each evasion window. Exact values are initial tuning for owner playtest; Lantern is unchanged.
+Wave 1 Rats use 6s down/4s up; later Rats use 5s down/5s up. Weasels run at 85% of catalog speed, with a 15% relative bonus during evasion. Wave 2: 3s exposed/2s evasive. Wave 3: 2.6s exposed/2.4s evasive. A 0.6s warning precedes each evasion window. Exact values are initial tuning for owner playtest; Lantern is unchanged.
+
+Wave 4 repeats all three mini cycles three times: 1 Rat/5 Weasels, 2 Rats/4 Weasels, 3 Rats/3 Weasels. Every mini cycle has six enemies at 0.2s intervals and five seconds from its last spawn to the next cycle. Total 18 Rats/36 Weasels. Finale Weasels move at 1.1× catalog speed with 2s evasion every 5s; Rats retain 5s shield up/5s down. Final clear reward is zero; discovery is the reward.
 
 ## Map 3 — The Last Lantern
 

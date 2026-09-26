@@ -107,7 +107,7 @@ it("authors quiet introductions, alternating pairs, and repeating mixed bursts t
     }
     return spawned;
   }
-  const opening = arrivals(1, 16);
+  const opening = arrivals(1, 19);
   expect(opening.map((enemy) => enemy.kind)).toEqual([
     "raider",
     "raider",
@@ -120,7 +120,7 @@ it("authors quiet introductions, alternating pairs, and repeating mixed bursts t
     "runner",
     "runner",
   ]);
-  expect(opening[6].at - opening[5].at).toBeCloseTo(3.5, 1);
+  expect(opening[6].at - opening[5].at).toBeCloseTo(6, 1);
   const alternating = arrivals(2, 7);
   expect(alternating.map((enemy) => enemy.kind)).toEqual([
     "raider",
@@ -139,4 +139,57 @@ it("authors quiet introductions, alternating pairs, and repeating mixed bursts t
   ]);
   expect(burst[1].at - burst[0].at).toBeCloseTo(1, 1);
   expect(burst[5].at - burst[4].at).toBeCloseTo(3, 1);
+});
+
+it("sends nine six-enemy mini cycles with fast Weasels and five-second rests", () => {
+  const game = new Game({
+    ...rainstoneCrossing,
+    width: 202,
+    path: [
+      { x: -1, z: 3 },
+      { x: 201, z: 3 },
+    ],
+  });
+  game.state.wave = 3;
+  expect(game.startWave()).toBe(true);
+  step(game, 60);
+  const enemies = game.state.enemies;
+  expect(enemies).toHaveLength(54);
+  const pattern = [
+    ["raider", "runner", "runner", "runner", "runner", "runner"],
+    ["raider", "raider", "runner", "runner", "runner", "runner"],
+    ["raider", "raider", "raider", "runner", "runner", "runner"],
+  ];
+  for (let cycle = 0; cycle < 9; cycle++) {
+    const group = enemies.slice(cycle * 6, cycle * 6 + 6);
+    expect(group.map((enemy) => enemy.kind)).toEqual(pattern[cycle % 3]);
+    for (let i = 1; i < group.length; i++)
+      expect(group[i].spawnedAt - group[i - 1].spawnedAt).toBeCloseTo(0.2, 1);
+    if (cycle > 0)
+      expect(group[0].spawnedAt - enemies[cycle * 6 - 1].spawnedAt).toBeCloseTo(
+        5,
+        1,
+      );
+  }
+  // The first Weasel's 59-second walk includes eleven complete evasion windows.
+  expect(enemies[1].distance).toBeGreaterThan(85);
+  expect(enemies[1].distance).toBeLessThan(89);
+});
+
+it("gives the first-wave Rats a shorter shield window while keeping the finale at five on/five off", () => {
+  const opening = new Game(rainstoneCrossing);
+  const finale = new Game(rainstoneCrossing);
+  finale.state.wave = 3;
+  opening.startWave();
+  finale.startWave();
+  step(opening, 5.8);
+  step(finale, 5.8);
+  expect(opening.state.enemies[0].shieldRaised).toBe(false);
+  expect(finale.state.enemies[0].shieldRaised).toBe(true);
+  step(opening, 1);
+  expect(opening.state.enemies[0].shieldRaised).toBe(true);
+  step(opening, 4);
+  step(finale, 5);
+  expect(opening.state.enemies[0].shieldRaised).toBe(false);
+  expect(finale.state.enemies[0].shieldRaised).toBe(false);
 });

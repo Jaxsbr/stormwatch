@@ -15,3 +15,7 @@ Done when two viable placement/spending approaches can clear the map, a poor cov
 ## Approved amendment — 26 September 2026
 
 The owner approved three longer mixed Rat/Weasel waves and deterministic evasion instead of sprint-only movement. Wave 1 repeats steady Rats, a 3–4s quiet gap and four closely spaced non-evasive Weasels. Wave 2 alternates Rats and Weasels 1:1, with Rats shielding 5s up/5s down and periodic Weasel evasion. Wave 3 repeats three Rats 1s apart, followed by two Weasels, then 3s quiet. Use a yellow evasion marker, anticipation, miss flash, brief sidestep and floating Evade text. Retain the Squirrel-only arrival and earned upgrade, Turtle victory reward, deterministic/pause/replay checks and playable checkpoint. Existing five-wave/no-evasion wording is superseded.
+
+## Owner playtest revision — 26 September 2026
+
+Opening difficulty reduced: six-second Rat-to-Weasel pause, four seconds guard up/six seconds down. Add wave four: repeat the entire (1 Rat/5 Weasels → 2 Rats/4 Weasels → 3 Rats/3 Weasels) sequence three times. Within each mini cycle, spawns are 0.2s apart; five seconds from the last spawn to the next mini cycle. Finale Rats use 5s up/5s down; Weasels run extra fast at 1.1× catalog movement and evade 2s every 5s. Existing cues and discovery progression continue.

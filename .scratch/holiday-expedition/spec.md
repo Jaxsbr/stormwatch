@@ -4,7 +4,7 @@ Status: ready-for-agent
 
 ## Owner amendment — 26 September 2026
 
-Ticket 03 now uses three longer mixed Rainstone waves and deterministic projectile evasion, replacing its former five-wave sprint-only/no-evasion contract. See decision 017 and ticket 03 for the approved sequence. Weasel warning/evasion and any speed change remain spawn-relative simulation state; missed nets do not apply slow, existing slow remains active. Turtle remains the Rainstone victory reward and is first used in the later final encounter.
+Ticket 03 initially used three longer mixed Rainstone waves and deterministic projectile evasion, replacing its former five-wave sprint-only/no-evasion contract. See decision 017 and ticket 03 for the approved sequence. Weasel warning/evasion and any speed change remain spawn-relative simulation state; missed nets do not apply slow, existing slow remains active. Owner playtest then eased wave one and added a fourth wave with nine mini cycles; decision 017 records the exact sequence and timing. Turtle remains the Rainstone victory reward and is first used in the later final encounter.
 
 ## Problem Statement
 

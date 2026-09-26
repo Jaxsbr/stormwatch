@@ -27,3 +27,11 @@ Longer coverage and spending timing matter: a short firing window may coincide w
 ## Verification
 
 The real Game seam covers hits before/during/after evasion, nets, pause and retry state. Save tests cover Turtle discovery, replay, reload and legacy migration. Earned-tool strategy scenarios clear all three waves with wider coverage or fewer upgraded Squirrels; poor coverage loses. Browser review uses the actual renderer at normal speed, with explicit fixture state rather than a claim of campaign completion. See [candidate evidence](../../review/2026-09-26-rainstone/README.md). Physical devices, child comprehension and global balance remain owner-playtest work.
+
+## Owner playtest revision — 26 September 2026
+
+The owner found the opening slightly too hard and requested a fourth wave. The opening Rat-to-Weasel silence is now six seconds, with four-second shield-up/six-second shield-down Rat timing. Waves two and three retain their authored sequence. Wave three now gives a 35-gold clear reward ahead of the finale.
+
+Wave four repeats this entire sequence three times: one Rat/five Weasels, two Rats/four Weasels, three Rats/three Weasels. Each six-enemy mini cycle has 0.2-second spawn intervals and five seconds from its final spawn to the next mini cycle. There are nine mini cycles, eighteen Rats and thirty-six Weasels. Rats retain five seconds up/five seconds down. Weasels use 1.1× catalog movement (1.375 units/s exposed; 1.58125 during evasion), with two-second evasion windows every five seconds and the existing advance warning.
+
+Real-spawn tests verify all nine cycles, rests, order, fast movement and shortened opening guards. Both existing earned-tool strategies now win all four waves at full hearts. See the updated candidate evidence; these scripted outcomes remain separate from owner/child play.

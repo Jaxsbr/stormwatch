@@ -63,12 +63,12 @@ function attempt(upgradesFirst: boolean, poor = false) {
 }
 describe("Rainstone's earned-tool strategies", () => {
   it.each([false, true])(
-    "clears three mixed waves with upgrades-first=%s",
+    "clears four mixed waves with upgrades-first=%s",
     (upgradesFirst) => {
       const result = attempt(upgradesFirst);
 
       expect(result.phase).toBe("won");
-      expect(result.waves).toBe(3);
+      expect(result.waves).toBe(4);
       expect(result.duration).toBeGreaterThan(180);
       expect(result.duration).toBeLessThan(400);
     },

@@ -37,3 +37,11 @@ At 1024×620 landscape, normal-speed wave-two rendering showed yellow chevrons a
 1. Does the yellow marker plus Evade make missed shots understandable?
 2. Do the fast arrivals and final bursts feel exciting or unfair?
 3. Is there enough money and time to extend coverage or try upgrades?
+
+## Opening and fourth-wave revision
+
+Owner playtest requested easier wave one and a fourth wave. Wave one now pauses six seconds before Weasels and uses four-second Rat shields/six seconds exposed. Wave four repeats 1 Rat/5 Weasels → 2 Rats/4 Weasels → 3 Rats/3 Weasels three times, with 0.2s spawn spacing and five-second rests. Its Rats guard five seconds, rest five seconds; its extra-fast Weasels evade two seconds every five seconds. Wave three awards 35 gold before the finale.
+
+The earlier three-wave strategy table is historical. Current coverage line: four-wave victory, twelve hearts, 323.97 combat seconds, twelve Squirrels/two upgraded, forty gold remaining. Upgrade line: victory, twelve hearts, 317.23 seconds, seven Squirrels/six upgraded, twenty gold remaining. Both finish wave one at twelve hearts. Poor coverage still loses. The review fixture adds Wave 1 and Wave 4 buttons; these deliberately start with only three base Squirrels rather than campaign-earned wave-four defenses. The existing clip shows wave two, whose behavior remains current.
+
+Revision verification: all 176 tests in 33 files, type checking and production build passed. Normal-speed fourth-wave fixture review at 1024×620 showed the compact groups, yellow evasion markers/Evade text and blue Rat shields without browser errors. Family playtest remains pending.
