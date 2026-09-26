@@ -20,10 +20,10 @@ import {
   type DraftRevision,
 } from "./drafts";
 import { mountAttempt } from "./attempt-view";
+import { resolveScenario as inspectScenario } from "./scenarios";
 // The browser and headless runner share this session; it owns commands and evidence.
 import {
   AttemptSession,
-  inspectScenario,
   runScenario,
   compareScenarios,
   searchScenario,
@@ -63,7 +63,10 @@ let message =
 let error = "";
 let disposeAttempt: (() => void) | undefined;
 let lastReport: RunReport | undefined;
-let lastSession: AttemptSession | undefined;
+let replayTrace: import("./commands").RecordedCommand[] | undefined;
+let lastAttemptContent: AuthoringContent | undefined;
+let lastAttemptScenario: Scenario | undefined;
+let lastAttemptRevision: DraftRevision | null = null;
 let runBusy = false;
 let scenario: Scenario = {
   id: uid("scenario"),
@@ -147,7 +150,27 @@ function timeline() {
       return `<tr><td>${esc(spawn.groupId)} #${spawn.ordinal + 1}</td><td>${esc(content.enemies[spawn.kind].name)}</td><td>${spawn.at.toFixed(3)}s</td><td>${spawn.tick} · ${(spawn.tick / 30).toFixed(3)}s</td><td>${esc(guard || evade || (spawn.kind === "boss" ? `Rally after ${content.rules.boss.firstRallySeconds}s, every ${content.rules.boss.rallyIntervalSeconds}s` : "—"))}</td></tr>`;
     })
     .join("");
-  return `<p>${schedule.length} enemies · ${esc(total)}<br>Last scheduled spawn: <strong>${last.toFixed(2)}s</strong>. Clearing depends on combat and travel.</p><svg class="wb-timeline" role="img" aria-label="Enemy spawn timeline, individual appearances by kind" viewBox="0 0 900 150">${kinds.map((kind, row) => `<text x="4" y="${22 + row * 26}" fill="${colors[kind]}" font-size="12">${esc(content.enemies[kind].name)}</text><line x1="145" y1="${18 + row * 26}" x2="880" y2="${18 + row * 26}" stroke="#394f3b"/>`).join("")}${schedule.map((spawn) => `<circle cx="${145 + (spawn.at / Math.max(1, last)) * 735}" cy="${18 + kinds.indexOf(spawn.kind) * 26}" r="3" fill="${colors[spawn.kind]}"><title>${esc(spawn.groupId)} · ${spawn.at.toFixed(3)}s nominal · tick ${spawn.tick}</title></circle>`).join("")}<text x="145" y="135" fill="#b9c6b8" font-size="11">0s</text><text x="850" y="135" fill="#b9c6b8" font-size="11">${last.toFixed(1)}s</text></svg><details><summary>Individual spawn and ability windows</summary><div class="wb-scroll"><table class="wb-table"><thead><tr><th>Packet / enemy</th><th>Kind</th><th>Nominal</th><th>Fixed tick / appearance</th><th>Spawn-relative ability</th></tr></thead><tbody>${rows}</tbody></table></div></details>`;
+  return `<p>${schedule.length} enemies · ${esc(total)}<br>Last scheduled spawn: <strong>${last.toFixed(2)}s</strong>. Clearing depends on combat and travel.</p><div class="wb-timeline-scroll"><svg class="wb-timeline" role="img" aria-label="Enemy spawn timeline, individual appearances by kind" viewBox="0 0 900 150">${kinds.map((kind, row) => `<text x="4" y="${22 + row * 26}" fill="${colors[kind]}" font-size="12">${esc(content.enemies[kind].name)}</text><line x1="145" y1="${18 + row * 26}" x2="880" y2="${18 + row * 26}" stroke="#394f3b"/>`).join("")}${schedule.map((spawn) => `<circle cx="${145 + (spawn.at / Math.max(1, last)) * 735}" cy="${18 + kinds.indexOf(spawn.kind) * 26}" r="3" fill="${colors[spawn.kind]}"><title>${esc(spawn.groupId)} · ${spawn.at.toFixed(3)}s nominal · tick ${spawn.tick}</title></circle>`).join("")}<text x="145" y="135" fill="#b9c6b8" font-size="11">0s</text><text x="850" y="135" fill="#b9c6b8" font-size="11">${last.toFixed(1)}s</text></svg></div><details><summary>Individual spawn and ability windows</summary><div class="wb-scroll"><table class="wb-table"><thead><tr><th>Packet / enemy</th><th>Kind</th><th>Nominal</th><th>Fixed tick / appearance</th><th>Spawn-relative ability</th></tr></thead><tbody>${rows}</tbody></table></div></details>`;
+}
+function packetControls() {
+  const numeric = (
+    path: string,
+    label: string,
+    value: number | undefined,
+    fallback?: number,
+  ) =>
+    `<label>${esc(label)}<input type="number" data-packet-field="${path}" data-original="${value ?? ""}" value="${value ?? ""}" placeholder="${fallback === undefined ? "Inherited" : `Default ${fallback}`}" step="any" ${revision ? "" : "disabled"}></label>`;
+  return currentWave()
+    .packets.map(
+      (packet, p) =>
+        `<details class="wb-packet" open><summary>${esc(packet.id)} · ${packet.repeat ?? 1} repetition(s) · ${packet.groups.length} group(s)</summary><div class="wb-params">${numeric(`packets.${p}.repeat`, "Repetitions", packet.repeat, 1)}${numeric(`packets.${p}.repeatDelayBefore`, "Silence before repeated packet (s)", packet.repeatDelayBefore, 0)}</div>${packet.groups
+          .map((group, g) => {
+            const base = `packets.${p}.groups.${g}`;
+            return `<div class="wb-group"><h3>${esc(content.enemies[group.kind].name)} · ${esc(group.id)}</h3><div class="wb-params">${numeric(`${base}.count`, "Count", group.count)}${numeric(`${base}.gap`, "Cadence (s)", group.gap)}${numeric(`${base}.batchSize`, "Batch size", group.batchSize, 1)}${numeric(`${base}.batchStagger`, "Batch stagger (s)", group.batchStagger, 0)}${numeric(`${base}.delayBefore`, "Preceding silence (s)", group.delayBefore, 0)}${numeric(`${base}.movementScale`, "Movement multiplier", group.movementScale, 1)}${group.kind === "raider" ? numeric(`${base}.shieldCycle.upSeconds`, "Guard up (s)", group.shieldCycle?.upSeconds, 2) + numeric(`${base}.shieldCycle.downSeconds`, "Guard down / first delay (s)", group.shieldCycle?.downSeconds, 3) : ""}${group.kind === "runner" ? numeric(`${base}.evasionCycle.upSeconds`, "Evade active (s)", group.evasionCycle?.upSeconds) + numeric(`${base}.evasionCycle.downSeconds`, "Evade down (s)", group.evasionCycle?.downSeconds) : ""}</div><p class="wb-muted">Scope: this wave group. Blank optional fields inherit defaults; an omitted Rat cycle uses first guard at 1.1s. Set both cycle values to enable an authored cycle.</p></div>`;
+          })
+          .join("")}</details>`,
+    )
+    .join("");
 }
 function effectiveInspector() {
   const configuration = resolveConfiguration(content, levelId);
@@ -183,7 +206,7 @@ function render() {
   const wave = currentWave();
   const changes = difference(CANONICAL_CONTENT, content);
   const bundle = store.bundle;
-  root.innerHTML = `<div class="wb-shell"><header class="wb-header"><div><h1>Stormwatch · Designer workbench</h1><p>Author rhythm. Play the consequence. Keep the choice.</p></div><div class="wb-status">Local experiments · family profiles untouched<br>${store.status.durable ? "Browser storage available" : esc(store.status.error ?? "In memory only; export to preserve")}</div></header><div class="wb-layout"><nav class="wb-register" aria-label="Encounter and wave register"><h2>Expedition</h2>${content.levels.map((entry, index) => `<details ${entry.id === levelId ? "open" : ""}><summary>${index + 1}. ${esc(entry.name)}</summary>${entry.waves.map((entryWave, waveIndex) => `<button data-select-level="${esc(entry.id)}" data-select-wave="${esc(entryWave.id)}" aria-current="${entry.id === levelId && entryWave.id === waveId}">${waveIndex + 1}. ${esc(entryWave.title)}<small>${esc(entryWave.id)}</small></button>`).join("")}</details>`).join("")}</nav><main class="wb-content"><section class="wb-card"><span class="wb-badge">${revision ? `Draft · ${esc(revision.name)}` : "Released baseline"}</span><h2>${esc(level.name)} · ${esc(wave.title)}</h2><p>Lesson: ${esc(wave.lesson ?? "Unspecified")}<br>Intended outcome: ${esc(wave.targetOutcome ?? "Unspecified")} · observed evidence is recorded separately.</p><div class="wb-row"><label>Draft name<input id="draft-name" value="${esc(revision?.name ?? `${level.name} rhythm candidate`)}"></label><button class="primary" data-action="fork">Fork named draft</button><label>Saved revision<select id="saved-revision"><option value="">Choose revision</option>${bundle.revisions.map((entry) => `<option value="${esc(entry.id)}" ${entry.id === revision?.id ? "selected" : ""}>${esc(entry.name)} · ${esc(entry.id)}</option>`).join("")}</select></label><button data-action="baseline">Released baseline</button></div><p class="wb-muted">Revision ${esc(revision?.id ?? configurationIdentity(content))} · ${changes.length} changed paths. Edits apply only to a new attempt.</p></section><section class="wb-card"><h2>Rhythm and route</h2><div class="wb-grid"><div>${timeline()}</div><div>${mapPreview()}<p>${level.width} × ${level.depth} · ${esc(level.description)}</p></div></div></section><section class="wb-card"><h2>Recipe editor</h2><div class="wb-row">${numberInput("startCoins", "Encounter starting crowns", level.startCoins)}${numberInput("healthScale", "Encounter health multiplier", level.healthScale ?? 1, "0.05")}${numberInput("enemyRewardScale", "Enemy reward multiplier", level.enemyRewardScale ?? 1, "0.05")}${numberInput("reward", "Wave-end crowns", wave.reward)}</div><p class="wb-muted">Packets retain authored order. Repeat count and repetition silence stay readable. Count, gap (s), batch size/stagger (s), preceding silence (s), movement multiplier and supported guard/evasion cycles are editable below.</p><label>Selected wave packets · wave scope<textarea id="packet-editor" class="wb-recipe" ${revision ? "" : "disabled"}>${esc(json(wave.packets))}</textarea></label><div class="wb-row"><label>Intended lesson<input id="lesson" value="${esc(wave.lesson ?? "")}" ${revision ? "" : "disabled"}></label><label>Intended outcome<input id="target-outcome" value="${esc(wave.targetOutcome ?? "")}" ${revision ? "" : "disabled"}></label><button class="primary" data-action="apply" ${revision ? "" : "disabled"}>Validate and save new revision</button></div><details><summary>Supported catalog and gameplay parameters · explicit global authored scope</summary><p>Changes here propose canonical catalog/rule edits. Scenario resources and formations below are separate experiments.</p><label>Defender catalog<textarea id="tower-editor" ${revision ? "" : "disabled"}>${esc(json(content.towers))}</textarea></label><label>Enemy catalog<textarea id="enemy-editor" ${revision ? "" : "disabled"}>${esc(json(content.enemies))}</textarea></label><label>Implemented gameplay rules<textarea id="rule-editor" ${revision ? "" : "disabled"}>${esc(json(content.rules))}</textarea></label></details><details><summary>Effective settings and released defaults</summary>${effectiveInspector()}</details><details><summary>Review changed authored values (${changes.length})</summary><pre class="wb-code">${esc(json(changes))}</pre></details></section><section class="wb-card"><h2>Scenario and manual play</h2><div class="wb-row"><label>Attempt scope<select id="mode"><option value="encounter" ${scenario.mode === "encounter" ? "selected" : ""}>Full encounter · reachable setup</option><option value="wave" ${scenario.mode === "wave" ? "selected" : ""}>Selected wave · synthetic setup</option></select></label><label>Discovery capabilities<select id="progression"><option value="first-arrival" ${scenario.progression === "first-arrival" ? "selected" : ""}>First arrival · prior discoveries</option><option value="replay" ${scenario.progression === "replay" ? "selected" : ""}>Replay · all earned tools</option></select></label><label>Difficulty baseline<select id="difficulty"><option value="normal" ${scenario.difficulty === "normal" ? "selected" : ""}>Normal</option><option value="assist" ${scenario.difficulty === "assist" ? "selected" : ""}>Assist · existing extra crowns/hearts</option></select></label><label>Seed<input id="seed" type="number" value="${scenario.seed}" step="1"></label></div><p>Named draft recipes are design-only difficulty candidates. Difficulty changes never grant discoveries. A selected-wave wallet or formation does not establish affordability through earlier waves.</p><div class="wb-grid"><label>Explicit overrides · towers, upgrades, card, coins, lives<textarea id="scenario-overrides">${esc(json(scenario.overrides ?? {}))}</textarea></label><label>Starting formation · legal purchases from declared wallet<textarea id="formation">${esc(json(scenario.formation ?? []))}</textarea></label></div><div class="wb-row"><button class="primary" data-action="play">Play fresh attempt</button><button data-action="save-scenario">Save scenario</button><button data-action="inspect-scenario">Inspect resolved scenario</button><button data-action="replay" ${lastSession ? "" : "disabled"}>Replay last commands</button><label>Saved scenario<select id="saved-scenario"><option value="">Choose scenario</option>${bundle.scenarios.map((entry) => `<option value="${esc(entry.id)}">${esc(entry.id)} · ${esc(entry.levelId)}</option>`).join("")}</select></label></div></section><section class="wb-card"><h2>Reproducible assistance</h2><p>Policies use legal commands. Results disclose cadence, spending assumptions and limits. Success is completion of the selected target; an unsuccessful bounded search does not prove impossibility.</p><div class="wb-row"><label>Policy<select id="policy"><option value="coverage-first">Coverage spending</option><option value="upgrades-first">Upgrades first</option><option value="finale-mixed">Mixed control</option></select></label><label>Goal<select id="goal"><option value="encounter-win">Win encounter</option><option value="wave-clear">Clear selected wave</option></select></label><label>No lives lost<input id="no-loss" type="checkbox"></label><label>Decision cadence (ticks)<input id="cadence" type="number" value="30" min="1"></label><label>Simulated limit (s)<input id="time-limit" type="number" value="600" min="1"></label><label>Search budget (plans)<input id="budget" type="number" value="12" min="1" max="64"></label></div><div class="wb-row"><button data-action="run">Run policy</button><button data-action="compare">Compare released / draft with matched policy</button><button data-action="search">Bounded goal search</button></div>${lastReport ? `<details open><summary>Last observed result</summary><pre class="wb-code">${esc(json(lastReport))}</pre></details>` : ""}</section><section class="wb-card"><h2>Preserve and promote</h2><p>Browser saving preserves experiments. Export transfers them. Promotion previews a scoped canonical diff and rejects a stale released baseline. It never commits, publishes or turns a synthetic formation into production content.</p><div class="wb-row"><button data-action="export">Export experiments</button><label>Import validated experiments<input id="import-file" type="file" accept="application/json,.json"></label><button data-action="promotion" ${revision ? "" : "disabled"}>Review promotion instructions</button></div><p class="wb-muted">Local command: <code>npm run workbench:promote -- experiments.json REVISION selection.json</code>. Preview first; apply only after reviewing the selected authored scope.</p></section><div class="wb-message" role="status">${esc(message)}</div>${error ? `<div class="wb-error" role="alert">${esc(error)}</div>` : ""}</main></div></div>`;
+  root.innerHTML = `<div class="wb-shell"><header class="wb-header"><div><h1>Stormwatch · Designer workbench</h1><p>Author rhythm. Play the consequence. Keep the choice.</p></div><div class="wb-status">Local experiments · family profiles untouched<br>${store.status.durable ? "Browser storage available" : esc(store.status.error ?? "In memory only; export to preserve")}</div></header><div class="wb-layout"><nav class="wb-register" aria-label="Encounter and wave register"><h2>Expedition</h2>${content.levels.map((entry, index) => `<details ${entry.id === levelId ? "open" : ""}><summary>${index + 1}. ${esc(entry.name)}</summary>${entry.waves.map((entryWave, waveIndex) => `<button data-select-level="${esc(entry.id)}" data-select-wave="${esc(entryWave.id)}" aria-current="${entry.id === levelId && entryWave.id === waveId}">${waveIndex + 1}. ${esc(entryWave.title)}<small>${esc(entryWave.id)}</small></button>`).join("")}</details>`).join("")}</nav><main class="wb-content"><section class="wb-card"><span class="wb-badge">${revision ? `Draft · ${esc(revision.name)}` : "Released baseline"}</span><h2>${esc(level.name)} · ${esc(wave.title)}</h2><p>Lesson: ${esc(wave.lesson ?? "Unspecified")}<br>Intended outcome: ${esc(wave.targetOutcome ?? "Unspecified")} · observed evidence is recorded separately.</p><div class="wb-row"><label>Draft name<input id="draft-name" value="${esc(revision?.name ?? `${level.name} rhythm candidate`)}"></label><button class="primary" data-action="fork">Fork named draft</button><label>Saved revision<select id="saved-revision"><option value="">Choose revision</option>${bundle.revisions.map((entry) => `<option value="${esc(entry.id)}" ${entry.id === revision?.id ? "selected" : ""}>${esc(entry.name)} · ${esc(entry.id)}</option>`).join("")}</select></label><button data-action="baseline">Released baseline</button></div><p class="wb-muted">Revision ${esc(revision?.id ?? configurationIdentity(content))} · ${changes.length} changed paths. Edits apply only to a new attempt.</p></section><section class="wb-card"><h2>Rhythm and route</h2><div class="wb-grid"><div>${timeline()}</div><div>${mapPreview()}<p>${level.width} × ${level.depth} · ${esc(level.description)}</p></div></div></section><section class="wb-card"><h2>Recipe editor</h2><div class="wb-row">${numberInput("startCoins", "Encounter starting crowns", level.startCoins)}${numberInput("healthScale", "Encounter health multiplier", level.healthScale ?? 1, "0.05")}${numberInput("enemyRewardScale", "Enemy reward multiplier", level.enemyRewardScale ?? 1, "0.05")}${numberInput("reward", "Wave-end crowns", wave.reward)}</div><p class="wb-muted">Packets retain authored order. Repeat count and repetition silence stay readable. Count, gap (s), batch size/stagger (s), preceding silence (s), movement multiplier and supported guard/evasion cycles are editable below.</p>${packetControls()}<details><summary>Advanced packet recipe JSON · preserve IDs and order</summary><label>Selected wave packets · wave scope<textarea id="packet-editor" class="wb-recipe" ${revision ? "" : "disabled"}>${esc(json(wave.packets))}</textarea></label></details><div class="wb-row"><label>Intended lesson<input id="lesson" value="${esc(wave.lesson ?? "")}" ${revision ? "" : "disabled"}></label><label>Intended outcome<input id="target-outcome" value="${esc(wave.targetOutcome ?? "")}" ${revision ? "" : "disabled"}></label><button class="primary" data-action="apply" ${revision ? "" : "disabled"}>Validate and save new revision</button></div><details><summary>Supported catalog and gameplay parameters · explicit global authored scope</summary><p>Changes here propose canonical catalog/rule edits. Scenario resources and formations below are separate experiments.</p><label>Defender catalog<textarea id="tower-editor" ${revision ? "" : "disabled"}>${esc(json(content.towers))}</textarea></label><label>Enemy catalog<textarea id="enemy-editor" ${revision ? "" : "disabled"}>${esc(json(content.enemies))}</textarea></label><label>Implemented gameplay rules<textarea id="rule-editor" ${revision ? "" : "disabled"}>${esc(json(content.rules))}</textarea></label></details><details><summary>Effective settings and released defaults</summary>${effectiveInspector()}</details><details><summary>Review changed authored values (${changes.length})</summary><pre class="wb-code">${esc(json(changes))}</pre></details></section><section class="wb-card"><h2>Scenario and manual play</h2><div class="wb-row"><label>Attempt scope<select id="mode"><option value="encounter" ${scenario.mode === "encounter" ? "selected" : ""}>Full encounter · reachable setup</option><option value="wave" ${scenario.mode === "wave" ? "selected" : ""}>Selected wave · synthetic setup</option></select></label><label>Discovery capabilities<select id="progression"><option value="first-arrival" ${scenario.progression === "first-arrival" ? "selected" : ""}>First arrival · prior discoveries</option><option value="replay" ${scenario.progression === "replay" ? "selected" : ""}>Replay · all earned tools</option></select></label><label>Difficulty baseline<select id="difficulty"><option value="normal" ${scenario.difficulty === "normal" ? "selected" : ""}>Normal</option><option value="assist" ${scenario.difficulty === "assist" ? "selected" : ""}>Assist · existing extra crowns/hearts</option></select></label><label>Named design-only difficulty recipe<select id="difficulty-candidate"><option value="">Current authored revision</option>${bundle.revisions.map((entry) => `<option value="${esc(entry.id)}" ${entry.id === scenario.difficultyCandidate?.id ? "selected" : ""}>${esc(entry.name)}</option>`).join("")}</select></label><label>Seed<input id="seed" type="number" value="${scenario.seed}" step="1"></label></div><p>Named draft recipes are design-only difficulty candidates. Difficulty changes never grant discoveries. A selected-wave wallet or formation does not establish affordability through earlier waves.</p><div class="wb-grid"><label>Explicit overrides · towers, upgrades, card, coins, lives<textarea id="scenario-overrides">${esc(json(scenario.overrides ?? {}))}</textarea></label><label>Starting formation · legal purchases from declared wallet<textarea id="formation">${esc(json(scenario.formation ?? []))}</textarea></label></div><div class="wb-row"><button class="primary" data-action="play">Play fresh attempt</button><button data-action="save-scenario">Save scenario</button><button data-action="inspect-scenario">Inspect resolved scenario</button><label>Saved command trace<select id="saved-trace"><option value="">Choose trace</option>${bundle.traces.map((entry) => `<option value="${esc(entry.id)}">${esc(entry.id)}</option>`).join("")}</select></label><label>Saved result<select id="saved-result"><option value="">Choose result</option>${bundle.results.map((entry) => `<option value="${esc(entry.id)}">${esc(entry.id)}</option>`).join("")}</select></label><button data-action="replay" ${replayTrace ? "" : "disabled"}>Replay last commands</button><label>Saved scenario<select id="saved-scenario"><option value="">Choose scenario</option>${bundle.scenarios.map((entry) => `<option value="${esc(entry.id)}">${esc(entry.id)} · ${esc(entry.levelId)}</option>`).join("")}</select></label></div></section><section class="wb-card"><h2>Reproducible assistance</h2><p>Policies use legal commands. Results disclose cadence, spending assumptions and limits. Success is completion of the selected target; an unsuccessful bounded search does not prove impossibility.</p><div class="wb-row"><label>Policy<select id="policy"><option value="coverage-first">Coverage spending</option><option value="upgrades-first">Upgrades first</option><option value="finale-mixed">Mixed control</option></select></label><label>Goal<select id="goal"><option value="encounter-win">Win encounter</option><option value="wave-clear">Clear selected wave</option></select></label><label>No lives lost<input id="no-loss" type="checkbox"></label><label>Decision cadence (ticks)<input id="cadence" type="number" value="30" min="1"></label><label>Simulated limit (s)<input id="time-limit" type="number" value="600" min="1"></label><label>Search budget (plans)<input id="budget" type="number" value="12" min="1" max="64"></label></div><div class="wb-row"><button data-action="run">Run policy</button><button data-action="compare">Compare released / draft with matched policy</button><button data-action="search">Bounded goal search</button></div>${lastReport ? `<details open><summary>Last observed result</summary><pre class="wb-code">${esc(json(lastReport))}</pre></details>` : ""}</section><section class="wb-card"><h2>Preserve and promote</h2><p>Browser saving preserves experiments. Export transfers them. Promotion previews a scoped canonical diff and rejects a stale released baseline. It never commits, publishes or turns a synthetic formation into production content.</p><div class="wb-row"><button data-action="export">Export experiments</button><label>Import validated experiments<input id="import-file" type="file" accept="application/json,.json"></label><button data-action="promotion" ${revision ? "" : "disabled"}>Review promotion instructions</button></div><p class="wb-muted">Local command: <code>npm run workbench:promote -- experiments.json REVISION selection.json</code>. Preview first; apply only after reviewing the selected authored scope.</p></section><div class="wb-message" role="status">${esc(message)}</div>${error ? `<div class="wb-error" role="alert">${esc(error)}</div>` : ""}</main></div></div>`;
   root.onclick = onClick;
   root.querySelector<HTMLSelectElement>("#saved-revision")!.onchange = (
     event,
@@ -216,6 +239,49 @@ function render() {
         content.levels.find((entry) => entry.id === levelId)!.waves[0].id;
       render();
     }
+  };
+  const restoreEvidence = (
+    record: import("./drafts").ExperimentRecord,
+    report?: RunReport,
+  ) => {
+    const savedRevision = store.bundle.revisions.find(
+      (entry) => entry.id === record.revisionId,
+    )!;
+    const setup =
+      report?.scenario ??
+      (record.scenario as Scenario) ??
+      (store.bundle.scenarios.find((entry) => entry.id === record.scenarioId)
+        ?.scenario as Scenario);
+    revision = savedRevision;
+    content = clone(savedRevision.content);
+    scenario = clone(setup);
+    levelId = scenario.levelId;
+    waveId = scenario.waveId ?? currentLevel().waves[0].id;
+    replayTrace = clone(
+      report?.trace ??
+        (record.commands as import("./commands").RecordedCommand[]),
+    );
+    lastAttemptContent = clone(content);
+    lastAttemptScenario = clone(scenario);
+    lastAttemptRevision = revision;
+    lastReport = report;
+    message =
+      "Saved evidence selected. Replay starts a fresh attempt with the recorded configuration.";
+    render();
+  };
+  root.querySelector<HTMLSelectElement>("#saved-trace")!.onchange = (event) => {
+    const record = store.bundle.traces.find(
+      (entry) => entry.id === (event.target as HTMLSelectElement).value,
+    );
+    if (record) restoreEvidence(record);
+  };
+  root.querySelector<HTMLSelectElement>("#saved-result")!.onchange = (
+    event,
+  ) => {
+    const record = store.bundle.results.find(
+      (entry) => entry.id === (event.target as HTMLSelectElement).value,
+    );
+    if (record) restoreEvidence(record, record.report as RunReport);
   };
   root.querySelector<HTMLInputElement>("#import-file")!.onchange = async (
     event,
@@ -254,6 +320,18 @@ function readScenario(): Scenario {
     formation: JSON.parse(value("formation")),
     ...(mode === "wave" ? { waveId } : {}),
   };
+  const candidate = store.bundle.revisions.find(
+    (entry) => entry.id === value("difficulty-candidate"),
+  );
+  if (candidate)
+    Object.assign(next, {
+      difficultyCandidate: {
+        id: candidate.id,
+        content: clone(candidate.content),
+      },
+    });
+  if (!Object.keys(next.overrides).length)
+    delete (next as { overrides?: unknown }).overrides;
   inspectScenario(content, next);
   return next;
 }
@@ -283,25 +361,48 @@ function preserveScenario() {
   store.replace(bundle);
   return record;
 }
-function saveReport(report: RunReport, session?: AttemptSession) {
+function saveReport(
+  report: RunReport,
+  session?: AttemptSession,
+  evidence?: unknown,
+) {
   const record = preserveScenario();
   const bundle = store.bundle;
-  bundle.results.push({ ...record, id: uid("result"), report });
+  bundle.results.push({
+    ...record,
+    id: uid("result"),
+    scenarioId: record.id,
+    report,
+    ...(evidence ? { evidence } : {}),
+  });
   if (session)
     bundle.traces.push({
       ...record,
       id: uid("trace"),
+      scenarioId: record.id,
       commands: clone(session.trace),
     });
   store.replace(bundle);
   lastReport = report;
+  replayTrace = clone(report.trace);
+  lastAttemptContent = clone(content);
+  lastAttemptScenario = clone(report.scenario);
+  lastAttemptRevision = revision;
 }
 function launch(replay = false) {
-  scenario = readScenario();
-  const replayTrace = replay ? lastSession?.trace : undefined;
+  if (replay && lastAttemptContent && lastAttemptScenario) {
+    content = clone(lastAttemptContent);
+    scenario = clone(lastAttemptScenario);
+    revision = lastAttemptRevision;
+    levelId = scenario.levelId;
+    ensureSelection();
+  } else scenario = readScenario();
+  const commandsToReplay = replay ? replayTrace : undefined;
   const session = new AttemptSession(content, scenario);
-  if (replayTrace) session.replay(replayTrace);
-  lastSession = session;
+  if (commandsToReplay) session.replay(commandsToReplay);
+  lastAttemptContent = clone(content);
+  lastAttemptScenario = clone(scenario);
+  lastAttemptRevision = revision;
   root.hidden = true;
   attemptHost.hidden = false;
   const close = () => {
@@ -312,11 +413,18 @@ function launch(replay = false) {
     render();
   };
   disposeAttempt = mountAttempt(attemptHost, session.game, {
-    label: `${revision?.name ?? "Released"} · ${scenario.mode === "wave" ? "Synthetic isolated wave" : "Full encounter"} · ${scenario.progression}`,
+    label: `${revision?.name ?? "Released"} · ${session.synthetic ? (scenario.mode === "wave" ? "Synthetic isolated wave" : "Full encounter · overridden setup") : "Full encounter"} · ${scenario.progression}`,
     command: (command) => session.command(command),
     step: () => session.step(),
     onExit: () => {
-      saveReport(session.report(), session);
+      saveReport(
+        session.report(
+          scenario.mode === "wave"
+            ? { type: "wave-clear", waveId: scenario.waveId }
+            : { type: "encounter-win" },
+        ),
+        session,
+      );
       close();
     },
     onRestart: () => {
@@ -327,7 +435,14 @@ function launch(replay = false) {
       launch();
     },
     onFinish: () => {
-      saveReport(session.report(), session);
+      saveReport(
+        session.report(
+          scenario.mode === "wave"
+            ? { type: "wave-clear", waveId: scenario.waveId }
+            : { type: "encounter-win" },
+        ),
+        session,
+      );
     },
     ...(replay
       ? {
@@ -381,6 +496,27 @@ async function onClick(event: MouseEvent) {
       wave.packets = JSON.parse(
         root.querySelector<HTMLTextAreaElement>("#packet-editor")!.value,
       );
+      for (const input of root.querySelectorAll<HTMLInputElement>(
+        "[data-packet-field]",
+      )) {
+        if (input.value === input.dataset.original) continue;
+        const parts = input.dataset.packetField!.split(".");
+        let target: Record<string, unknown> = wave as unknown as Record<
+          string,
+          unknown
+        >;
+        for (const key of parts.slice(0, -1)) {
+          if (target[key] === undefined) target[key] = {};
+          if (!target[key] || typeof target[key] !== "object")
+            throw new Error(
+              `Packet field ${input.dataset.packetField} no longer exists; refresh the recipe.`,
+            );
+          target = target[key] as Record<string, unknown>;
+        }
+        const key = parts.at(-1)!;
+        if (input.value === "") delete target[key];
+        else target[key] = Number(input.value);
+      }
       const lesson = root.querySelector<HTMLInputElement>("#lesson")!.value;
       const outcome =
         root.querySelector<HTMLInputElement>("#target-outcome")!.value;
@@ -454,21 +590,29 @@ async function onClick(event: MouseEvent) {
       render();
       await new Promise<void>((resolve) => setTimeout(resolve, 0));
       try {
-        if (action === "compare")
-          message = json(
-            compareScenarios(CANONICAL_CONTENT, content, scenario, settings),
+        if (action === "compare") {
+          const comparison = compareScenarios(
+            CANONICAL_CONTENT,
+            content,
+            scenario,
+            settings,
           );
-        else if (action === "search")
-          message = json(
-            searchScenario(
-              content,
-              scenario,
-              settings.goal,
-              budget,
-              settings.maxTicks,
-            ),
+          saveReport(comparison.after, undefined, { comparison });
+          message = json(comparison);
+        } else if (action === "search") {
+          const search = searchScenario(
+            content,
+            scenario,
+            settings.goal,
+            budget,
+            settings.maxTicks,
           );
-        else {
+          if (search.report)
+            saveReport(search.report, undefined, {
+              search: { ...search, report: undefined },
+            });
+          message = json(search);
+        } else {
           const report = runScenario(content, scenario, settings);
           saveReport(report);
           message =

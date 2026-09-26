@@ -331,3 +331,33 @@ body {
     margin-top: 10px;
   }
 }
+
+.wb-timeline-scroll {
+  overflow-x: auto;
+}
+.wb-timeline {
+  min-width: 900px;
+}
+.wb-params {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 9px;
+}
+.wb-group {
+  border-top: 1px solid var(--wb-line);
+  padding-top: 4px;
+}
+.wb-packet {
+  border: 1px solid var(--wb-line);
+  padding: 10px;
+  border-radius: 8px;
+}
+.wb-packet summary {
+  color: var(--wb-accent);
+  font-weight: 600;
+}
+@media (max-width: 1000px) {
+  .wb-params {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}

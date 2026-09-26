@@ -33,3 +33,15 @@
 | p95 frame interval               | 95% of recorded frame intervals are at or below this duration.                                                                                                     |
 | Stress fixture                   | Artificial crowded scene for performance testing, distinct from a normal match.                                                                                    |
 | ADR                              | Architectural decision record explaining context, choice and consequences.                                                                                         |
+
+| Designer term | Meaning |
+| --- | --- |
+| Authored recipe | Canonical serializable encounter/wave/packet data compiled into runtime content. |
+| Packet | An ordered recipe of enemy groups; optional repetition and preceding silence express wave rhythm. |
+| Draft revision | An independently saved named content snapshot tied to its accepted baseline identity. |
+| Scenario | Difficulty, progression, seed, resources and formation declared for a reproducible attempt. |
+| Synthetic setup | An isolated wave or explicit resource/tool/formation override that makes no campaign-reachability claim. |
+| Nominal spawn | Authored schedule time, distinct from the fixed tick at which the enemy appears. |
+| Command trace | Legal command attempts recorded at fixed simulation ticks, including rejections. |
+| Fixed-plan comparison | Baseline/candidate evidence using identical recorded commands and declared setup; invalidated commands remain visible. |
+| Promotion | Explicit validated, scoped application of authored draft content to the canonical source; separate from saving, committing and deployment. |

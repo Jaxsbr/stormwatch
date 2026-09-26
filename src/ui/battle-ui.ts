@@ -37,9 +37,17 @@ export function battleStats(waves: number) {
 export function towerAttributes(game: Game, t: Tower) {
   const def = game.towers[t.kind];
   const stats = (level: number) => ({
-    damage: Number((def.damage * (level === 2 ? 1.7 : 1)).toFixed(1)),
+    damage: Number(
+      (def.damage * (level === 2 ? game.rules.upgradeDamageScale : 1)).toFixed(
+        1,
+      ),
+    ),
     range: Number(game.range({ ...t, level }).toFixed(1)),
-    interval: Number((def.interval * (level === 2 ? 0.8 : 1)).toFixed(2)),
+    interval: Number(
+      (
+        def.interval * (level === 2 ? game.rules.upgradeIntervalScale : 1)
+      ).toFixed(2),
+    ),
   });
   return { current: stats(t.level), next: t.level === 1 ? stats(2) : null };
 }

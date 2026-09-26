@@ -550,6 +550,9 @@ export function searchScenario(
     "stone",
     "net",
   ];
+  let lastReport: RunReport | undefined;
+  let lastPlan: RunOptions["plan"];
+  let attempts = 0;
   for (let i = 0; i < budget; i++) {
     const kind = kinds[i % kinds.length];
     if (!kind) break;
@@ -557,6 +560,9 @@ export function searchScenario(
     const sites = [...valid.slice(offset), ...valid.slice(0, offset)];
     const plan = { sites, kind, upgradeFirst: i % 2 === 1 };
     const report = runScenario(content, scenario, { plan, goal, maxTicks });
+    lastReport = report;
+    lastPlan = plan;
+    attempts++;
     if (report.success) {
       const replay = runScenario(content, scenario, {
         trace: report.trace,
@@ -577,7 +583,9 @@ export function searchScenario(
   return {
     found: false,
     budget,
-    attempts: budget,
+    attempts,
+    report: lastReport,
+    plan: lastPlan,
     reason:
       "No successful plan found within this bounded site-order/defender/upgrade search; this is not proof of impossibility",
   };

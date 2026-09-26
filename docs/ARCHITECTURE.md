@@ -106,3 +106,33 @@ the vertex shader. Side-view transforms retain the same two-bone blend; front/re
 views retain upright boots and projected cloth movement. Each leg owns its pose
 uniforms, while materials share the compiled shader program. This removes repeated
 leg vertex-buffer uploads without changing simulation or gait targets.
+
+## Designer workbench
+
+`src/content/recipes.json` is the schema-versioned canonical source for encounter
+recipes, catalogs and supported gameplay parameters. The existing content modules
+are compatibility exports compiled from that source. `src/config/configuration.ts`
+validates and resolves immutable attempt snapshots. The simulation and timeline
+share `src/sim/spawn-schedule.ts`; authored insertion order is preserved, and
+nonmonotonic batch/group edits are rejected.
+
+The local `workbench.html` entry owns `src/workbench` editor, scenario, replay,
+policy, search and experiment-storage adapters. Its attempt view reads the same
+`Game`, `Battlefield`, sound and semantic battle components as the campaign, with
+no campaign result/profile lifecycle. Difficulty candidates resolve before
+progression capabilities; declared scenario overrides apply last. Isolated waves
+and overridden starting setups are synthetic evidence, never proof of campaign
+affordability.
+
+The production build emits only the game to `dist`. Workbench and QA builds emit
+independently to `dist-workbench` and `dist-qa`. A build plugin rejects utility
+modules in the reachable production graph, and the artifact check inspects copied
+files and emitted controls. Development diagnostics are excluded at compilation.
+The Pages workflow uploads only `dist`.
+
+Use authored recipes for tuning, simulation plus presentation for a new supported
+ability, and workbench modules for editor/evidence changes. Draft saving is separate
+from canonical promotion; the local promotion command validates, checks the base
+identity, previews selected scopes, and stages atomic replacement. It does not
+commit or deploy. See [workbench usage](WORKBENCH.md) and
+[decision 021](decisions/021-designer-workbench.md).
