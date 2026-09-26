@@ -130,6 +130,7 @@ export class AttemptSession {
   transactions: RunReport["transactions"] = [];
   events: RunReport["events"] = [];
   private pending: RecordedCommand[] = [];
+  replayLocked = false;
   constructor(content: AuthoringContent, scenario: Scenario) {
     const resolved = resolveScenario(content, scenario);
     this.scenario = resolved.scenario;
@@ -168,6 +169,10 @@ export class AttemptSession {
     this.game.drainEvents();
   }
   command(command: LegalCommand): boolean {
+    if (this.replayLocked && command.type !== "pause") return false;
+    return this.applyCommand(command);
+  }
+  private applyCommand(command: LegalCommand): boolean {
     validateTrace([{ tick: this.tickIndex, command, accepted: true }]);
     const before = this.game.state.coins;
     const accepted = executeCommand(this.game, command);
@@ -190,16 +195,18 @@ export class AttemptSession {
     if (trace.some((c) => c.tick < this.tickIndex))
       throw new Error("Replay begins before current tick");
     this.pending = structuredClone(trace);
+    this.replayLocked = true;
   }
   branch() {
     if (this.game.state.phase !== "preparation")
       throw new Error("Branching requires preparation");
     this.pending = [];
+    this.replayLocked = false;
     return true;
   }
   step(): GameEvent[] {
     while (this.pending.length && this.pending[0].tick === this.tickIndex)
-      this.command(this.pending.shift()!.command);
+      this.applyCommand(this.pending.shift()!.command);
     this.game.tick(FIXED_STEP);
     this.tickIndex++;
     const events = this.game.drainEvents();
@@ -229,16 +236,10 @@ export class AttemptSession {
   ): RunReport {
     validateGoal(goal);
     const s = this.game.state;
-    const target = goal.waveId ?? this.game.level.waves.at(-1)!.id;
-    const completed =
-      goal.type === "encounter-win"
-        ? s.phase === "won"
-        : this.checkpoints.some((c) => c.waveId === target);
-    const bossRequired =
-      !!this.game.level.requiresBossDefeat &&
-      (goal.type === "encounter-win" ||
-        target === this.game.level.waves.at(-1)!.id);
-    const bossDefeated = s.killsByKind.boss > 0;
+    const { completed, bossRequired, bossDefeated, success } = evaluateGoal(
+      this,
+      goal,
+    );
     return {
       schemaVersion: 1,
       configurationIdentity: this.configurationIdentity,
@@ -255,10 +256,7 @@ export class AttemptSession {
       phase: s.phase,
       completed,
       goal,
-      success:
-        completed &&
-        (!bossRequired || bossDefeated) &&
-        (!goal.noLivesLost || s.lives === this.initialLives),
+      success,
       bossDefeated,
       bossRequired,
       lives: s.lives,
@@ -279,21 +277,29 @@ export class AttemptSession {
     };
   }
 }
-export function goalSatisfied(session: AttemptSession, goal: Goal): boolean {
+export function evaluateGoal(session: AttemptSession, goal: Goal) {
   const game = session.game;
   const target = goal.waveId ?? game.level.waves.at(-1)!.id;
-  const complete =
+  const completed =
     goal.type === "encounter-win"
       ? game.state.phase === "won"
       : session.checkpoints.some((c) => c.waveId === target);
-  const requiresBoss =
+  const bossRequired =
     !!game.level.requiresBossDefeat &&
     (goal.type === "encounter-win" || target === game.level.waves.at(-1)!.id);
-  return (
-    complete &&
-    (!requiresBoss || game.state.killsByKind.boss > 0) &&
-    (!goal.noLivesLost || game.state.lives === session.initialLives)
-  );
+  const bossDefeated = game.state.killsByKind.boss > 0;
+  return {
+    completed,
+    bossRequired,
+    bossDefeated,
+    success:
+      completed &&
+      (!bossRequired || bossDefeated) &&
+      (!goal.noLivesLost || game.state.lives === session.initialLives),
+  };
+}
+export function goalSatisfied(session: AttemptSession, goal: Goal): boolean {
+  return evaluateGoal(session, goal).success;
 }
 export interface PolicyDefinition {
   id: string;
@@ -596,10 +602,12 @@ export function compareScenarios(
   scenario: Scenario,
   options: RunOptions = {},
 ) {
-  const before = runScenario(baseline, scenario, options);
+  const { difficultyCandidate, ...baselineScenario } = scenario;
+  const before = runScenario(baseline, baselineScenario, options);
   const after = runScenario(candidate, scenario, {
     ...options,
     policyId: undefined,
+    plan: undefined,
     trace: before.trace,
   });
   return {

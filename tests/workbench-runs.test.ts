@@ -9,6 +9,7 @@ import {
   searchScenario,
   compareScenarios,
   validateRunReport,
+  evaluateGoal,
   type Scenario,
 } from "../src/workbench/runs";
 const scenario = (levelId = "lantern-pass"): Scenario => ({
@@ -195,5 +196,103 @@ describe("workbench real attempts and evidence", () => {
     expect(() =>
       validateRunReport({ ...slow, configurationIdentity: "wrong" }, c),
     ).toThrow(/identity/);
+  });
+  it("matches canonical and selected named difficulty recipes without replacing the baseline", () => {
+    const baseline = small();
+    const candidate = small();
+    candidate.towers.bolt.cost = 101;
+    baseline.enemies.raider.hp = 10;
+    candidate.enemies.raider.hp = 10;
+    const setup = {
+      ...scenario(),
+      difficultyCandidate: { id: "costly-defenders", content: candidate },
+    };
+    const result = compareScenarios(baseline, baseline, setup, {
+      trace: [
+        {
+          tick: 0,
+          command: { type: "place", kind: "bolt", point: { x: 1, z: 4 } },
+          accepted: true,
+        },
+        { tick: 0, command: { type: "start" }, accepted: true },
+      ],
+      maxTicks: 3000,
+      goal: { type: "encounter-win", noLivesLost: true },
+    });
+    expect(result.before.scenario.difficultyCandidate).toBeUndefined();
+    expect(result.after.scenario.difficultyCandidate?.id).toBe(
+      "costly-defenders",
+    );
+    expect(result.before.recipeIdentity).not.toBe(result.after.recipeIdentity);
+    expect(result.before.scenario.seed).toBe(result.after.scenario.seed);
+    expect(result.invalidatedCommands).toHaveLength(1);
+    expect(result.before.success).toBe(true);
+    expect(result.after.success).toBe(false);
+  });
+  it("replays only baseline commands for a fixed comparison initiated with a search plan", () => {
+    const content = small();
+    const result = compareScenarios(content, content, scenario(), {
+      plan: {
+        sites: [
+          { x: 1, z: 4 },
+          { x: 3, z: 2 },
+        ],
+        kind: "bolt",
+        upgradeFirst: false,
+      },
+      maxTicks: 3000,
+    });
+    expect(result.before.success).toBe(true);
+    expect(result.after.trace).toEqual(result.before.trace);
+    expect(result.after.coins).toBe(result.before.coins);
+    expect(result.after.lives).toBe(result.before.lives);
+  });
+  it("uses one goal evaluator for session reports and loop completion including wave and loss constraints", () => {
+    const content = small();
+    const session = new AttemptSession(content, scenario());
+    session.command({ type: "place", kind: "bolt", point: { x: 1, z: 4 } });
+    session.command({ type: "start" });
+    const goal = {
+      type: "wave-clear" as const,
+      waveId: "short",
+      noLivesLost: true,
+    };
+    expect(session.report(goal).success).toBe(
+      evaluateGoal(session, goal).success,
+    );
+    for (let i = 0; i < 3000 && session.game.state.phase === "wave"; i++)
+      session.step();
+    expect(evaluateGoal(session, goal)).toMatchObject({
+      completed: true,
+      success: false,
+      bossRequired: false,
+    });
+    expect(session.report(goal)).toMatchObject(evaluateGoal(session, goal));
+    expect(evaluateGoal(session, { ...goal, noLivesLost: false }).success).toBe(
+      true,
+    );
+  });
+  it("locks manual changes while replaying until an explicit preparation branch", () => {
+    const session = new AttemptSession(small(), scenario());
+    session.replay([
+      {
+        tick: 0,
+        command: { type: "place", kind: "bolt", point: { x: 1, z: 4 } },
+        accepted: true,
+      },
+    ]);
+    expect(session.replayLocked).toBe(true);
+    expect(
+      session.command({ type: "place", kind: "bolt", point: { x: 3, z: 2 } }),
+    ).toBe(false);
+    expect(session.trace).toHaveLength(0);
+    session.step();
+    expect(session.game.state.towers).toHaveLength(1);
+    expect(session.trace).toHaveLength(1);
+    expect(session.branch()).toBe(true);
+    expect(session.replayLocked).toBe(false);
+    expect(
+      session.command({ type: "place", kind: "bolt", point: { x: 3, z: 2 } }),
+    ).toBe(true);
   });
 });

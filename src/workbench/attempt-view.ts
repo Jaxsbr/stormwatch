@@ -23,6 +23,7 @@ export interface AttemptViewOptions {
   onRestart(): void;
   onFinish(): void;
   onBranch?(): boolean;
+  isReplayLocked?(): boolean;
 }
 
 /** Presentation adapter only. The caller owns the immutable attempt and evidence. */
@@ -110,17 +111,20 @@ export function mountAttempt(
     const start = host.querySelector<HTMLButtonElement>(
       '[data-action="start"]',
     )!;
-    start.disabled = state.phase !== "preparation";
+    const replayLocked = options.isReplayLocked?.() ?? false;
+    start.disabled = replayLocked || state.phase !== "preparation";
     start.textContent =
       state.phase === "won"
         ? "Victory"
         : state.phase === "lost"
           ? "Defeat"
-          : state.phase === "wave"
-            ? `${state.enemies.length} on the trail`
-            : state.wave
-              ? "Start next wave early"
-              : "Start first wave";
+          : state.phase === "paused"
+            ? "Paused"
+            : state.phase === "wave"
+              ? `${state.enemies.length} on the trail`
+              : state.wave
+                ? "Start next wave early"
+                : "Start first wave";
     const boss = state.enemies.find((enemy) => enemy.kind === "boss");
     const bossPanel = host.querySelector<HTMLElement>(".wb-boss")!;
     bossPanel.hidden = !boss;
@@ -148,18 +152,33 @@ export function mountAttempt(
         "unaffordable",
         state.coins < game.towers[kind].cost,
       );
-      node.disabled = !game.canAct();
+      node.disabled = replayLocked || !game.canAct();
     }
     const branch = host.querySelector<HTMLButtonElement>(
       '[data-action="branch"]',
     );
-    if (branch) branch.disabled = state.phase !== "preparation";
+    for (const node of panel.querySelectorAll<HTMLButtonElement>(
+      '[data-action="upgrade"],[data-action="sell"]',
+    ))
+      if (replayLocked) node.disabled = true;
+    if (branch)
+      branch.disabled = !replayLocked || state.phase !== "preparation";
   }
   host.onclick = (event) => {
     const action = (event.target as HTMLElement).closest<HTMLButtonElement>(
       "[data-action]",
     )?.dataset.action;
     if (!action) return;
+    if (
+      (options.isReplayLocked?.() ?? false) &&
+      (action.startsWith("build:") ||
+        ["upgrade", "sell", "start"].includes(action))
+    ) {
+      notice(
+        "Replay controls are locked. Take manual control at preparation to change the defense.",
+      );
+      return;
+    }
     if (action.startsWith("build:")) {
       build = action.split(":")[1] as TowerKind;
       selected = null;

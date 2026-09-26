@@ -40,11 +40,11 @@ ground picking except during construction, when the exact ground cell wins.
 
 ## Add an encounter
 
-1. Copy `src/content/lantern-pass.ts` into a new content file. Supply a unique id, dimensions, axis-aligned path, blocked cells, starting money, optional health multiplier, and wave groups/rewards.
-2. Import and append the definition in `src/content/levels.ts`. Map order controls sequential unlocking.
-3. Add its id to the save whitelist if persistent completion is required. The two MVP ids were reserved in the foundation.
-4. Validate paths/placement and run an explicit strategy through the level. Add focused test coverage for new rules, not duplicate assertions for every field.
-5. Check its map position, briefing, battle readability, intended duration, win and replay in the browser.
+1. Add an encounter recipe to `src/content/recipes.json`. Supply its unique stable id, dimensions, orthogonal path, blocked cells, starting crowns, roster and wave recipes. Each wave and repeated packet needs a stable identity; preserve those identities when reordering content.
+2. Place the recipe in campaign order in the canonical `levels` array. `compileLevel` derives runtime groups from readable repeated packets; the small encounter TypeScript exports are compatibility modules, not authoring sources.
+3. Extend the save whitelist and discovery rules if the new encounter records campaign completion or awards tools.
+4. Validate the complete content with the shared configuration interface and run legal strategies through the actual `Game`. Add focused coverage for new behavior and inspect nominal versus fixed-tick spawn timing in the local workbench.
+5. Check its map position, briefing, battle readability, intended duration, win and replay in the browser. Export and preview a scoped promotion before changing accepted content.
 
 **Working extension evidence:** commit `3fbd136` adds Rainstone Crossing after foundation commit `48c9a4a`, changing only its content file and registry. No combat, renderer or UI restructuring was needed. Ticket 05 registers The Last Lantern as the third board encounter, adds its final-boss rule and saves its completion. The first board is finite: no unfinished next map node is shown, and this is not an unlimited campaign editor.
 

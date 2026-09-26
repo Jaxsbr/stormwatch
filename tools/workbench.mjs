@@ -27,7 +27,18 @@ try {
       }));
       break;
     case "inspect": {
-      const ref = request.levelId ?? content.levels[(request.map ?? 1) - 1]?.id;
+      const map = request.map ?? 1;
+      if (
+        !request.levelId &&
+        (!Number.isInteger(map) || map < 1 || map > content.levels.length)
+      )
+        throw new Error("Unknown campaign map number");
+      const ref = request.levelId ?? content.levels[map - 1].id;
+      if (
+        !request.waveId &&
+        (!Number.isInteger(request.wave ?? 1) || (request.wave ?? 1) < 1)
+      )
+        throw new Error("Unknown wave number");
       const c = config.resolveConfiguration(content, ref);
       const wave = request.waveId
         ? c.level.waves.find((w) => w.id === request.waveId)
