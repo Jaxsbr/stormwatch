@@ -1,6 +1,6 @@
 # 04: drafts and promotion
 
-Status: ready-for-agent
+Status: implemented
 Type: task
 Blocked by: 01
 
@@ -15,3 +15,5 @@ Follow the applicable implementation and testing decisions in the spec. No campa
 ## Comments
 
 - Implementation task graph synthesized from the authorized specification.
+
+- Implemented namespaced revision/evidence persistence with honest in-memory failure status; complete-content and stable-reference validated export/import; explicit authored-scope promotion preview and local atomic apply. Seven focused persistence/promotion tests include disposable-workspace writes and stale/error preservation. Scenario payload validation is integrated as the scenario contract lands.
