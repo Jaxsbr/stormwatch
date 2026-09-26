@@ -1,0 +1,1897 @@
+{
+  "schemaVersion": 1,
+  "levels": [
+    {
+      "id": "lantern-pass",
+      "name": "Lantern Pass",
+      "subtitle": "01 / THE FIRST WATCH",
+      "description": "The last wagons are crossing the forest. Keep the lantern line burning until they reach home.",
+      "width": 12,
+      "depth": 8,
+      "accent": "#caab6c",
+      "startCoins": 100,
+      "availableTowers": ["bolt"],
+      "enemyRewardScale": 0.4,
+      "path": [
+        {
+          "x": -1,
+          "z": 3
+        },
+        {
+          "x": 2,
+          "z": 3
+        },
+        {
+          "x": 2,
+          "z": 1
+        },
+        {
+          "x": 6,
+          "z": 1
+        },
+        {
+          "x": 6,
+          "z": 6
+        },
+        {
+          "x": 9,
+          "z": 6
+        },
+        {
+          "x": 9,
+          "z": 3
+        },
+        {
+          "x": 12,
+          "z": 3
+        }
+      ],
+      "blocked": [
+        {
+          "x": 0,
+          "z": 0
+        },
+        {
+          "x": 0,
+          "z": 7
+        },
+        {
+          "x": 11,
+          "z": 0
+        },
+        {
+          "x": 11,
+          "z": 7
+        }
+      ],
+      "waves": [
+        {
+          "title": "The first guard",
+          "reward": 25,
+          "id": "lantern-pass-wave-1",
+          "packets": [
+            {
+              "id": "sequence",
+              "groups": [
+                {
+                  "kind": "raider",
+                  "count": 20,
+                  "gap": 3,
+                  "shieldCycle": {
+                    "upSeconds": 2,
+                    "downSeconds": 8
+                  },
+                  "id": "packet-1"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "A busier trail",
+          "reward": 28,
+          "id": "lantern-pass-wave-2",
+          "packets": [
+            {
+              "id": "sequence",
+              "groups": [
+                {
+                  "kind": "raider",
+                  "count": 23,
+                  "gap": 2,
+                  "shieldCycle": {
+                    "upSeconds": 2,
+                    "downSeconds": 8
+                  },
+                  "id": "packet-1"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "The slow pairs",
+          "reward": 30,
+          "id": "lantern-pass-wave-3",
+          "packets": [
+            {
+              "id": "sequence",
+              "groups": [
+                {
+                  "kind": "raider",
+                  "count": 20,
+                  "gap": 3,
+                  "batchSize": 2,
+                  "batchStagger": 0.3,
+                  "movementScale": 0.75,
+                  "shieldCycle": {
+                    "upSeconds": 4,
+                    "downSeconds": 6
+                  },
+                  "id": "packet-1"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "The held line",
+          "reward": 34,
+          "id": "lantern-pass-wave-4",
+          "packets": [
+            {
+              "id": "sequence",
+              "groups": [
+                {
+                  "kind": "raider",
+                  "count": 23,
+                  "gap": 3,
+                  "shieldCycle": {
+                    "upSeconds": 6,
+                    "downSeconds": 4
+                  },
+                  "id": "packet-1"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "The guarded pairs",
+          "reward": 38,
+          "id": "lantern-pass-wave-5",
+          "packets": [
+            {
+              "id": "sequence",
+              "groups": [
+                {
+                  "kind": "raider",
+                  "count": 20,
+                  "gap": 2,
+                  "batchSize": 2,
+                  "batchStagger": 0.3,
+                  "movementScale": 0.75,
+                  "shieldCycle": {
+                    "upSeconds": 6,
+                    "downSeconds": 4
+                  },
+                  "id": "packet-1"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "rainstone-crossing",
+      "name": "Rainstone Crossing",
+      "subtitle": "02 / THE RIVER WATCH",
+      "description": "The river bends around the old stone crossing where the village keeps its river watch. Hold the causeway through the storm \u2014 the fields on both banks are the last shelter before the deep water.",
+      "width": 12,
+      "depth": 8,
+      "path": [
+        {
+          "x": -1,
+          "z": 3
+        },
+        {
+          "x": 1,
+          "z": 3
+        },
+        {
+          "x": 1,
+          "z": 5
+        },
+        {
+          "x": 4,
+          "z": 5
+        },
+        {
+          "x": 4,
+          "z": 1
+        },
+        {
+          "x": 8,
+          "z": 1
+        },
+        {
+          "x": 8,
+          "z": 6
+        },
+        {
+          "x": 10,
+          "z": 6
+        },
+        {
+          "x": 10,
+          "z": 3
+        },
+        {
+          "x": 12,
+          "z": 3
+        }
+      ],
+      "blocked": [
+        {
+          "x": 0,
+          "z": 0
+        },
+        {
+          "x": 0,
+          "z": 7
+        },
+        {
+          "x": 11,
+          "z": 0
+        },
+        {
+          "x": 11,
+          "z": 7
+        }
+      ],
+      "startCoins": 120,
+      "availableTowers": ["bolt"],
+      "enemyRewardScale": 0.4,
+      "healthScale": 1,
+      "accent": "#91b9ac",
+      "waves": [
+        {
+          "title": "Quiet, Then Quick",
+          "reward": 35,
+          "id": "rainstone-crossing-wave-1",
+          "packets": [
+            {
+              "id": "sequence",
+              "groups": [
+                {
+                  "kind": "raider",
+                  "count": 6,
+                  "gap": 2,
+                  "delayBefore": 0,
+                  "shieldCycle": {
+                    "upSeconds": 4,
+                    "downSeconds": 6
+                  },
+                  "id": "packet-1"
+                },
+                {
+                  "kind": "runner",
+                  "count": 4,
+                  "gap": 0.45,
+                  "delayBefore": 4,
+                  "movementScale": 0.85,
+                  "id": "packet-2"
+                },
+                {
+                  "kind": "raider",
+                  "count": 6,
+                  "gap": 2,
+                  "delayBefore": 3,
+                  "shieldCycle": {
+                    "upSeconds": 4,
+                    "downSeconds": 6
+                  },
+                  "id": "packet-3"
+                },
+                {
+                  "kind": "runner",
+                  "count": 4,
+                  "gap": 0.45,
+                  "delayBefore": 4,
+                  "movementScale": 0.85,
+                  "id": "packet-4"
+                },
+                {
+                  "kind": "raider",
+                  "count": 6,
+                  "gap": 2,
+                  "delayBefore": 3,
+                  "shieldCycle": {
+                    "upSeconds": 4,
+                    "downSeconds": 6
+                  },
+                  "id": "packet-5"
+                },
+                {
+                  "kind": "runner",
+                  "count": 4,
+                  "gap": 0.45,
+                  "delayBefore": 4,
+                  "movementScale": 0.85,
+                  "id": "packet-6"
+                },
+                {
+                  "kind": "raider",
+                  "count": 6,
+                  "gap": 2,
+                  "delayBefore": 3,
+                  "shieldCycle": {
+                    "upSeconds": 4,
+                    "downSeconds": 6
+                  },
+                  "id": "packet-7"
+                },
+                {
+                  "kind": "runner",
+                  "count": 4,
+                  "gap": 0.45,
+                  "delayBefore": 4,
+                  "movementScale": 0.85,
+                  "id": "packet-8"
+                },
+                {
+                  "kind": "raider",
+                  "count": 6,
+                  "gap": 2,
+                  "delayBefore": 3,
+                  "shieldCycle": {
+                    "upSeconds": 4,
+                    "downSeconds": 6
+                  },
+                  "id": "packet-9"
+                },
+                {
+                  "kind": "runner",
+                  "count": 4,
+                  "gap": 0.45,
+                  "delayBefore": 4,
+                  "movementScale": 0.85,
+                  "id": "packet-10"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "Shields and Sidesteps",
+          "reward": 40,
+          "id": "rainstone-crossing-wave-2",
+          "packets": [
+            {
+              "id": "sequence",
+              "groups": [
+                {
+                  "kind": "raider",
+                  "count": 1,
+                  "gap": 1.1,
+                  "delayBefore": 0,
+                  "shieldCycle": {
+                    "upSeconds": 5,
+                    "downSeconds": 5
+                  },
+                  "id": "packet-1"
+                },
+                {
+                  "kind": "runner",
+                  "count": 1,
+                  "gap": 2.2,
+                  "delayBefore": 0,
+                  "movementScale": 0.85,
+                  "evasionCycle": {
+                    "downSeconds": 3,
+                    "upSeconds": 2
+                  },
+                  "id": "packet-2"
+                },
+                {
+                  "kind": "raider",
+                  "count": 1,
+                  "gap": 1.1,
+                  "delayBefore": 0,
+                  "shieldCycle": {
+                    "upSeconds": 5,
+                    "downSeconds": 5
+                  },
+                  "id": "packet-3"
+                },
+                {
+                  "kind": "runner",
+                  "count": 1,
+                  "gap": 2.2,
+                  "delayBefore": 0,
+                  "movementScale": 0.85,
+                  "evasionCycle": {
+                    "downSeconds": 3,
+                    "upSeconds": 2
+                  },
+                  "id": "packet-4"
+                },
+                {
+                  "kind": "raider",
+                  "count": 1,
+                  "gap": 1.1,
+                  "delayBefore": 0,
+                  "shieldCycle": {
+                    "upSeconds": 5,
+                    "downSeconds": 5
+                  },
+                  "id": "packet-5"
+                },
+                {
+                  "kind": "runner",
+                  "count": 1,
+                  "gap": 2.2,
+                  "delayBefore": 0,
+                  "movementScale": 0.85,
+                  "evasionCycle": {
+                    "downSeconds": 3,
+                    "upSeconds": 2
+                  },
+                  "id": "packet-6"
+                },
+                {
+                  "kind": "raider",
+                  "count": 1,
+                  "gap": 1.1,
+                  "delayBefore": 0,
+                  "shieldCycle": {
+                    "upSeconds": 5,
+                    "downSeconds": 5
+                  },
+                  "id": "packet-7"
+                },
+                {
+                  "kind": "runner",
+                  "count": 1,
+                  "gap": 2.2,
+                  "delayBefore": 0,
+                  "movementScale": 0.85,
+                  "evasionCycle": {
+                    "downSeconds": 3,
+                    "upSeconds": 2
+                  },
+                  "id": "packet-8"
+                },
+                {
+                  "kind": "raider",
+                  "count": 1,
+                  "gap": 1.1,
+                  "delayBefore": 0,
+                  "shieldCycle": {
+                    "upSeconds": 5,
+                    "downSeconds": 5
+                  },
+                  "id": "packet-9"
+                },
+                {
+                  "kind": "runner",
+                  "count": 1,
+                  "gap": 2.2,
+                  "delayBefore": 0,
+                  "movementScale": 0.85,
+                  "evasionCycle": {
+                    "downSeconds": 3,
+                    "upSeconds": 2
+                  },
+                  "id": "packet-10"
+                },
+                {
+                  "kind": "raider",
+                  "count": 1,
+                  "gap": 1.1,
+                  "delayBefore": 0,
+                  "shieldCycle": {
+                    "upSeconds": 5,
+                    "downSeconds": 5
+                  },
+                  "id": "packet-11"
+                },
+                {
+                  "kind": "runner",
+                  "count": 1,
+                  "gap": 2.2,
+                  "delayBefore": 0,
+                  "movementScale": 0.85,
+                  "evasionCycle": {
+                    "downSeconds": 3,
+                    "upSeconds": 2
+                  },
+                  "id": "packet-12"
+                },
+                {
+                  "kind": "raider",
+                  "count": 1,
+                  "gap": 1.1,
+                  "delayBefore": 0,
+                  "shieldCycle": {
+                    "upSeconds": 5,
+                    "downSeconds": 5
+                  },
+                  "id": "packet-13"
+                },
+                {
+                  "kind": "runner",
+                  "count": 1,
+                  "gap": 2.2,
+                  "delayBefore": 0,
+                  "movementScale": 0.85,
+                  "evasionCycle": {
+                    "downSeconds": 3,
+                    "upSeconds": 2
+                  },
+                  "id": "packet-14"
+                },
+                {
+                  "kind": "raider",
+                  "count": 1,
+                  "gap": 1.1,
+                  "delayBefore": 0,
+                  "shieldCycle": {
+                    "upSeconds": 5,
+                    "downSeconds": 5
+                  },
+                  "id": "packet-15"
+                },
+                {
+                  "kind": "runner",
+                  "count": 1,
+                  "gap": 2.2,
+                  "delayBefore": 0,
+                  "movementScale": 0.85,
+                  "evasionCycle": {
+                    "downSeconds": 3,
+                    "upSeconds": 2
+                  },
+                  "id": "packet-16"
+                },
+                {
+                  "kind": "raider",
+                  "count": 1,
+                  "gap": 1.1,
+                  "delayBefore": 0,
+                  "shieldCycle": {
+                    "upSeconds": 5,
+                    "downSeconds": 5
+                  },
+                  "id": "packet-17"
+                },
+                {
+                  "kind": "runner",
+                  "count": 1,
+                  "gap": 2.2,
+                  "delayBefore": 0,
+                  "movementScale": 0.85,
+                  "evasionCycle": {
+                    "downSeconds": 3,
+                    "upSeconds": 2
+                  },
+                  "id": "packet-18"
+                },
+                {
+                  "kind": "raider",
+                  "count": 1,
+                  "gap": 1.1,
+                  "delayBefore": 0,
+                  "shieldCycle": {
+                    "upSeconds": 5,
+                    "downSeconds": 5
+                  },
+                  "id": "packet-19"
+                },
+                {
+                  "kind": "runner",
+                  "count": 1,
+                  "gap": 2.2,
+                  "delayBefore": 0,
+                  "movementScale": 0.85,
+                  "evasionCycle": {
+                    "downSeconds": 3,
+                    "upSeconds": 2
+                  },
+                  "id": "packet-20"
+                },
+                {
+                  "kind": "raider",
+                  "count": 1,
+                  "gap": 1.1,
+                  "delayBefore": 0,
+                  "shieldCycle": {
+                    "upSeconds": 5,
+                    "downSeconds": 5
+                  },
+                  "id": "packet-21"
+                },
+                {
+                  "kind": "runner",
+                  "count": 1,
+                  "gap": 2.2,
+                  "delayBefore": 0,
+                  "movementScale": 0.85,
+                  "evasionCycle": {
+                    "downSeconds": 3,
+                    "upSeconds": 2
+                  },
+                  "id": "packet-22"
+                },
+                {
+                  "kind": "raider",
+                  "count": 1,
+                  "gap": 1.1,
+                  "delayBefore": 0,
+                  "shieldCycle": {
+                    "upSeconds": 5,
+                    "downSeconds": 5
+                  },
+                  "id": "packet-23"
+                },
+                {
+                  "kind": "runner",
+                  "count": 1,
+                  "gap": 2.2,
+                  "delayBefore": 0,
+                  "movementScale": 0.85,
+                  "evasionCycle": {
+                    "downSeconds": 3,
+                    "upSeconds": 2
+                  },
+                  "id": "packet-24"
+                },
+                {
+                  "kind": "raider",
+                  "count": 1,
+                  "gap": 1.1,
+                  "delayBefore": 0,
+                  "shieldCycle": {
+                    "upSeconds": 5,
+                    "downSeconds": 5
+                  },
+                  "id": "packet-25"
+                },
+                {
+                  "kind": "runner",
+                  "count": 1,
+                  "gap": 2.2,
+                  "delayBefore": 0,
+                  "movementScale": 0.85,
+                  "evasionCycle": {
+                    "downSeconds": 3,
+                    "upSeconds": 2
+                  },
+                  "id": "packet-26"
+                },
+                {
+                  "kind": "raider",
+                  "count": 1,
+                  "gap": 1.1,
+                  "delayBefore": 0,
+                  "shieldCycle": {
+                    "upSeconds": 5,
+                    "downSeconds": 5
+                  },
+                  "id": "packet-27"
+                },
+                {
+                  "kind": "runner",
+                  "count": 1,
+                  "gap": 2.2,
+                  "delayBefore": 0,
+                  "movementScale": 0.85,
+                  "evasionCycle": {
+                    "downSeconds": 3,
+                    "upSeconds": 2
+                  },
+                  "id": "packet-28"
+                },
+                {
+                  "kind": "raider",
+                  "count": 1,
+                  "gap": 1.1,
+                  "delayBefore": 0,
+                  "shieldCycle": {
+                    "upSeconds": 5,
+                    "downSeconds": 5
+                  },
+                  "id": "packet-29"
+                },
+                {
+                  "kind": "runner",
+                  "count": 1,
+                  "gap": 2.2,
+                  "delayBefore": 0,
+                  "movementScale": 0.85,
+                  "evasionCycle": {
+                    "downSeconds": 3,
+                    "upSeconds": 2
+                  },
+                  "id": "packet-30"
+                },
+                {
+                  "kind": "raider",
+                  "count": 1,
+                  "gap": 1.1,
+                  "delayBefore": 0,
+                  "shieldCycle": {
+                    "upSeconds": 5,
+                    "downSeconds": 5
+                  },
+                  "id": "packet-31"
+                },
+                {
+                  "kind": "runner",
+                  "count": 1,
+                  "gap": 2.2,
+                  "delayBefore": 0,
+                  "movementScale": 0.85,
+                  "evasionCycle": {
+                    "downSeconds": 3,
+                    "upSeconds": 2
+                  },
+                  "id": "packet-32"
+                },
+                {
+                  "kind": "raider",
+                  "count": 1,
+                  "gap": 1.1,
+                  "delayBefore": 0,
+                  "shieldCycle": {
+                    "upSeconds": 5,
+                    "downSeconds": 5
+                  },
+                  "id": "packet-33"
+                },
+                {
+                  "kind": "runner",
+                  "count": 1,
+                  "gap": 2.2,
+                  "delayBefore": 0,
+                  "movementScale": 0.85,
+                  "evasionCycle": {
+                    "downSeconds": 3,
+                    "upSeconds": 2
+                  },
+                  "id": "packet-34"
+                },
+                {
+                  "kind": "raider",
+                  "count": 1,
+                  "gap": 1.1,
+                  "delayBefore": 0,
+                  "shieldCycle": {
+                    "upSeconds": 5,
+                    "downSeconds": 5
+                  },
+                  "id": "packet-35"
+                },
+                {
+                  "kind": "runner",
+                  "count": 1,
+                  "gap": 2.2,
+                  "delayBefore": 0,
+                  "movementScale": 0.85,
+                  "evasionCycle": {
+                    "downSeconds": 3,
+                    "upSeconds": 2
+                  },
+                  "id": "packet-36"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "The River Rush",
+          "reward": 35,
+          "id": "rainstone-crossing-wave-3",
+          "packets": [
+            {
+              "id": "sequence",
+              "groups": [
+                {
+                  "kind": "raider",
+                  "count": 3,
+                  "gap": 1,
+                  "delayBefore": 0,
+                  "shieldCycle": {
+                    "upSeconds": 5,
+                    "downSeconds": 5
+                  },
+                  "id": "packet-1"
+                },
+                {
+                  "kind": "runner",
+                  "count": 2,
+                  "gap": 0.45,
+                  "delayBefore": 0,
+                  "movementScale": 0.85,
+                  "evasionCycle": {
+                    "downSeconds": 2.6,
+                    "upSeconds": 2.4
+                  },
+                  "id": "packet-2"
+                },
+                {
+                  "kind": "raider",
+                  "count": 3,
+                  "gap": 1,
+                  "delayBefore": 2.55,
+                  "shieldCycle": {
+                    "upSeconds": 5,
+                    "downSeconds": 5
+                  },
+                  "id": "packet-3"
+                },
+                {
+                  "kind": "runner",
+                  "count": 2,
+                  "gap": 0.45,
+                  "delayBefore": 0,
+                  "movementScale": 0.85,
+                  "evasionCycle": {
+                    "downSeconds": 2.6,
+                    "upSeconds": 2.4
+                  },
+                  "id": "packet-4"
+                },
+                {
+                  "kind": "raider",
+                  "count": 3,
+                  "gap": 1,
+                  "delayBefore": 2.55,
+                  "shieldCycle": {
+                    "upSeconds": 5,
+                    "downSeconds": 5
+                  },
+                  "id": "packet-5"
+                },
+                {
+                  "kind": "runner",
+                  "count": 2,
+                  "gap": 0.45,
+                  "delayBefore": 0,
+                  "movementScale": 0.85,
+                  "evasionCycle": {
+                    "downSeconds": 2.6,
+                    "upSeconds": 2.4
+                  },
+                  "id": "packet-6"
+                },
+                {
+                  "kind": "raider",
+                  "count": 3,
+                  "gap": 1,
+                  "delayBefore": 2.55,
+                  "shieldCycle": {
+                    "upSeconds": 5,
+                    "downSeconds": 5
+                  },
+                  "id": "packet-7"
+                },
+                {
+                  "kind": "runner",
+                  "count": 2,
+                  "gap": 0.45,
+                  "delayBefore": 0,
+                  "movementScale": 0.85,
+                  "evasionCycle": {
+                    "downSeconds": 2.6,
+                    "upSeconds": 2.4
+                  },
+                  "id": "packet-8"
+                },
+                {
+                  "kind": "raider",
+                  "count": 3,
+                  "gap": 1,
+                  "delayBefore": 2.55,
+                  "shieldCycle": {
+                    "upSeconds": 5,
+                    "downSeconds": 5
+                  },
+                  "id": "packet-9"
+                },
+                {
+                  "kind": "runner",
+                  "count": 2,
+                  "gap": 0.45,
+                  "delayBefore": 0,
+                  "movementScale": 0.85,
+                  "evasionCycle": {
+                    "downSeconds": 2.6,
+                    "upSeconds": 2.4
+                  },
+                  "id": "packet-10"
+                },
+                {
+                  "kind": "raider",
+                  "count": 3,
+                  "gap": 1,
+                  "delayBefore": 2.55,
+                  "shieldCycle": {
+                    "upSeconds": 5,
+                    "downSeconds": 5
+                  },
+                  "id": "packet-11"
+                },
+                {
+                  "kind": "runner",
+                  "count": 2,
+                  "gap": 0.45,
+                  "delayBefore": 0,
+                  "movementScale": 0.85,
+                  "evasionCycle": {
+                    "downSeconds": 2.6,
+                    "upSeconds": 2.4
+                  },
+                  "id": "packet-12"
+                },
+                {
+                  "kind": "raider",
+                  "count": 3,
+                  "gap": 1,
+                  "delayBefore": 2.55,
+                  "shieldCycle": {
+                    "upSeconds": 5,
+                    "downSeconds": 5
+                  },
+                  "id": "packet-13"
+                },
+                {
+                  "kind": "runner",
+                  "count": 2,
+                  "gap": 0.45,
+                  "delayBefore": 0,
+                  "movementScale": 0.85,
+                  "evasionCycle": {
+                    "downSeconds": 2.6,
+                    "upSeconds": 2.4
+                  },
+                  "id": "packet-14"
+                },
+                {
+                  "kind": "raider",
+                  "count": 3,
+                  "gap": 1,
+                  "delayBefore": 2.55,
+                  "shieldCycle": {
+                    "upSeconds": 5,
+                    "downSeconds": 5
+                  },
+                  "id": "packet-15"
+                },
+                {
+                  "kind": "runner",
+                  "count": 2,
+                  "gap": 0.45,
+                  "delayBefore": 0,
+                  "movementScale": 0.85,
+                  "evasionCycle": {
+                    "downSeconds": 2.6,
+                    "upSeconds": 2.4
+                  },
+                  "id": "packet-16"
+                },
+                {
+                  "kind": "raider",
+                  "count": 3,
+                  "gap": 1,
+                  "delayBefore": 2.55,
+                  "shieldCycle": {
+                    "upSeconds": 5,
+                    "downSeconds": 5
+                  },
+                  "id": "packet-17"
+                },
+                {
+                  "kind": "runner",
+                  "count": 2,
+                  "gap": 0.45,
+                  "delayBefore": 0,
+                  "movementScale": 0.85,
+                  "evasionCycle": {
+                    "downSeconds": 2.6,
+                    "upSeconds": 2.4
+                  },
+                  "id": "packet-18"
+                },
+                {
+                  "kind": "raider",
+                  "count": 3,
+                  "gap": 1,
+                  "delayBefore": 2.55,
+                  "shieldCycle": {
+                    "upSeconds": 5,
+                    "downSeconds": 5
+                  },
+                  "id": "packet-19"
+                },
+                {
+                  "kind": "runner",
+                  "count": 2,
+                  "gap": 0.45,
+                  "delayBefore": 0,
+                  "movementScale": 0.85,
+                  "evasionCycle": {
+                    "downSeconds": 2.6,
+                    "upSeconds": 2.4
+                  },
+                  "id": "packet-20"
+                },
+                {
+                  "kind": "raider",
+                  "count": 3,
+                  "gap": 1,
+                  "delayBefore": 2.55,
+                  "shieldCycle": {
+                    "upSeconds": 5,
+                    "downSeconds": 5
+                  },
+                  "id": "packet-21"
+                },
+                {
+                  "kind": "runner",
+                  "count": 2,
+                  "gap": 0.45,
+                  "delayBefore": 0,
+                  "movementScale": 0.85,
+                  "evasionCycle": {
+                    "downSeconds": 2.6,
+                    "upSeconds": 2.4
+                  },
+                  "id": "packet-22"
+                },
+                {
+                  "kind": "raider",
+                  "count": 3,
+                  "gap": 1,
+                  "delayBefore": 2.55,
+                  "shieldCycle": {
+                    "upSeconds": 5,
+                    "downSeconds": 5
+                  },
+                  "id": "packet-23"
+                },
+                {
+                  "kind": "runner",
+                  "count": 2,
+                  "gap": 0.45,
+                  "delayBefore": 0,
+                  "movementScale": 0.85,
+                  "evasionCycle": {
+                    "downSeconds": 2.6,
+                    "upSeconds": 2.4
+                  },
+                  "id": "packet-24"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "Fleetwater Finale",
+          "reward": 0,
+          "id": "rainstone-crossing-wave-4",
+          "packets": [
+            {
+              "id": "sequence",
+              "groups": [
+                {
+                  "kind": "raider",
+                  "count": 1,
+                  "gap": 0.2,
+                  "delayBefore": 0,
+                  "shieldCycle": {
+                    "upSeconds": 5,
+                    "downSeconds": 5
+                  },
+                  "id": "packet-1"
+                },
+                {
+                  "kind": "runner",
+                  "count": 6,
+                  "gap": 0.2,
+                  "delayBefore": 0,
+                  "movementScale": 1.1,
+                  "evasionCycle": {
+                    "downSeconds": 3,
+                    "upSeconds": 2
+                  },
+                  "id": "packet-2"
+                },
+                {
+                  "kind": "raider",
+                  "count": 2,
+                  "gap": 0.2,
+                  "delayBefore": 4.8,
+                  "shieldCycle": {
+                    "upSeconds": 5,
+                    "downSeconds": 5
+                  },
+                  "id": "packet-3"
+                },
+                {
+                  "kind": "runner",
+                  "count": 5,
+                  "gap": 0.2,
+                  "delayBefore": 0,
+                  "movementScale": 1.1,
+                  "evasionCycle": {
+                    "downSeconds": 3,
+                    "upSeconds": 2
+                  },
+                  "id": "packet-4"
+                },
+                {
+                  "kind": "raider",
+                  "count": 4,
+                  "gap": 0.2,
+                  "delayBefore": 4.8,
+                  "shieldCycle": {
+                    "upSeconds": 5,
+                    "downSeconds": 5
+                  },
+                  "id": "packet-5"
+                },
+                {
+                  "kind": "runner",
+                  "count": 4,
+                  "gap": 0.2,
+                  "delayBefore": 0,
+                  "movementScale": 1.1,
+                  "evasionCycle": {
+                    "downSeconds": 3,
+                    "upSeconds": 2
+                  },
+                  "id": "packet-6"
+                },
+                {
+                  "kind": "raider",
+                  "count": 1,
+                  "gap": 0.2,
+                  "delayBefore": 4.8,
+                  "shieldCycle": {
+                    "upSeconds": 5,
+                    "downSeconds": 5
+                  },
+                  "id": "packet-7"
+                },
+                {
+                  "kind": "runner",
+                  "count": 6,
+                  "gap": 0.2,
+                  "delayBefore": 0,
+                  "movementScale": 1.1,
+                  "evasionCycle": {
+                    "downSeconds": 3,
+                    "upSeconds": 2
+                  },
+                  "id": "packet-8"
+                },
+                {
+                  "kind": "raider",
+                  "count": 2,
+                  "gap": 0.2,
+                  "delayBefore": 4.8,
+                  "shieldCycle": {
+                    "upSeconds": 5,
+                    "downSeconds": 5
+                  },
+                  "id": "packet-9"
+                },
+                {
+                  "kind": "runner",
+                  "count": 5,
+                  "gap": 0.2,
+                  "delayBefore": 0,
+                  "movementScale": 1.1,
+                  "evasionCycle": {
+                    "downSeconds": 3,
+                    "upSeconds": 2
+                  },
+                  "id": "packet-10"
+                },
+                {
+                  "kind": "raider",
+                  "count": 4,
+                  "gap": 0.2,
+                  "delayBefore": 4.8,
+                  "shieldCycle": {
+                    "upSeconds": 5,
+                    "downSeconds": 5
+                  },
+                  "id": "packet-11"
+                },
+                {
+                  "kind": "runner",
+                  "count": 4,
+                  "gap": 0.2,
+                  "delayBefore": 0,
+                  "movementScale": 1.1,
+                  "evasionCycle": {
+                    "downSeconds": 3,
+                    "upSeconds": 2
+                  },
+                  "id": "packet-12"
+                },
+                {
+                  "kind": "raider",
+                  "count": 1,
+                  "gap": 0.2,
+                  "delayBefore": 4.8,
+                  "shieldCycle": {
+                    "upSeconds": 5,
+                    "downSeconds": 5
+                  },
+                  "id": "packet-13"
+                },
+                {
+                  "kind": "runner",
+                  "count": 6,
+                  "gap": 0.2,
+                  "delayBefore": 0,
+                  "movementScale": 1.1,
+                  "evasionCycle": {
+                    "downSeconds": 3,
+                    "upSeconds": 2
+                  },
+                  "id": "packet-14"
+                },
+                {
+                  "kind": "raider",
+                  "count": 2,
+                  "gap": 0.2,
+                  "delayBefore": 4.8,
+                  "shieldCycle": {
+                    "upSeconds": 5,
+                    "downSeconds": 5
+                  },
+                  "id": "packet-15"
+                },
+                {
+                  "kind": "runner",
+                  "count": 5,
+                  "gap": 0.2,
+                  "delayBefore": 0,
+                  "movementScale": 1.1,
+                  "evasionCycle": {
+                    "downSeconds": 3,
+                    "upSeconds": 2
+                  },
+                  "id": "packet-16"
+                },
+                {
+                  "kind": "raider",
+                  "count": 4,
+                  "gap": 0.2,
+                  "delayBefore": 4.8,
+                  "shieldCycle": {
+                    "upSeconds": 5,
+                    "downSeconds": 5
+                  },
+                  "id": "packet-17"
+                },
+                {
+                  "kind": "runner",
+                  "count": 4,
+                  "gap": 0.2,
+                  "delayBefore": 0,
+                  "movementScale": 1.1,
+                  "evasionCycle": {
+                    "downSeconds": 3,
+                    "upSeconds": 2
+                  },
+                  "id": "packet-18"
+                },
+                {
+                  "kind": "raider",
+                  "count": 1,
+                  "gap": 0.2,
+                  "delayBefore": 4.8,
+                  "shieldCycle": {
+                    "upSeconds": 5,
+                    "downSeconds": 5
+                  },
+                  "id": "packet-19"
+                },
+                {
+                  "kind": "runner",
+                  "count": 6,
+                  "gap": 0.2,
+                  "delayBefore": 0,
+                  "movementScale": 1.1,
+                  "evasionCycle": {
+                    "downSeconds": 3,
+                    "upSeconds": 2
+                  },
+                  "id": "packet-20"
+                },
+                {
+                  "kind": "raider",
+                  "count": 2,
+                  "gap": 0.2,
+                  "delayBefore": 4.8,
+                  "shieldCycle": {
+                    "upSeconds": 5,
+                    "downSeconds": 5
+                  },
+                  "id": "packet-21"
+                },
+                {
+                  "kind": "runner",
+                  "count": 5,
+                  "gap": 0.2,
+                  "delayBefore": 0,
+                  "movementScale": 1.1,
+                  "evasionCycle": {
+                    "downSeconds": 3,
+                    "upSeconds": 2
+                  },
+                  "id": "packet-22"
+                },
+                {
+                  "kind": "raider",
+                  "count": 4,
+                  "gap": 0.2,
+                  "delayBefore": 4.8,
+                  "shieldCycle": {
+                    "upSeconds": 5,
+                    "downSeconds": 5
+                  },
+                  "id": "packet-23"
+                },
+                {
+                  "kind": "runner",
+                  "count": 4,
+                  "gap": 0.2,
+                  "delayBefore": 0,
+                  "movementScale": 1.1,
+                  "evasionCycle": {
+                    "downSeconds": 3,
+                    "upSeconds": 2
+                  },
+                  "id": "packet-24"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "the-last-lantern",
+      "name": "The Last Lantern",
+      "subtitle": "03 / THE LAST WATCH",
+      "description": "The road climbs through the last lantern grove. Hold both bends until the Roadwarden and its column are turned back.",
+      "width": 12,
+      "depth": 8,
+      "path": [
+        {
+          "x": -1,
+          "z": 3
+        },
+        {
+          "x": 2,
+          "z": 3
+        },
+        {
+          "x": 2,
+          "z": 1
+        },
+        {
+          "x": 4,
+          "z": 1
+        },
+        {
+          "x": 4,
+          "z": 5
+        },
+        {
+          "x": 7,
+          "z": 5
+        },
+        {
+          "x": 7,
+          "z": 2
+        },
+        {
+          "x": 9,
+          "z": 2
+        },
+        {
+          "x": 9,
+          "z": 6
+        },
+        {
+          "x": 12,
+          "z": 6
+        }
+      ],
+      "blocked": [
+        {
+          "x": 0,
+          "z": 0
+        },
+        {
+          "x": 0,
+          "z": 7
+        },
+        {
+          "x": 11,
+          "z": 0
+        },
+        {
+          "x": 11,
+          "z": 7
+        }
+      ],
+      "startCoins": 235,
+      "availableTowers": ["bolt", "net"],
+      "enemyRewardScale": 0.4,
+      "healthScale": 1,
+      "requiresBossDefeat": true,
+      "accent": "#bca879",
+      "waves": [
+        {
+          "title": "A Net in the Lanternlight",
+          "reward": 25,
+          "id": "the-last-lantern-wave-1",
+          "packets": [
+            {
+              "id": "sequence",
+              "repeat": 3,
+              "repeatDelayBefore": 3,
+              "groups": [
+                {
+                  "kind": "raider",
+                  "count": 6,
+                  "gap": 2,
+                  "delayBefore": 0,
+                  "shieldCycle": {
+                    "upSeconds": 4,
+                    "downSeconds": 6
+                  },
+                  "id": "group-1"
+                },
+                {
+                  "kind": "runner",
+                  "count": 4,
+                  "gap": 0.45,
+                  "delayBefore": 4,
+                  "movementScale": 0.85,
+                  "id": "group-2"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "Crossing Pairs",
+          "reward": 28,
+          "id": "the-last-lantern-wave-2",
+          "packets": [
+            {
+              "id": "sequence",
+              "repeat": 18,
+              "repeatDelayBefore": 0,
+              "groups": [
+                {
+                  "kind": "raider",
+                  "count": 1,
+                  "gap": 0.9,
+                  "shieldCycle": {
+                    "upSeconds": 5,
+                    "downSeconds": 5
+                  },
+                  "id": "group-1"
+                },
+                {
+                  "kind": "runner",
+                  "count": 1,
+                  "gap": 1.6,
+                  "evasionCycle": {
+                    "downSeconds": 2.6,
+                    "upSeconds": 2.4
+                  },
+                  "movementScale": 1,
+                  "id": "group-2"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "Through the Guard",
+          "reward": 30,
+          "id": "the-last-lantern-wave-3",
+          "packets": [
+            {
+              "id": "sequence",
+              "repeat": 5,
+              "repeatDelayBefore": 4.8,
+              "groups": [
+                {
+                  "kind": "raider",
+                  "count": 5,
+                  "gap": 0.2,
+                  "delayBefore": 0,
+                  "shieldCycle": {
+                    "upSeconds": 5,
+                    "downSeconds": 5
+                  },
+                  "movementScale": 0.75,
+                  "id": "group-1"
+                },
+                {
+                  "kind": "runner",
+                  "count": 3,
+                  "gap": 0.2,
+                  "evasionCycle": {
+                    "downSeconds": 2.6,
+                    "upSeconds": 2.4
+                  },
+                  "movementScale": 1,
+                  "id": "group-2"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "Both Bends",
+          "reward": 32,
+          "id": "the-last-lantern-wave-4",
+          "packets": [
+            {
+              "id": "sequence",
+              "repeat": 3,
+              "repeatDelayBefore": 4.8,
+              "groups": [
+                {
+                  "kind": "raider",
+                  "count": 1,
+                  "gap": 0.2,
+                  "delayBefore": 0,
+                  "shieldCycle": {
+                    "upSeconds": 5,
+                    "downSeconds": 5
+                  },
+                  "id": "group-1"
+                },
+                {
+                  "kind": "runner",
+                  "count": 6,
+                  "gap": 0.2,
+                  "evasionCycle": {
+                    "downSeconds": 2.6,
+                    "upSeconds": 2.4
+                  },
+                  "movementScale": 1,
+                  "id": "group-2"
+                },
+                {
+                  "kind": "raider",
+                  "count": 2,
+                  "gap": 0.2,
+                  "delayBefore": 4.8,
+                  "shieldCycle": {
+                    "upSeconds": 5,
+                    "downSeconds": 5
+                  },
+                  "id": "group-3"
+                },
+                {
+                  "kind": "runner",
+                  "count": 5,
+                  "gap": 0.2,
+                  "evasionCycle": {
+                    "downSeconds": 2.6,
+                    "upSeconds": 2.4
+                  },
+                  "movementScale": 1,
+                  "id": "group-4"
+                },
+                {
+                  "kind": "raider",
+                  "count": 4,
+                  "gap": 0.2,
+                  "delayBefore": 4.8,
+                  "shieldCycle": {
+                    "upSeconds": 5,
+                    "downSeconds": 5
+                  },
+                  "id": "group-5"
+                },
+                {
+                  "kind": "runner",
+                  "count": 4,
+                  "gap": 0.2,
+                  "evasionCycle": {
+                    "downSeconds": 2.6,
+                    "upSeconds": 2.4
+                  },
+                  "movementScale": 1,
+                  "id": "group-6"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "The Last Rehearsal",
+          "reward": 35,
+          "id": "the-last-lantern-wave-5",
+          "packets": [
+            {
+              "id": "sequence",
+              "repeat": 4,
+              "repeatDelayBefore": 3.8,
+              "groups": [
+                {
+                  "kind": "raider",
+                  "count": 1,
+                  "gap": 0.2,
+                  "delayBefore": 0,
+                  "shieldCycle": {
+                    "upSeconds": 5,
+                    "downSeconds": 5
+                  },
+                  "id": "group-1"
+                },
+                {
+                  "kind": "runner",
+                  "count": 6,
+                  "gap": 0.2,
+                  "evasionCycle": {
+                    "downSeconds": 2,
+                    "upSeconds": 3
+                  },
+                  "movementScale": 1.1,
+                  "id": "group-2"
+                },
+                {
+                  "kind": "raider",
+                  "count": 2,
+                  "gap": 0.2,
+                  "delayBefore": 3.8,
+                  "shieldCycle": {
+                    "upSeconds": 5,
+                    "downSeconds": 5
+                  },
+                  "id": "group-3"
+                },
+                {
+                  "kind": "runner",
+                  "count": 5,
+                  "gap": 0.2,
+                  "evasionCycle": {
+                    "downSeconds": 2,
+                    "upSeconds": 3
+                  },
+                  "movementScale": 1.1,
+                  "id": "group-4"
+                },
+                {
+                  "kind": "raider",
+                  "count": 4,
+                  "gap": 0.2,
+                  "delayBefore": 3.8,
+                  "shieldCycle": {
+                    "upSeconds": 5,
+                    "downSeconds": 5
+                  },
+                  "id": "group-5"
+                },
+                {
+                  "kind": "runner",
+                  "count": 4,
+                  "gap": 0.2,
+                  "evasionCycle": {
+                    "downSeconds": 2,
+                    "upSeconds": 3
+                  },
+                  "movementScale": 1.1,
+                  "id": "group-6"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "The Roadwarden's Column",
+          "reward": 0,
+          "id": "the-last-lantern-wave-6",
+          "packets": [
+            {
+              "id": "sequence",
+              "groups": [
+                {
+                  "kind": "raider",
+                  "count": 8,
+                  "gap": 0.8,
+                  "shieldCycle": {
+                    "upSeconds": 5,
+                    "downSeconds": 5
+                  },
+                  "id": "packet-1"
+                },
+                {
+                  "kind": "boss",
+                  "count": 1,
+                  "gap": 2,
+                  "id": "packet-2"
+                },
+                {
+                  "kind": "runner",
+                  "count": 7,
+                  "gap": 0.2,
+                  "delayBefore": 2.5,
+                  "evasionCycle": {
+                    "downSeconds": 2,
+                    "upSeconds": 3
+                  },
+                  "movementScale": 1.1,
+                  "id": "packet-3"
+                },
+                {
+                  "kind": "raider",
+                  "count": 5,
+                  "gap": 0.15,
+                  "delayBefore": 8.6,
+                  "shieldCycle": {
+                    "upSeconds": 5,
+                    "downSeconds": 5
+                  },
+                  "id": "packet-4"
+                },
+                {
+                  "kind": "runner",
+                  "count": 7,
+                  "gap": 0.2,
+                  "delayBefore": 9.25,
+                  "evasionCycle": {
+                    "downSeconds": 2,
+                    "upSeconds": 3
+                  },
+                  "movementScale": 1.1,
+                  "id": "packet-5"
+                },
+                {
+                  "kind": "raider",
+                  "count": 5,
+                  "gap": 0.15,
+                  "delayBefore": 8.6,
+                  "shieldCycle": {
+                    "upSeconds": 5,
+                    "downSeconds": 5
+                  },
+                  "id": "packet-6"
+                },
+                {
+                  "kind": "runner",
+                  "count": 7,
+                  "gap": 0.2,
+                  "delayBefore": 9.25,
+                  "evasionCycle": {
+                    "downSeconds": 2,
+                    "upSeconds": 3
+                  },
+                  "movementScale": 1.1,
+                  "id": "packet-7"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "towers": {
+    "bolt": {
+      "name": "Squirrel archer",
+      "role": "Precise \u2022 reliable",
+      "cost": 40,
+      "upgrade": 55,
+      "range": 2.7,
+      "damage": 10,
+      "interval": 1,
+      "sprite": 0,
+      "color": "#eec576"
+    },
+    "stone": {
+      "name": "Skunk slinger",
+      "role": "Splash \u2022 groups",
+      "cost": 65,
+      "upgrade": 75,
+      "range": 2.8,
+      "damage": 22,
+      "interval": 2,
+      "sprite": 1,
+      "color": "#e59169"
+    },
+    "net": {
+      "name": "Turtle trapper",
+      "role": "Slow \u2022 control",
+      "cost": 50,
+      "upgrade": 60,
+      "range": 2.6,
+      "damage": 5,
+      "interval": 1.35,
+      "sprite": 2,
+      "color": "#a8c8a3"
+    }
+  },
+  "enemies": {
+    "raider": {
+      "name": "Rat raider",
+      "hp": 54,
+      "speed": 0.8,
+      "armor": 0,
+      "reward": 5,
+      "leak": 1,
+      "sprite": 4
+    },
+    "runner": {
+      "name": "Fleet weasel",
+      "hp": 38,
+      "speed": 1.25,
+      "armor": 0,
+      "reward": 5,
+      "leak": 1,
+      "sprite": 5
+    },
+    "armored": {
+      "name": "Iron boar",
+      "hp": 150,
+      "speed": 0.62,
+      "armor": 4,
+      "reward": 10,
+      "leak": 2,
+      "sprite": 6
+    },
+    "boss": {
+      "name": "The Roadwarden",
+      "hp": 2200,
+      "speed": 0.46,
+      "armor": 6,
+      "reward": 65,
+      "leak": 6,
+      "sprite": 7
+    }
+  },
+  "rules": {
+    "initialSpawnDelay": 0.7,
+    "interWaveSeconds": 10,
+    "normalLives": 12,
+    "assistLives": 20,
+    "assistCrowns": 70,
+    "upgradeRangeScale": 1.15,
+    "reachScale": 1.18,
+    "thriftScale": 0.8,
+    "upgradeIntervalScale": 0.8,
+    "upgradeDamageScale": 1.7,
+    "splashRadius": 1.15,
+    "netSeconds": 3,
+    "longerNetSeconds": 4.5,
+    "slowScale": 0.48,
+    "evasionSpeedScale": 1.15,
+    "guardDamageScale": 0.5,
+    "boss": {
+      "firstRallySeconds": 7,
+      "rallyIntervalSeconds": 10,
+      "warningSeconds": 1,
+      "radius": 3,
+      "durationSeconds": 3,
+      "speedScale": 1.25
+    }
+  }
+}
