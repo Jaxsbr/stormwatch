@@ -4,7 +4,7 @@
 export const SAVE_KEY = "stormwatch.save.v1";
 
 export interface SaveData {
-  version: 1;
+  version: 2;
   stars: Record<string, number>;
   unlocked: string[];
   music: number;
@@ -16,8 +16,10 @@ export interface SaveData {
 const LEVEL_IDS: readonly string[] = ["lantern-pass", "rainstone-crossing"];
 const UNLOCK_IDS: readonly string[] = ["squirrel-upgrade"];
 
-const DEFAULT_MUSIC = 0.45;
-const DEFAULT_EFFECTS = 0.6;
+const DEFAULT_MUSIC = 0.5;
+const DEFAULT_EFFECTS = 0.5;
+const LEGACY_DEFAULT_MUSIC = 0.45;
+const LEGACY_DEFAULT_EFFECTS = 0.6;
 
 function isRecord(value: unknown): value is Record<string, unknown> {
   return typeof value === "object" && value !== null && !Array.isArray(value);
@@ -111,7 +113,7 @@ function deriveUnlocked(
 
 export function freshSave(): SaveData {
   return {
-    version: 1,
+    version: 2,
     stars: {},
     unlocked: [],
     music: DEFAULT_MUSIC,
@@ -133,7 +135,7 @@ export function parseSave(raw: string | null): SaveData {
     return freshSave();
   }
 
-  if (!isRecord(parsed) || parsed.version !== 1) {
+  if (!isRecord(parsed) || (parsed.version !== 1 && parsed.version !== 2)) {
     return freshSave();
   }
 
@@ -148,13 +150,36 @@ export function parseSave(raw: string | null): SaveData {
 
   const stars = toStarsRecord(parsed.stars);
   const unlocked = toUnlockedList(parsed.unlocked);
+  const oldSchema = parsed.version === 1;
+  const storedMusic = toVolume(
+    parsed.music,
+    oldSchema ? LEGACY_DEFAULT_MUSIC : DEFAULT_MUSIC,
+  );
+  const storedEffects = toVolume(
+    parsed.effects,
+    oldSchema ? LEGACY_DEFAULT_EFFECTS : DEFAULT_EFFECTS,
+  );
+  // Schema 1 stored slider values directly. The owner's prior listening
+  // reference (music .20, effects 1.0) and the old untouched defaults both
+  // become the new midpoint; other custom settings retain their prior gain.
+  const matchesOwnerReference = storedMusic === 0.2 && storedEffects === 1;
+  const music = oldSchema
+    ? storedMusic === LEGACY_DEFAULT_MUSIC || matchesOwnerReference
+      ? DEFAULT_MUSIC
+      : toVolume((storedMusic * 0.35) / 0.4, DEFAULT_MUSIC)
+    : storedMusic;
+  const effects = oldSchema
+    ? storedEffects === LEGACY_DEFAULT_EFFECTS || matchesOwnerReference
+      ? DEFAULT_EFFECTS
+      : toVolume(storedEffects / 2, DEFAULT_EFFECTS)
+    : storedEffects;
 
   return {
-    version: 1,
+    version: 2,
     stars,
     unlocked: deriveUnlocked(stars, unlocked),
-    music: toVolume(parsed.music, DEFAULT_MUSIC),
-    effects: toVolume(parsed.effects, DEFAULT_EFFECTS),
+    music,
+    effects,
     muted: toStrictBoolean(parsed.muted, false),
     tutorialSeen: toStrictBoolean(parsed.tutorialSeen, false),
   };
@@ -193,7 +218,7 @@ export function recordVictory(
   }
 
   return {
-    version: 1,
+    version: 2,
     stars: nextStars,
     unlocked: nextUnlocked,
     music: save.music,

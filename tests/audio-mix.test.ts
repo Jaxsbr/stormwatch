@@ -67,14 +67,19 @@ describe("impact cue levels", () => {
     );
 
     const sound = new Sound();
+    expect(sound.musicVolume).toBe(0.5);
+    expect(sound.effectsVolume).toBe(0.5);
     sound.unlock();
     sound.play("hit");
     const hitPeak = Math.max(...peaks);
     peaks.length = 0;
     sound.play("shield-hit");
 
-    expect(musicVolume).toBeLessThanOrEqual(0.18);
-    expect(hitPeak).toBeGreaterThanOrEqual(0.12);
-    expect(Math.max(...peaks)).toBeGreaterThanOrEqual(0.16);
+    const shieldPeak = Math.max(...peaks);
+
+    expect(musicVolume).toBe(0.2);
+    expect(hitPeak).toBeCloseTo(0.32);
+    expect(shieldPeak).toBeCloseTo(0.3);
+    expect(hitPeak).toBeGreaterThan(shieldPeak);
   });
 });

@@ -2,7 +2,7 @@
 
 Status: needs-triage
 
-Scope: historical Day 1 prerequisite reference, excluded from the active Day 2-onward spec. Completion is not verified by the owner's scheduling assumption. Do not start this ticket automatically as part of that spec.
+Scope: follow-on encounter work. Ticket 01 is complete; ticket 02 first-watch polish is being closed separately. This ticket owns the Weasel/Rainstone lesson and Turtle progression needed by later maps.
 
 Depends on: 02
 

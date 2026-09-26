@@ -19,8 +19,14 @@ The household needs two independent local players without losing the original sa
 
 ## Consequences
 
-Two children can share one browser without overwriting progress. Existing saves gain Player 2 without a reset, and the old single-save data remains available. The results screen provides a clear place for future rewards. The countdown gives more time to build between waves. The sound changes improve the relative mix by gain settings, but clarity and comfort still require listening. The visible-viewport fit can be checked in simulated browser sizes; it does not establish physical tablet performance.
+Two children can share one browser without overwriting progress. Existing saves gain Player 2 without a reset, and the old single-save data remains available. The results screen provides a clear place for future rewards. The countdown gives more time to build between waves. The owner confirmed the corrected relative mix is better, and both controls remain adjustable. The visible-viewport fit can be checked in simulated browser sizes; it does not establish physical tablet performance.
 
 ## Verification
 
-Focused tests cover save migration and separation, gates, deterministic result counters, ten-second automatic and manual starts, audio gain settings, and visible-viewport sizing. Browser checks cover independent profile flow, fresh and returning victory screens, map and briefing layout, and landscape phone and tablet viewports. Run type checks, the full test suite and production build for integration. Owner listening and the third authored map remain open.
+Focused tests cover save migration and separation, gates, deterministic result counters, ten-second automatic and manual starts, audio gain settings, and visible-viewport sizing. Browser checks cover independent profile flow, fresh and returning victory screens, map and briefing layout, and landscape phone and tablet viewports. Integration checks pass, and the owner confirmed the corrected mix is better. The third authored map remains future content work under ticket 03.
+
+## Audio-control calibration amendment — 26 September 2026
+
+The owner clarified that both visible settings should default to 50%, while the midpoint output should match the earlier listening reference: music at 20% gain and effects at 100%. The music slider now maps linearly to 0.4× its position; the effects slider maps to 2× its position. The normal arrow impact gain is 0.32, slightly above the shield-noise peak of 0.30. Both controls remain adjustable.
+
+Save schema 2 migrates old untouched defaults and the owner's prior 20%/100% reference to the new midpoint. Other schema 1 volume preferences are translated to preserve their prior effective gain. The fresh settings screen showed both controls at 50%; automated audio and persistence checks pass. The owner listened to the corrected midpoint mix and confirmed it is better.

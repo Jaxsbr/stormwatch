@@ -1,13 +1,21 @@
 # 02 — Finish the Squirrel and Rat learning loop
 
-Status: needs-triage
+Status: complete
 
-Scope: historical Day 1 prerequisite reference, excluded from the active Day 2-onward spec. Completion is not verified by the owner's scheduling assumption. Do not start this ticket automatically as part of that spec.
+Scope: active first-watch closeout, requested by the owner after reviewing Tickets 01 and 02. Ticket 01 is complete at the owner-approved two-map scope.
 
 Depends on: 01
 
 Use the current Lantern waves from `../wave-plan.md`. Check the owner's intended opening: two Squirrels immediately, third from wave-one kills, useful purchases in later waves. Review the real Squirrel draw/release/projectile contact, Rat shield fade and hit flash, gold gain, build feedback, upgrade celebration, and persistent upgraded appearance. Make bounded corrections using current rigs, effects, and sound. Do not regenerate the whole art set.
 
-Verify first-map upgrades are locked for a new profile and the victory reward makes the next action obvious. Current five-second countdown, pause, Start Early, selection, cancel and touch target behavior must remain understandable. Inspect normal-speed motion and actually listen before claiming audio quality. Avoid rebuilding the broader selection UI without a concrete observed failure.
+Verify first-map upgrades are locked for a new profile and the victory reward makes the next action obvious. The owner changed the inter-wave countdown to ten real seconds; verify its display, timing, pause, and Start Early alongside selection, cancel and touch target behavior. Inspect normal-speed motion and actually listen before claiming audio quality. Avoid rebuilding the broader selection UI without a concrete observed failure.
 
 Done when Lantern can be completed on a fresh profile, the Squirrel reward is visible and usable in the next attempt, no economy/supply controls return, and placement/guard feedback is clear in play. Record a weak placement observation as well as successful defenses. Do not force all reasonable novice placements to achieve perfect health.
+
+## Completion evidence
+
+The owner accepts the first-watch economy and mid-wave tower tradeoff. Automated progression, first-wave economy, countdown, result, profile, gate, and layout checks are recorded in `../progress.md`. A normal-speed browser run showed the Squirrel archer draw/aim and arrow impact, the Rat guard cue and hit spark, gold gain, and mid-wave tower placement. The intermission displayed “Next wave in 3” and the automatic transition was observed; focused timing coverage verifies the full ten-second interval at 2× speed.
+
+Both sound sliders open at 50%, mapping to the owner's reference output (music 20%, effects 100%), with arrow impact slightly above shield impact. The owner listened to the corrected mix and confirmed it is better. The previous reward screen and subsequent-attempt tower upgrade were observed in the browser; deterministic checks cover the saved unlock and result variants.
+
+Ticket 02 acceptance is complete. Physical-device behavior and child-comprehension checks remain part of family-release work in ticket 06.
