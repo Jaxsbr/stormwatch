@@ -2531,28 +2531,6 @@ button:active:not(:disabled) {
     padding: 6px;
   }
 }
-/* Opt-in capture controls, excluded from the captured canvas. */
-.review-recording {
-  position: fixed;
-  bottom: 2px;
-  left: 50%;
-  transform: translateX(-50%);
-  z-index: 100;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  padding: 4px 8px;
-  background: #17271f;
-  color: #f2e4c3;
-  font: 11px system-ui;
-}
-.review-recording button {
-  min-height: 28px;
-  font: inherit;
-}
-.review-recording a {
-  color: #edc572;
-}
 .build-tray > .selection-panel {
   position: static;
   width: 100%;
