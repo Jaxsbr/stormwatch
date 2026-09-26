@@ -10,6 +10,7 @@ import { weaselEvasionState } from "../sim/weasel-evasion";
 import { EffectBatch } from "./effect-batch";
 import { DefenderRig } from "./defender-rig";
 import { CharacterRig } from "./character-rig";
+import { SlowNetCue } from "./slow-net-cue";
 import {
   StatusGlyph,
   type StatusGlyphKind,
@@ -92,6 +93,7 @@ export class Battlefield {
   private effects = new EffectBatch();
   private combatText = new CombatText();
   private overlays = new OverlayBatch();
+  private slowNetCue = new SlowNetCue();
   private textures: THREE.Texture[] = [];
   private owned: THREE.Texture[] = [];
   private sceneTextures: THREE.Texture[] = [];
@@ -503,6 +505,7 @@ export class Battlefield {
     this.effects.update([], position);
     this.combatText.update([], position);
     this.overlays.update([], [], position);
+    this.slowNetCue.clear();
     if (retainScenery) return;
     this.releaseObject(this.world);
     this.world.clear();
@@ -849,6 +852,8 @@ export class Battlefield {
       }
     this.overlays.update(s.towers, s.enemies, position);
     if (!this.overlays.group.parent) this.scene.add(this.overlays.group);
+    this.slowNetCue.update(s.enemies, s.clock, position);
+    if (!this.slowNetCue.group.parent) this.scene.add(this.slowNetCue.group);
     const selectedTower = s.towers.find((t) => t.id === selected);
     this.selection.visible = false;
     this.selectedMarker.visible = false;
@@ -991,6 +996,7 @@ export class Battlefield {
     this.effects.dispose();
     this.combatText.dispose();
     this.overlays.dispose();
+    this.slowNetCue.dispose();
     this.characterPool.dispose();
     this.defenderPool.dispose();
     this.owned.forEach((t) => t.dispose());

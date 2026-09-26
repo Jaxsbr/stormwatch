@@ -21,3 +21,4 @@ Read the accepted records before changing consequential behavior. For a new deci
 - [016: Illustrated encounter results](016-illustrated-encounter-results.md)
 
 - [017: Rainstone evasion and mixed waves](017-rainstone-evasion-and-mixed-waves.md)
+- [018: Map-board progression and finale](018-map-board-progression-and-finale.md)

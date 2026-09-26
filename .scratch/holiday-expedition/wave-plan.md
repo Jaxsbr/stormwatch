@@ -1,8 +1,8 @@
-# Three-map boss chapter: initial wave plan
+# First three-map board: initial wave plan
 
-Status: supporting content for the ready-for-agent Day 2-onward spec; numeric recipes are untested tuning values
+Status: supporting content for the Day 2-onward spec; Map 3 ticket 04 has single-seed simulation evidence, while the boss recipe and family playtesting remain open
 
-Execution begins with Map 3. Maps 1–2 describe the assumed arrival state and the earlier Day 1 plan, not additional implementation work under this spec. Confirm those prerequisites in the integration checkout; this document does not claim they have shipped.
+Execution begins with Map 3. Maps 1–2 describe the assumed arrival state and the earlier Day 1 plan, not additional implementation work under this spec. Confirm those prerequisites in the integration checkout; this document does not claim they have shipped. The first board ends on The Last Lantern's Roadwarden boss wave; defeating the boss is required before any later board can open. The optional five-map draft is superseded by this board pattern. Iron Boars are reserved for the next board.
 
 ## Common notation and tuning
 
@@ -38,7 +38,7 @@ Wave 1 Rats use 6s down/4s up; later Rats use 5s down/5s up. Weasels run at 85% 
 
 Wave 4 repeats all three mini cycles three times: 1 Rat/5 Weasels, 2 Rats/4 Weasels, 3 Rats/3 Weasels. Every mini cycle has six enemies at 0.2s intervals and five seconds from its last spawn to the next cycle. Total 18 Rats/36 Weasels. Finale Weasels move at 1.1× catalog speed with 2s evasion every 5s; Rats retain 5s shield up/5s down. Final clear reward is zero; discovery is the reward.
 
-## Map 3 — The Last Lantern
+## Map 3 — The Last Lantern (first board's boss map)
 
 New woodland route with two worthwhile firing areas. The first bend should have room for a Turtle and a Squirrel; a downstream area should provide a recovery opportunity. No single placement should cover nearly the entire trail. The route must be long enough to show the boss windup/rally and give a competent defense time to defeat it.
 
@@ -46,14 +46,37 @@ Start at 120 gold. Available: Squirrel with its upgrade, base Turtle. No Skunk, 
 
 | Wave | Recipe                           | Fixed reward / total income | Lesson                                       |
 | ---- | -------------------------------- | --------------------------- | -------------------------------------------- |
-| 1    | W4@5 + R10@2.8                   | 25 / 53                     | A visible net keeps a runner in arrow range  |
-| 2    | W12@2.4                          | 28 / 52                     | Notice net duration and where it expires     |
-| 3    | G14[2]@3                         | 30 / 58                     | Slow also buys time through a guard cycle    |
-| 4    | R10[2]@3 + W12[2]@2.5            | 32 / 76                     | Support damage in a second firing area       |
-| 5    | G14[2]@2.8 + W10[2]@2.5          | 35 / 83                     | Final practice and money to improve the line |
-| 6    | R6[2]@3 + K1@2 + R12[2]@3 + W4@3 | 0 / 70                      | One boss with a readable escort procession   |
+| 1    | W4@5 + R10@2.8                   | 25 / 53                     | Generous Turtle introduction: net a runner for arrow follow-up |
+| 2    | W12@2.4                          | 28 / 52                     | Practise net timing, coverage, and expiration |
+| 3    | G14[2]@3                         | 30 / 58                     | Slow also buys time through a Rat guard cycle |
+| 4    | R10[2]@3 + W12[2]@2.5            | 32 / 76                     | Combine learned roles across both firing areas |
+| 5    | G14[2]@2.8 + W10[2]@2.5          | 35 / 83                     | Hard combined rehearsal and final investment; below boss pressure |
+| 6    | R6[2]@3 + K1@2 + R12[2]@3 + W4@3 | 0 / 70                      | Hardest wave: strong Roadwarden, escorts, unique rally, required defeat |
 
-Preview the final-wave objective: defeat the Roadwarden. Its escape loses the attempt regardless of remaining hearts. Its defeat, after remaining ordinary enemies are cleared and with hearts remaining, wins the chapter. Show boss health only during the encounter.
+### Ticket 04 simulation evidence
+
+The following lines use the real `Game` with seed 42, 120 starting gold, first-arrival tools and fixed build orders. The mixed line opens with one Net and one Squirrel, then spends on eight base Squirrels. The Squirrel line opens with three Squirrels and adds six more. Both clear all five teaching waves while prioritizing coverage over upgrades; separate rule coverage verifies that only the Squirrel upgrade is available. This is one scripted candidate comparison, not a player balance result.
+
+| Wave | Mixed: seconds / leaks / lives / bank | Squirrels: seconds / leaks / lives / bank |
+| --- | --- | --- |
+| 1 | 56.5 / 0 / 12 / 43 | 52.5 / 0 / 12 / 53 |
+| 2 | 34.1 / 0 / 12 / 55 | 29.6 / 0 / 12 / 65 |
+| 3 | 46.1 / 0 / 12 / 33 | 40.6 / 0 / 12 / 43 |
+| 4 | 48.1 / 4 / 8 / 61 | 43.6 / 0 / 12 / 39 |
+| 5 | 58.9 / 3 / 5 / 58 | 47.4 / 0 / 12 / 82 |
+
+The mixed line clears all five waves in 243.7 simulated seconds with five lives remaining; the Squirrel line clears in 213.6 seconds at full lives. Cumulative enemy-plus-clear income is 308 and 322 gold respectively. The mixed line gives up damage coverage for control but still reaches the boss attempt with a recoverable life reserve.
+
+A delayed remote-Net comparison opens with three Squirrels at the first two bends, then buys one Net at `(10,4)` as soon as it can afford it and makes no further investments. The late Net slows enemies without damage support on the final stretch. It reaches wave 4, then loses with all 12 lives gone; this shows why slow needs useful follow-up damage. Total simulated time is 192.1 seconds. This is a scripted placement lesson, not a player balance result.
+
+| Wave | Remote: seconds / leaks / lives / bank |
+| --- | --- |
+| 1 | 52.5 / 0 / 12 / 3 |
+| 2 | 29.6 / 0 / 12 / 55 |
+| 3 | 64.5 / 2 / 10 / 109 |
+| 4 | 45.5 / 10 / 0 / 129 |
+
+Preview the final-wave objective: defeat the Roadwarden. This must feel clearly harder than wave 5 while remaining beatable with the earned roster and more than one reasonable defense. Its rally makes this boss wave distinct. Its escape loses the attempt regardless of remaining hearts. Its defeat, after remaining ordinary enemies are cleared and with hearts remaining, completes the first board. Show boss health only during the encounter.
 
 The proposed rally has a 1s windup and applies 3s of +25% speed to ordinary enemies within 3 path-distance units, first at boss age 6s and every 10s thereafter. Use the stronger of sprint/rally, then multiply by existing net slow. The boss does not buff itself, create enemies, heal, or become invulnerable. Tune spawn gaps so an escort actually receives the rally. If the optional rally is cut for schedule, remove its tells and retain the deliberate moving boss/escort challenge.
 

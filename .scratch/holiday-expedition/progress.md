@@ -124,3 +124,13 @@ Real Game spawn coverage verifies all twelve variable-size mini cycles and pause
 ## Ticket 03 closeout — 26 September 2026
 
 The owner reported the final playtest completed. Ticket 03 is complete at the amended four-wave scope, gameplay revision 1c72f84. Implementation, scenarios, committed capture, checks and both review axes are complete. Next is ticket 04: Turtle feedback and The Last Lantern route/teaching waves; ticket 05 integrates the boss and chapter ending. Actual family-device release evidence remains ticket 06.
+
+## Ticket 04 route and Turtle cue — 26 September 2026
+
+The first-board progression amendment is recorded in ADR 018: Lantern Pass → Rainstone Crossing → The Last Lantern, whose Roadwarden boss gates a future board. Iron Boars stay on the next board. Ticket 04 content is authored as an unregistered five-wave level so it can be integrated with the ticket 05 boss instead of exposing an early victory after wave five.
+
+The Last Lantern starts at 120 gold with base Turtle and Squirrel, and only the earned Squirrel upgrade. Its five waves teach net slow on non-evasive Weasels, then practise Weasel evasion, Rat guard, and mixed pressure; wave five is the hardest rehearsal below the boss. Deterministic first-arrival strategy evidence is in `wave-plan.md`: the mixed Net/Squirrel line clears with five of twelve lives after 243.7 simulated seconds; a nine-Squirrel line clears with all twelve after 213.6 seconds. A remote-Net comparison starts with three Squirrels at the first two bends, then buys a Net at `(10,4)` without adding damage support on the final stretch; it loses in wave 4 after 192.1 simulated seconds and 12 leaks. This is seed-42 simulation, not child or device balance evidence.
+
+The original full-body net was rejected by the owner. A live browser prototype offered three floor-level variations on A's aura: woven lattice, tightening loops, and ground tethers. The owner selected woven underfoot. That floor cue now tracks active slow state, remains during pause, and clears with expiry/death; it sits below characters and overhead status markers. Browser review at 1024×620 showed it active in wave 4 with no symbol overlap. This is a browser observation, not physical-device or child-play evidence.
+
+Ticket 04 is complete at its content/rendering scope. `npm run check`, all 181 tests, `npm run build`, and formatting checks for changed code passed. The production build still reports the large battlefield bundle advisory. The Last Lantern remains unregistered until ticket 05 integrates the Roadwarden boss, required defeat, board advance and ending. Ticket 06 still owns family-device checks and release readiness.

@@ -1,6 +1,8 @@
-# Optional expanded five-map wave recipes
+# Historical five-map expansion draft — superseded
 
-Status: future design option — outside the three-map holiday release; untested, not validated balance
+> This draft predates the owner's map-board direction and is not an implementation plan. The first board is Lantern Pass → Rainstone Crossing → The Last Lantern, ending in a required Roadwarden boss victory. Iron Boars are reserved for the next board. Any future expansion must be replanned as sequential maps followed by a boss map; do not treat the old five-map order or recipes below as approved.
+
+Status: historical future-design option — superseded, outside the three-map holiday release; untested, not validated balance
 
 The owner suggested boss maps as the delivery target. The current recommendation is the three-map chapter in `spec.md` and `wave-plan.md`. This longer draft preserves possible Skunk/Boar lessons for later adaptation. Its level order, rewards, and numbers are not approved implementation work, and would need reconciliation with saves from the three-map release.
 
