@@ -286,7 +286,8 @@ body {
   font-size: 12px;
 }
 .workbench-attempt .battlefield {
-  position: relative;
+  position: absolute;
+  inset: 0;
 }
 .wb-muted {
   font-size: 12px;
