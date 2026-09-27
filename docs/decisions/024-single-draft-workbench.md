@@ -19,10 +19,9 @@ Playtest uses the selected wave from the same scoped candidate as Promote.
 Promotion writes selected map metadata and one selected wave to the canonical
 recipe through a loopback-only workbench endpoint. Validate complete content,
 reject selected-scope drift, serialize writes and replace the fixed file atomically.
-After replacement, rebuild the local production preview before reporting success.
-A reload of the local game must use the promoted content; saving source alone
-leaves an already-built preview stale. Report rebuild failure explicitly while
-retaining the saved config. This does not publish or deploy.
+Promotion is data-only. The game reloads the canonical content through the runtime
+loading boundary described in [decision 025](025-runtime-game-content.md), which
+supersedes the temporary rebuild-on-promotion workaround.
 Retain conflict baselines for pending unrelated scopes. Explicit conflict recovery
 keeps the draft and adopts latest comparison content before a new Promote action.
 

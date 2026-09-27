@@ -5,7 +5,7 @@ import type {
   TowerDef,
   TowerKind,
 } from "../sim/types";
-import source from "./recipes.json";
+import { CANONICAL_CONTENT as source } from "../config/configuration";
 export const TOWERS: Record<TowerKind, TowerDef> = source.towers;
 export const ENEMIES: Record<EnemyKind, EnemyDef> = source.enemies;
 export const CARDS: {

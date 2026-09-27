@@ -1,10 +1,10 @@
 import { randomUUID } from "node:crypto";
 import { readFile, writeFile, rename, unlink } from "node:fs/promises";
 import { resolve } from "node:path";
-import { build, createServer } from "vite";
+import { createServer } from "vite";
 
 /** Fixed local destination; never reachable from the production game server. */
-export function workbenchApi(file, loadModel, refreshPreview = async () => {}) {
+export function workbenchApi(file, loadModel) {
   const token = randomUUID();
   let pending = Promise.resolve();
   return async (req, res, next) => {
@@ -70,13 +70,7 @@ export function workbenchApi(file, loadModel, refreshPreview = async () => {}) {
         } finally {
           await unlink(temporary).catch(() => {});
         }
-        let previewError;
-        try {
-          await refreshPreview();
-        } catch (cause) {
-          previewError = `Game config was saved, but the local game could not refresh: ${cause instanceof Error ? cause.message : String(cause)}`;
-        }
-        reply(200, { content, ...(previewError ? { previewError } : {}) });
+        reply(200, { content });
       };
       const operation = pending.then(apply);
       pending = operation.catch(() => {});
@@ -113,7 +107,6 @@ export function workbenchApiPlugin() {
         workbenchApi(
           resolve(root, "src/content/recipes.json"),
           modelLoader(server),
-          () => refreshGamePreview(root),
         ),
       );
     },
@@ -133,13 +126,8 @@ export function workbenchApiPlugin() {
         workbenchApi(
           resolve(root, "src/content/recipes.json"),
           modelLoader(loader),
-          () => refreshGamePreview(root),
         ),
       );
     },
   };
-}
-
-export async function refreshGamePreview(root) {
-  await build({ root, mode: "production", logLevel: "error" });
 }

@@ -366,10 +366,6 @@ async function promote() {
     draft = rebaseAfterPromotion(submitted, result.content);
     error = "";
     message = `Promoted ${wave().title}. Reload the game to play your changes.`;
-    if (result.previewError) {
-      error = result.previewError;
-      message = "";
-    }
     persist();
   } finally {
     saving = false;

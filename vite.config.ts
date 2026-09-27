@@ -1,5 +1,6 @@
 import { engineRevision } from "./tools/engine-revision.mjs";
 import { defineConfig, type Plugin } from "vite";
+import { runtimeContentPlugin } from "./tools/runtime-content.mjs";
 import { workbenchApiPlugin } from "./tools/workbench-api.mjs";
 
 const utilityModule =
@@ -37,8 +38,10 @@ export default defineConfig(({ command, mode }) => {
       target === "workbench"
         ? [workbenchApiPlugin()]
         : target === "game" && command === "build"
-          ? [productionBoundary()]
-          : [],
+          ? [runtimeContentPlugin(), productionBoundary()]
+          : target === "game"
+            ? [runtimeContentPlugin()]
+            : [],
     build: {
       target: "es2022",
       outDir: target === "game" ? "dist" : `dist-${target}`,

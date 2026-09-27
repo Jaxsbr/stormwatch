@@ -42,9 +42,7 @@ export interface AttemptConfiguration {
   rules: GameplayRules;
   identity: string;
 }
-export const DEFAULT_RULES: GameplayRules = freeze(
-  structuredClone(source.rules),
-);
+export let DEFAULT_RULES: GameplayRules = freeze(structuredClone(source.rules));
 function freeze<T>(value: T): T {
   if (value && typeof value === "object") {
     Object.values(value).forEach(freeze);
@@ -52,9 +50,15 @@ function freeze<T>(value: T): T {
   }
   return value;
 }
-export const CANONICAL_CONTENT: AuthoringContent = freeze(
+export let CANONICAL_CONTENT: AuthoringContent = freeze(
   source as unknown as AuthoringContent,
 );
+/** Bootstrap only: install validated data before importing game adapters. */
+export function installRuntimeContent(value: unknown): void {
+  validateContent(value as AuthoringContent);
+  CANONICAL_CONTENT = freeze(structuredClone(value as AuthoringContent));
+  DEFAULT_RULES = CANONICAL_CONTENT.rules;
+}
 export function configurationIdentity(value: unknown): string {
   const ordered = (v: unknown): unknown =>
     Array.isArray(v)

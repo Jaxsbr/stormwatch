@@ -1,6 +1,6 @@
 # Architecture and extension points
 
-The working boundary is a browser-independent TypeScript simulation with presentation adapters. There is no server. Content definitions are plain data; a fresh `Game` owns every attempt.
+The working boundary is a browser-independent TypeScript simulation with presentation adapters. The published game is static; local authoring adds a file adapter. Content definitions are plain data; a fresh `Game` owns every attempt.
 
 ```mermaid
 flowchart LR
@@ -138,3 +138,16 @@ commit or deploy. See [workbench usage](WORKBENCH.md) and
 [decision 021](decisions/021-designer-workbench.md).
 
 The browser workbench now uses one auto-saved working draft and direct selected-wave Playtest/Promote actions. The local-only Vite workbench adapter validates and atomically writes selected map settings and one wave; it is absent from the production server. Agent CLI scenario, replay, compare and search modules remain available. See [decision 024](decisions/024-single-draft-workbench.md).
+
+### Runtime game content
+
+`src/bootstrap.ts` loads and validates `game-content.json` with caching disabled,
+then imports the game. Initialization order ensures catalogs, compiled levels,
+rules and save IDs all derive from the same snapshot. Missing or invalid content
+blocks startup with a retry action rather than silently playing bundled defaults.
+The baseline recipe import remains available for headless tools and tests.
+
+`tools/runtime-content.mjs` emits the JSON for static deployments and provides a
+read-only local development/preview route to the canonical file. Promote only
+writes that file; it never invokes the compiler. Existing attempts remain immutable.
+See [decision 025](decisions/025-runtime-game-content.md).
