@@ -77,4 +77,29 @@ Music: **Treasure Hunter** by TAD, CC0. Fonts: Cormorant Garamond and DM Sans, S
 
 ## Publishing
 
-The pinned GitHub Actions workflow checks, tests and builds every main-branch push, then publishes `dist/` to GitHub Pages. Pages must use the GitHub Actions build source. Failed checks prevent deployment. The optional performance laboratory builds separately with `npm run build:qa` into `dist-qa`; its `/qa.html` entry and diagnostic controls are excluded from the published game.
+The pinned GitHub Actions workflow checks, tests and builds every main-branch push, then publishes `dist/` to GitHub Pages when repository access and Pages are available. Pages must use the GitHub Actions build source. Failed checks prevent deployment. The optional performance laboratory builds separately with `npm run build:qa` into `dist-qa`; its `/qa.html` entry and diagnostic controls are excluded from the published game.
+
+
+### Family release handoff
+
+See the [candidate record](docs/evidence/family-release.md) for the verified journey,
+current hosting access blocker and remaining family-device checks. The expected
+play URL is [Stormwatch on Pages](https://jaxsbr.github.io/stormwatch/); current
+availability must be verified before handing it to players.
+
+To check the emitted artifact under the same subpath, copy `dist` into a temporary
+folder as `stormwatch`, then serve its parent:
+
+```sh
+npm run build
+candidate_dir=$(mktemp -d)
+cp -R dist "$candidate_dir/stormwatch"
+python3 -m http.server 4187 --bind 127.0.0.1 --directory "$candidate_dir"
+```
+
+Use a new empty folder for each candidate so old files cannot remain. Open
+`http://127.0.0.1:4187/stormwatch/`. Keep the verified copy and note
+`git rev-parse HEAD` before rebuilding. This checks the actual built content and
+assets without a development adapter. It is a local candidate, not publication.
+Progress is local to each browser origin; localhost progress does not transfer to
+Pages or another device. Each device/browser supplies two independent slots.

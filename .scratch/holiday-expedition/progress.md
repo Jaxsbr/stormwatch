@@ -154,3 +154,20 @@ Removed boss-arrival/rally text toasts, the directive beside the wave button, an
 At seed 42, the final 7/5-party version causes both prior successful lines and the poor-opening line to lose during wave 6 before killing the Roadwarden. The upgraded-Squirrel line loses to boss escape with one life remaining; mixed and poor-opening lines run out of lives. The revised test asserts 2200 health, five party types/counts/times, and exact wave checkpoints. This confirms the implemented sequence and records current pressure; it does not establish that the current version is beatable or balanced for new players. Updated profiles are in `wave-plan.md`.
 
 Verification for this update: `npm run check`, all 191 tests in 35 files, `npm run build` and `git diff --check` pass. Browser inspection of the rendered briefing at 1280×720 and 844×390 confirms the boxed note is gone and Back/Play remain visible. The build still warns about the 630.88 kB battlefield bundle; no full boss fight was captured.
+
+
+## Ticket 06 release-hardening checkpoint — 27 September 2026
+
+The full fresh-profile simulation/persistence journey passes with both normal and
+assisted boss completion, ending rewards, replay and sibling-slot isolation.
+A legal placement plan resolves the previous absence of a demonstrated normal
+boss win without retuning content. Production Pages-subpath startup and opening
+battle/retry/pause/settings/orientation layouts were checked in the in-app browser.
+All 260 tests (48 files), types, formatting and production build pass. Two-axis
+review found no implementation issues and retained hosting/human acceptance gaps.
+
+The configured GitHub repository and Pages API return 404 with current access.
+Ticket 06 is ready-for-human, not complete. See `docs/evidence/family-release.md`
+for the exact candidate reproduction, delivery route, limitations and owner
+checks. Public deployment, full pointer/touch chapter and physical family-device,
+audio and child-comprehension evidence remain pending.

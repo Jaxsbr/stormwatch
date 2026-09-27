@@ -1,6 +1,6 @@
 # 06 — Correct, harden and hand over the family release
 
-Status: ready-for-agent
+Status: ready-for-human
 
 Depends on: 05. Incorporate owner play observations as they arrive; automated checks and independent hardening may proceed while feedback is pending. Child comprehension and physical-device claims require actual observations.
 
@@ -17,3 +17,19 @@ Done when both children can start their own progress, complete an understandable
 Published ready-for-agent as Day 3 of the chapter plan. Preserve the final day for feedback, integration and release evidence. This ticket does not authorize a new public deployment destination.
 
 - Designer workbench implementation now supplies local scenario/replay/comparison evidence; see `docs/evidence/designer-workbench.md`. This adds no physical-device or child-comprehension observation and does not replace prior owner play evidence. Collect that evidence here before repeating checks.
+
+
+## Release-hardening checkpoint — 27 September 2026
+
+Automated full-chapter coverage now verifies normal and assisted boss victories,
+defeat/retry, saved ending/replay rewards and independent player slots using legal
+Game commands and canonical content. No campaign tuning, new rules or assets.
+Typecheck, formatting, 260 tests in 48 files, production build/artifact boundary
+and two-axis review pass. The emitted production game was opened under the Pages
+subpath and its opening battle/retry/menu/orientation layouts inspected.
+
+See [family release evidence](../../../docs/evidence/family-release.md) and the
+README handoff route. Ready for human follow-up, not complete: the configured
+repository and Pages API still return 404; public access, full browser chapter,
+background/resume, audio listening and actual family-device/child observations
+remain pending. No alternate public destination or deployment is claimed.
