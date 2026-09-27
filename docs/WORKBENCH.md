@@ -27,8 +27,10 @@ from family profiles. Return with Workbench to continue editing.
 **Promote** writes the selected wave and its map settings into
 `src/content/recipes.json`. Other waves, maps and global catalogs stay unchanged;
 their pending edits remain in the working draft. New selected maps/waves are
-inserted into the canonical configuration. Promotion does not commit, publish or
-rebuild the production game. Subsequent game builds use the updated configuration.
+inserted into the canonical configuration. Promotion rebuilds the local game preview before reporting success, so reloading
+the local game picks up the changes. It does not commit or publish a deployment.
+If rebuilding fails, the workbench explicitly reports that the config was saved
+but the local game could not refresh.
 
 The local endpoint validates the complete result, checks the current selected
 scope against the draft baseline and atomically replaces the fixed config file.

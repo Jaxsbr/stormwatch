@@ -365,7 +365,11 @@ async function promote() {
     gameContent = clone(result.content);
     draft = rebaseAfterPromotion(submitted, result.content);
     error = "";
-    message = `Promoted ${wave().title}. Game config is updated.`;
+    message = `Promoted ${wave().title}. Reload the game to play your changes.`;
+    if (result.previewError) {
+      error = result.previewError;
+      message = "";
+    }
     persist();
   } finally {
     saving = false;
