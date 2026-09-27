@@ -24,6 +24,10 @@ interface CanvasState {
   openSections?: string[];
 }
 const states = new Map<string, CanvasState>();
+/** Explicit discard or loading another experiment starts a new editing history. */
+export function clearWaveCanvasHistory(): void {
+  states.clear();
+}
 const kinds: EnemyKind[] = ["raider", "runner", "armored", "boss"];
 const names: Record<EnemyKind, string> = {
   raider: "Rat raider",
@@ -50,6 +54,21 @@ const escape = (s: string) =>
         c
       ]!,
   );
+
+function editError(error: unknown, change: WaveEdit): string {
+  const detail =
+    error instanceof Error ? error.message : "This edit is not valid.";
+  if (detail.includes("nondecreasing"))
+    return "These enemies would arrive out of order. Shorten their stagger or add more spacing.";
+  if (detail === "Invalid wave group") {
+    if (change.type === "stagger")
+      return "Those arrivals exceed the batch spacing. Pull the last enemy back toward its batch.";
+    if (change.type === "duration")
+      return "That spacing is too short for the batch. Stretch its timing or shorten its stagger.";
+    return "This change conflicts with the group's timing. Adjust spacing or staggering first.";
+  }
+  return detail;
+}
 
 export function mountWaveCanvas(
   host: HTMLElement,
@@ -159,8 +178,7 @@ export function mountWaveCanvas(
       }
       commit(next, label, before);
     } catch (error) {
-      message =
-        error instanceof Error ? error.message : "This edit is not valid.";
+      message = `Cannot change: ${editError(error, change)}`;
       render();
     }
   }
@@ -248,6 +266,23 @@ export function mountWaveCanvas(
           `<div class="wg-sequence" style="left:${120 + s.start * scale}px;width:${Math.max(44, (s.handoff - s.start) * scale)}px"><span>Sequence ${s.packetIndex + 1}</span> ${button(`select-sequence:${s.packetIndex}`, `×${s.repeat}`)}${selected?.packetIndex === s.packetIndex ? `<button class="wg-handle wg-repeat" data-wg-drag="repeat" data-wg-node="${layout.nodes.findIndex((n) => n.packetIndex === s.packetIndex)}" aria-label="Drag to change repeat count">↔ repeats</button>` : ""}</div>`,
       )
       .join("");
+    const repeatRestHandles = selected
+      ? layout.nodes
+          .filter(
+            (n) =>
+              n.packetIndex === selected.packetIndex &&
+              n.groupIndex === 0 &&
+              n.repeatIndex === 1,
+          )
+          .map((n) => {
+            const source = model.wave.packets[n.packetIndex];
+            const rest = source.repeatDelayBefore ?? 0;
+            const midpoint =
+              n.start - (source.groups[0].delayBefore ?? 0) - rest / 2;
+            return `<button class="wg-handle wg-repeat-rest" style="left:${120 + midpoint * scale - 22}px;top:70px" data-wg-node="${layout.nodes.indexOf(n)}" data-wg-drag="rest" aria-label="Drag extra wait between repeats">↔ rest ${seconds(rest)}</button>`;
+          })
+          .join("")
+      : "";
     const nodes = layout.nodes
       .map((n, index) => {
         const chosen =
@@ -260,7 +295,7 @@ export function mountWaveCanvas(
               `<i class="wg-arrival" style="left:${(spawn.at - n.start) * scale}px" title="Arrival ${seconds(spawn.at)}"></i>`,
           )
           .join("");
-        return `<div class="wg-node ${n.repeatIndex > 0 ? "wg-echo" : ""} ${chosen ? "wg-selected" : ""}" style="left:${120 + n.start * scale}px;top:${top}px;width:${Math.max(1, (n.handoff - n.start) * scale)}px"><div class="wg-band">${arrivals}<span class="wg-tail" style="left:${(n.lastSpawn - n.start) * scale}px;width:${Math.max(0, (n.handoff - n.lastSpawn) * scale)}px"></span></div><button class="wg-node-head" data-wg-node="${index}" data-wg-drag="move" aria-label="${names[n.kind]}, ${n.count} enemies, starts ${seconds(n.start)}, ${n.repeatIndex ? `linked repeat ${n.repeatIndex + 1}` : "drag to change wait"}"><img src="${images[n.kind]}" alt=""/><strong>${n.count}</strong></button>${chosen ? `<button class="wg-handle wg-duration" style="left:${(n.handoff - n.start) * scale}px" data-wg-node="${index}" data-wg-drag="duration" aria-label="Drag group end to change spacing">↔ time</button><button class="wg-handle wg-count" data-wg-node="${index}" data-wg-drag="count" aria-label="Drag up to add enemies">↕ count</button>` : ""}</div>`;
+        return `<div class="wg-node ${n.repeatIndex > 0 ? "wg-echo" : ""} ${chosen ? "wg-selected" : ""}" style="left:${120 + n.start * scale}px;top:${top}px;width:${Math.max(1, (Math.max(n.handoff, n.lastSpawn) - n.start) * scale)}px"><div class="wg-band">${arrivals}<span class="wg-tail" style="left:${(n.lastSpawn - n.start) * scale}px;width:${Math.max(0, (n.handoff - n.lastSpawn) * scale)}px"></span></div><button class="wg-node-head" data-wg-node="${index}" data-wg-drag="move" aria-label="${names[n.kind]}, ${n.count} enemies, starts ${seconds(n.start)}, ${n.repeatIndex ? `linked repeat ${n.repeatIndex + 1}` : "drag to change wait"}"><img src="${images[n.kind]}" alt=""/><strong>${n.count}</strong></button>${chosen ? `<button class="wg-handle wg-duration" style="left:${(n.handoff - n.start) * scale}px" data-wg-node="${index}" data-wg-drag="duration" aria-label="Drag timing cursor to change batch spacing">↔ time</button><button class="wg-handle wg-count" data-wg-node="${index}" data-wg-drag="count" aria-label="Drag up to add enemies">↕ count</button>` : ""}</div>`;
       })
       .join("");
     const flow = layout.nodes
@@ -284,11 +319,11 @@ export function mountWaveCanvas(
       const local = Array.from(
         { length: firstSize },
         (_, i) =>
-          `<button class="wg-detail-enemy" style="left:${32 + i * node.stagger * detailScale}px;top:${34 + i * 12}px" ${i === firstSize - 1 && firstSize > 1 ? `data-wg-node="${layout.nodes.indexOf(node)}" data-wg-drag="stagger"` : ""} aria-label="${i === firstSize - 1 ? "Drag last enemy to spread arrivals within every batch" : names[node.kind]}"><img src="${images[node.kind]}" alt=""/></button>`,
+          `<button class="wg-detail-enemy" style="left:${32 + i * node.stagger * detailScale}px;top:${34 + i * 12}px" ${i === firstSize - 1 && firstSize > 1 ? `data-wg-node="${layout.nodes.indexOf(node)}" data-wg-drag="stagger"` : ""} aria-label="${i === firstSize - 1 && firstSize > 1 ? "Drag last enemy to spread arrivals within every batch" : names[node.kind]}"><img src="${images[node.kind]}" alt=""/></button>`,
       ).join("");
-      inspector = `<section class="wg-inspector"><div class="wg-inspector-heading"><img src="${images[node.kind]}" alt=""/><div><h3>${names[node.kind]} · ${node.count} enemies</h3><p>Sequence ${node.packetIndex + 1}${node.repeatIndex ? ` · linked copy ${node.repeatIndex + 1}` : ""}${(packet.repeat ?? 1) > 1 ? ` · edits apply to all ${packet.repeat} repeats` : " · one pattern"}</p></div></div><div class="wg-detail" style="position:relative;min-height:130px"><span>Shape one batch · drag its last enemy to spread arrivals</span>${local}<button class="wg-handle wg-batch" style="position:absolute;left:0;top:76px" data-wg-node="${layout.nodes.indexOf(node)}" data-wg-drag="batch" aria-label="Drag up to increase enemies per batch">↕ per batch</button><button class="wg-handle" style="position:absolute;left:${32 + node.gap * detailScale}px;top:46px" data-wg-node="${layout.nodes.indexOf(node)}" data-wg-drag="gap" aria-label="Drag next batch to change spacing">↔ next batch</button></div><details class="wg-precise"><summary>Precise timing &amp; counts</summary><div class="wg-controls">${pair("Enemies", String(node.count), "count")}${pair("Per batch", String(node.batchSize), "batch")}${pair("Batch spacing", seconds(node.gap), "gap")}${pair("Within batch", seconds(node.stagger), "stagger")}${pair("Wait before", seconds(group.delayBefore ?? 0), "wait")}${pair("Pattern repeats", String(packet.repeat ?? 1), "repeat")}${pair("Extra repeat rest", seconds(packet.repeatDelayBefore ?? 0), "rest")}<button class="wg-handle wg-rest" data-wg-node="${layout.nodes.indexOf(node)}" data-wg-drag="rest" aria-label="Drag extra repeat rest">↔ extra rest</button></div></details><p>Shaded tails include the final batch spacing. Width means elapsed time; the number means enemies.</p><details><summary>Arrange or remove groups</summary><div class="wg-controls">${button("earlier", "Move before", selected!.groupIndex === 0)}${button("later", "Move after", selected!.groupIndex === packet.groups.length - 1)}${button("remove", "Remove group")}${button("sequence-earlier", "Sequence before", selected!.packetIndex === 0)}${button("sequence-later", "Sequence after", selected!.packetIndex === model.wave.packets.length - 1)}</div></details><div class="wg-palette"><span>Add after this group</span>${kinds.map((kind) => `<button data-wg-action="add:${kind}"><img src="${images[kind]}" alt=""/>${names[kind]}</button>`).join("")}</div><details><summary>Start a new sequence after this one</summary><div class="wg-palette">${kinds.map((kind) => `<button data-wg-action="new:${kind}"><img src="${images[kind]}" alt=""/>${names[kind]}</button>`).join("")}</div></details></section>`;
+      inspector = `<section class="wg-inspector"><div class="wg-inspector-heading"><img src="${images[node.kind]}" alt=""/><div><h3>${names[node.kind]} · ${node.count} enemies</h3><p>Sequence ${node.packetIndex + 1}${node.repeatIndex ? ` · linked copy ${node.repeatIndex + 1}` : ""}${(packet.repeat ?? 1) > 1 ? ` · edits apply to all ${packet.repeat} repeats` : " · one pattern"}</p></div></div><div class="wg-detail" style="position:relative;min-height:130px"><span>${firstSize > 1 ? "Shape one batch · drag its last enemy to spread arrivals" : "Drag ↕ per batch up to form pairs, then spread their arrivals"}</span>${local}<button class="wg-handle wg-batch" style="position:absolute;left:0;top:76px" data-wg-node="${layout.nodes.indexOf(node)}" data-wg-drag="batch" aria-label="Drag up to increase enemies per batch">↕ per batch</button><button class="wg-handle" style="position:absolute;left:${32 + node.gap * detailScale}px;top:46px" data-wg-node="${layout.nodes.indexOf(node)}" data-wg-drag="gap" aria-label="Drag next batch to change spacing">↔ next batch</button></div><details class="wg-precise"><summary>Precise timing &amp; counts</summary><div class="wg-controls">${pair("Enemies", String(node.count), "count")}${pair("Per batch", String(node.batchSize), "batch")}${pair("Batch spacing", seconds(node.gap), "gap")}${pair("Within batch", seconds(node.stagger), "stagger")}${pair("Wait before", seconds(group.delayBefore ?? 0), "wait")}${pair("Pattern repeats", String(packet.repeat ?? 1), "repeat")}${pair("Extra repeat rest", seconds(packet.repeatDelayBefore ?? 0), "rest")}<button class="wg-handle wg-rest" data-wg-node="${layout.nodes.indexOf(node)}" data-wg-drag="rest" aria-label="Drag extra repeat rest">↔ extra rest</button></div></details><p>Timing strips show elapsed time; shaded tails include final batch spacing. The number means enemies.${node.lastSpawn > node.handoff ? " This batch finishes after its spacing cursor; the following wait preserves arrival order." : ""}</p><details><summary>Arrange or remove groups</summary><div class="wg-controls">${button("earlier", "Move before", selected!.groupIndex === 0)}${button("later", "Move after", selected!.groupIndex === packet.groups.length - 1)}${button("remove", "Remove group")}${button("sequence-earlier", "Sequence before", selected!.packetIndex === 0)}${button("sequence-later", "Sequence after", selected!.packetIndex === model.wave.packets.length - 1)}</div></details><div class="wg-palette"><span>Add after this group</span>${kinds.map((kind) => `<button data-wg-action="add:${kind}"><img src="${images[kind]}" alt=""/>${names[kind]}</button>`).join("")}</div><details><summary>Start a new sequence after this one</summary><div class="wg-palette">${kinds.map((kind) => `<button data-wg-action="new:${kind}"><img src="${images[kind]}" alt=""/>${names[kind]}</button>`).join("")}</div></details></section>`;
     }
-    host.innerHTML = `<div class="wg-toolbar"><strong>Shape the arrival rhythm</strong><div class="wg-history">${button("undo", "↶ Undo", !model.past.length)}${button("redo", "↷ Redo", !model.future.length)}</div><div class="wg-zoom">${button("fit", "Fit")}${button("zoom-out", "− Zoom")}${button("zoom-in", "+ Zoom")}</div></div><p class="wg-guide">Click a group to reveal handles. Drag ↔ for time, ↕ for enemy count. Arrow keys adjust wait and count. Escape cancels a drag.</p><div class="wg-scroll"><div class="wg-stage" style="position:relative;width:${width}px;min-height:${112 + visibleKinds.length * 64}px"><div class="wg-ruler">${ticks}</div>${sequences}${lanes}<svg class="wg-flow" width="${width}" height="${100 + visibleKinds.length * 64 + 12}" aria-hidden="true">${flow}</svg>${nodes}</div></div><p class="wg-message" role="status" aria-live="polite">${escape(message)}</p>${inspector}`;
+    host.innerHTML = `<div class="wg-toolbar"><strong>Shape the arrival rhythm</strong><div class="wg-history">${button("undo", "↶ Undo", !model.past.length)}${button("redo", "↷ Redo", !model.future.length)}</div><div class="wg-zoom">${button("fit", "Fit")}${button("zoom-out", "− Zoom")}${button("zoom-in", "+ Zoom")}</div></div><p class="wg-guide">Click a group to reveal handles. Drag ↔ for time, ↕ for enemy count. Arrow keys adjust wait and count. Escape cancels a drag.</p><div class="wg-scroll"><div class="wg-stage" style="position:relative;width:${width}px;min-height:${132 + visibleKinds.length * 64}px"><div class="wg-ruler">${ticks}</div>${sequences}${lanes}<svg class="wg-flow" width="${width}" height="${100 + visibleKinds.length * 64 + 12}" aria-hidden="true">${flow}</svg>${nodes}${repeatRestHandles}</div></div><p class="wg-message ${message.startsWith("Limit:") || message.startsWith("Cannot change:") ? "wg-error" : ""}" role="status" aria-live="polite">${escape(message)}</p>${inspector}`;
     for (const detail of host.querySelectorAll<HTMLDetailsElement>("details"))
       detail.open =
         model.openSections?.includes(
@@ -438,7 +473,7 @@ export function mountWaveCanvas(
       location()?.packetIndex === node.packetIndex &&
       location()?.groupIndex === node.groupIndex;
     if (
-      target.dataset.wgDrag !== "repeat" ||
+      !["repeat", "rest"].includes(target.dataset.wgDrag!) ||
       location()?.packetIndex !== node.packetIndex
     )
       select(node);
@@ -566,7 +601,7 @@ export function mountWaveCanvas(
     } catch (error) {
       gesture.candidate = clone(gesture.original);
       model.wave = clone(gesture.original);
-      message = `Limit: ${error instanceof Error ? error.message : "This timing is invalid."}`;
+      message = `Limit: ${editError(error, change)}`;
     }
     render();
   }
@@ -598,6 +633,7 @@ export function mountWaveCanvas(
       return;
     }
     if ((event.ctrlKey || event.metaKey) && event.key.toLowerCase() === "z") {
+      if (gesture) finish(undefined, true);
       history(event.shiftKey);
       event.preventDefault();
       return;

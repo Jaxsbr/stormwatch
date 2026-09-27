@@ -20,7 +20,7 @@ import {
   type DraftRevision,
 } from "./drafts";
 import { mountAttempt } from "./attempt-view";
-import { mountWaveCanvas } from "./wave-canvas";
+import { clearWaveCanvasHistory, mountWaveCanvas } from "./wave-canvas";
 import { resolveScenario as inspectScenario } from "./scenarios";
 // The browser and headless runner share this session; it owns commands and evidence.
 import {
@@ -152,7 +152,7 @@ let scenario: Scenario = {
   seed: 42,
 };
 const numberInput = (key: string, label: string, value: number, step = "1") =>
-  `<label>${esc(label)}<input data-field="${key}" type="number" value="${value}" step="${step}" min="0" ></label>`;
+  `<label>${esc(label)}<input data-field="${key}" data-original="${value}" type="number" value="${value}" step="${step}" min="0" ></label>`;
 function currentLevel() {
   return content.levels.find((level) => level.id === levelId)!;
 }
@@ -454,6 +454,7 @@ function render() {
     if (saved) {
       (event.target as HTMLSelectElement).value = revision?.id ?? "";
       navigate(() => {
+        clearWaveCanvasHistory();
         revision = saved;
         content = clone(saved.content);
         ensureSelection();
@@ -501,6 +502,7 @@ function render() {
         const savedRevision = store.bundle.revisions.find(
           (entry) => entry.id === saved.revisionId,
         )!;
+        clearWaveCanvasHistory();
         revision = savedRevision;
         content = clone(savedRevision.content);
         scenario = clone(saved.scenario as Scenario);
@@ -524,6 +526,7 @@ function render() {
       (record.scenario as Scenario) ??
       (store.bundle.scenarios.find((entry) => entry.id === record.scenarioId)
         ?.scenario as Scenario);
+    clearWaveCanvasHistory();
     revision = savedRevision;
     content = clone(savedRevision.content);
     scenario = clone(setup);
@@ -671,6 +674,7 @@ function saveReport(
 }
 function launch(replay = false) {
   if (replay && lastAttemptContent && lastAttemptScenario) {
+    clearWaveCanvasHistory();
     content = clone(lastAttemptContent);
     scenario = clone(lastAttemptScenario);
     revision = lastAttemptRevision;
@@ -795,6 +799,7 @@ function collectEdits() {
   const level = next.levels.find((entry) => entry.id === levelId)!;
   const wave = level.waves.find((entry) => entry.id === waveId)!;
   for (const field of root.querySelectorAll<HTMLInputElement>("[data-field]")) {
+    if (Number(field.value) === Number(field.dataset.original)) continue;
     const key = field.dataset.field!;
     if (key === "reward") wave.reward = Number(field.value);
     else
@@ -811,7 +816,26 @@ function collectEdits() {
   next.towers = editorJson("tower-editor", "Global defender catalog");
   next.enemies = editorJson("enemy-editor", "Global enemy catalog");
   next.rules = editorJson("rule-editor", "Global gameplay rules");
-  validateContent(next);
+  try {
+    validateContent(next);
+  } catch (cause) {
+    const editors = [
+      ["packet-editor", currentWave().packets],
+      ["tower-editor", content.towers],
+      ["enemy-editor", content.enemies],
+      ["rule-editor", content.rules],
+    ] as const;
+    const changed = editors.find(
+      ([id, original]) =>
+        root.querySelector<HTMLTextAreaElement>(`#${id}`)!.value !==
+        json(original),
+    );
+    invalidEditor = root.querySelector<HTMLTextAreaElement>(
+      `#${changed?.[0] ?? "packet-editor"}`,
+    )!;
+    invalidEditor.setAttribute("aria-invalid", "true");
+    throw cause;
+  }
   return next;
 }
 function commitEdits() {
@@ -847,6 +871,20 @@ function updatePreview() {
     );
     root.querySelector<HTMLElement>("#wave-canvas")!.inert = false;
     scenario = readScenario();
+    dirty =
+      configurationIdentity(content) !== configurationIdentity(savedContent) ||
+      configurationIdentity({
+        ...scenario,
+        formation: scenario.formation ?? [],
+        overrides: scenario.overrides ?? {},
+      }) !==
+        configurationIdentity({
+          ...savedScenario,
+          formation: savedScenario.formation ?? [],
+          overrides: savedScenario.overrides ?? {},
+        }) ||
+      root.querySelector<HTMLInputElement>("#draft-name")!.value !==
+        (revision?.name ?? `${currentLevel().name} rhythm candidate`);
     root.querySelector("#attempt-timeline")!.innerHTML = timeline();
     root.querySelector("#attempt-map")!.innerHTML = mapPreview();
     root.querySelector("#attempt-effective")!.innerHTML = effectiveInspector();
@@ -862,7 +900,7 @@ function updatePreview() {
     error = "";
     message = dirty
       ? "Unsaved changes. Save & play will test these settings."
-      : message;
+      : "Ready to shape this wave. Your settings match the saved recipe.";
   } catch (cause) {
     root.querySelector<HTMLElement>("#wave-canvas")!.inert = true;
     error = `Preview paused: ${cause instanceof Error ? cause.message : String(cause)}. Your input is retained.`;
@@ -895,6 +933,10 @@ async function onClick(event: MouseEvent) {
   ) {
     try {
       if (target.dataset.action === "save-switch") commitEdits();
+      else {
+        clearWaveCanvasHistory();
+        message = "Changes discarded. Ready to shape this wave.";
+      }
       dirty = false;
       const next = pendingNavigation;
       pendingNavigation = undefined;
@@ -930,6 +972,7 @@ async function onClick(event: MouseEvent) {
       message = "Named draft saved. Released content is unchanged.";
     } else if (action === "baseline") {
       navigate(() => {
+        clearWaveCanvasHistory();
         content = clone(CANONICAL_CONTENT);
         revision = null;
         message = "Released baseline selected.";

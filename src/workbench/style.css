@@ -1255,3 +1255,22 @@
 .wg-inspector details[open] > summary {
   margin-bottom: 8px;
 }
+.wg-scroll {
+  overflow-y: hidden;
+}
+.wb-shell .wb-tabs {
+  padding-left: 28px;
+}
+@media (max-width: 650px) {
+  .wb-shell .wb-tabs {
+    padding-left: 16px;
+  }
+}
+.wg-message.wg-error {
+  background: #fae8d9;
+  color: #843f24;
+}
+.wb-shell .wg-repeat-rest {
+  font-size: 9px;
+  background: #c9d8bf;
+}

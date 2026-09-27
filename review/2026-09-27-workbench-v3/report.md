@@ -21,13 +21,27 @@ Opus raised a possible zero-batch scheduling hang. Source verification showed th
 
 Browser interaction evidence includes body dragging (first-group wait 0 → 3.1s), timing-extent dragging (gap 3 → 2.8025s), count dragging (20 → 23), and three undos returning the exact original group with absent optional timing fields still absent. Selecting pairs and dragging the final enemy set uniform stagger to 0.6s. Save & play launched the draft, returning retained the exact recipe and enabled undo, and the report marked it as the current saved settings.
 
-Selecting the third Weasel copy in A Net in the Lanternlight highlighted all three source-linked groups and disclosed all three repeats. Dragging the repeat handle changed 3 → 4 and drew four copies. Further checks and final review findings are recorded below as verification completes.
+Selecting the third Weasel copy in A Net in the Lanternlight highlighted all three source-linked groups and disclosed all three repeats. Dragging the repeat handle changed 3 → 4 and drew four copies. Dragging extra repeat rest from 3 → 4s left the first copy unchanged and shifted later copies by 1s and 2s; Undo restored the source and Released settings status. Keyboard wait editing retained focus and updated all linked copies.
 
-The focused model suite covers shared spawn records, additive repeat rests and final spacing, immutable edits/rejections, partial batches, simultaneous versus invalid nonmonotonic transitions, stable insert/reorder identities and every canonical wave. At this stage all 235 tests in 41 files pass; type checking, formatting, production build and workbench build pass. Production isolation is verified across 220 files. The existing large-bundle advisory remains.
+Direct batch size, uniform stagger and next-batch spacing edits compiled immediately. An invalid stagger endpoint restored the source without adding history. Enemy palettes added a group and a separate sequence; Undo restored the original. Invalid expert batch size zero retained and focused the input, blocked Play and disabled the stale canvas. Corrected expert JSON refreshed the canvas and could be undone. Save & play also worked at 844×390; the page had no horizontal overflow and handles measured 44 pixels. This is viewport verification, not physical touch-device testing.
+
+Final specification and standards reviews found two integration issues: history during an active drag could desynchronize the recipe, and equivalent optional defaults could falsely mark an exact Undo as unsaved. Both were corrected and source-reviewed. Active-drag keyboard cancellation is verified by source tracing, not a held-pointer browser test. The final browser check confirmed edit → Undo restores Released settings without adding optional numeric defaults.
+
+The focused model suite covers shared spawn records, additive repeat rests and final spacing, immutable edits/rejections, partial batches, simultaneous versus invalid nonmonotonic transitions, stable insert/reorder identities and every canonical wave. Final checks pass: all 235 tests in 41 files, type checking, formatting, production build and workbench build. Production isolation is verified across 220 files. The existing large-bundle advisory remains.
+
+| Criterion | Evidence and remaining uncertainty |
+| --- | --- |
+| Visual primary | Matched captures show editable enemy-image timeline before disclosed forms. Owner first-use response pending. |
+| Direct manipulation | Browser drag workflows change wait, count, spacing, batches, stagger, repeats and rest. |
+| Hierarchy and scope | Selected shared copies highlight; contextual batch view and all-repeat scope appear. |
+| Semantic truth | Canonical schedule equivalence tests, partial batches, trailing gaps and invalid transition rejection pass. |
+| Recoverability | Browser Undo, expert recovery and save/play return pass; active cancellation/history source-reviewed. |
+| Accessibility | Keyboard edits, scoped step alternatives, focus recovery, 44px handles and landscape layout checked. Physical touch and assistive-technology acceptance pending. |
+| Prior criteria | Primary action, visible test setup, hidden default JSON, feedback and production isolation retained. |
 
 ## Captures and provenance
 
-All PNGs in this directory are browser captures of the local workbench, generated during this iteration. They are review evidence, not runtime artwork. `before-desktop.png` and `after-desktop.png` show the released first-wave view at 1280×720. `before-complex.png` and `after-complex.png` show Fleetwater Finale at the same viewport and scroll position. Existing enemy body assets retain their original provenance; none were generated or altered for this UI.
+All PNGs in this directory are browser captures of the local workbench, generated during this iteration. They are review evidence, not runtime artwork. `before-desktop.png` and `after-desktop.png` show the released first-wave view at 1280×720. `before-complex.png` and `after-complex.png` show Fleetwater Finale at the same viewport and scroll position. `after-selected.png` shows linked Weasel groups and rest handles; `after-landscape.png` shows the 844×390 layout; `after-error.png` shows retained invalid expert input. Existing enemy body assets retain their original provenance; none were generated or altered for this UI.
 
 ## Limits and acceptance
 
