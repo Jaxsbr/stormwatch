@@ -754,7 +754,11 @@ export class Battlefield {
               ? 0xffd28e
               : 0xffffff,
       );
-      const guard = ratShieldState(s.clock - e.spawnedAt, e.shieldCycle);
+      const guard = ratShieldState(
+        s.clock - e.spawnedAt,
+        e.shieldCycle,
+        e.shieldEnabled,
+      );
       const flashAge =
         e.shieldHitAt === undefined ? Infinity : s.clock - e.shieldHitAt;
       const flash = flashAge >= 0 && flashAge < 0.24 ? 1 - flashAge / 0.24 : 0;

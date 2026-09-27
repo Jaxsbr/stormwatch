@@ -258,32 +258,33 @@ describe("The Last Lantern's first-board lessons", () => {
     expect(runner!.distance - restoredDistance).toBeCloseTo(1.25 * DT, 5);
   });
 
+  // Balance evidence refreshed for the shared 3s shield / 5s exposed default.
   it.each(["mixed", "squirrels"] as const)(
     "records wave-six pressure against the %s opening line",
     (strategy) => {
       const result = play(strategy);
       expect(result.phase).toBe("lost");
       expect(result.waves).toBe(6);
-      expect(result.lives).toBe(strategy === "squirrels" ? 1 : 0);
+      expect(result.lives).toBe(strategy === "squirrels" ? 6 : 5);
       expect(result.killsByKind.boss).toBe(0);
       expect(result.checkpoints).toHaveLength(6);
       expect(waveProfile(result.checkpoints)).toEqual(
         strategy === "mixed"
           ? [
-              [1, 68.4, 12, 0, 55, 85, 5, 1],
-              [2, 56, 12, 0, 60, 100, 6, 2],
-              [3, 61.4, 12, 0, 35, 110, 8, 3],
-              [4, 71.6, 6, 6, 67, 152, 11, 3],
-              [5, 75.1, 2, 10, 65, 203, 12, 6],
-              [6, 68.8, 0, 11, 29, 74, 12, 8],
+              [1, 67.5, 12, 0, 55, 85, 5, 1],
+              [2, 57.2, 12, 0, 60, 100, 6, 2],
+              [3, 51.5, 12, 0, 35, 110, 8, 3],
+              [4, 65.9, 11, 1, 37, 162, 12, 3],
+              [5, 72.4, 11, 1, 83, 211, 12, 6],
+              [6, 67.3, 5, 2, 51, 78, 12, 8],
             ]
           : [
               [1, 63.9, 12, 0, 50, 85, 4, 2],
-              [2, 53.5, 12, 0, 30, 100, 7, 2],
-              [3, 46.6, 12, 0, 60, 110, 9, 2],
-              [4, 64.6, 10, 2, 45, 160, 12, 3],
-              [5, 75.5, 7, 5, 85, 205, 12, 6],
-              [6, 63.6, 1, 6, 51, 76, 12, 8],
+              [2, 52.2, 12, 0, 30, 100, 7, 2],
+              [3, 46, 12, 0, 60, 110, 9, 2],
+              [4, 63.5, 12, 0, 49, 164, 12, 3],
+              [5, 70.7, 12, 0, 40, 211, 12, 7],
+              [6, 63.6, 6, 1, 8, 78, 12, 9],
             ],
       );
     },
@@ -292,16 +293,16 @@ describe("The Last Lantern's first-board lessons", () => {
   it("also pressures a line with one poorly placed opening Squirrel", () => {
     const result = play("mistake");
     expect(result.phase).toBe("lost");
-    expect(result.lives).toBe(0);
+    expect(result.lives).toBe(5);
     expect(result.killsByKind.boss).toBe(0);
     expect(result.checkpoints).toHaveLength(6);
     expect(waveProfile(result.checkpoints)).toEqual([
       [1, 64.6, 12, 0, 50, 85, 4, 2],
       [2, 51.4, 12, 0, 30, 100, 7, 2],
-      [3, 51.2, 12, 0, 60, 110, 9, 2],
-      [4, 64.6, 9, 3, 43, 158, 12, 3],
-      [5, 75.1, 2, 10, 75, 197, 12, 6],
-      [6, 63.6, 0, 11, 41, 76, 12, 8],
+      [3, 48.6, 12, 0, 60, 110, 9, 2],
+      [4, 65.8, 11, 1, 47, 162, 12, 3],
+      [5, 71.3, 11, 1, 38, 211, 12, 7],
+      [6, 63.6, 5, 2, 6, 78, 12, 9],
     ]);
   });
 });

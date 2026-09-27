@@ -50,6 +50,8 @@ export interface WaveGroupDef {
   movementScale?: number;
   /** Optional per-group Rat Raider guard timing; first guard follows one down interval. */
   shieldCycle?: ShieldCycle;
+  /** Explicit opt-out; legacy simulation fixtures default to enabled. */
+  shieldEnabled?: boolean;
 }
 export interface WaveDef {
   id?: string;
@@ -99,6 +101,8 @@ export interface Enemy extends Point {
   evadeAt?: number;
   movementScale?: number;
   shieldCycle?: ShieldCycle;
+  /** Explicit opt-out; legacy simulation fixtures default to enabled. */
+  shieldEnabled?: boolean;
   /** Absolute simulation time when a rallied escort's speed bonus expires. */
   rallyUntil?: number;
   /** Absolute simulation time of the boss's next rally pulse. */

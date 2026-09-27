@@ -187,20 +187,22 @@ it("sends four sets of revised mini cycles with fast Weasels and five-second res
   expect(enemies[1].distance).toBeLessThan(119);
 });
 
-it("gives the first-wave Rats a shorter shield window while keeping the finale at five on/five off", () => {
+it("uses the shared three-on/five-off Rat shield across opening and finale", () => {
   const opening = new Game(rainstoneCrossing);
   const finale = new Game(rainstoneCrossing);
   finale.state.wave = 3;
   opening.startWave();
   finale.startWave();
-  step(opening, 5.8);
-  step(finale, 5.8);
+  step(opening, 5.5);
+  step(finale, 5.5);
   expect(opening.state.enemies[0].shieldRaised).toBe(false);
-  expect(finale.state.enemies[0].shieldRaised).toBe(true);
-  step(opening, 1);
+  expect(finale.state.enemies[0].shieldRaised).toBe(false);
+  step(opening, 0.5);
+  step(finale, 0.5);
   expect(opening.state.enemies[0].shieldRaised).toBe(true);
-  step(opening, 4);
-  step(finale, 5);
+  expect(finale.state.enemies[0].shieldRaised).toBe(true);
+  step(opening, 3);
+  step(finale, 3);
   expect(opening.state.enemies[0].shieldRaised).toBe(false);
   expect(finale.state.enemies[0].shieldRaised).toBe(false);
 });

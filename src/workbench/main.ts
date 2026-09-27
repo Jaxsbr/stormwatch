@@ -7,6 +7,8 @@ import "./workspace.css";
 import {
   CANONICAL_CONTENT,
   configurationIdentity,
+  waveAbilities,
+  ABILITY_DEFAULTS,
   validateContent,
   type AuthoringContent,
   type LevelRecipe,
@@ -73,6 +75,7 @@ const identity = () =>
     towers: gameContent.towers,
     enemies: gameContent.enemies,
     rules: gameContent.rules,
+    abilityDefaults: draft.content.abilityDefaults,
   });
 function pendingPromotion() {
   try {
@@ -136,10 +139,12 @@ function feedback() {
 }
 function validSettings(focus = false) {
   const invalid = [
-    ...root.querySelectorAll<HTMLInputElement>("[data-field]"),
+    ...root.querySelectorAll<HTMLInputElement>(
+      "[data-field], [data-ability-timing]",
+    ),
   ].find((input) => !input.validity.valid || !input.value.trim());
   if (invalid && focus) {
-    root.querySelector<HTMLDetailsElement>("#map-settings")!.open = true;
+    invalid.closest<HTMLDetailsElement>("details")!.open = true;
     invalid.focus();
     invalid.reportValidity();
   }
@@ -174,6 +179,10 @@ function render() {
   canvas = undefined;
   const map = level(),
     current = wave();
+  const abilities = waveAbilities(current);
+  const defaults = draft.content.abilityDefaults ?? ABILITY_DEFAULTS;
+  const globalsOpen =
+    root.querySelector<HTMLDetailsElement>("#ability-settings")?.open ?? false;
   const matchedLayout =
     draft.base.levels.find(
       (l) =>
@@ -183,10 +192,12 @@ function render() {
   root.innerHTML = `<main class="wb-shell ws-shell"><header class="wb-header"><div><p class="wb-eyebrow">STORMWATCH</p><h1>Designer workbench</h1></div><span id="draft-status" role="status"></span></header>
   <section class="ws-workspace"><div class="ws-picker-bar"><label>Map<select id="map-picker">${draft.content.levels.map((l) => `<option value="${esc(l.id)}" ${l.id === map.id ? "selected" : ""}>${esc(l.name)}</option>`).join("")}</select></label><button data-action="new-map">+ Map</button><label>Wave<select id="wave-picker">${map.waves.map((w, i) => `<option value="${esc(w.id)}" ${w.id === current.id ? "selected" : ""}>${i + 1}. ${esc(w.title)}</option>`).join("")}</select></label><button data-action="new-wave">+ Wave</button></div>
   <div class="ws-heading"><div><h2>Shape the arrivals.</h2><p>Move enemy groups, shape their rhythm, then try the wave.</p></div><div class="ws-actions"><button data-action="play">Playtest</button><button data-action="promote" class="primary">Promote</button></div></div>
-  <div class="ws-save-line"><span id="promotion-state"></span><span>Promote saves this wave and its map settings to game config.</span></div>
+  <div class="ws-save-line"><span id="promotion-state"></span><span>Promote saves this wave, map settings and shared ability changes.</span></div>
   <div id="workspace-message" class="wb-feedback" role="status"></div><button data-action="refresh-config" hidden>Keep draft with latest game config</button>
   ${playable() ? '<section id="wave-canvas" aria-label="Visual wave editor"></section>' : `<section class="ws-empty"><h3>Add your first enemy group</h3><p>Choose an enemy, then shape the group on the timeline.</p><div class="wg-palette">${palette()}</div></section>`}
+  <fieldset class="ws-abilities"><legend>Abilities for this wave</legend><label><input type="checkbox" data-ability="ratShield" ${abilities.ratShield ? "checked" : ""}/> Rat shield <small data-timing-summary="ratShield">${defaults.ratShield.upSeconds}s shielded / ${defaults.ratShield.downSeconds}s exposed</small></label><label><input type="checkbox" data-ability="weaselEvade" ${abilities.weaselEvade ? "checked" : ""}/> Weasel evade <small data-timing-summary="weaselEvade">${defaults.weaselEvade.upSeconds}s evading / ${defaults.weaselEvade.downSeconds}s exposed</small></label></fieldset>
   <p id="play-result" class="ws-play-result"></p>
+  <details id="ability-settings" class="ws-settings" ${globalsOpen ? "open" : ""}><summary>Shared ability settings</summary><p>Applies to every wave with the ability on. Promote saves these changes too.</p><div class="ws-settings-grid">${(["ratShield", "weaselEvade"] as const).map((key) => `<fieldset><legend>${key === "ratShield" ? "Rat shield" : "Weasel evade"}</legend>${(["upSeconds", "downSeconds"] as const).map((phase) => `<label>${phase === "upSeconds" ? "Active" : "Exposed"} (seconds)<input type="number" min="0.05" step="0.05" required data-ability-timing="${key}" data-phase="${phase}" aria-label="${key === "ratShield" ? "Rat shield" : "Weasel evade"} ${phase === "upSeconds" ? "active" : "exposed"} seconds" value="${defaults[key][phase]}"/></label>`).join("")}</fieldset>`).join("")}</div></details>
   <details id="map-settings" class="ws-settings" ${settingsOpen ? "open" : ""}><summary>Map &amp; wave settings</summary><div class="ws-settings-grid"><label>Map name<input data-field="name" value="${esc(map.name)}" required/></label><label>Wave name<input data-field="title" value="${esc(current.title)}" required/></label><label>Map layout<select id="layout-picker">${matchedLayout ? "" : '<option value="">Custom layout</option>'}${draft.base.levels.map((l) => `<option value="${esc(l.id)}" ${l.id === matchedLayout ? "selected" : ""}>${esc(l.name)}</option>`).join("")}</select></label><label>Starting crowns<input data-field="startCoins" type="number" min="0" step="1" value="${map.startCoins}"/></label><label>Wave reward<input data-field="reward" type="number" min="0" step="1" value="${current.reward}"/></label>${mapPreview()}</div></details>
   </section><dialog id="create-dialog"><form id="create-form"><h2 id="create-title"></h2><label>Name<input id="create-name" required maxlength="100" autocomplete="off"/></label><label id="create-layout-label">Starting layout<select id="create-layout">${draft.base.levels.map((l) => `<option value="${esc(l.id)}">${esc(l.name)}</option>`).join("")}</select></label><div class="ws-dialog-actions"><button type="button" data-action="cancel-create">Cancel</button><button class="primary" type="submit">Create</button></div></form></dialog></main>`;
   if (playable())
@@ -199,9 +210,48 @@ function render() {
         message = "";
         const index = level().waves.findIndex((w) => w.id === draft.waveId);
         level().waves[index] = clone(next);
+        const enabled = waveAbilities(next);
+        root
+          .querySelectorAll<HTMLInputElement>("[data-ability]")
+          .forEach((input) => {
+            input.checked =
+              enabled[input.dataset.ability as "ratShield" | "weaselEvade"];
+          });
         persist();
       },
     });
+  root
+    .querySelectorAll<HTMLInputElement>("[data-ability-timing]")
+    .forEach((input) => {
+      input.oninput = () => {
+        if (!input.validity.valid || !input.value.trim()) {
+          error =
+            "Ability timing must be at least 0.05 seconds, in 0.05-second steps.";
+          feedback();
+          return;
+        }
+        const key = input.dataset.abilityTiming as "ratShield" | "weaselEvade";
+        const phase = input.dataset.phase as "upSeconds" | "downSeconds";
+        draft.content.abilityDefaults ??= clone(ABILITY_DEFAULTS);
+        draft.content.abilityDefaults[key][phase] = Number(input.value);
+        const cycle = draft.content.abilityDefaults[key];
+        root.querySelector(`[data-timing-summary="${key}"]`)!.textContent =
+          `${cycle.upSeconds}s ${key === "ratShield" ? "shielded" : "evading"} / ${cycle.downSeconds}s exposed`;
+        error = "";
+        message = "";
+        persist();
+      };
+    });
+  root.querySelectorAll<HTMLInputElement>("[data-ability]").forEach((input) => {
+    input.onchange = () => {
+      const key = input.dataset.ability as "ratShield" | "weaselEvade";
+      wave().abilities = { ...waveAbilities(wave()), [key]: input.checked };
+      error = "";
+      message = "";
+      canvas?.refresh(wave(), level());
+      persist();
+    };
+  });
   root.querySelector<HTMLSelectElement>("#map-picker")!.onchange = (event) => {
     draft.levelId = (event.target as HTMLSelectElement).value;
     draft.waveId = level().waves[0].id;

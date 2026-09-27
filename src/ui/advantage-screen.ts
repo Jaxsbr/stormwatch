@@ -71,7 +71,7 @@ export function advantageScreen(
         .map(
           (kind) => `<li>
         <img src="${import.meta.env.BASE_URL}art/v2/${enemyArt[kind]}-rig-v1/body.webp" alt="" draggable="false">
-        <div><strong>${ENEMIES[kind].name}</strong><span>${enemyTraits[kind]}</span></div>
+        <div><strong>${ENEMIES[kind].name}</strong><span>${kind === "raider" && !level.waves.some((w) => w.groups.some((g) => g.kind === "raider" && g.shieldEnabled !== false)) ? "Shield off" : kind === "runner" && level.waves.some((w) => w.groups.some((g) => g.kind === "runner" && g.evasionCycle)) ? "Runs fast · periodic evade" : enemyTraits[kind]}</span></div>
       </li>`,
         )
         .join("")}</ul>

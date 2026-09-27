@@ -151,3 +151,10 @@ The baseline recipe import remains available for headless tools and tests.
 read-only local development/preview route to the canonical file. Promote only
 writes that file; it never invokes the compiler. Existing attempts remain immutable.
 See [decision 025](decisions/025-runtime-game-content.md).
+
+### Shared abilities
+
+Canonical `abilityDefaults` supplies Rat shield and Weasel evade cycles. Per-wave
+boolean switches enable them; `compileLevel` applies shared cycles to each group.
+The workbench migrates legacy drafts and promotes shared timings with a selected
+map/wave, with conflict checks for the global scope. See [decision 026](decisions/026-shared-wave-abilities.md).

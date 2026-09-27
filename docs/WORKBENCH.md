@@ -25,7 +25,7 @@ normal difficulty and legitimate first-arrival tools. Its progress stays separat
 from family profiles. Return with Workbench to continue editing.
 
 **Promote** writes the selected wave and its map settings into
-`src/content/recipes.json`. Other waves, maps and global catalogs stay unchanged;
+`src/content/recipes.json`. Changed shared ability timings are saved with it. Other waves, maps and global catalogs stay unchanged;
 their pending edits remain in the working draft. New selected maps/waves are
 inserted into the canonical configuration. Promotion is data-only: it does not
 compile JavaScript, restart a game attempt, commit or publish a deployment.
@@ -89,3 +89,19 @@ separate from the one-wave browser Promote action.
 The browser writer is available only in local workbench dev/preview mode. It
 requires a loopback connection, matching origin and a server-issued request token.
 The production build exposes neither the workbench nor its write endpoint.
+
+## Shared enemy abilities
+
+Use **Abilities for this wave** below the timeline to switch Rat shield and Weasel
+evade on or off for every matching enemy in that wave, including repeats.
+
+Expand **Shared ability settings** to set each ability's active and exposed times.
+These values apply to every wave with that ability enabled. Initial defaults are
+Rat shield 3s active/5s exposed and Weasel evade 2s active/3s exposed. Both begin
+with their exposed interval after spawning. Timings use 0.05-second increments.
+Edits auto-save; Playtest uses them immediately. **Promote** saves changed shared
+timings together with the current map/wave. Reload the game to use them.
+
+Old draft arrival patterns are preserved while individual shield/evade timing
+variations are replaced by shared settings. Introductory waves that lacked evade
+keep it off. Concurrent edits to shared settings are checked before promotion.

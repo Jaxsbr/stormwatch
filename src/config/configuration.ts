@@ -7,6 +7,8 @@ import type {
   EnemyKind,
   TowerDef,
   EnemyDef,
+  ShieldCycle,
+  EvasionCycle,
 } from "../sim/types";
 import { validateLevel } from "../sim/path";
 import { compileSpawnSchedule } from "../sim/spawn-schedule";
@@ -24,12 +26,14 @@ export interface WaveRecipe {
   packets: PacketRecipe[];
   lesson?: string;
   targetOutcome?: string;
+  abilities?: { ratShield: boolean; weaselEvade: boolean };
 }
 export interface LevelRecipe extends Omit<LevelDef, "waves"> {
   waves: WaveRecipe[];
 }
 export interface AuthoringContent {
   schemaVersion: 1;
+  abilityDefaults?: { ratShield: ShieldCycle; weaselEvade: EvasionCycle };
   levels: LevelRecipe[];
   towers: Record<TowerKind, TowerDef>;
   enemies: Record<EnemyKind, EnemyDef>;
@@ -59,6 +63,37 @@ export function installRuntimeContent(value: unknown): void {
   CANONICAL_CONTENT = freeze(structuredClone(value as AuthoringContent));
   DEFAULT_RULES = CANONICAL_CONTENT.rules;
 }
+export const ABILITY_DEFAULTS = {
+  ratShield: { upSeconds: 3, downSeconds: 5 },
+  weaselEvade: { upSeconds: 2, downSeconds: 3 },
+};
+/** Legacy data only uses the presence of an ability; individual timings are retired. */
+export function waveAbilities(wave: WaveRecipe) {
+  return (
+    wave.abilities ?? {
+      ratShield: true,
+      weaselEvade: wave.packets.some((p) =>
+        p.groups.some((g) => !!g.evasionCycle),
+      ),
+    }
+  );
+}
+export function normalizeAbilities(
+  content: AuthoringContent,
+): AuthoringContent {
+  const next = structuredClone(content);
+  next.abilityDefaults ??= structuredClone(ABILITY_DEFAULTS);
+  for (const level of next.levels)
+    for (const wave of level.waves) {
+      wave.abilities = waveAbilities(wave);
+      for (const packet of wave.packets)
+        for (const group of packet.groups) {
+          delete group.shieldCycle;
+          delete group.evasionCycle;
+        }
+    }
+  return next;
+}
 export function configurationIdentity(value: unknown): string {
   const ordered = (v: unknown): unknown =>
     Array.isArray(v)
@@ -75,7 +110,10 @@ export function configurationIdentity(value: unknown): string {
     hash = Math.imul(hash ^ c.charCodeAt(0), 16777619);
   return `v1-${(hash >>> 0).toString(16).padStart(8, "0")}`;
 }
-export function compileLevel(recipe: LevelRecipe): LevelDef {
+export function compileLevel(
+  recipe: LevelRecipe,
+  abilityDefaults = CANONICAL_CONTENT.abilityDefaults ?? ABILITY_DEFAULTS,
+): LevelDef {
   return {
     ...structuredClone(recipe),
     waves: recipe.waves.map((w) => ({
@@ -86,6 +124,16 @@ export function compileLevel(recipe: LevelRecipe): LevelDef {
         Array.from({ length: p.repeat ?? 1 }, (_, r) =>
           p.groups.map((g, i) => ({
             ...structuredClone(g),
+            shieldEnabled:
+              g.kind === "raider" ? waveAbilities(w).ratShield : undefined,
+            shieldCycle:
+              g.kind === "raider"
+                ? structuredClone(abilityDefaults.ratShield)
+                : undefined,
+            evasionCycle:
+              g.kind === "runner" && waveAbilities(w).weaselEvade
+                ? structuredClone(abilityDefaults.weaselEvade)
+                : undefined,
             id: `${p.id}/${r + 1}/${g.id}`,
             delayBefore:
               (g.delayBefore ?? 0) +
@@ -124,9 +172,29 @@ export function validateContent(content: AuthoringContent): void {
     throw new Error("Unsupported content schema version");
   exact(
     content,
-    ["schemaVersion", "levels", "towers", "enemies", "rules"],
+    [
+      "schemaVersion",
+      "levels",
+      "towers",
+      "enemies",
+      "rules",
+      "abilityDefaults",
+    ],
     "content",
   );
+  if (content.abilityDefaults !== undefined) {
+    exact(
+      content.abilityDefaults,
+      ["ratShield", "weaselEvade"],
+      "abilityDefaults",
+    );
+    for (const key of ["ratShield", "weaselEvade"] as const) {
+      const cycle = content.abilityDefaults[key];
+      exact(cycle, ["upSeconds", "downSeconds"], key);
+      numeric(cycle.upSeconds, `${key}.upSeconds`, Number.EPSILON);
+      numeric(cycle.downSeconds, `${key}.downSeconds`, Number.EPSILON);
+    }
+  }
   ids(content.levels, "levels");
   for (const level of content.levels) {
     exact(
@@ -178,11 +246,27 @@ export function validateContent(content: AuthoringContent): void {
     for (const w of level.waves) {
       exact(
         w,
-        ["id", "title", "reward", "packets", "lesson", "targetOutcome"],
+        [
+          "id",
+          "title",
+          "reward",
+          "packets",
+          "lesson",
+          "targetOutcome",
+          "abilities",
+        ],
         "wave",
       );
       if (typeof w.title !== "string" || !w.title.trim())
         throw new Error("Wave title required");
+      if (w.abilities !== undefined) {
+        exact(w.abilities, ["ratShield", "weaselEvade"], "abilities");
+        if (
+          typeof w.abilities.ratShield !== "boolean" ||
+          typeof w.abilities.weaselEvade !== "boolean"
+        )
+          throw new Error("Wave abilities must be on or off");
+      }
       numeric(w.reward, "reward", 0, true);
       ids(w.packets, "packets");
       if (!w.packets.length) throw new Error("Wave needs packets");
@@ -219,12 +303,20 @@ export function validateContent(content: AuthoringContent): void {
             numeric(g.evasionCycle.upSeconds, g.id, Number.EPSILON);
             numeric(g.evasionCycle.downSeconds, g.id, Number.EPSILON);
           }
-          if (g.shieldCycle)
+          if (g.shieldCycle) {
             exact(g.shieldCycle, ["upSeconds", "downSeconds"], g.id);
+            if (g.kind !== "raider")
+              throw new Error(`${g.id}.shieldCycle: Rat only`);
+            numeric(g.shieldCycle.upSeconds, g.id, Number.EPSILON);
+            numeric(g.shieldCycle.downSeconds, g.id, Number.EPSILON);
+          }
         }
       }
     }
-    const compiled = compileLevel(level);
+    const compiled = compileLevel(
+      level,
+      content.abilityDefaults ?? ABILITY_DEFAULTS,
+    );
     validateLevel(compiled);
     for (const w of compiled.waves)
       compileSpawnSchedule(w, content.rules.initialSpawnDelay);
@@ -277,7 +369,10 @@ export function resolveConfiguration(
   validateContent(content);
   const recipe = content.levels.find((l) => l.id === levelId);
   if (!recipe) throw new Error(`Unknown encounter ${levelId}`);
-  const level = compileLevel(recipe);
+  const level = compileLevel(
+    recipe,
+    content.abilityDefaults ?? ABILITY_DEFAULTS,
+  );
   if (options.availableTowers)
     level.availableTowers = [...options.availableTowers];
   const value = {

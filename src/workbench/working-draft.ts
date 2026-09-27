@@ -1,5 +1,6 @@
 import {
   configurationIdentity,
+  normalizeAbilities,
   validateContent,
   type AuthoringContent,
   type LevelRecipe,
@@ -49,6 +50,8 @@ export function validateWorkingDraft(input: unknown): WorkingDraft {
   )
     throw new Error("Unsupported working draft version");
   const draft = clone(input as WorkingDraft);
+  draft.base = normalizeAbilities(draft.base);
+  draft.content = normalizeAbilities(draft.content);
   validateContent(draft.base);
   const check = clone(draft.content);
   for (const level of check.levels) {
@@ -100,6 +103,7 @@ function emptyWave(name: string, id: string): WaveRecipe {
     id: identifier(id),
     title: text(name, "Wave name"),
     reward: 0,
+    abilities: { ratShield: true, weaselEvade: false },
     packets: [],
   };
 }
@@ -160,6 +164,7 @@ export function promoteWorkingWave(
   current: AuthoringContent,
   input: WorkingDraft,
 ): AuthoringContent {
+  current = normalizeAbilities(current);
   validateContent(current);
   const draft = validateWorkingDraft(input);
   const { level, wave } = selected(draft);
@@ -179,7 +184,20 @@ export function promoteWorkingWave(
     throw new Error(
       "This map or wave changed in game config. Reload its latest settings before promoting.",
     );
+  const defaultsChanged = !equal(
+    draft.content.abilityDefaults,
+    draft.base.abilityDefaults,
+  );
+  if (
+    defaultsChanged &&
+    !equal(current.abilityDefaults, draft.base.abilityDefaults)
+  )
+    throw new Error(
+      "Shared ability settings changed in game config. Reload their latest settings before promoting.",
+    );
   const result = clone(current);
+  if (defaultsChanged)
+    result.abilityDefaults = clone(draft.content.abilityDefaults);
   const index = result.levels.findIndex((entry) => entry.id === level.id);
   if (index < 0)
     result.levels.push({ ...clone(metadata(level)), waves: [clone(wave)] });
@@ -210,6 +228,7 @@ export function rebaseAfterPromotion(
   newBaseline: AuthoringContent,
 ): WorkingDraft {
   const draft = validateWorkingDraft(input);
+  newBaseline = normalizeAbilities(newBaseline);
   validateContent(newBaseline);
   const content = clone(newBaseline);
   const comparisonBase = clone(newBaseline);
@@ -293,6 +312,17 @@ export function rebaseAfterPromotion(
       if (index < 0) target.waves.push(clone(wave));
       else target.waves[index] = clone(wave);
     }
+  }
+  if (!equal(draft.content.abilityDefaults, draft.base.abilityDefaults)) {
+    content.abilityDefaults = clone(draft.content.abilityDefaults);
+    if (
+      conflicts(
+        draft.content.abilityDefaults,
+        draft.base.abilityDefaults,
+        newBaseline.abilityDefaults,
+      )
+    )
+      comparisonBase.abilityDefaults = clone(draft.base.abilityDefaults);
   }
   for (const scope of ["towers", "enemies", "rules"] as const) {
     for (const key of Object.keys(draft.content[scope])) {

@@ -47,6 +47,7 @@ export class Game {
     kind: EnemyKind;
     movementScale?: number;
     shieldCycle?: WaveGroupDef["shieldCycle"];
+    shieldEnabled?: boolean;
     evasionCycle?: WaveGroupDef["evasionCycle"];
   }[] = [];
   private waveClock = 0;
@@ -269,6 +270,7 @@ export class Game {
             }
           : {}),
         evasionCycle: q.evasionCycle,
+        shieldEnabled: q.shieldEnabled,
         ...(q.movementScale === undefined
           ? {}
           : { movementScale: q.movementScale }),
@@ -322,7 +324,7 @@ export class Game {
     for (const e of s.enemies) {
       if (e.kind !== "raider") continue;
       const age = s.clock - e.spawnedAt;
-      const raised = ratShieldState(age, e.shieldCycle).raised;
+      const raised = ratShieldState(age, e.shieldCycle, e.shieldEnabled).raised;
       if (raised !== e.shieldRaised) {
         e.shieldRaised = raised;
       }

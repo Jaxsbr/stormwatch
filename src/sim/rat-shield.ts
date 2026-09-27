@@ -14,8 +14,10 @@ export interface ShieldState {
 export function ratShieldState(
   age: number,
   customCycle?: ShieldCycle,
+  enabled = true,
 ): ShieldState {
-  if (!Number.isFinite(age) || age < 0) return { raised: false, strength: 0 };
+  if (!enabled || !Number.isFinite(age) || age < 0)
+    return { raised: false, strength: 0 };
   const cycle = customCycle ?? DEFAULT_CYCLE;
   const firstGuard = customCycle
     ? customCycle.downSeconds

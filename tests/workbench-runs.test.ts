@@ -249,6 +249,7 @@ describe("workbench real attempts and evidence", () => {
   });
   it("uses one goal evaluator for session reports and loop completion including wave and loss constraints", () => {
     const content = small();
+    content.enemies.raider.hp = 10000; // Guarantee a leak independently of ability balance.
     const session = new AttemptSession(content, scenario());
     session.command({ type: "place", kind: "bolt", point: { x: 1, z: 4 } });
     session.command({ type: "start" });
