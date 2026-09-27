@@ -1,0 +1,45 @@
+{
+  "version": 1,
+  "area": "Designer workbench first-use UX",
+  "sourceRevision": "8c8d029",
+  "baselineDirty": false,
+  "direction": "Owner rejects text/control overload and missing first-use path; authorizes adversarial Astra and Opus 5.5 review and V2 implementation.",
+  "scenarios": [
+    "Fresh opening at 1280x720 and 844x390",
+    "Change starting crowns and enemy count, Save & play, inspect exact attempt",
+    "Invalid input retains value with visible error",
+    "Workspace switch retains edits; wave/revision switch offers save/discard",
+    "Automated result readable before full evidence; advanced capabilities reachable"
+  ],
+  "criteria": [
+    {
+      "id": "first_task",
+      "acceptance": "Fresh Tune view explains choose/edit/play; selected wave, common editable field and one primary Save & play visible at desktop without scrolling."
+    },
+    {
+      "id": "progressive_disclosure",
+      "acceptance": "No JSON editor or global/synthetic configuration controls visible by default. Advanced capabilities remain reachable in Tune/Test/Experiments."
+    },
+    {
+      "id": "hierarchy",
+      "acceptance": "Distinct navigation, editable surface, preview and action; readable labels and keyboard focus, no timeline clipping."
+    },
+    {
+      "id": "edit_integrity",
+      "acceptance": "Save & play uses current validated inputs; invalid inputs retained; panel navigation preserves input; destructive context switches require explicit save/discard."
+    },
+    {
+      "id": "feedback",
+      "acceptance": "Save/validation feedback by action; results show completion status, hearts/crowns/time and tested source before raw evidence; old settings labeled."
+    },
+    {
+      "id": "responsive",
+      "acceptance": "Desktop/narrow view have no horizontal page overflow; essential controls at least44 CSSpx; advanced content scrolls intentionally."
+    },
+    {
+      "id": "regression",
+      "acceptance": "Required check/test/build and workbench build pass; canonical/game rules unchanged; advanced operations still function."
+    }
+  ],
+  "limits": "Expert critique and interaction evidence do not establish owner acceptance, ease of learning, child suitability or physical mobile performance."
+}

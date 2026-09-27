@@ -5,18 +5,36 @@ Run `npm run dev:workbench` for local authoring. For a built preview, run
 `/workbench.html` on the printed local URL. `npm run build` still produces only
 the ordinary game in `dist`; the workbench output is `dist-workbench`.
 
-Expand the encounter register and select a stable wave. The rhythm view shows
-individual nominal spawns, fixed-tick appearances, packet composition and
-spawn-relative ability windows; the map shows the existing fixed trail. The last
-scheduled spawn is not the wave-clear time. Authored lesson and target outcome are
-separate from observed reports; missing intent is displayed as unspecified.
+## First tweak
 
-Fork a named draft before editing. Adjust counts, cadence, batches, stagger,
-preceding silence, repetition or supported cycles in the packet form. Advanced
-JSON exposes catalog/rule parameters and packet structure with explicit scope.
-Validate/save creates another revision. An active attempt retains its original
-snapshot; restart applies the selected revision. No infrastructure work retunes the
-released campaign.
+The workbench opens in **Tune**, at Lantern Pass's first wave. Choose another
+wave in the left register if needed. Change starting crowns, wave-end crowns,
+enemy count or time between enemies, then choose **Save & play**. This validates
+and saves a local draft before launching the exact edited settings. No naming or
+scenario setup is required for the first playtest. **Save draft** keeps changes
+without starting a game.
+
+The rhythm preview updates for valid edits. It shows arrival timing, not wave-clear
+time; combat and travel determine clearing. More timing options expose repetition,
+batches, stagger, preceding silence, movement and supported guard/evasion cycles.
+Encounter modifiers and design notes are separate from wave settings. Catalog,
+rule and packet JSON editors remain under advanced disclosures.
+
+Switching between **Tune**, **Test** and **Experiments** keeps pending inputs.
+Switching waves or loading other saved settings asks you to save, discard or keep
+editing when there are pending changes. Validation errors retain the inputs.
+The play-setup line states whether the test starts at wave 1 or plays only the
+selected wave, and discloses any custom starting resources. Short landscape
+screens keep Save & play available in a persistent action bar.
+An active attempt retains its original immutable snapshot; later edits apply to a
+new attempt. The save indicator distinguishes released settings, unsaved changes
+and saved local drafts.
+
+**Test** contains manual setup and automated checks. Results lead with the outcome
+and key values; expand full evidence for commands, configuration identities and
+provenance. Results from earlier settings are labeled. **Experiments** contains
+named drafts, earlier revisions, saved scenarios/results/traces, import/export and
+canonical promotion. These tools are available without crowding the basic edit loop.
 
 Choose first-arrival or earned replay tools independently of normal/assist or a
 named design-only difficulty recipe. First arrival includes discoveries from

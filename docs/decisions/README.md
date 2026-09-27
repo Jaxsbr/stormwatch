@@ -26,3 +26,4 @@ Read the accepted records before changing consequential behavior. For a new deci
 - [020: Last Lantern boss pressure and copy](020-last-lantern-boss-pressure-and-copy.md)
 
 - [021: Local designer workbench and canonical attempt configuration](021-designer-workbench.md)
+- [022: Task-first designer workbench and reliable edit/play loop](022-workbench-task-first-interface.md)
