@@ -127,3 +127,30 @@ A fresh exported committed tree installed successfully using `npm ci --offline`
 build/artifact verification then passed without ignored source assets or local
 configuration. This proves independence from the working checkout; it does not
 verify a remote clone or fresh network download while repository access is blocked.
+
+
+## Upstream follow-up
+
+Owner verification resolved repository access: `Jaxsbr/stormwatch` already exists
+as a private repository. The earlier repository 404 reflected access under the
+wrong authenticated identity, not a missing destination. Pages remains unconfigured.
+All 74 candidate commits already have the Jaxsbr GitHub no-reply author and
+committer identity; no author rewrite is needed.
+
+### Ticket 06 action checklist
+
+| Action | Responsible | Completion evidence |
+| --- | --- | --- |
+| Push the reviewed candidate to the existing repository | Agent | Remote main matches the candidate commit |
+| Resolve repository visibility and enable Pages | Owner decision, then agent | Successful Pages deployment with exact URL and commit |
+| Complete the three-map browser chapter and reward replay | Agent | Actual controls, boss finish, ending/reward, reload/replay; no console/asset errors |
+| Check background/resume in battle and countdown | Agent | Progress/countdown pause safely and return without jumps or unintended audio |
+| Verify audible music/effects lifecycle | Owner, assisted by agent | Gesture unlock, sliders, mute, pause/resume and replay heard on a real device |
+| Open and play on the tablets and laptop | Owner | Tap placement, inspect/upgrade/sell, pause, orientation and retry work; stalls recorded |
+| Observe both children using their own slots | Owner | Understandable route to boss, loss/retry without progress loss, ending/replay reward reached |
+| Fix issues found and close the ticket | Agent, then owner acceptance | Relevant encounter rechecked; release version and remaining minor issues recorded |
+
+Automated chapter/profile/save/boss/assist coverage, typecheck, tests, formatting,
+production build, local Pages-subpath startup and two-axis review are complete.
+The full browser chapter is agent work remaining, not an item the owner must
+perform instead. Child/device observations cannot be supplied by automation.
