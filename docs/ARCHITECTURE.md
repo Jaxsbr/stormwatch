@@ -42,11 +42,11 @@ ground picking except during construction, when the exact ground cell wins.
 
 1. Add an encounter recipe to `src/content/recipes.json`. Supply its unique stable id, dimensions, orthogonal path, blocked cells, starting crowns, roster and wave recipes. Each wave and repeated packet needs a stable identity; preserve those identities when reordering content.
 2. Place the recipe in campaign order in the canonical `levels` array. `compileLevel` derives runtime groups from readable repeated packets; the small encounter TypeScript exports are compatibility modules, not authoring sources.
-3. Extend the save whitelist and discovery rules if the new encounter records campaign completion or awards tools.
+3. Canonical recipe order automatically registers encounters and their save whitelist. Extend discovery rules only if the new encounter awards tools.
 4. Validate the complete content with the shared configuration interface and run legal strategies through the actual `Game`. Add focused coverage for new behavior and inspect nominal versus fixed-tick spawn timing in the local workbench.
 5. Check its map position, briefing, battle readability, intended duration, win and replay in the browser. Export and preview a scoped promotion before changing accepted content.
 
-**Working extension evidence:** commit `3fbd136` adds Rainstone Crossing after foundation commit `48c9a4a`, changing only its content file and registry. No combat, renderer or UI restructuring was needed. Ticket 05 registers The Last Lantern as the third board encounter, adds its final-boss rule and saves its completion. The first board is finite: no unfinished next map node is shown, and this is not an unlimited campaign editor.
+**Working extension evidence:** commit `3fbd136` adds Rainstone Crossing after foundation commit `48c9a4a`, changing only its content file and registry. No combat, renderer or UI restructuring was needed. Ticket 05 registers The Last Lantern as the third board encounter, adds its final-boss rule and saves its completion. The original first board remains finite. Additional authored encounters register from canonical recipe order and use a scrollable campaign card grid.
 
 ## Add a tower/enemy/card
 
@@ -136,3 +136,5 @@ from canonical promotion; the local promotion command validates, checks the base
 identity, previews selected scopes, and stages atomic replacement. It does not
 commit or deploy. See [workbench usage](WORKBENCH.md) and
 [decision 021](decisions/021-designer-workbench.md).
+
+The browser workbench now uses one auto-saved working draft and direct selected-wave Playtest/Promote actions. The local-only Vite workbench adapter validates and atomically writes selected map settings and one wave; it is absent from the production server. Agent CLI scenario, replay, compare and search modules remain available. See [decision 024](decisions/024-single-draft-workbench.md).

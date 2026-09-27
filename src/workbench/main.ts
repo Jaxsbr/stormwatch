@@ -3,693 +3,311 @@ import "../ui/game-chrome.css";
 import "../ui/button-skin.css";
 import "../ui/battle-ui.css";
 import "./style.css";
+import "./workspace.css";
 import {
   CANONICAL_CONTENT,
-  compileLevel,
   configurationIdentity,
-  resolveConfiguration,
   validateContent,
   type AuthoringContent,
+  type LevelRecipe,
 } from "../config/configuration";
-import { compileSpawnSchedule } from "../sim/spawn-schedule";
-import {
-  DraftStore,
-  forkDraft,
-  exportExperiments,
-  importExperiments,
-  type DraftRevision,
-} from "./drafts";
+import { WORKBENCH_STORAGE_KEY } from "./drafts";
 import { mountAttempt } from "./attempt-view";
-import { clearWaveCanvasHistory, mountWaveCanvas } from "./wave-canvas";
-import { resolveScenario as inspectScenario } from "./scenarios";
-// The browser and headless runner share this session; it owns commands and evidence.
+import { mountWaveCanvas, clearWaveCanvasHistory } from "./wave-canvas";
+import { AttemptSession } from "./runs";
 import {
-  AttemptSession,
-  runScenario,
-  compareScenarios,
-  searchScenario,
-  type Scenario,
-  type RunReport,
-} from "./runs";
+  WORKING_DRAFT_KEY,
+  createWorkingDraft,
+  validateWorkingDraft,
+  createMap,
+  createWave,
+  setMapLayout,
+  rebaseAfterPromotion,
+  promoteWorkingWave,
+  type WorkingDraft,
+} from "./working-draft";
 
 const root = document.querySelector<HTMLElement>("#workbench")!;
 const attemptHost = document.querySelector<HTMLElement>("#attempt-host")!;
 const esc = (value: unknown) =>
   String(value ?? "").replace(
     /[&<>"']/g,
-    (char) =>
+    (c) =>
       ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[
-        char
+        c
       ]!,
   );
-const json = (value: unknown) => JSON.stringify(value, null, 2);
 const clone = <T>(value: T): T => structuredClone(value);
-const uid = (prefix: string) =>
-  `${prefix}-${Date.now().toString(36)}-${crypto.randomUUID().slice(0, 8)}`;
+const uid = (prefix: string) => `${prefix}-${crypto.randomUUID()}`;
+let draft: WorkingDraft;
+let gameContent = clone(CANONICAL_CONTENT);
 let storage: Storage | undefined;
-try {
-  storage = localStorage;
-} catch {
-  /* DraftStore exposes unavailable storage. */
-}
-const store = new DraftStore(storage);
-let content = clone(CANONICAL_CONTENT);
-let revision: DraftRevision | null = null;
-let levelId = content.levels[0].id;
-let waveId = content.levels.find((level) => level.id === levelId)!.waves[0].id;
-let message = "Ready to shape a wave. Your changes stay in a local draft.";
+let token = "";
+let connected = false;
+let saving = false;
+let durable = false;
 let error = "";
+let message = "";
 let canvas: ReturnType<typeof mountWaveCanvas> | undefined;
 let disposeAttempt: (() => void) | undefined;
-let lastReport: RunReport | undefined;
-let replayTrace: import("./commands").RecordedCommand[] | undefined;
-let lastAttemptContent: AuthoringContent | undefined;
-let lastAttemptScenario: Scenario | undefined;
-let lastAttemptRevision: DraftRevision | null = null;
-let runBusy = false;
-let runControls = {
-  policy: "coverage-first",
-  goal: "encounter-win",
-  noLoss: false,
-  cadence: 30,
-  limit: 600,
-  budget: 12,
+let creation: "map" | "wave" = "map";
+let lastPlay: { identity: string; text: string } | undefined;
+const names = {
+  raider: "Rat raider",
+  runner: "Fleet weasel",
+  armored: "Shield boar",
+  boss: "Roadwarden",
 };
-let renderedSelection = "";
-let workspace = "tune";
-let dirty = false;
-let pendingNavigation: (() => void) | undefined;
-let lastEvidence: unknown;
-let inspectedScenario: unknown;
-let evidenceSummary = "";
-let invalidEditor: HTMLInputElement | HTMLTextAreaElement | undefined;
-function feedback() {
-  root.querySelectorAll(".wb-field-error").forEach((node) => node.remove());
-  root
-    .querySelectorAll('[aria-describedby="wb-field-error"]')
-    .forEach((node) => node.removeAttribute("aria-describedby"));
-  if (error && invalidEditor) {
-    const note = document.createElement("small");
-    note.className = "wb-field-error";
-    note.id = "wb-field-error";
-    note.textContent = error;
-    invalidEditor.after(note);
-    invalidEditor.setAttribute("aria-describedby", note.id);
-  }
-  root.querySelectorAll<HTMLElement>(".wb-feedback").forEach((node) => {
-    node.textContent = error || message;
-    node.classList.toggle("wb-error", Boolean(error));
-  });
-  root.querySelectorAll(".wb-save-state").forEach((node) => {
-    node.setAttribute("data-state", dirty ? "dirty" : "saved");
-    node.textContent = dirty
-      ? "Unsaved changes"
-      : revision
-        ? "Saved locally"
-        : "Released settings";
-  });
-  root.querySelectorAll<HTMLElement>(".wb-pending").forEach((node) => {
-    node.hidden = !pendingNavigation;
-  });
-}
-function switchWorkspace(next: string) {
-  workspace = next;
-  if (next === "tune" && scenario.difficultyCandidate) {
-    delete scenario.difficultyCandidate;
-    root.querySelector<HTMLSelectElement>("#difficulty-candidate")!.value = "";
-    message =
-      "Tune uses your current draft. Alternate recipes remain available in Test setup.";
-    updatePreview();
-  }
-  root.querySelectorAll<HTMLElement>("[data-panel]").forEach((node) => {
-    node.hidden = node.dataset.panel !== next;
-  });
-  root
-    .querySelectorAll<HTMLElement>('[role="tab"][data-workspace]')
-    .forEach((node) => {
-      node.setAttribute(
-        "aria-selected",
-        String(node.dataset.workspace === next),
-      );
-    });
-}
-function navigate(action: () => void) {
-  if (dirty) {
-    pendingNavigation = action;
-    error = "Save or discard your changes before switching.";
-    feedback();
-    return;
-  }
-  action();
-}
-
-let scenario: Scenario = {
-  id: uid("scenario"),
-  levelId,
-  mode: "encounter",
-  progression: "first-arrival",
-  difficulty: "normal",
-  seed: 42,
+const images = {
+  raider: "/art/v2/rat-rig-v3/body.webp",
+  runner: "/art/v2/weasel-rig-v1/body.webp",
+  armored: "/art/v2/boar-rig-v1/body.webp",
+  boss: "/art/v2/badger-rig-v1/body.webp",
 };
-const numberInput = (key: string, label: string, value: number, step = "1") =>
-  `<label>${esc(label)}<input data-field="${key}" data-original="${value}" type="number" value="${value}" step="${step}" min="0" ></label>`;
-function currentLevel() {
-  return content.levels.find((level) => level.id === levelId)!;
-}
-function currentWave() {
-  return currentLevel().waves.find((wave) => wave.id === waveId)!;
-}
-function difference(
-  before: unknown,
-  after: unknown,
-  prefix = "",
-): { field: string; before: unknown; after: unknown }[] {
-  if (json(before) === json(after)) return [];
-  if (
-    before &&
-    after &&
-    typeof before === "object" &&
-    typeof after === "object" &&
-    !Array.isArray(before) &&
-    !Array.isArray(after)
-  ) {
-    return [
-      ...new Set([...Object.keys(before), ...Object.keys(after)]),
-    ].flatMap((key) =>
-      difference(
-        (before as Record<string, unknown>)[key],
-        (after as Record<string, unknown>)[key],
-        prefix ? `${prefix}.${key}` : key,
-      ),
+const level = () => draft.content.levels.find((l) => l.id === draft.levelId)!;
+const wave = () => level().waves.find((w) => w.id === draft.waveId)!;
+const playable = () => wave().packets.some((p) => p.groups.length);
+const identity = () =>
+  configurationIdentity({
+    level: { ...level(), waves: [wave()] },
+    towers: gameContent.towers,
+    enemies: gameContent.enemies,
+    rules: gameContent.rules,
+  });
+function pendingPromotion() {
+  try {
+    return (
+      configurationIdentity(promoteWorkingWave(draft.base, draft)) !==
+      configurationIdentity(draft.base)
     );
+  } catch {
+    return true;
   }
-  return [{ field: prefix, before, after }];
+}
+function persist() {
+  validateWorkingDraft(draft);
+  durable = false;
+  try {
+    if (!storage) throw new Error("Browser storage is unavailable");
+    storage.setItem(WORKING_DRAFT_KEY, JSON.stringify(draft));
+    durable = true;
+  } catch (cause) {
+    error = `${cause instanceof Error ? cause.message : String(cause)}. This draft is only in memory; keep this page open.`;
+  }
+  feedback();
+}
+function feedback() {
+  const status = root.querySelector<HTMLElement>("#draft-status");
+  if (status)
+    status.textContent = durable ? "Draft auto-saved" : "Draft not saved";
+  const note = root.querySelector<HTMLElement>("#workspace-message");
+  if (note) {
+    note.textContent = error || message;
+    note.classList.toggle("wb-error", !!error);
+  }
+  const promote = root.querySelector<HTMLButtonElement>(
+    '[data-action="promote"]',
+  );
+  if (promote) {
+    promote.disabled =
+      saving ||
+      !connected ||
+      !playable() ||
+      !pendingPromotion() ||
+      !validSettings();
+    promote.textContent = saving ? "Promoting…" : "Promote";
+  }
+  const play = root.querySelector<HTMLButtonElement>('[data-action="play"]');
+  if (play) play.disabled = saving || !playable() || !validSettings();
+  const refresh = root.querySelector<HTMLButtonElement>(
+    '[data-action="refresh-config"]',
+  );
+  if (refresh) refresh.hidden = !error.includes("changed in game config");
+  const state = root.querySelector("#promotion-state");
+  if (state)
+    state.textContent = pendingPromotion()
+      ? "Draft changes"
+      : "Matches game config";
+  const result = root.querySelector("#play-result");
+  if (result)
+    result.textContent = lastPlay
+      ? `${lastPlay.identity === identity() ? "Last playtest" : "Earlier playtest"}: ${lastPlay.text}`
+      : "";
+}
+function validSettings(focus = false) {
+  const invalid = [
+    ...root.querySelectorAll<HTMLInputElement>("[data-field]"),
+  ].find((input) => !input.validity.valid || !input.value.trim());
+  if (invalid && focus) {
+    root.querySelector<HTMLDetailsElement>("#map-settings")!.open = true;
+    invalid.focus();
+    invalid.reportValidity();
+  }
+  return !invalid;
+}
+function layoutShape(map: LevelRecipe) {
+  return {
+    width: map.width,
+    depth: map.depth,
+    path: map.path,
+    blocked: map.blocked,
+    accent: map.accent,
+  };
 }
 function mapPreview() {
-  const level = inspectScenario(content, scenario).configuration.level;
-  const size = 22;
-  const path = level.path
-    .map((point) => `${(point.x + 1) * size},${(point.z + 1) * size}`)
-    .join(" ");
-  return `<svg class="wb-map" role="img" aria-label="${esc(level.name)} map and route" viewBox="0 0 ${(level.width + 2) * size} ${(level.depth + 2) * size}">${Array.from({ length: level.depth }, (_, z) => Array.from({ length: level.width }, (_, x) => `<rect x="${(x + 1) * size - 8}" y="${(z + 1) * size - 8}" width="16" height="16" rx="2" fill="#2d4130"/>`).join("")).join("")}<polyline points="${path}" fill="none" stroke="#b49c6d" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>${level.blocked.map((point) => `<circle cx="${(point.x + 1) * size}" cy="${(point.z + 1) * size}" r="7" fill="#5e6955"/>`).join("")}<text x="${(level.path[0].x + 1) * size + 5}" y="${(level.path[0].z + 1) * size - 10}" fill="#e5bf72" font-size="9">Arrival</text></svg>`;
+  const map = level();
+  const points = map.path.map((p) => `${p.x + 0.5},${p.z + 0.5}`).join(" ");
+  return `<svg class="ws-map-preview" viewBox="0 0 ${map.width} ${map.depth}" role="img" aria-label="Selected map route"><rect width="100%" height="100%" fill="#193b34"/><polyline points="${points}" fill="none" stroke="#dcc89d" stroke-width="0.45" stroke-linejoin="round"/>${map.blocked.map((p) => `<rect x="${p.x}" y="${p.z}" width="1" height="1" fill="#617859"/>`).join("")}</svg>`;
 }
-function timeline() {
-  const configuration = inspectScenario(content, scenario).configuration;
-  const wave = configuration.level.waves.find((entry) => entry.id === waveId)!;
-  const schedule = compileSpawnSchedule(
-    wave,
-    configuration.rules.initialSpawnDelay,
-  );
-  const last = schedule.at(-1)?.at ?? 0;
-  const colors = {
-    raider: "#e7bd75",
-    runner: "#91bcb4",
-    armored: "#afb5c1",
-    boss: "#e98f6a",
-  };
-  const kinds = (["raider", "runner", "armored", "boss"] as const).filter(
-    (kind) => schedule.some((spawn) => spawn.kind === kind),
-  );
-  const total = kinds
+function palette() {
+  return Object.entries(names)
     .map(
-      (kind) =>
-        `${schedule.filter((spawn) => spawn.kind === kind).length} ${configuration.enemies[kind].name}`,
+      ([kind, name]) =>
+        `<button type="button" data-action="first-enemy" data-kind="${kind}"><img src="${images[kind as keyof typeof images]}" alt=""/>${name}</button>`,
     )
-    .filter((_, i) => schedule.some((spawn) => spawn.kind === kinds[i]))
-    .join(" · ");
-  const rows = schedule
-    .map((spawn) => {
-      const guard = spawn.shieldCycle
-        ? `Guard ${spawn.shieldCycle.downSeconds}s after appearance, ${spawn.shieldCycle.upSeconds}s up / ${spawn.shieldCycle.downSeconds}s down`
-        : spawn.kind === "raider"
-          ? "Default guard: first at 1.1s, 2s up / 3s down"
-          : "";
-      const evade = spawn.evasionCycle
-        ? `Evade ${spawn.evasionCycle.downSeconds}s after appearance, ${spawn.evasionCycle.upSeconds}s active (warning 0.6s before)`
-        : "";
-      return `<tr><td>${esc(spawn.groupId)} #${spawn.ordinal + 1}</td><td>${esc(configuration.enemies[spawn.kind].name)}</td><td>${spawn.at.toFixed(3)}s</td><td>${spawn.tick} · ${(spawn.tick / 30).toFixed(3)}s</td><td>${esc(guard || evade || (spawn.kind === "boss" ? `Rally after ${configuration.rules.boss.firstRallySeconds}s, every ${configuration.rules.boss.rallyIntervalSeconds}s` : "—"))}</td></tr>`;
-    })
     .join("");
-  return `<p>${schedule.length} enemies · ${esc(total)}<br>Last scheduled spawn: <strong>${last.toFixed(2)}s</strong>. Clearing depends on combat and travel.</p><div class="wb-timeline-scroll"><svg class="wb-timeline" role="img" aria-label="Enemy spawn timeline, individual appearances by kind" viewBox="0 0 440 ${Math.max(90, kinds.length * 30 + 50)}">${kinds.map((kind, row) => `<text x="8" y="${28 + row * 30}" fill="${colors[kind]}" font-size="12">${esc(configuration.enemies[kind].name)}</text><line x1="120" y1="${24 + row * 30}" x2="420" y2="${24 + row * 30}" stroke="#394f3b"/>`).join("")}${schedule.map((spawn) => `<circle cx="${120 + (spawn.at / Math.max(1, last)) * 300}" cy="${24 + kinds.indexOf(spawn.kind) * 30}" r="3" fill="${colors[spawn.kind]}"><title>${esc(spawn.groupId)} · ${spawn.at.toFixed(3)}s nominal · tick ${spawn.tick}</title></circle>`).join("")}<text x="120" y="${kinds.length * 30 + 24}" fill="#b9c6b8" font-size="12">0s</text><text x="420" text-anchor="end" y="${kinds.length * 30 + 24}" fill="#b9c6b8" font-size="12">${last.toFixed(1)}s</text></svg></div><details><summary>Individual spawn and ability windows</summary><div class="wb-scroll"><table class="wb-table"><thead><tr><th>Packet / enemy</th><th>Kind</th><th>Nominal</th><th>Fixed tick / appearance</th><th>Spawn-relative ability</th></tr></thead><tbody>${rows}</tbody></table></div></details>`;
-}
-function effectiveInspector() {
-  const resolved = inspectScenario(content, scenario);
-  const configuration = resolved.configuration;
-  const baseline = resolveConfiguration(CANONICAL_CONTENT, levelId);
-  const flattened = (value: unknown, path = ""): [string, unknown][] =>
-    value && typeof value === "object" && !Array.isArray(value)
-      ? Object.entries(value).flatMap(([key, item]) =>
-          flattened(item, path ? `${path}.${key}` : key),
-        )
-      : [[path, value]];
-  const current = flattened({
-    startCoins:
-      configuration.level.startCoins +
-      (resolved.assist ? configuration.rules.assistCrowns : 0),
-    lives: resolved.initialLives,
-    availableTowers: configuration.level.availableTowers,
-    unlockedUpgrades: resolved.unlockedUpgrades,
-    card: resolved.card,
-    healthScale: configuration.level.healthScale ?? 1,
-    enemyRewardScale: configuration.level.enemyRewardScale ?? 1,
-    towers: configuration.towers,
-    enemies: configuration.enemies,
-    rules: configuration.rules,
-  });
-  const defaults = new Map(
-    flattened({
-      startCoins: baseline.level.startCoins,
-      lives: baseline.rules.normalLives,
-      availableTowers: baseline.level.availableTowers,
-      unlockedUpgrades: [],
-      card: "none",
-      healthScale: baseline.level.healthScale ?? 1,
-      enemyRewardScale: baseline.level.enemyRewardScale ?? 1,
-      towers: baseline.towers,
-      enemies: baseline.enemies,
-      rules: baseline.rules,
-    }),
-  );
-  const origin = (field: string) => {
-    const overrides = scenario.overrides;
-    if (
-      (field === "startCoins" && overrides?.coins !== undefined) ||
-      (field === "lives" && overrides?.lives !== undefined) ||
-      (field === "availableTowers" && overrides?.towers) ||
-      (field === "unlockedUpgrades" && overrides?.upgrades) ||
-      (field === "card" && overrides?.card)
-    )
-      return "Explicit scenario override";
-    if (["availableTowers", "unlockedUpgrades", "card"].includes(field))
-      return `Progression: ${scenario.progression}`;
-    if (
-      ["startCoins", "lives"].includes(field) &&
-      scenario.difficulty === "assist"
-    )
-      return "Assist baseline";
-    return scenario.difficultyCandidate
-      ? `Named difficulty recipe: ${scenario.difficultyCandidate.id}`
-      : revision
-        ? `Editor revision: ${revision.id}`
-        : "Released recipe";
-  };
-  return `<div class="wb-scroll"><table class="wb-table"><thead><tr><th>Setting</th><th>Effective attempt value</th><th>Released baseline</th><th>Scope / origin</th></tr></thead><tbody>${current.map(([field, value]) => `<tr><td>${esc(field)}</td><td class="${json(value) === json(defaults.get(field)) ? "" : "changed"}">${esc(value)}</td><td>${esc(defaults.get(field))}</td><td>${field.startsWith("rules") ? "Gameplay rule" : field.startsWith("towers") || field.startsWith("enemies") ? "Global catalog" : "Encounter"} · ${esc(origin(field))}</td></tr>`).join("")}</tbody></table></div>`;
-}
-function attemptSummary() {
-  const resolved = inspectScenario(content, scenario);
-  const config = resolved.configuration;
-  const crowns =
-    config.level.startCoins + (resolved.assist ? config.rules.assistCrowns : 0);
-  return `Effective attempt: ${crowns} starting crowns · ${resolved.initialLives} hearts · defenders ${esc((config.level.availableTowers ?? ["bolt", "stone", "net"]).map((kind) => config.towers[kind].name).join(", "))} · upgrade permissions ${esc(resolved.unlockedUpgrades.join(", ") || "none")} · advantage ${esc(resolved.card)}.`;
-}
-function playSetupSummary() {
-  const resolved = inspectScenario(content, scenario);
-  const scope =
-    scenario.mode === "wave" ? "Selected wave only" : "Starts at wave 1";
-  const custom =
-    Object.keys(scenario.overrides ?? {}).length > 0 ||
-    (scenario.formation?.length ?? 0) > 0;
-  const crowns =
-    resolved.configuration.level.startCoins +
-    (resolved.assist ? resolved.configuration.rules.assistCrowns : 0);
-  return `${scope} · ${scenario.difficulty === "assist" ? "Assist" : "Normal"} · ${scenario.progression === "replay" ? "Earned tools" : "First-arrival tools"}${custom ? ` · Custom setup: ${crowns} crowns before purchases, ${resolved.initialLives} hearts${scenario.formation?.length ? ", starting defenders" : ""}` : ""}`;
-}
-function previewOrigin() {
-  return esc(
-    scenario.difficultyCandidate
-      ? `named difficulty recipe ${scenario.difficultyCandidate.id}`
-      : revision
-        ? `Local draft: ${revision.name}`
-        : "Released settings",
-  );
-}
-function resultSummary() {
-  if (!lastReport)
-    return `<div class="wb-result"><h3>Ready for a first try</h3><p>Play this draft to record what happened.</p></div>`;
-  const isCurrent =
-    lastAttemptContent &&
-    configurationIdentity(lastAttemptContent) ===
-      configurationIdentity(content) &&
-    json(lastReport.scenario) === json(scenario) &&
-    !dirty;
-  return `<div class="wb-result"><p>${esc(evidenceSummary)}</p><p class="wb-kicker">LAST PLAYTEST · ${isCurrent ? "CURRENT SAVED SETTINGS" : "EARLIER SETTINGS"}</p><h3>${lastReport.success ? "Target reached" : lastReport.phase === "lost" ? "Lost" : "Stopped before target"}</h3><div class="wb-metrics"><span><strong>${lastReport.lives}</strong> hearts left</span><span><strong>${lastReport.initialLives - lastReport.lives}</strong> hearts lost</span><span><strong>${lastReport.coins}</strong> crowns</span><span><strong>${lastReport.seconds.toFixed(1)}s</strong> played</span></div><p class="wb-muted">${esc(lastAttemptRevision?.name ?? "Released settings")} · ${esc(content.levels.find((level) => level.id === lastReport?.scenario.levelId)?.name ?? lastReport.scenario.levelId)}</p><details><summary>Full test evidence</summary><pre class="wb-code">${esc(json(lastEvidence ?? lastReport))}</pre></details></div>`;
 }
 function render() {
+  const settingsOpen =
+    root.querySelector<HTMLDetailsElement>("#map-settings")?.open ?? false;
   canvas?.dispose();
-  const selection = `${levelId}:${waveId}`;
-  const openSections = new Map<string, boolean>();
-  const occurrences = new Map<string, number>();
-  if (renderedSelection === selection) {
-    for (const detail of root.querySelectorAll<HTMLDetailsElement>("details")) {
-      const label = detail.querySelector(":scope > summary")?.textContent ?? "";
-      const ordinal = occurrences.get(label) ?? 0;
-      occurrences.set(label, ordinal + 1);
-      openSections.set(`${label}:${ordinal}`, detail.open);
-    }
-  }
-  renderedSelection = selection;
-  const level = currentLevel();
-  const wave = currentWave();
-  const changes = difference(CANONICAL_CONTENT, content);
-  const bundle = store.bundle;
-  root.innerHTML = `<div class="wb-shell"><header class="wb-header"><div><p class="wb-kicker">STORMWATCH · V3</p><h1>Designer workbench</h1></div><div class="wb-status">Local drafts · game progress kept separate<br>${store.status.durable ? "Saved in this browser" : esc(store.status.error ?? "In memory only; export to preserve")}</div></header><div class="wb-tabs" role="tablist" aria-label="Workbench workspace">${[
-    ["tune", "Shape wave"],
-    ["test", "Test"],
-    ["experiments", "Experiments"],
-  ]
-    .map(
-      ([id, name]) =>
-        `<button role="tab" data-workspace="${id}" aria-selected="${workspace === id}">${name}</button>`,
-    )
-    .join(
-      "",
-    )}</div><div class="wb-layout"><main class="wb-content"><div class="wb-context"><label class="wb-wave-picker">Encounter / wave<select id="wave-picker" aria-label="Encounter / wave">${content.levels.map((entry, i) => `<optgroup label="${i + 1}. ${esc(entry.name)}">${entry.waves.map((w, j) => `<option value="${esc(entry.id)}:${esc(w.id)}" ${entry.id === levelId && w.id === waveId ? "selected" : ""}>${esc(entry.name)} · ${j + 1}. ${esc(w.title)}</option>`).join("")}</optgroup>`).join("")}</select></label><span class="wb-badge wb-save-state">${dirty ? "Unsaved changes" : revision ? "Saved locally" : "Released settings"}</span></div><div class="wb-pending" ${pendingNavigation ? "" : "hidden"}><p>Keep your changes before switching?</p><button data-action="save-switch">Save &amp; continue</button><button data-action="discard-switch">Discard &amp; continue</button><button data-action="cancel-switch">Keep editing</button></div><section data-panel="tune" ${workspace === "tune" ? "" : "hidden"}>
-<div class="wb-visual-heading"><div><h2>Shape the arrivals.</h2><p>Choose an enemy group. Move it, stretch its timing, or shape its batches.</p></div><div class="wb-actions"><button data-action="apply">Save draft</button><button class="primary" data-action="play">Save &amp; play</button></div></div>
-<p id="tune-setup" class="wb-setup">${esc(playSetupSummary())} · <button data-workspace="test">Test setup</button></p>
-<div id="wave-canvas"></div><div class="wb-feedback" role="status">${esc(error || message)}</div>
-<div id="tune-result">${resultSummary()}</div>
-<div class="wb-secondary"><details><summary>Encounter resources &amp; design notes</summary><div class="wb-row">${numberInput("startCoins", "Encounter starting crowns", level.startCoins)}${numberInput("reward", "Wave-end crowns", wave.reward)}${numberInput("healthScale", "Encounter health multiplier", level.healthScale ?? 1, "0.05")}${numberInput("enemyRewardScale", "Enemy reward multiplier", level.enemyRewardScale ?? 1, "0.05")}</div><label>Intended lesson<input id="lesson" value="${esc(wave.lesson ?? "")}"></label><label>Intended outcome<input id="target-outcome" value="${esc(wave.targetOutcome ?? "")}"></label></details>
-<details><summary>Advanced wave recipe</summary><p>These packets generate the canvas. Valid edits update it; invalid input is retained until corrected. Source IDs and sequence order are preserved.</p><label>Selected wave packets<textarea id="packet-editor" class="wb-recipe">${esc(json(wave.packets))}</textarea></label></details>
-<details><summary>Supported catalog and gameplay parameters · global authored scope</summary><p>Changes here propose catalog/rule edits. Test resources and formations are separate experiments.</p><label>Defender catalog<textarea id="tower-editor">${esc(json(content.towers))}</textarea></label><label>Enemy catalog<textarea id="enemy-editor">${esc(json(content.enemies))}</textarea></label><label>Implemented gameplay rules<textarea id="rule-editor">${esc(json(content.rules))}</textarea></label></details>
-<details><summary>Generated arrivals &amp; trail</summary><div id="attempt-timeline">${timeline()}</div><div id="attempt-map">${mapPreview()}</div><p>${esc(level.description)}</p><p>Preview: <span id="preview-origin">${previewOrigin()}</span></p></details>
-<details><summary>Effective settings and released defaults</summary><div id="attempt-effective">${effectiveInspector()}</div></details>
-<details><summary>Review changed authored values (${changes.length})</summary><ul>${changes.map((change) => `<li><strong>${esc(change.field)}</strong>: ${esc(typeof change.before === "object" ? "Previous structure" : change.before)} → ${esc(typeof change.after === "object" ? "Updated structure" : change.after)}</li>`).join("") || "<li>No saved changes yet.</li>"}</ul><details><summary>Technical diff</summary><pre class="wb-code">${esc(json(changes))}</pre></details></details></div></section><section class="wb-card" data-panel="test" ${workspace === "test" ? "" : "hidden"}><h2>Try your changes</h2><div id="scenario-inspection">${inspectedScenario ? `<details open><summary>Resolved test setup</summary><pre class="wb-code">${esc(json(inspectedScenario))}</pre></details>` : ""}</div><p>Play the current draft with normal difficulty and first-arrival tools, or customize the setup below.</p><p class="wb-muted" id="attempt-summary">${attemptSummary()}</p><details><summary>Customize test setup</summary><div class="wb-row"><label>Attempt scope<select id="mode"><option value="encounter" ${scenario.mode === "encounter" ? "selected" : ""}>Full encounter · reachable setup</option><option value="wave" ${scenario.mode === "wave" ? "selected" : ""}>Selected wave · synthetic setup</option></select></label><label>Discovery capabilities<select id="progression"><option value="first-arrival" ${scenario.progression === "first-arrival" ? "selected" : ""}>First arrival · prior discoveries</option><option value="replay" ${scenario.progression === "replay" ? "selected" : ""}>Replay · all earned tools</option></select></label><label>Difficulty baseline<select id="difficulty"><option value="normal" ${scenario.difficulty === "normal" ? "selected" : ""}>Normal</option><option value="assist" ${scenario.difficulty === "assist" ? "selected" : ""}>Assist · existing extra crowns/hearts</option></select></label><label>Named design-only difficulty recipe<select id="difficulty-candidate"><option value="">Current authored revision</option>${bundle.revisions.map((entry) => `<option value="${esc(entry.id)}" ${entry.id === scenario.difficultyCandidate?.id ? "selected" : ""}>${esc(entry.name)}</option>`).join("")}</select></label><label>Seed<input id="seed" type="number" value="${scenario.seed}" step="1"></label></div><p>Named draft recipes are design-only difficulty candidates. Difficulty changes never grant discoveries. A selected-wave wallet or formation does not establish affordability through earlier waves.</p><div class="wb-grid"><label>Explicit overrides · towers, upgrades, card, coins, lives<textarea id="scenario-overrides">${esc(json(scenario.overrides ?? {}))}</textarea></label><label>Starting formation · legal purchases from declared wallet<textarea id="formation">${esc(json(scenario.formation ?? []))}</textarea></label></div></details><div class="wb-row"><button class="primary" data-action="play">Save &amp; play</button></div><div class="wb-feedback" role="status">${esc(error || message)}</div><div id="test-result">${resultSummary()}</div><details><summary>Automated tests &amp; comparisons</summary><p>Policies use legal commands. Results disclose cadence, spending assumptions and limits. Success is completion of the selected target; an unsuccessful bounded search does not prove impossibility.</p><div class="wb-row"><label>Policy<select id="policy"><option value="coverage-first" ${runControls.policy === "coverage-first" ? "selected" : ""}>Coverage spending</option><option value="upgrades-first" ${runControls.policy === "upgrades-first" ? "selected" : ""}>Upgrades first</option><option value="finale-mixed" ${runControls.policy === "finale-mixed" ? "selected" : ""}>Mixed control</option></select></label><label>Goal<select id="goal"><option value="encounter-win" ${runControls.goal === "encounter-win" ? "selected" : ""}>Win encounter</option><option value="wave-clear" ${runControls.goal === "wave-clear" ? "selected" : ""}>Clear selected wave</option></select></label><label>No lives lost<input id="no-loss" type="checkbox" ${runControls.noLoss ? "checked" : ""}></label><label>Decision cadence (ticks)<input id="cadence" type="number" value="${runControls.cadence}" min="1"></label><label>Simulated limit (s)<input id="time-limit" type="number" value="${runControls.limit}" min="1"></label><label>Search budget (plans)<input id="budget" type="number" value="${runControls.budget}" min="1" max="64"></label></div><div class="wb-row"><button data-action="run">Run policy</button><button data-action="compare">Compare released / draft with matched policy</button><button data-action="search">Bounded goal search</button></div></details></section><section class="wb-card" data-panel="experiments" ${workspace === "experiments" ? "" : "hidden"}><h2>Your experiments</h2><p>Save a name, revisit an earlier version, or move experiments between browsers.</p><div class="wb-row"><label>Draft name<input id="draft-name" value="${esc(revision?.name ?? `${level.name} rhythm candidate`)}"></label><button class="primary" data-action="fork">Save named draft</button><label>Saved revision<select id="saved-revision"><option value="">Choose revision</option>${bundle.revisions.map((entry) => `<option value="${esc(entry.id)}" ${entry.id === revision?.id ? "selected" : ""}>${esc(entry.name)} · version ${bundle.revisions.indexOf(entry) + 1}</option>`).join("")}</select></label><button data-action="baseline">Released baseline</button></div><p class="wb-muted">${changes.length} changed authored paths · ${esc(revision?.name ?? "Working from released settings")}</p><details><summary>Saved test setups &amp; evidence</summary><div class="wb-row"><button data-action="save-scenario">Save scenario</button><button data-action="inspect-scenario">Inspect resolved scenario</button><label>Saved command trace<select id="saved-trace"><option value="">Choose trace</option>${bundle.traces.map((entry) => `<option value="${esc(entry.id)}">Recording ${bundle.traces.indexOf(entry) + 1} · ${esc(content.levels.find((level) => level.id === entry.levelId)?.name ?? entry.levelId)}</option>`).join("")}</select></label><label>Saved result<select id="saved-result"><option value="">Choose result</option>${bundle.results.map((entry) => `<option value="${esc(entry.id)}">Playtest ${bundle.results.indexOf(entry) + 1} · ${esc(content.levels.find((level) => level.id === entry.levelId)?.name ?? entry.levelId)}</option>`).join("")}</select></label><button data-action="replay" ${replayTrace ? "" : "disabled"}>Replay last commands</button><label>Saved scenario<select id="saved-scenario"><option value="">Choose scenario</option>${bundle.scenarios.map((entry) => `<option value="${esc(entry.id)}">Setup ${bundle.scenarios.indexOf(entry) + 1} · ${esc(content.levels.find((level) => level.id === entry.levelId)?.name ?? entry.levelId)}</option>`).join("")}</select></label></div></details><details><summary>Export, import &amp; promotion</summary><p>Browser saving preserves experiments. Export transfers them. Promotion previews a scoped canonical diff and rejects a stale released baseline. It never commits, publishes or turns a synthetic formation into production content.</p><div class="wb-row"><button data-action="export">Export experiments</button><label>Import validated experiments<input id="import-file" type="file" accept="application/json,.json"></label><button data-action="promotion" >Review promotion instructions</button></div><p class="wb-muted">Local command: <code>npm run workbench:promote -- experiments.json REVISION selection.json</code>. Preview first; apply only after reviewing the selected authored scope.</p></details><div class="wb-feedback" role="status">${esc(error || message)}</div></section></main></div></div>`;
-  canvas = mountWaveCanvas(root.querySelector<HTMLElement>("#wave-canvas")!, {
-    level,
-    wave,
-    initialDelay: content.rules.initialSpawnDelay,
-    onChange: (nextWave) => {
-      root.querySelector<HTMLTextAreaElement>("#packet-editor")!.value = json(
-        nextWave.packets,
-      );
-      dirty = true;
-      updatePreview();
-    },
-  });
-  root.querySelector<HTMLSelectElement>("#wave-picker")!.onchange = (event) => {
-    const picker = event.target as HTMLSelectElement;
-    const [nextLevel, nextWave] = picker.value.split(":");
-    picker.value = `${levelId}:${waveId}`;
-    navigate(() => {
-      levelId = nextLevel;
-      waveId = nextWave;
-      scenario = {
-        ...scenario,
-        id: uid("scenario"),
-        levelId,
-        ...(scenario.mode === "wave" ? { waveId } : {}),
-      };
-      render();
-    });
-  };
-  occurrences.clear();
-  for (const detail of root.querySelectorAll<HTMLDetailsElement>("details")) {
-    const label = detail.querySelector(":scope > summary")?.textContent ?? "";
-    const ordinal = occurrences.get(label) ?? 0;
-    occurrences.set(label, ordinal + 1);
-    const saved = openSections.get(`${label}:${ordinal}`);
-    if (saved !== undefined) detail.open = saved;
-  }
-  root.onclick = onClick;
-  root.onkeydown = (event) => {
-    const button = (event.target as HTMLElement).closest<HTMLElement>(
-      '[role="tab"][data-workspace]',
-    );
-    if (
-      !button ||
-      !["ArrowLeft", "ArrowRight", "Home", "End"].includes(event.key)
-    )
-      return;
-    const tabs = [
-      ...root.querySelectorAll<HTMLElement>('[role="tab"][data-workspace]'),
-    ];
-    const current = tabs.indexOf(button);
-    const index =
-      event.key === "Home"
-        ? 0
-        : event.key === "End"
-          ? tabs.length - 1
-          : (current + (event.key === "ArrowRight" ? 1 : -1) + tabs.length) %
-            tabs.length;
-    event.preventDefault();
-    switchWorkspace(tabs[index].dataset.workspace!);
-    tabs[index].focus();
-  };
-  root.oninput = (event) => {
-    const field = event.target as HTMLInputElement;
-    if (
-      field.matches(
-        "[data-field], [data-packet-field], #packet-editor, #tower-editor, #enemy-editor, #rule-editor, #lesson, #target-outcome, #draft-name, #scenario-overrides, #formation, #seed",
-      )
-    ) {
-      dirty = true;
-      updatePreview();
-    }
-  };
-  root.querySelector<HTMLSelectElement>("#saved-revision")!.onchange = (
-    event,
-  ) => {
-    const id = (event.target as HTMLSelectElement).value;
-    const saved = store.bundle.revisions.find((entry) => entry.id === id);
-    if (saved) {
-      (event.target as HTMLSelectElement).value = revision?.id ?? "";
-      navigate(() => {
-        clearWaveCanvasHistory();
-        revision = saved;
-        content = clone(saved.content);
-        ensureSelection();
-        render();
-      });
-    }
-  };
-  for (const id of [
-    "difficulty-candidate",
-    "difficulty",
-    "mode",
-    "progression",
-  ])
-    root.querySelector<HTMLSelectElement>(`#${id}`)!.onchange = () => {
-      try {
-        scenario = readScenario();
+  canvas = undefined;
+  const map = level(),
+    current = wave();
+  const matchedLayout =
+    draft.base.levels.find(
+      (l) =>
+        configurationIdentity(layoutShape(l)) ===
+        configurationIdentity(layoutShape(map)),
+    )?.id ?? "";
+  root.innerHTML = `<main class="wb-shell ws-shell"><header class="wb-header"><div><p class="wb-eyebrow">STORMWATCH</p><h1>Designer workbench</h1></div><span id="draft-status" role="status"></span></header>
+  <section class="ws-workspace"><div class="ws-picker-bar"><label>Map<select id="map-picker">${draft.content.levels.map((l) => `<option value="${esc(l.id)}" ${l.id === map.id ? "selected" : ""}>${esc(l.name)}</option>`).join("")}</select></label><button data-action="new-map">+ Map</button><label>Wave<select id="wave-picker">${map.waves.map((w, i) => `<option value="${esc(w.id)}" ${w.id === current.id ? "selected" : ""}>${i + 1}. ${esc(w.title)}</option>`).join("")}</select></label><button data-action="new-wave">+ Wave</button></div>
+  <div class="ws-heading"><div><h2>Shape the arrivals.</h2><p>Move enemy groups, shape their rhythm, then try the wave.</p></div><div class="ws-actions"><button data-action="play">Playtest</button><button data-action="promote" class="primary">Promote</button></div></div>
+  <div class="ws-save-line"><span id="promotion-state"></span><span>Promote saves this wave and its map settings to game config.</span></div>
+  <div id="workspace-message" class="wb-feedback" role="status"></div><button data-action="refresh-config" hidden>Keep draft with latest game config</button>
+  ${playable() ? '<section id="wave-canvas" aria-label="Visual wave editor"></section>' : `<section class="ws-empty"><h3>Add your first enemy group</h3><p>Choose an enemy, then shape the group on the timeline.</p><div class="wg-palette">${palette()}</div></section>`}
+  <p id="play-result" class="ws-play-result"></p>
+  <details id="map-settings" class="ws-settings" ${settingsOpen ? "open" : ""}><summary>Map &amp; wave settings</summary><div class="ws-settings-grid"><label>Map name<input data-field="name" value="${esc(map.name)}" required/></label><label>Wave name<input data-field="title" value="${esc(current.title)}" required/></label><label>Map layout<select id="layout-picker">${matchedLayout ? "" : '<option value="">Custom layout</option>'}${draft.base.levels.map((l) => `<option value="${esc(l.id)}" ${l.id === matchedLayout ? "selected" : ""}>${esc(l.name)}</option>`).join("")}</select></label><label>Starting crowns<input data-field="startCoins" type="number" min="0" step="1" value="${map.startCoins}"/></label><label>Wave reward<input data-field="reward" type="number" min="0" step="1" value="${current.reward}"/></label>${mapPreview()}</div></details>
+  </section><dialog id="create-dialog"><form id="create-form"><h2 id="create-title"></h2><label>Name<input id="create-name" required maxlength="100" autocomplete="off"/></label><label id="create-layout-label">Starting layout<select id="create-layout">${draft.base.levels.map((l) => `<option value="${esc(l.id)}">${esc(l.name)}</option>`).join("")}</select></label><div class="ws-dialog-actions"><button type="button" data-action="cancel-create">Cancel</button><button class="primary" type="submit">Create</button></div></form></dialog></main>`;
+  if (playable())
+    canvas = mountWaveCanvas(root.querySelector<HTMLElement>("#wave-canvas")!, {
+      level: map,
+      wave: current,
+      initialDelay: draft.content.rules.initialSpawnDelay,
+      onChange(next) {
         error = "";
-        message =
-          "Effective attempt preview refreshed; editor revision retained.";
-        root.querySelector("#attempt-timeline")!.innerHTML = timeline();
-        root.querySelector("#attempt-map")!.innerHTML = mapPreview();
-        root.querySelector("#attempt-effective")!.innerHTML =
-          effectiveInspector();
-        root.querySelector("#attempt-summary")!.innerHTML = attemptSummary();
-        root.querySelector("#preview-origin")!.innerHTML = previewOrigin();
-        updatePreview();
-      } catch (cause) {
-        error = String(cause);
-        const select = root.querySelector<HTMLSelectElement>(`#${id}`)!;
-        select.value =
-          id === "difficulty-candidate"
-            ? (scenario.difficultyCandidate?.id ?? "")
-            : scenario[id as "difficulty" | "mode" | "progression"];
-      }
-      feedback();
-    };
-  root.querySelector<HTMLSelectElement>("#saved-scenario")!.onchange = (
-    event,
-  ) => {
-    const saved = store.bundle.scenarios.find(
-      (entry) => entry.id === (event.target as HTMLSelectElement).value,
-    );
-    if (saved) {
-      navigate(() => {
-        const savedRevision = store.bundle.revisions.find(
-          (entry) => entry.id === saved.revisionId,
-        )!;
-        clearWaveCanvasHistory();
-        revision = savedRevision;
-        content = clone(savedRevision.content);
-        scenario = clone(saved.scenario as Scenario);
-        levelId = scenario.levelId;
-        waveId =
-          scenario.waveId ??
-          content.levels.find((entry) => entry.id === levelId)!.waves[0].id;
-        render();
-      });
-    }
-  };
-  const restoreEvidence = (
-    record: import("./drafts").ExperimentRecord,
-    report?: RunReport,
-  ) => {
-    const savedRevision = store.bundle.revisions.find(
-      (entry) => entry.id === record.revisionId,
-    )!;
-    const setup =
-      report?.scenario ??
-      (record.scenario as Scenario) ??
-      (store.bundle.scenarios.find((entry) => entry.id === record.scenarioId)
-        ?.scenario as Scenario);
-    clearWaveCanvasHistory();
-    revision = savedRevision;
-    content = clone(savedRevision.content);
-    scenario = clone(setup);
-    levelId = scenario.levelId;
-    waveId = scenario.waveId ?? currentLevel().waves[0].id;
-    replayTrace = clone(
-      report?.trace ??
-        (record.commands as import("./commands").RecordedCommand[]),
-    );
-    lastAttemptContent = clone(content);
-    lastAttemptScenario = clone(scenario);
-    lastAttemptRevision = revision;
-    lastReport = report;
-    message =
-      "Saved evidence selected. Replay starts a fresh attempt with the recorded configuration.";
+        message = "";
+        const index = level().waves.findIndex((w) => w.id === draft.waveId);
+        level().waves[index] = clone(next);
+        persist();
+      },
+    });
+  root.querySelector<HTMLSelectElement>("#map-picker")!.onchange = (event) => {
+    draft.levelId = (event.target as HTMLSelectElement).value;
+    draft.waveId = level().waves[0].id;
+    error = "";
+    message = "";
+    persist();
     render();
   };
-  root.querySelector<HTMLSelectElement>("#saved-trace")!.onchange = (event) => {
-    const record = store.bundle.traces.find(
-      (entry) => entry.id === (event.target as HTMLSelectElement).value,
-    );
-    if (record) navigate(() => restoreEvidence(record));
+  root.querySelector<HTMLSelectElement>("#wave-picker")!.onchange = (event) => {
+    draft.waveId = (event.target as HTMLSelectElement).value;
+    error = "";
+    message = "";
+    persist();
+    render();
   };
-  root.querySelector<HTMLSelectElement>("#saved-result")!.onchange = (
-    event,
-  ) => {
-    const record = store.bundle.results.find(
-      (entry) => entry.id === (event.target as HTMLSelectElement).value,
-    );
-    if (record)
-      navigate(() => restoreEvidence(record, record.report as RunReport));
-  };
-  root.querySelector<HTMLInputElement>("#import-file")!.onchange = async (
+  root.querySelector<HTMLSelectElement>("#layout-picker")!.onchange = (
     event,
   ) => {
     try {
-      const file = (event.target as HTMLInputElement).files?.[0];
-      if (!file) return;
-      const imported = importExperiments(await file.text());
-      navigate(() => {
-        store.replace(imported);
-        render();
-      });
-      message =
-        "Validated experiments imported. Select a saved revision or scenario.";
+      draft = setMapLayout(draft, (event.target as HTMLSelectElement).value);
       error = "";
+      message = "Layout updated. Playtest to try the new route.";
+      persist();
+      render();
     } catch (cause) {
-      error = String(cause);
+      fail(cause);
     }
-    feedback();
   };
-}
-function ensureSelection() {
-  if (!content.levels.some((level) => level.id === levelId))
-    levelId = content.levels[0].id;
-  if (!currentLevel().waves.some((wave) => wave.id === waveId))
-    waveId = currentLevel().waves[0].id;
-}
-function readScenario(): Scenario {
-  const value = (id: string) =>
-    root.querySelector<HTMLInputElement | HTMLSelectElement>(`#${id}`)!.value;
-  const mode = value("mode") as Scenario["mode"];
-  const next = {
-    id: scenario.id,
-    levelId,
-    mode,
-    progression: value("progression") as Scenario["progression"],
-    difficulty: value("difficulty") as Scenario["difficulty"],
-    seed: Number(value("seed")),
-    overrides: JSON.parse(value("scenario-overrides")),
-    formation: JSON.parse(value("formation")),
-    ...(mode === "wave" ? { waveId } : {}),
-  };
-  const candidate = store.bundle.revisions.find(
-    (entry) => entry.id === value("difficulty-candidate"),
-  );
-  if (candidate)
-    Object.assign(next, {
-      difficultyCandidate: {
-        id: candidate.id,
-        content: clone(candidate.content),
-      },
-    });
-  if (!Object.keys(next.overrides).length)
-    delete (next as { overrides?: unknown }).overrides;
-  inspectScenario(content, next);
-  return next;
-}
-function saveRevision(nextContent: AuthoringContent, name: string) {
-  validateContent(nextContent);
-  const next: DraftRevision = revision
-    ? { ...revision, id: uid("revision"), name, content: clone(nextContent) }
-    : forkDraft(CANONICAL_CONTENT, uid("revision"), name);
-  if (!revision) next.content = clone(nextContent);
-  const bundle = store.bundle;
-  bundle.revisions.push(next);
-  store.replace(bundle);
-  revision = next;
-  content = clone(next.content);
-}
-function preserveScenario() {
-  if (!revision) saveRevision(content, "Released baseline experiment");
-  const bundle = store.bundle;
-  const record = {
-    id: uid("scenario"),
-    revisionId: revision!.id,
-    levelId,
-    ...(scenario.waveId ? { waveId: scenario.waveId } : {}),
-    scenario: clone(scenario),
-  };
-  bundle.scenarios.push(record);
-  store.replace(bundle);
-  return record;
-}
-function saveReport(
-  report: RunReport,
-  session?: AttemptSession,
-  evidence?: unknown,
-) {
-  const record = preserveScenario();
-  const bundle = store.bundle;
-  bundle.results.push({
-    ...record,
-    id: uid("result"),
-    scenarioId: record.id,
-    report,
-    ...(evidence ? { evidence } : {}),
+  root.querySelectorAll<HTMLInputElement>("[data-field]").forEach((input) => {
+    input.oninput = () => {
+      try {
+        input.setCustomValidity(input.value.trim() ? "" : "Enter a value.");
+        if (!input.reportValidity() || !input.value.trim())
+          throw new Error("Enter a valid name or whole number.");
+        const next = clone(draft),
+          nextMap = next.content.levels.find((l) => l.id === next.levelId)!,
+          nextWave = nextMap.waves.find((w) => w.id === next.waveId)!;
+        if (input.dataset.field === "name") nextMap.name = input.value;
+        if (input.dataset.field === "title") nextWave.title = input.value;
+        if (input.dataset.field === "startCoins")
+          nextMap.startCoins = Number(input.value);
+        if (input.dataset.field === "reward")
+          nextWave.reward = Number(input.value);
+        validateWorkingDraft(next);
+        draft = next;
+        error = "";
+        message = "";
+        persist();
+        root.querySelector<HTMLOptionElement>(
+          `#map-picker option:checked`,
+        )!.textContent = level().name;
+        root.querySelector<HTMLOptionElement>(
+          `#wave-picker option:checked`,
+        )!.textContent =
+          `${level().waves.findIndex((w) => w.id === draft.waveId) + 1}. ${wave().title}`;
+        canvas?.refresh(wave(), level());
+      } catch (cause) {
+        fail(cause);
+      }
+    };
   });
-  if (session)
-    bundle.traces.push({
-      ...record,
-      id: uid("trace"),
-      scenarioId: record.id,
-      commands: clone(session.trace),
-    });
-  store.replace(bundle);
-  lastReport = report;
-  message = "Playtest saved. Adjust your draft and try again.";
-  lastEvidence = undefined;
-  evidenceSummary = "";
-  replayTrace = clone(report.trace);
-  lastAttemptContent = clone(content);
-  lastAttemptScenario = clone(report.scenario);
-  lastAttemptRevision = revision;
+  root.querySelector<HTMLFormElement>("#create-form")!.onsubmit = (event) => {
+    event.preventDefault();
+    try {
+      const name = root
+        .querySelector<HTMLInputElement>("#create-name")!
+        .value.trim();
+      draft =
+        creation === "map"
+          ? createMap(
+              draft,
+              name,
+              root.querySelector<HTMLSelectElement>("#create-layout")!.value,
+              uid("map"),
+              uid("wave"),
+            )
+          : createWave(draft, name, uid("wave"));
+      error = "";
+      message = "";
+      clearWaveCanvasHistory();
+      persist();
+      render();
+    } catch (cause) {
+      fail(cause);
+    }
+  };
+  feedback();
 }
-function launch(replay = false) {
-  if (replay && lastAttemptContent && lastAttemptScenario) {
-    clearWaveCanvasHistory();
-    content = clone(lastAttemptContent);
-    scenario = clone(lastAttemptScenario);
-    revision = lastAttemptRevision;
-    levelId = scenario.levelId;
-    ensureSelection();
-  } else scenario = readScenario();
-  const commandsToReplay = replay ? replayTrace : undefined;
-  const session = new AttemptSession(content, scenario);
-  if (commandsToReplay)
-    session.replay(commandsToReplay, { stopAtPreparationWaveId: waveId });
-  lastAttemptContent = clone(content);
-  lastAttemptScenario = clone(scenario);
-  lastAttemptRevision = revision;
-  root.hidden = true;
-  attemptHost.hidden = false;
+function fail(cause: unknown) {
+  error = cause instanceof Error ? cause.message : String(cause);
+  feedback();
+}
+function play() {
+  if (!playable() || !validSettings(true)) return;
+  // The playtest uses the same scoped candidate as promotion, including game catalogs.
+  const content = promoteWorkingWave(gameContent, draft);
+  const session = new AttemptSession(content, {
+    id: "workbench-playtest",
+    levelId: draft.levelId,
+    waveId: draft.waveId,
+    mode: "wave",
+    progression: "first-arrival",
+    difficulty: "normal",
+    seed: 42,
+  });
+  const playedIdentity = identity();
   const close = () => {
     disposeAttempt?.();
     disposeAttempt = undefined;
@@ -697,420 +315,170 @@ function launch(replay = false) {
     root.hidden = false;
     render();
   };
+  const record = () => {
+    const state = session.game.state;
+    lastPlay = {
+      identity: playedIdentity,
+      text: `${state.phase === "won" ? "Wave cleared" : state.phase === "lost" ? "Defense fell" : "Stopped"} · ${state.lives} hearts left · ${Math.round(state.clock)}s`,
+    };
+  };
+  root.hidden = true;
+  attemptHost.hidden = false;
   disposeAttempt = mountAttempt(attemptHost, session.game, {
-    label: `${revision?.name ?? "Released"} · ${session.synthetic ? (scenario.mode === "wave" ? "Synthetic isolated wave" : "Full encounter · overridden setup") : "Full encounter"} · ${scenario.progression}`,
-    command: (command) => session.command(command),
-    isReplayLocked: () => session.replayLocked,
-    isPreparationHeld: () => session.preparationHeld,
-    ...(replay ? { onContinueReplay: () => session.continueReplay() } : {}),
+    label: `${wave().title} · Draft playtest`,
+    command: (c) => session.command(c),
     step: () => session.step(),
     onExit: () => {
-      saveReport(
-        session.report(
-          scenario.mode === "wave"
-            ? { type: "wave-clear", waveId: scenario.waveId }
-            : { type: "encounter-win" },
-        ),
-        session,
-      );
+      record();
       close();
     },
+    onFinish: record,
     onRestart: () => {
-      disposeAttempt?.();
-      attemptHost.hidden = true;
-      root.hidden = false;
-      render();
-      launch();
+      close();
+      play();
     },
-    onFinish: () => {
-      saveReport(
-        session.report(
-          scenario.mode === "wave"
-            ? { type: "wave-clear", waveId: scenario.waveId }
-            : { type: "encounter-win" },
-        ),
-        session,
-      );
-    },
-    ...(replay
-      ? {
-          onBranch: () => {
-            return session.branch();
-          },
-        }
-      : {}),
   });
 }
-function focusInvalidEditor() {
-  if (!invalidEditor) return;
-  let parent = invalidEditor.parentElement;
-  while (parent && parent !== root) {
-    if (parent instanceof HTMLDetailsElement) parent.open = true;
-    parent = parent.parentElement;
-  }
-  // A hidden Tune editor may be the cause of an action from another workspace.
-  if (invalidEditor.closest('[data-panel="tune"]')) switchWorkspace("tune");
-  invalidEditor.focus();
-}
-function editorJson(id: string, label: string) {
-  try {
-    return JSON.parse(root.querySelector<HTMLTextAreaElement>(`#${id}`)!.value);
-  } catch {
-    invalidEditor = root.querySelector<HTMLTextAreaElement>(`#${id}`)!;
-    invalidEditor.setAttribute("aria-invalid", "true");
-    throw new Error(
-      `${label} contains invalid JSON. Correct it before saving; all your inputs are retained.`,
-    );
-  }
-}
-function collectEdits() {
-  invalidEditor = undefined;
-  root
-    .querySelectorAll("[aria-invalid]")
-    .forEach((node) => node.removeAttribute("aria-invalid"));
-  const reject = (input: HTMLInputElement, message: string): never => {
-    invalidEditor = input;
-    input.setAttribute("aria-invalid", "true");
-    throw new Error(message);
-  };
-  for (const input of root.querySelectorAll<HTMLInputElement>(
-    "[data-field], [data-packet-field]",
-  )) {
-    const key = input.dataset.field ?? input.dataset.packetField ?? "";
-    const required =
-      Boolean(input.dataset.field) ||
-      key.endsWith(".count") ||
-      key.endsWith(".gap");
-    if (input.value === "" && !required) continue;
-    const value = Number(input.value);
-    const label = input.parentElement?.firstChild?.textContent ?? "Value";
-    if (input.value.trim() === "" || !Number.isFinite(value))
-      reject(input, `${label} needs a number.`);
-    if (key.endsWith(".count") && (!Number.isInteger(value) || value < 1))
-      reject(input, "Number of enemies must be a whole number of at least 1.");
-    if (
-      ["startCoins", "reward"].includes(key) &&
-      (!Number.isInteger(value) || value < 0)
-    )
-      reject(input, `${label} must be a whole number of at least 0.`);
-    if (value < 0) reject(input, `${label} must be at least 0.`);
-  }
-  const next = clone(content);
-  const level = next.levels.find((entry) => entry.id === levelId)!;
-  const wave = level.waves.find((entry) => entry.id === waveId)!;
-  for (const field of root.querySelectorAll<HTMLInputElement>("[data-field]")) {
-    if (Number(field.value) === Number(field.dataset.original)) continue;
-    const key = field.dataset.field!;
-    if (key === "reward") wave.reward = Number(field.value);
-    else
-      (level as unknown as Record<string, unknown>)[key] = Number(field.value);
-  }
-  wave.packets = editorJson("packet-editor", "Advanced wave recipe");
-  const lesson = root.querySelector<HTMLInputElement>("#lesson")!.value;
-  const outcome =
-    root.querySelector<HTMLInputElement>("#target-outcome")!.value;
-  if (lesson) wave.lesson = lesson;
-  else delete wave.lesson;
-  if (outcome) wave.targetOutcome = outcome;
-  else delete wave.targetOutcome;
-  next.towers = editorJson("tower-editor", "Global defender catalog");
-  next.enemies = editorJson("enemy-editor", "Global enemy catalog");
-  next.rules = editorJson("rule-editor", "Global gameplay rules");
-  try {
-    validateContent(next);
-  } catch (cause) {
-    const editors = [
-      ["packet-editor", currentWave().packets],
-      ["tower-editor", content.towers],
-      ["enemy-editor", content.enemies],
-      ["rule-editor", content.rules],
-    ] as const;
-    const changed = editors.find(
-      ([id, original]) =>
-        root.querySelector<HTMLTextAreaElement>(`#${id}`)!.value !==
-        json(original),
-    );
-    invalidEditor = root.querySelector<HTMLTextAreaElement>(
-      `#${changed?.[0] ?? "packet-editor"}`,
-    )!;
-    invalidEditor.setAttribute("aria-invalid", "true");
-    throw cause;
-  }
-  return next;
-}
-function commitEdits() {
-  const next = collectEdits();
-  const previous = content;
-  try {
-    content = next;
-    scenario = readScenario();
-  } finally {
-    content = previous;
-  }
-  if (!revision || dirty || json(next) !== json(content)) {
-    saveRevision(
-      next,
-      root.querySelector<HTMLInputElement>("#draft-name")!.value ||
-        `${currentLevel().name} draft`,
-    );
-  }
-  dirty = false;
-  message = "Draft saved locally. Ready to play.";
+async function promote() {
+  if (saving || !connected || !playable() || !validSettings(true)) return;
+  persist();
+  if (!durable)
+    throw new Error("Save the draft successfully before promoting.");
+  const submitted = clone(draft);
+  saving = true;
   error = "";
+  message = "";
   feedback();
-}
-function updatePreview() {
-  const savedContent = content;
-  const savedScenario = scenario;
+  root.querySelector<HTMLElement>(".ws-workspace")!.inert = true;
   try {
-    content = collectEdits();
-    canvas?.refresh(
-      currentWave(),
-      currentLevel(),
-      content.rules.initialSpawnDelay,
-    );
-    root.querySelector<HTMLElement>("#wave-canvas")!.inert = false;
-    scenario = readScenario();
-    dirty =
-      configurationIdentity(content) !== configurationIdentity(savedContent) ||
-      configurationIdentity({
-        ...scenario,
-        formation: scenario.formation ?? [],
-        overrides: scenario.overrides ?? {},
-      }) !==
-        configurationIdentity({
-          ...savedScenario,
-          formation: savedScenario.formation ?? [],
-          overrides: savedScenario.overrides ?? {},
-        }) ||
-      root.querySelector<HTMLInputElement>("#draft-name")!.value !==
-        (revision?.name ?? `${currentLevel().name} rhythm candidate`);
-    root.querySelector("#attempt-timeline")!.innerHTML = timeline();
-    root.querySelector("#attempt-map")!.innerHTML = mapPreview();
-    root.querySelector("#attempt-effective")!.innerHTML = effectiveInspector();
-    root.querySelector("#attempt-summary")!.innerHTML = attemptSummary();
-    root.querySelector("#tune-setup")!.innerHTML =
-      `${esc(playSetupSummary())} · <button data-workspace="test">Test setup</button>`;
-    root.querySelector("#preview-origin")!.textContent =
-      scenario.difficultyCandidate
-        ? `Alternate test recipe: ${scenario.difficultyCandidate.id}. Tune edits are separate.`
-        : dirty
-          ? "Your current edits (not saved yet)"
-          : (revision?.name ?? "Released settings");
-    error = "";
-    message = dirty
-      ? "Unsaved changes. Save & play will test these settings."
-      : "Ready to shape this wave. Your settings match the saved recipe.";
-  } catch (cause) {
-    root.querySelector<HTMLElement>("#wave-canvas")!.inert = true;
-    error = `Preview paused: ${cause instanceof Error ? cause.message : String(cause)}. Your input is retained.`;
-    root.querySelector("#preview-origin")!.textContent =
-      "Last valid preview. Fix the highlighted input to update it.";
-  } finally {
-    content = savedContent;
-    scenario = savedScenario;
-  }
-  feedback();
-  for (const result of root.querySelectorAll("#tune-result, #test-result"))
-    result.innerHTML = resultSummary();
-}
-async function onClick(event: MouseEvent) {
-  const target = (event.target as HTMLElement).closest<HTMLElement>("button");
-  if (!target) return;
-  if (target.dataset.workspace) {
-    switchWorkspace(target.dataset.workspace);
-    return;
-  }
-  if (target.dataset.action === "cancel-switch") {
-    pendingNavigation = undefined;
-    error = "";
-    feedback();
-    return;
-  }
-  if (
-    target.dataset.action === "discard-switch" ||
-    target.dataset.action === "save-switch"
-  ) {
-    try {
-      if (target.dataset.action === "save-switch") commitEdits();
-      else {
-        clearWaveCanvasHistory();
-        message = "Changes discarded. Ready to shape this wave.";
-      }
-      dirty = false;
-      const next = pendingNavigation;
-      pendingNavigation = undefined;
-      error = "";
-      next?.();
-    } catch (cause) {
-      error = cause instanceof Error ? cause.message : String(cause);
-      feedback();
-      focusInvalidEditor();
-    }
-    return;
-  }
-  if (target.dataset.selectLevel) {
-    navigate(() => {
-      levelId = target.dataset.selectLevel!;
-      waveId = target.dataset.selectWave!;
-      scenario = {
-        ...scenario,
-        id: uid("scenario"),
-        levelId,
-        ...(scenario.mode === "wave" ? { waveId } : {}),
-      };
-      render();
+    const response = await fetch("/__workbench/promote", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "X-Workbench-Token": token,
+      },
+      body: JSON.stringify(submitted),
     });
-    return;
-  }
-  const action = target.dataset.action;
-  if (!action) return;
-  try {
+    const result = await response.json();
+    if (!response.ok) throw new Error(result.error ?? "Promotion failed.");
+    validateContent(result.content);
+    gameContent = clone(result.content);
+    draft = rebaseAfterPromotion(submitted, result.content);
     error = "";
-    if (action === "fork") {
-      commitEdits();
-      message = "Named draft saved. Released content is unchanged.";
-    } else if (action === "baseline") {
-      navigate(() => {
-        clearWaveCanvasHistory();
-        content = clone(CANONICAL_CONTENT);
-        revision = null;
-        message = "Released baseline selected.";
-        ensureSelection();
-        render();
-      });
-      return;
-    } else if (action === "apply") {
-      commitEdits();
-    } else if (action === "play" || action === "replay") {
-      if (action === "play") {
-        if (workspace === "tune") {
-          root.querySelector<HTMLSelectElement>(
-            "#difficulty-candidate",
-          )!.value = "";
-          delete scenario.difficultyCandidate;
-        }
-        commitEdits();
-      } else if (dirty) {
-        navigate(() => launch(true));
-        return;
-      }
-      launch(action === "replay");
-      return;
-    } else if (action === "save-scenario") {
-      commitEdits();
-      scenario = readScenario();
-      preserveScenario();
-      message = "Scenario saved independently of family progress.";
-    } else if (action === "inspect-scenario") {
-      scenario = readScenario();
-      inspectedScenario = inspectScenario(collectEdits(), scenario);
-      root.querySelector("#scenario-inspection")!.innerHTML =
-        `<details open><summary>Resolved test setup</summary><pre class="wb-code">${esc(json(inspectedScenario))}</pre></details>`;
-      message = "Resolved test setup is shown above.";
-      feedback();
-      return;
-    } else if (action === "export") {
-      const blob = new Blob([exportExperiments(store.bundle)], {
-        type: "application/json",
-      });
-      const url = URL.createObjectURL(blob);
-      const anchor = document.createElement("a");
-      anchor.href = url;
-      anchor.download = "stormwatch-experiments.json";
-      anchor.click();
-      URL.revokeObjectURL(url);
-      message =
-        "Saved experiments exported. Unsaved edits stay in this browser.";
-      feedback();
-      return;
-    } else if (action === "promotion") {
-      commitEdits();
-      message = `Export the bundle, then preview:\nnpm run workbench:promote -- stormwatch-experiments.json ${revision!.id} selection.json\nselection.json: {"levels":["${levelId}"]}\nCatalog/rule scope requires explicit CLI selection. Review the diff before --apply. Scenario overrides, traces and results remain utility data.`;
-    } else if (["run", "compare", "search"].includes(action)) {
-      if (runBusy) return;
-      commitEdits();
-      runBusy = true;
-      scenario = readScenario();
-      const policy = root.querySelector<HTMLSelectElement>("#policy")!.value;
-      const goal = {
-        type: root.querySelector<HTMLSelectElement>("#goal")!.value,
-        waveId,
-        noLivesLost: root.querySelector<HTMLInputElement>("#no-loss")!.checked,
-      };
-      const settings = {
-        policyId: policy,
-        cadenceTicks: Number(
-          root.querySelector<HTMLInputElement>("#cadence")!.value,
-        ),
-        maxTicks: Math.round(
-          Number(root.querySelector<HTMLInputElement>("#time-limit")!.value) *
-            30,
-        ),
-        goal: goal as import("./runs").Goal,
-      };
-      const budget = Number(
-        root.querySelector<HTMLInputElement>("#budget")!.value,
-      );
-      runControls = {
-        policy,
-        goal: goal.type,
-        noLoss: goal.noLivesLost,
-        cadence: settings.cadenceTicks,
-        limit: settings.maxTicks / 30,
-        budget,
-      };
-      message = "Running deterministic legal-command evidence…";
-      render();
-      await new Promise<void>((resolve) => setTimeout(resolve, 0));
-      try {
-        if (action === "compare") {
-          const comparison = compareScenarios(
-            CANONICAL_CONTENT,
-            content,
-            scenario,
-            settings,
-          );
-          saveReport(comparison.after, undefined, { comparison });
-          lastEvidence = comparison;
-          evidenceSummary = `Matched comparison: released ${comparison.before.success ? "reached target" : "missed target"}, draft ${comparison.after.success ? "reached target" : "missed target"}. Hearts ${comparison.before.lives} → ${comparison.after.lives}; leaks ${comparison.before.leaks} → ${comparison.after.leaks}; rejected commands ${comparison.invalidatedCommands.length}.`;
-          message = "Comparison complete. Open full test evidence for details.";
-        } else if (action === "search") {
-          const search = searchScenario(
-            content,
-            scenario,
-            settings.goal,
-            budget,
-            settings.maxTicks,
-          );
-          if (search.report)
-            saveReport(search.report, undefined, {
-              search: { ...search, report: undefined },
-            });
-          lastEvidence = search;
-          evidenceSummary = search.found
-            ? "A legal defense plan reached the target; replay its recorded commands to inspect it."
-            : "No successful plan within the search budget. This does not prove the target is impossible.";
-          message = search.found
-            ? "Search found a recorded plan."
-            : "No plan found within this search budget.";
-        } else {
-          const report = runScenario(content, scenario, settings);
-          saveReport(report);
-          message =
-            "Observed policy result saved. Human feel and device behavior remain separate evidence.";
-        }
-      } finally {
-        runBusy = false;
-      }
-    }
-  } catch (cause) {
-    error = cause instanceof Error ? cause.message : String(cause);
-    runBusy = false;
-    feedback();
-    focusInvalidEditor();
-    return;
+    message = `Promoted ${wave().title}. Game config is updated.`;
+    persist();
+  } finally {
+    saving = false;
+    render();
   }
-  render();
 }
-render();
+root.addEventListener("click", (event) => {
+  const button = (event.target as HTMLElement).closest<HTMLElement>(
+    "[data-action]",
+  );
+  if (!button) return;
+  const action = button.dataset.action;
+  void (async () => {
+    try {
+      if (action === "play") {
+        error = "";
+        play();
+      } else if (action === "promote") await promote();
+      else if (action === "refresh-config") {
+        const response = await fetch("/__workbench/config", {
+          cache: "no-store",
+        });
+        if (!response.ok) throw new Error("Unable to refresh game config.");
+        const result = await response.json();
+        validateContent(result.content);
+        gameContent = clone(result.content);
+        token = result.token;
+        draft.base = clone(gameContent);
+        error = "";
+        message =
+          "Game config refreshed. Your draft edits are kept; review them before promoting over the latest settings.";
+        persist();
+        render();
+      } else if (action === "new-map" || action === "new-wave") {
+        creation = action === "new-map" ? "map" : "wave";
+        root.querySelector("#create-title")!.textContent =
+          creation === "map" ? "New map" : "New wave";
+        root.querySelector<HTMLElement>("#create-layout-label")!.hidden =
+          creation !== "map";
+        root.querySelector<HTMLInputElement>("#create-name")!.value = "";
+        root.querySelector<HTMLDialogElement>("#create-dialog")!.showModal();
+      } else if (action === "cancel-create")
+        root.querySelector<HTMLDialogElement>("#create-dialog")!.close();
+      else if (action === "first-enemy") {
+        const kind = button.dataset.kind as keyof typeof names;
+        wave().packets = [
+          {
+            id: uid("sequence"),
+            groups: [
+              { id: uid("group"), kind, count: 3, batchSize: 1, gap: 1 },
+            ],
+          },
+        ];
+        error = "";
+        message = "";
+        persist();
+        render();
+      }
+    } catch (cause) {
+      fail(cause);
+    }
+  })();
+});
+async function start() {
+  let baseline = clone(CANONICAL_CONTENT);
+  try {
+    const response = await fetch("/__workbench/config", { cache: "no-store" });
+    if (!response.ok) throw new Error();
+    const result = await response.json();
+    validateContent(result.content);
+    baseline = result.content;
+    token = result.token;
+    connected = true;
+  } catch {
+    message =
+      "Promotion needs the local workbench server. Start it with npm run dev:workbench.";
+  }
+  gameContent = clone(baseline);
+  try {
+    storage = localStorage;
+  } catch {
+    /* In-memory draft remains usable. */
+  }
+  try {
+    const stored = storage?.getItem(WORKING_DRAFT_KEY);
+    if (stored) draft = validateWorkingDraft(JSON.parse(stored));
+    else {
+      let legacy: AuthoringContent | undefined;
+      const previous = storage?.getItem(WORKBENCH_STORAGE_KEY);
+      if (previous) {
+        try {
+          const revisions = JSON.parse(previous).revisions;
+          for (const entry of Array.isArray(revisions)
+            ? [...revisions].reverse()
+            : []) {
+            try {
+              validateContent(entry.content);
+              legacy = entry.content;
+              break;
+            } catch {
+              /* Continue to the most recent valid revision. */
+            }
+          }
+        } catch {
+          /* Preserve the archived experiments without importing invalid data. */
+        }
+      }
+      draft = createWorkingDraft(baseline, legacy);
+    }
+    persist();
+    render();
+  } catch (cause) {
+    root.innerHTML = `<main class="wb-shell ws-workspace"><h1>Unable to open your saved draft</h1><p>${esc(cause instanceof Error ? cause.message : cause)}</p><p>The stored draft has been preserved. Ask your agent to recover it before continuing.</p></main>`;
+  }
+}
+void start();

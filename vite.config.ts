@@ -1,5 +1,6 @@
 import { engineRevision } from "./tools/engine-revision.mjs";
 import { defineConfig, type Plugin } from "vite";
+import { workbenchApiPlugin } from "./tools/workbench-api.mjs";
 
 const utilityModule =
   /\/(?:src\/(?:workbench|qa)\/|src\/render\/recording\.|tools\/)/;
@@ -33,7 +34,11 @@ export default defineConfig(({ command, mode }) => {
       __STORMWATCH_QA__: JSON.stringify(command === "serve" || target === "qa"),
     },
     plugins:
-      target === "game" && command === "build" ? [productionBoundary()] : [],
+      target === "workbench"
+        ? [workbenchApiPlugin()]
+        : target === "game" && command === "build"
+          ? [productionBoundary()]
+          : [],
     build: {
       target: "es2022",
       outDir: target === "game" ? "dist" : `dist-${target}`,

@@ -1,140 +1,82 @@
 # Designer workbench
 
-Run `npm run dev:workbench` for local authoring. For a built preview, run
-`npm run build:workbench` and `npm run preview:workbench`, then open
-`/workbench.html` on the printed local URL. `npm run build` still produces only
-the ordinary game in `dist`; the workbench output is `dist-workbench`.
+Run `npm run dev:workbench` and open the local workbench URL. For the built version,
+run `npm run build:workbench` followed by `npm run preview:workbench`.
+The production game build remains separate.
 
-## First tweak
+## Design, play, promote
 
-The workbench opens in **Tune**, at Lantern Pass's first wave. Choose another
-wave in the left register if needed. Change starting crowns, wave-end crowns,
-enemy count or time between enemies, then choose **Save & play**. This validates
-and saves a local draft before launching the exact edited settings. No naming or
-scenario setup is required for the first playtest. **Save draft** keeps changes
-without starting a game.
+Choose a map and wave, then shape the arrival timeline. Every accepted edit saves
+automatically into one browser working draft. Changing selection or reloading
+restores that draft; there is no revision picker or manual draft-save step.
+Storage failures are reported explicitly. Keep the page open if a draft is only
+in memory.
 
-The rhythm preview updates for valid edits. It shows arrival timing, not wave-clear
-time; combat and travel determine clearing. More timing options expose repetition,
-batches, stagger, preceding silence, movement and supported guard/evasion cycles.
-Encounter modifiers and design notes are separate from wave settings. Catalog,
-rule and packet JSON editors remain under advanced disclosures.
+Select an enemy group to reveal handles. Drag its body to change the preceding
+wait; stretch its timing or adjust its count. The batch detail controls enemies
+per batch, spacing and uniform staggering. Repeated patterns show linked copies;
+editing a copy updates their shared source. All groups follow one arrival order.
+Timing drags snap to 0.05 seconds, counts to integers. Grid lines reveal finer
+subdivisions as you zoom in. Undo/redo covers accepted visual edits during the
+session; Escape cancels a drag.
 
-Switching between **Tune**, **Test** and **Experiments** keeps pending inputs.
-Switching waves or loading other saved settings asks you to save, discard or keep
-editing when there are pending changes. Validation errors retain the inputs.
-The play-setup line states whether the test starts at wave 1 or plays only the
-selected wave, and discloses any custom starting resources. Short landscape
-screens keep Save & play available in a persistent action bar.
-An active attempt retains its original immutable snapshot; later edits apply to a
-new attempt. The save indicator distinguishes released settings, unsaved changes
-and saved local drafts.
+**Playtest** launches the selected wave using the candidate that would be promoted,
+normal difficulty and legitimate first-arrival tools. Its progress stays separate
+from family profiles. Return with Workbench to continue editing.
 
-**Test** contains manual setup and automated checks. Results lead with the outcome
-and key values; expand full evidence for commands, configuration identities and
-provenance. Results from earlier settings are labeled. **Experiments** contains
-named drafts, earlier revisions, saved scenarios/results/traces, import/export and
-canonical promotion. These tools are available without crowding the basic edit loop.
+**Promote** writes the selected wave and its map settings into
+`src/content/recipes.json`. Other waves, maps and global catalogs stay unchanged;
+their pending edits remain in the working draft. New selected maps/waves are
+inserted into the canonical configuration. Promotion does not commit, publish or
+rebuild the production game. Subsequent game builds use the updated configuration.
 
-Choose first-arrival or earned replay tools independently of normal/assist or a
-named design-only difficulty recipe. First arrival includes discoveries from
-previous encounters. Explicit overrides can set `towers`, `upgrades`, `card`,
-`coins` and `lives`; a formation is an array such as
-`[{"kind":"bolt","point":{"x":1,"z":4},"upgraded":false}]`. Formation
-placement and upgrades must be legal and affordable from the declared wallet.
-Isolated waves and overridden setups are synthetic, without any claim that the
-preceding campaign could afford them.
+The local endpoint validates the complete result, checks the current selected
+scope against the draft baseline and atomically replaces the fixed config file.
+If that scope changed elsewhere, promotion refuses the overwrite. The conflict
+message offers **Keep draft with latest game config**: it retains your edits and
+refreshes their comparison base. Review those edits before promoting over the
+newer settings. Unrelated promotion never silently clears another pending conflict.
 
-Play uses the actual battlefield, defender inspection, placement, upgrades,
-selling, range, wave start, pause and sound. Combat acceleration uses fixed steps;
-preparation retains its real-time decision window. Return to the workbench to
-preserve evidence. A recorded replay holds at the selected wave preparation without advancing its
-countdown. Choose Continue replay or Take manual control at preparation.
-Saved traces/results can be selected after reload or import and replayed in fresh
-attempts. The workbench never awards stars/discoveries or writes family profiles.
+## New maps and waves
 
-Policies disclose their cadence, action budget, tool restrictions and live-spending
-assumptions. The default recorded strategies may act every fixed tick; a longer
-cadence must be selected when comparing slower decisions. Completion goals require
-a wave clear or encounter win, including required boss defeat. Optional no-lives-
-lost requires actual completion and preserves every declared starting heart.
-Matched comparisons replay the baseline commands against the candidate and report
-rejections. Bounded search varies legal defense plans; failure is not proof of
-impossibility. A found plan has a trace checked through fresh replay. Neither
-policies nor search establish child suitability or physical-device behavior.
+Use **+ Map**, enter a name and choose an existing layout. The map starts with an
+empty first wave; choose an enemy to create its first group. Use **+ Wave** to add
+more named waves. Empty waves save as drafts but cannot play or promote until an
+enemy group exists.
 
-Drafts, scenarios, traces and reports use an independent browser namespace. If
-storage is unavailable, the status explicitly says edits remain in memory; export
-is still available. Export/import validates schema versions, complete content,
-stable identities, legal setup and evidence references.
+**Map & wave settings** contains names, starting crowns, the wave reward and a
+layout selector with a route preview. Layouts copy dimensions, route, blocked
+cells and accent from an existing game map. New map IDs use the woodland scenery;
+this is a route/layout selector, not a custom painted-background editor.
 
-## Structured operations
+Promoted map order drives the campaign and progress whitelist. New encounters
+follow existing maps and unlock sequentially. Campaigns with more than three maps
+use a scrollable encounter-card grid. Original encounter rewards remain unchanged.
 
-`npm run workbench -- list` lists campaign numbers and stable encounter/wave IDs.
-Other operations accept a JSON request file:
+## Existing experiments and agent tools
 
-```sh
-npm run workbench -- inspect request.json
-npm run workbench -- validate request.json
-npm run workbench -- run request.json
-npm run workbench -- compare request.json
-npm run workbench -- search request.json
-```
+On first use, the most recent valid legacy revision supplies map/wave edits to the
+single draft. Old experiment storage remains intact for agent recovery but is not
+shown or appended to by the workspace. Hidden legacy global catalog/rule edits do
+not influence the new Playtest or Promote workflow; those operations use game
+catalogs and rules.
 
-Inspect accepts `{ "map": 3, "wave": 6 }` or stable `levelId`/`waveId`. Run uses
-`{ "scenario": {...}, "options": {...} }`. A scenario contains `id`, `levelId`,
-`mode` (`encounter` or `wave`), `progression` (`first-arrival` or `replay`),
-`difficulty` (`normal` or `assist`), and `seed`; isolated mode also requires
-`waveId`. Optional fields are `overrides`, `formation` and
-`difficultyCandidate: { id, content }`.
+Automated run, compare, search, scenarios, command traces and scoped legacy
+promotion remain available to agents through existing modules and commands:
 
-Run options include `policyId`, `cadenceTicks`, `maxTicks` and
-`goal: { type: "encounter-win" | "wave-clear", waveId?, noLivesLost? }`, or
-`trace` instead of a policy. Policies are `lantern-growth`, `coverage-first`,
-`upgrades-first` and `finale-mixed`. Compare takes `candidate` authored content;
-search takes `goal`, `budget` and `maxTicks`. Optional `content` supplies a draft;
-otherwise canonical content is used. Use `npm run --silent workbench -- ...` or `node tools/workbench.mjs ...` for clean
-machine-readable output. JSON output records effective identity,
-engine revision, fixed step, seed/setup, actions, checkpoints and outcomes.
+- `npm run workbench -- list`
+- `npm run workbench -- inspect request.json`
+- `npm run workbench -- validate request.json`
+- `npm run workbench -- run request.json`
+- `npm run workbench -- compare request.json`
+- `npm run workbench -- search request.json`
+- `npm run workbench:promote -- experiments.json REVISION selection.json [--apply]`
 
-## Deliberate canonical promotion
+Structured requests use the types in `src/workbench/scenarios.ts` and `runs.ts`.
+The optional request `content` supplies an authored candidate. Existing CLI
+promotion previews its explicit selected scopes before `--apply`; it remains
+separate from the one-wave browser Promote action.
 
-Export experiments and choose a revision plus an explicit selection JSON file:
-
-```json
-{ "levels": ["the-last-lantern"] }
-```
-
-Preview before applying:
-
-```sh
-npm run workbench:promote -- experiments.json revision-id selection.json
-npm run workbench:promote -- experiments.json revision-id selection.json --apply
-npm run check
-npm test
-npm run build
-```
-
-Selection also supports explicit `towers`, `enemies` and `rules` field lists.
-Promotion validates all content, rejects stale baselines, checks tested effective
-identity for affected encounters under the same declared scenarios, and stages
-atomic replacement. Include all authored scopes needed to reproduce the tested
-configuration. A different nested difficulty recipe must first become the selected
-authored revision. Synthetic resources, tools, formation, policies and results are
-never implicitly promoted. Errors leave the accepted source intact. Inspect the
-diff and keep accepted history in source control; the command never commits,
-publishes or deploys. Tests use disposable workspaces for writes.
-
-The remaining family release observations belong to the existing holiday-expedition
-family-release ticket. Prior owner observations should be collected there; bot
-results and viewport emulation do not replace them.
-
-## Shape waves visually
-
-The Shape wave workspace opens an arrival canvas. Choose a group using its enemy image. Move the group to adjust the wait before it; later groups move with it. Stretch its timing to change batch spacing, and use the separate quantity handle to change enemy count. The selected group's batch detail provides a closer view of spacing and uniform staggering. Step controls offer precise and keyboard-accessible alternatives.
-
-Sequences may contain several groups and linked repeated copies. Editing a copied group changes its source pattern in every repeat. Extra repeat wait is additional to the pattern's existing spacing. The shaded tail includes final batch spacing; the last arrival and the next group's start need not coincide. Species rows are guides for a single ordered schedule, rather than independently movable tracks.
-
-Undo and redo act on accepted visual edits. Cancel a drag with Escape. Invalid timing leaves the recipe unchanged. Save & play saves the current draft before launching it. Encounter resources, behavior/configuration details and technical recipe editing remain available below the canvas; invalid expert input is retained and pauses the canvas until corrected.
-
-Timing drags snap to 0.05-second increments; enemy, batch and repeat counts snap to whole numbers. Thin timing lines use coarser subdivisions when zoomed out and reveal the 0.05-second grid when zoomed in far enough. Zoom changes the visible grid density, not snapping precision. Position and extent handles align their resulting timeline positions, including when imported timing starts off the grid.
+The browser writer is available only in local workbench dev/preview mode. It
+requires a loopback connection, matching origin and a server-issued request token.
+The production build exposes neither the workbench nor its write endpoint.

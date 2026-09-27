@@ -21,7 +21,7 @@
     "check:artifact": "node tools/check-production-artifact.mjs",
     "workbench:promote": "node tools/promote-workbench.mjs",
     "workbench": "node tools/workbench.mjs",
-    "preview:workbench": "vite preview --host 127.0.0.1 --outDir dist-workbench"
+    "preview:workbench": "vite preview --mode workbench --host 127.0.0.1 --outDir dist-workbench"
   },
   "dependencies": {
     "three": "0.186.0"
