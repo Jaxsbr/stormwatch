@@ -44,3 +44,13 @@ prior 404 was an authentication-access issue, now resolved. All history already
 uses the Jaxsbr author/committer identity. Remaining actions are enumerated in
 the release evidence checklist; browser journey/background checks belong to the
 agent, and listening/device/child observations require owner participation.
+
+## Owner tablet playthrough and crash report
+
+Owner reports a Samsung S7 FE playthrough: Lantern and Rainstone completed,
+Last Lantern lost to boss, then retry. Layout looked acceptable. Spawn hitches,
+a changing navigation strip, resize stalls and a Chrome tab crash are release
+regressions to investigate. See `docs/evidence/tablet-retry.md` and ADR 027 for
+reproduction/fixes; do not close physical-device acceptance until the owner
+repeats that sequence on the corrected candidate. Map illustration border should
+match the current button/selection-card skin.

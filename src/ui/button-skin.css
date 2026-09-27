@@ -121,3 +121,12 @@
     min-width: 0;
   }
 }
+
+/* Frame the map illustration with the same brass corners as its selection cards.
+   Omit the nine-slice center fill so the artwork remains visible. */
+.expedition .expedition-map::after {
+  inset: -16px;
+  border: 16px solid transparent;
+  border-image: url("../../public/art/v2/timber-button-v2/skin.webp") 166
+    stretch;
+}

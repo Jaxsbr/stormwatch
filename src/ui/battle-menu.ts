@@ -4,10 +4,11 @@ import { button } from "./game-chrome";
 export type MenuView = "menu" | "settings" | "quit";
 export function battleMenuMarkup(
   save: Pick<SaveData, "music" | "effects" | "muted">,
+  fullscreenLabel?: string,
 ) {
   return `<div class="modal-backdrop battle-menu-backdrop"><section class="game-menu-surface" role="dialog" aria-modal="true" aria-labelledby="battle-menu-title" tabindex="-1"><h2 id="battle-menu-title">Game paused</h2><div class="menu-pages">
     <div class="menu-page" data-menu-view="menu">${button("menu-continue", "Continue", "primary")}${button("menu-settings", "Settings")}${button("menu-quit", "Quit")}</div>
-    <div class="menu-page" data-menu-view="settings" hidden inert><h3>Settings</h3><label>Music<input data-setting="music" type="range" min="0" max="1" step="0.05" value="${save.music}"></label><label>Sound effects<input data-setting="effects" type="range" min="0" max="1" step="0.05" value="${save.effects}"></label><label class="mute-row"><input data-setting="muted" type="checkbox" ${save.muted ? "checked" : ""}>Mute all sound</label>${button("menu-back", "Menu", "primary")}</div>
+    <div class="menu-page" data-menu-view="settings" hidden inert><h3>Settings</h3><label>Music<input data-setting="music" type="range" min="0" max="1" step="0.05" value="${save.music}"></label><label>Sound effects<input data-setting="effects" type="range" min="0" max="1" step="0.05" value="${save.effects}"></label><label class="mute-row"><input data-setting="muted" type="checkbox" ${save.muted ? "checked" : ""}>Mute all sound</label>${fullscreenLabel ? button("fullscreen", fullscreenLabel) : ""}${button("menu-back", "Menu", "primary")}</div>
     <div class="menu-page" data-menu-view="quit" hidden inert><h3>Quit this game?</h3><p>This attempt will end. Completed maps stay saved.</p>${button("menu-confirm-quit", "Quit", "primary")}${button("menu-back", "Menu")}</div>
   </div></section></div>`;
 }
@@ -21,8 +22,9 @@ export class BattleMenu {
   constructor(
     private root: HTMLElement,
     save: Pick<SaveData, "music" | "effects" | "muted">,
+    fullscreenLabel?: string,
   ) {
-    root.innerHTML = battleMenuMarkup(save);
+    root.innerHTML = battleMenuMarkup(save, fullscreenLabel);
     root.querySelector<HTMLElement>('[data-action="menu-continue"]')?.focus();
   }
   async navigate(view: MenuView) {

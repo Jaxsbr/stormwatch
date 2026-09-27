@@ -40,6 +40,20 @@ window.addEventListener("resize", updateVisibleViewport);
 window.addEventListener("orientationchange", updateVisibleViewport);
 window.visualViewport?.addEventListener("resize", updateVisibleViewport);
 window.visualViewport?.addEventListener("scroll", updateVisibleViewport);
+function fullscreenLabel() {
+  return document.fullscreenEnabled
+    ? document.fullscreenElement
+      ? "Leave fullscreen"
+      : "Enter fullscreen"
+    : undefined;
+}
+document.addEventListener("fullscreenchange", () => {
+  updateVisibleViewport();
+  for (const control of document.querySelectorAll<HTMLButtonElement>(
+    '[data-action="fullscreen"]',
+  ))
+    control.textContent = fullscreenLabel() ?? "Enter fullscreen";
+});
 let profiles = loadProfiles(null, null);
 try {
   profiles = loadProfiles(
@@ -372,7 +386,7 @@ function openBattleMenu() {
     game.pause();
   sound.pause(true);
   document.querySelector<HTMLElement>(".battle-screen")!.inert = true;
-  battleMenu = new BattleMenu(root, save);
+  battleMenu = new BattleMenu(root, save, fullscreenLabel());
   updateHud();
 }
 function closeBattleMenu() {
@@ -390,7 +404,7 @@ function settingsModal() {
   if (settingsPaused) game!.pause();
   sound.pause(true);
   const root = document.getElementById("modal-root")!;
-  root.innerHTML = `<div class="modal-backdrop"><section class="settings-card" role="dialog" aria-modal="true" aria-labelledby="settings-title"><h2 id="settings-title">Settings</h2><label>Music <input data-setting="music" type="range" min="0" max="1" step="0.05" value="${save.music}"></label><label>Sound effects <input data-setting="effects" type="range" min="0" max="1" step="0.05" value="${save.effects}"></label><label class="mute-row"><input data-setting="muted" type="checkbox" ${save.muted ? "checked" : ""}> Mute all sound</label><details class="game-credits"><summary>Credits</summary><p>Music: Treasure Hunter by TAD · CC0<br>Artwork generated for Stormwatch.</p></details>${button("close-settings", "Back", "primary")}</section></div>`;
+  root.innerHTML = `<div class="modal-backdrop"><section class="settings-card" role="dialog" aria-modal="true" aria-labelledby="settings-title"><h2 id="settings-title">Settings</h2><label>Music <input data-setting="music" type="range" min="0" max="1" step="0.05" value="${save.music}"></label><label>Sound effects <input data-setting="effects" type="range" min="0" max="1" step="0.05" value="${save.effects}"></label><label class="mute-row"><input data-setting="muted" type="checkbox" ${save.muted ? "checked" : ""}> Mute all sound</label><details class="game-credits"><summary>Credits</summary><p>Music: Treasure Hunter by TAD · CC0<br>Artwork generated for Stormwatch.</p></details>${fullscreenLabel() ? button("fullscreen", fullscreenLabel()!) : ""}${button("close-settings", "Back", "primary")}</section></div>`;
   root.querySelector("input")?.focus();
 }
 function closeSettings() {
@@ -426,6 +440,15 @@ app.addEventListener("click", (e) => {
   if ((el as HTMLButtonElement).disabled) return;
   const [action, value] = el.dataset.action!.split(":");
   sound.play("ui");
+  if (action === "fullscreen") {
+    const change = document.fullscreenElement
+      ? document.exitFullscreen()
+      : document.documentElement.requestFullscreen({ navigationUI: "hide" });
+    void change.catch(() =>
+      toast("Fullscreen is unavailable in this browser."),
+    );
+    return;
+  }
   if (action === "menu") {
     openBattleMenu();
     return;

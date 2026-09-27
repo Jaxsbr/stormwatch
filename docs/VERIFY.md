@@ -41,6 +41,13 @@ runs complement that evidence and do not replace a human browser chapter.
 
 ## Performance
 
+For repeated chapter attempts and browser-height changes, open `/qa.html?lifecycle`.
+Run the full chapter and boss retry audit, requiring eight retired contexts, zero
+unchanged-size buffer allocations and matching resource counts across cycles.
+See [tablet retry evidence](evidence/tablet-retry.md) for the workload and limits.
+On supported browsers, Settings → Enter fullscreen requests additional screen space;
+repeat the physical-device route in ordinary and fullscreen modes.
+
 `qa.html` is a separate artificial stress page. It uses the actual simulation/renderer with seed42, replenished 60 enemies, 12 defenses, 3 lodges and 150 combined shots/effects. It exercises slowing, splash, targeted rescue and actual payout/victory simulation transitions. It does not measure DOM gameplay overlays, music, or player experience; normal-game checks supplement it.
 
 Open `/qa.html` using the development server or a separate `npm run build:qa` output in `dist-qa`. The production game excludes that entry. Keep the browser foreground. Click **Run three benchmarks**. Each run has 10s warmup then 180s raw `requestAnimationFrame` intervals. The page marks runs invalid if hidden. Download evidence after three runs. Record desktop hardware, browser version, viewport, DPR and throttling. p95 uses the sorted 95th-percentile interval; median FPS is 1000 divided by median interval. Worst frames are retained rather than clamped away. Simulation dt remains capped separately.

@@ -6,7 +6,10 @@ type VisibleViewportSource = {
 
 /** Fit the game shell to the part of a tablet screen the browser leaves visible. */
 export function fitVisibleViewport(
-  style: { setProperty(name: string, value: string): void },
+  style: {
+    setProperty(name: string, value: string): void;
+    getPropertyValue?(name: string): string;
+  },
   source: VisibleViewportSource,
 ) {
   const viewport = source.visualViewport;
@@ -14,6 +17,11 @@ export function fitVisibleViewport(
     viewport && viewport.width > 0 ? viewport.width : source.innerWidth;
   const height =
     viewport && viewport.height > 0 ? viewport.height : source.innerHeight;
-  style.setProperty("--app-width", `${Math.floor(width)}px`);
-  style.setProperty("--app-height", `${Math.floor(height)}px`);
+  const nextWidth = `${Math.floor(width)}px`;
+  const nextHeight = `${Math.floor(height)}px`;
+  // Scroll notifications need no new layout when the visible size is unchanged.
+  if (style.getPropertyValue?.("--app-width") !== nextWidth)
+    style.setProperty("--app-width", nextWidth);
+  if (style.getPropertyValue?.("--app-height") !== nextHeight)
+    style.setProperty("--app-height", nextHeight);
 }

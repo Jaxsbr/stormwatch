@@ -107,6 +107,10 @@ export class Battlefield {
   private rankTexture: THREE.CanvasTexture;
   private selectedRank = "";
   private observer: ResizeObserver;
+  private resizeTimer: ReturnType<typeof setTimeout> | undefined;
+  private bufferWidth = 0;
+  private bufferHeight = 0;
+  private disposed = false;
   private characterRigs: Record<EnemyKind, CutoutResource> = {
     raider: new CutoutResource("rat-rig-v3"),
     runner: new CutoutResource("weasel-rig-v1"),
@@ -284,7 +288,11 @@ export class Battlefield {
       this.owned.push(t);
       return t;
     });
-    this.observer = new ResizeObserver(() => this.resize());
+    this.observer = new ResizeObserver(() => {
+      // Browser chrome can animate many heights; allocate once it settles.
+      clearTimeout(this.resizeTimer);
+      this.resizeTimer = setTimeout(() => this.resize(), 100);
+    });
     this.observer.observe(host);
     this.resize();
     this.renderer.domElement.addEventListener("pointerup", (e) => {
@@ -328,8 +336,14 @@ export class Battlefield {
     this.selectedRank = label;
   }
   resize() {
-    const { width, height } = this.host.getBoundingClientRect();
+    if (this.disposed) return;
+    const bounds = this.host.getBoundingClientRect();
+    const width = Math.floor(bounds.width);
+    const height = Math.floor(bounds.height);
     if (width < 1 || height < 1) return;
+    if (width === this.bufferWidth && height === this.bufferHeight) return;
+    this.bufferWidth = width;
+    this.bufferHeight = height;
     const aspect = width / height,
       span = Math.max(680, W / aspect);
     this.camera.left = (-span * aspect) / 2;
@@ -1015,6 +1029,9 @@ export class Battlefield {
       }
   }
   dispose() {
+    if (this.disposed) return;
+    this.disposed = true;
+    clearTimeout(this.resizeTimer);
     this.observer.disconnect();
     this.clearWorld();
     this.effects.dispose();
@@ -1040,6 +1057,9 @@ export class Battlefield {
       this.selectedMarker,
     ].forEach((o) => this.releaseObject(o));
     this.renderer.dispose();
+    // dispose() deletes resources, but does not retire the WebGL context.
+    // Each campaign attempt owns its canvas; it will never be restored/reused.
+    this.renderer.forceContextLoss();
     this.renderer.domElement.remove();
   }
 }
