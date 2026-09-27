@@ -75,11 +75,13 @@
               "groups": [
                 {
                   "kind": "raider",
-                  "count": 20,
-                  "gap": 3,
-                  "id": "packet-1"
+                  "count": 5,
+                  "gap": 2.5,
+                  "id": "packet-1",
+                  "delayBefore": 5
                 }
-              ]
+              ],
+              "repeat": 4
             }
           ],
           "abilities": {

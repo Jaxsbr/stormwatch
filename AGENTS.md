@@ -8,6 +8,10 @@ Keep patches bounded. Review delegated edits before integrating. Public docs des
 
 Record consequential choices in docs/decisions with context, decision, consequences and verification. New product direction or additional asset spending requires owner approval. Do not replace agreed capabilities with placeholders to make checks pass.
 
+## Map and wave authoring
+
+Before adding or changing maps, waves, shared abilities, content schemas, or workbench promotion/loading, follow [the content authoring contract](docs/agents/content-authoring.md). Keep canonical data, workbench controls and runtime game loading aligned; verify the edit → Promote → game-reload round trip.
+
 ## Agent skills
 
 ### Issue tracker

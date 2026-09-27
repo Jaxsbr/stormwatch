@@ -21,3 +21,7 @@ typed simulation rules and matching presentation tells. Workbench editor, replay
 policy and report changes belong under `src/workbench`, outside the production
 entry graph. Utility evidence is distinct from actual family play observations.
 See `docs/WORKBENCH.md` for local structured operations and promotion.
+
+For map/wave additions, ability tuning, schema changes, or promotion/loading work,
+follow [the content authoring contract](content-authoring.md), including its
+workbench-to-game round-trip completion criteria.

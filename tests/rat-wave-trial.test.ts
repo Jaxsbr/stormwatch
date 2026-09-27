@@ -38,6 +38,11 @@ describe("Rat Raider five-wave trial", () => {
 
   it("matches the selected five-wave sequence", () => {
     expect(lanternPass.waves).toHaveLength(5);
+    // Owner-promoted opening: four groups of five, with a wait before each group.
+    expect(lanternPass.waves[0].groups).toHaveLength(4);
+    expect(
+      lanternPass.waves[0].groups.map((group) => group.delayBefore),
+    ).toEqual([5, 5, 5, 5]);
     expect(
       lanternPass.waves.map((wave) => {
         const group = wave.groups[0];
@@ -55,8 +60,8 @@ describe("Rat Raider five-wave trial", () => {
     ).toEqual([
       {
         kind: "raider",
-        count: 20,
-        gap: 3,
+        count: 5,
+        gap: 2.5,
         batchSize: 1,
         batchStagger: 0,
         up: 3,
