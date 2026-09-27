@@ -45,6 +45,12 @@ All PNGs in this directory are browser captures of the local workbench, generate
 
 ## Limits and acceptance
 
+### Timing snapping follow-up
+
+The owner confirmed the reported continuous stream came from leaving no wait between groups. No Save & play defect was established, and no attempt handoff change was made. Their subsequent request adds 0.05-second timing snapping and zoom-dependent thin grid lines. Group start and extent drags now align absolute timing positions, while local batch spacing/stagger and repeat rest retain 0.05-second value snapping. Counts retain integer snapping. Minor lines remain at least 8 pixels apart and labels at least 60 pixels apart; higher zoom reveals 0.05-second subdivisions. The local batch view also has timing lines.
+
+Browser checks on the owner's saved escalating groups verified wait 2 → 2.2s from a body drag and extent 10.7 → 10.95s from a handle drag. Undo restored the saved recipe after each. Zoom revealed 0.05-second grid lines; Fit restored the whole-wave view. The saved groups and waits were preserved. `snap-grid.png` is a browser capture of that high-zoom verification, not generated runtime art. Final checks pass: 237 tests in 42 files, type checking, formatting, production build, workbench build and production isolation. The existing bundle-size advisory remains.
+
 The canvas shapes release rhythm at the arrival gate, not battlefield pressure or a difficulty score. Travel, guard and evade behavior still affect gameplay and remain accessible through configuration. Groups follow one cursor and cannot be pinned independently. Repeated copies cannot differ individually without an explicit structural rewrite. Undo history is session-local and bounded; it is not persisted across reloads.
 
 Expert critique, automated checks and viewport emulation do not establish owner acceptance or physical-device performance. The owner still needs to try the visual authoring workflow without coaching. No deployment, push or pull request was performed.
