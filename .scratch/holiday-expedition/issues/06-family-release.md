@@ -33,3 +33,14 @@ README handoff route. Ready for human follow-up, not complete: the configured
 repository and Pages API still return 404; public access, full browser chapter,
 background/resume, audio listening and actual family-device/child observations
 remain pending. No alternate public destination or deployment is claimed.
+
+
+## Upstream and Pages resolved
+
+Owner authorized publishing the existing repository. Candidate `458dc31` is
+upstream and deployed at https://jaxsbr.github.io/stormwatch/; Actions run
+36298523218 passed and production title/map startup was browser-verified. The
+prior 404 was an authentication-access issue, now resolved. All history already
+uses the Jaxsbr author/committer identity. Remaining actions are enumerated in
+the release evidence checklist; browser journey/background checks belong to the
+agent, and listening/device/child observations require owner participation.

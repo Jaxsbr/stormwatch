@@ -83,9 +83,8 @@ The pinned GitHub Actions workflow checks, tests and builds every main-branch pu
 ### Family release handoff
 
 See the [candidate record](docs/evidence/family-release.md) for the verified journey,
-current hosting access blocker and remaining family-device checks. The expected
-play URL is [Stormwatch on Pages](https://jaxsbr.github.io/stormwatch/); current
-availability must be verified before handing it to players.
+remaining browser and family-device checks. The verified
+play URL is [Stormwatch on Pages](https://jaxsbr.github.io/stormwatch/).
 
 To check the emitted artifact under the same subpath, copy `dist` into a temporary
 folder as `stormwatch`, then serve its parent:

@@ -2,8 +2,8 @@
 
 Ticket: holiday-expedition 06. Baseline: `7045287`. The release-hardening commit
 adds journey coverage and handoff instructions; it changes no campaign content,
-combat rules or assets. Ticket acceptance remains pending public access and human
-play observations.
+combat rules or assets. Ticket acceptance remains pending full browser/device play observations.
+Public Pages delivery is now verified; see the upstream follow-up below.
 
 ## Candidate and delivery
 
@@ -154,3 +154,21 @@ Automated chapter/profile/save/boss/assist coverage, typecheck, tests, formattin
 production build, local Pages-subpath startup and two-axis review are complete.
 The full browser chapter is agent work remaining, not an item the owner must
 perform instead. Child/device observations cannot be supplied by automation.
+
+
+### Publication completed
+
+The owner authorized public visibility and Pages. The existing repository was
+made public, Pages enabled with GitHub Actions, and candidate `458dc31` pushed.
+[Workflow 36298523218](https://github.com/Jaxsbr/stormwatch/actions/runs/36298523218)
+passed install, types, formatting, tests, build, artifact upload and deployment.
+[Play Stormwatch](https://jaxsbr.github.io/stormwatch/) opened successfully in the
+in-app browser, loading its title and fresh three-map campaign with two slots and
+correct progression locks. Captured startup console logs contained no errors or
+warnings. This supersedes the earlier repository-access/hosting blocker.
+
+The remaining actions are the full browser chapter/reward replay, background and
+countdown resume checks, actual listening, physical tablet/laptop play, both
+children's comprehension/progress observations, and corrections from that feedback.
+All commits reachable from main already use the Jaxsbr GitHub no-reply identity
+for both author and committer; an author rewrite was unnecessary.
