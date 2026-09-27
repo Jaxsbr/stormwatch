@@ -145,6 +145,53 @@ describe("single working draft", () => {
     );
     expect(promoteWorkingWave(promoted, rebased)).toEqual(promoted);
   });
+  it("retains stale protection for an unrelated pending wave after promotion", () => {
+    const working = draft();
+    working.content.levels[0].waves[0].reward++;
+    working.content.levels[0].waves[1].reward += 2;
+    const disk = baseline();
+    disk.levels[0].waves[1].reward += 3;
+    const promoted = promoteWorkingWave(disk, working);
+    const rebased = rebaseAfterPromotion(working, promoted);
+    expect(
+      rebased.base.levels[0].waves.find(
+        (w) => w.id === working.content.levels[0].waves[1].id,
+      ),
+    ).toEqual(working.base.levels[0].waves[1]);
+    rebased.waveId = working.content.levels[0].waves[1].id;
+    expect(() => promoteWorkingWave(promoted, rebased)).toThrow(
+      "changed in game config",
+    );
+  });
+  it("retains stale protection for pending map settings and colliding new waves", () => {
+    const working = draft();
+    working.content.levels[1].startCoins += 2;
+    const disk = baseline();
+    disk.levels[1].startCoins += 3;
+    let rebased = rebaseAfterPromotion(
+      working,
+      promoteWorkingWave(disk, working),
+    );
+    rebased.levelId = working.content.levels[1].id;
+    rebased.waveId = working.content.levels[1].waves[0].id;
+    expect(() => promoteWorkingWave(disk, rebased)).toThrow(
+      "changed in game config",
+    );
+    const newWave = fill(createWave(draft(), "Pending", "pending"));
+    const collision = baseline();
+    const external = structuredClone(newWave.content.levels[0].waves.at(-1)!);
+    external.reward = 20;
+    collision.levels[0].waves.push(external);
+    newWave.waveId = newWave.base.levels[0].waves[0].id;
+    rebased = rebaseAfterPromotion(
+      newWave,
+      promoteWorkingWave(collision, newWave),
+    );
+    rebased.waveId = "pending";
+    expect(() => promoteWorkingWave(collision, rebased)).toThrow(
+      "changed in game config",
+    );
+  });
   it("does not promote removing the required boss from a boss map", () => {
     const working = draft();
     const bossMap = working.content.levels.find((l) => l.requiresBossDefeat)!;

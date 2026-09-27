@@ -212,8 +212,65 @@ export function rebaseAfterPromotion(
   const draft = validateWorkingDraft(input);
   validateContent(newBaseline);
   const content = clone(newBaseline);
+  const comparisonBase = clone(newBaseline);
+  const conflicts = (authored: unknown, old: unknown, current: unknown) =>
+    !equal(authored, old) && !equal(current, old) && !equal(current, authored);
   for (const authored of draft.content.levels) {
     const old = draft.base.levels.find((entry) => entry.id === authored.id);
+    const current = newBaseline.levels.find(
+      (entry) => entry.id === authored.id,
+    );
+    let comparison = comparisonBase.levels.find(
+      (entry) => entry.id === authored.id,
+    );
+    if (
+      conflicts(
+        metadata(authored),
+        old && metadata(old),
+        current && metadata(current),
+      )
+    ) {
+      if (!old) {
+        comparisonBase.levels = comparisonBase.levels.filter(
+          (entry) => entry.id !== authored.id,
+        );
+        comparison = undefined;
+      } else {
+        const replacement = {
+          ...clone(metadata(old)),
+          waves: clone(comparison?.waves ?? old.waves),
+        };
+        const index = comparisonBase.levels.findIndex(
+          (entry) => entry.id === authored.id,
+        );
+        if (index < 0) comparisonBase.levels.push(replacement);
+        else comparisonBase.levels[index] = replacement;
+        comparison = replacement;
+      }
+    }
+    for (const authoredWave of authored.waves) {
+      const oldWave = old?.waves.find((entry) => entry.id === authoredWave.id);
+      const currentWave = current?.waves.find(
+        (entry) => entry.id === authoredWave.id,
+      );
+      if (!conflicts(authoredWave, oldWave, currentWave)) continue;
+      if (!comparison && old) {
+        comparison = clone(old);
+        comparisonBase.levels.push(comparison);
+      }
+      if (comparison) {
+        comparison.waves = comparison.waves.filter(
+          (entry) => entry.id !== authoredWave.id,
+        );
+        if (oldWave) comparison.waves.push(clone(oldWave));
+        if (!comparison.waves.length) {
+          comparisonBase.levels = comparisonBase.levels.filter(
+            (entry) => entry.id !== authored.id,
+          );
+          comparison = undefined;
+        }
+      }
+    }
     let target = content.levels.find((entry) => entry.id === authored.id);
     if (!target) {
       if (!equal(authored, old)) content.levels.push(clone(authored));
@@ -248,5 +305,5 @@ export function rebaseAfterPromotion(
       if (!equal(authored[key], old[key])) target[key] = clone(authored[key]);
     }
   }
-  return validateWorkingDraft({ ...draft, base: clone(newBaseline), content });
+  return validateWorkingDraft({ ...draft, base: comparisonBase, content });
 }
