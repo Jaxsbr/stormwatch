@@ -1,3 +1,4 @@
+import { escapeHtml } from "./html";
 import { ENEMIES, TOWERS } from "../content/catalog";
 import type { CardId, EnemyKind, LevelDef } from "../sim/types";
 
@@ -63,7 +64,7 @@ export function advantageScreen(
   const firstWatch =
     level.id === "lantern-pass" && !level.availableTowers?.includes("net");
   return `<main class="advantage-screen" aria-labelledby="encounter-title">
-    <h1 id="encounter-title">${level.name}</h1>
+    <h1 id="encounter-title">${escapeHtml(level.name)}</h1>
     <section class="encounter-roster" aria-labelledby="roster-title">
       <h2 id="roster-title">On the trail</h2>
       <ul>${encounterEnemies(level)

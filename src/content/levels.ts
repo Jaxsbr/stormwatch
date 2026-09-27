@@ -1,4 +1,4 @@
-import { lanternPass } from "./lantern-pass";
-import { rainstoneCrossing } from "./rainstone-crossing";
-import { theLastLantern } from "./the-last-lantern";
-export const LEVELS = [lanternPass, rainstoneCrossing, theLastLantern];
+import { CANONICAL_CONTENT, compileLevel } from "../config/configuration";
+
+// Recipe order is campaign order, including encounters promoted by the workbench.
+export const LEVELS = CANONICAL_CONTENT.levels.map(compileLevel);

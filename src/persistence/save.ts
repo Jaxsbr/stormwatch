@@ -1,5 +1,6 @@
 // Pure persistence adapter for Stormwatch saves.
-// No dependencies, no DOM access — the caller owns localStorage.
+// No DOM access — the caller owns localStorage.
+import { CANONICAL_CONTENT } from "../config/configuration";
 
 export const SAVE_KEY = "stormwatch.save.v1";
 
@@ -13,11 +14,9 @@ export interface SaveData {
   tutorialSeen: boolean;
 }
 
-const LEVEL_IDS: readonly string[] = [
-  "lantern-pass",
-  "rainstone-crossing",
-  "the-last-lantern",
-];
+const LEVEL_IDS: readonly string[] = CANONICAL_CONTENT.levels.map(
+  (level) => level.id,
+);
 const UNLOCK_IDS: readonly string[] = [
   "squirrel-upgrade",
   "turtle",
@@ -201,7 +200,11 @@ export function recordVictory(
   stars: number,
 ): SaveData {
   // Unknown (or non-string) level id: no change at all.
-  if (typeof levelId !== "string" || !LEVEL_IDS.includes(levelId)) {
+  if (
+    typeof levelId !== "string" ||
+    hasDangerousKey(levelId) ||
+    !LEVEL_IDS.includes(levelId)
+  ) {
     return save;
   }
 

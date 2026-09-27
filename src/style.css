@@ -2627,3 +2627,33 @@ button:active:not(:disabled) {
     margin-top: 4px;
   }
 }
+
+/* Authored campaigns can exceed the illustrated board's three positions. */
+.expedition .expedition-map.expanded-campaign {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  align-content: start;
+  gap: 16px;
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+  aspect-ratio: auto;
+  overflow: auto;
+  padding: 20px;
+  isolation: isolate;
+}
+.expedition .expanded-campaign .map-land {
+  position: absolute;
+  z-index: -1;
+  opacity: 0.2;
+}
+.expedition .expanded-campaign::after {
+  display: none;
+}
+.expedition .expanded-campaign .map-node {
+  position: relative;
+  inset: auto;
+  transform: none;
+  width: 100%;
+  min-height: 150px;
+}
