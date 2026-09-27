@@ -1,0 +1,46 @@
+{
+  "version": 1,
+  "sourceRevision": "ed7f1fc",
+  "baselineDirty": false,
+  "area": "Visual wave authoring",
+  "direction": "Owner requests nodes, cycles/batches, direct placement/size/stagger manipulation as primary authoring; retain previous first-use/edit integrity criteria.",
+  "reference": "Owner-supplied Rat/Weasel dot timeline; existing enemy cutout artwork.",
+  "criteria": [
+    {
+      "id": "visual_primary",
+      "acceptance": "Tune opens on editable canvas with enemy imagery, not a stack of numeric forms; selected node exposes only local controls."
+    },
+    {
+      "id": "direct_manipulation",
+      "acceptance": "Pointer move, duration/count manipulation and batch/stagger manipulation produce valid recipe changes and immediate compiled spawn changes."
+    },
+    {
+      "id": "hierarchy_and_scope",
+      "acceptance": "Groups, batches and repeated sequences are visibly distinct; edits to shared repetition recipe announce affected copies."
+    },
+    {
+      "id": "semantic_truth",
+      "acceptance": "Time geometry agrees with shared compiler, including trailing gap and repeat rests; invalid overlap never silently coerced or sorted."
+    },
+    {
+      "id": "recoverability",
+      "acceptance": "Undo/redo preserves stable identities; cancellation leaves recipe intact; visual and expert edits cannot silently overwrite each other; Save & play uses current recipe."
+    },
+    {
+      "id": "accessibility",
+      "acceptance": "Touch-size handles/actions; keyboard or explicit step controls provide gesture alternatives; selected status/errors visible; responsive canvas intentional scrolling/zoom."
+    },
+    {
+      "id": "prior_criteria",
+      "acceptance": "Clear first task, one primary action, default JSON hidden, visible test setup, save/error feedback and production separation retained."
+    }
+  ],
+  "verification": [
+    "Matched1280x720 simple and complex views",
+    "Pointer drag/resize/count and stagger workflow,undo,replay/save inspection",
+    "Repeated sequence edit scope",
+    "Narrow844x390 and keyboard controls",
+    "Requiredchecks/tests/builds"
+  ],
+  "limits": "Expert critique and emulation do not establish owner acceptance or physical performance."
+}

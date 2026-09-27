@@ -128,3 +128,11 @@ publishes or deploys. Tests use disposable workspaces for writes.
 The remaining family release observations belong to the existing holiday-expedition
 family-release ticket. Prior owner observations should be collected there; bot
 results and viewport emulation do not replace them.
+
+## Shape waves visually
+
+The Shape wave workspace opens an arrival canvas. Choose a group using its enemy image. Move the group to adjust the wait before it; later groups move with it. Stretch its timing to change batch spacing, and use the separate quantity handle to change enemy count. The selected group's batch detail provides a closer view of spacing and uniform staggering. Step controls offer precise and keyboard-accessible alternatives.
+
+Sequences may contain several groups and linked repeated copies. Editing a copied group changes its source pattern in every repeat. Extra repeat wait is additional to the pattern's existing spacing. The shaded tail includes final batch spacing; the last arrival and the next group's start need not coincide. Species rows are guides for a single ordered schedule, rather than independently movable tracks.
+
+Undo and redo act on accepted visual edits. Cancel a drag with Escape. Invalid timing leaves the recipe unchanged. Save & play saves the current draft before launching it. Encounter resources, behavior/configuration details and technical recipe editing remain available below the canvas; invalid expert input is retained and pauses the canvas until corrected.
