@@ -520,18 +520,34 @@
   gap: 3px;
   border-width: 8px;
 }
-.expedition .expedition-map:not(.expanded-campaign) .node-1 { left: 62%; top: 78%; }
-.expedition .expedition-map:not(.expanded-campaign) .node-2 { left: 82%; top: 30%; }
+.expedition .expedition-map:not(.expanded-campaign) .node-1 {
+  left: 62%;
+  top: 78%;
+}
+.expedition .expedition-map:not(.expanded-campaign) .node-2 {
+  left: 82%;
+  top: 30%;
+}
 .expedition .expedition-map:not(.expanded-campaign) .node-number {
   width: 32px;
   height: 32px;
   font-size: 18px;
 }
-.expedition .expedition-map:not(.expanded-campaign) .map-node strong { font-size: 18px; }
-.expedition .expedition-map:not(.expanded-campaign) .map-stars { font-size: 15px; }
-.expedition .expedition-map:not(.expanded-campaign) .map-node small { display: none; }
-.profile-editor input { margin-bottom: 18px; }
-.profile-editor fieldset { margin-top: 0; }
+.expedition .expedition-map:not(.expanded-campaign) .map-node strong {
+  font-size: 18px;
+}
+.expedition .expedition-map:not(.expanded-campaign) .map-stars {
+  font-size: 15px;
+}
+.expedition .expedition-map:not(.expanded-campaign) .map-node small {
+  display: none;
+}
+.profile-editor input {
+  margin-bottom: 18px;
+}
+.profile-editor fieldset {
+  margin-top: 0;
+}
 @media (max-width: 600px), (orientation: landscape) and (max-height: 450px) {
   .expedition .expedition-map:not(.expanded-campaign) .map-node {
     width: 56px;
@@ -542,6 +558,11 @@
     background: #172b29ee;
     box-shadow: 0 3px 8px #0009;
   }
-  .expedition .expedition-map:not(.expanded-campaign) .map-node strong { display: none; }
-  .expedition .expedition-map:not(.expanded-campaign) .map-stars { font-size: 12px; white-space: nowrap; }
+  .expedition .expedition-map:not(.expanded-campaign) .map-node strong {
+    display: none;
+  }
+  .expedition .expedition-map:not(.expanded-campaign) .map-stars {
+    font-size: 12px;
+    white-space: nowrap;
+  }
 }

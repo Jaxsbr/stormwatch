@@ -166,7 +166,7 @@ function render() {
       (l, i) => {
         const unlocked = levelUnlocked(LEVELS, i, save);
         const completed = (save.stars[l.id] ?? 0) > 0;
-        return `<button class="map-node node-${i} ${unlocked ? completed ? "completed" : "current" : "locked"}" aria-label="${escapeHtml(l.name)}${completed ? ", " + (save.stars[l.id] ?? 0) + " stars earned" : unlocked ? ", next crossing" : ""}${unlocked ? "" : ": complete " + escapeHtml(LEVELS[i - 1].name) + " to unlock"}" title="${escapeHtml(l.name)}" data-action="level:${i}" ${unlocked ? "" : "disabled"}><span class="node-medallion">${unlocked ? "♜" : "⌑"}</span><span class="node-number">${String(i + 1).padStart(2, "0")}</span><strong>${escapeHtml(l.name)}</strong><span class="map-stars">${stars(save.stars[l.id] ?? 0)}</span><small>${unlocked ? "" : `Complete ${escapeHtml(LEVELS[i - 1].name)}`}</small></button>`;
+        return `<button class="map-node node-${i} ${unlocked ? (completed ? "completed" : "current") : "locked"}" aria-label="${escapeHtml(l.name)}${completed ? ", " + (save.stars[l.id] ?? 0) + " stars earned" : unlocked ? ", next crossing" : ""}${unlocked ? "" : ": complete " + escapeHtml(LEVELS[i - 1].name) + " to unlock"}" title="${escapeHtml(l.name)}" data-action="level:${i}" ${unlocked ? "" : "disabled"}><span class="node-medallion">${unlocked ? "♜" : "⌑"}</span><span class="node-number">${String(i + 1).padStart(2, "0")}</span><strong>${escapeHtml(l.name)}</strong><span class="map-stars">${stars(save.stars[l.id] ?? 0)}</span><small>${unlocked ? "" : `Complete ${escapeHtml(LEVELS[i - 1].name)}`}</small></button>`;
       },
     ).join(
       "",
