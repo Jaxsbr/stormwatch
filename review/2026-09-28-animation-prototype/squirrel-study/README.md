@@ -77,3 +77,44 @@ recorded on the implementation issue. No claim of finished animation quality.
 
 Next checkpoint: owner reviews whether the effort and release feel appropriate.
 Then refine poses/seams and establish per-view drawings before runtime integration.
+
+## Iteration 02 — owner correction: forward brace, level pull
+
+Owner found iteration 01 substantially better than the game, but identified the
+upward bow sweep as the wrong action. Preserve the energy/timing; change the
+force directions. This supersedes the raised-draw choice in step 5 above.
+
+### References consulted
+
+- [World Archery: Coach Kim Hyung Tak’s five technique keys](https://www.worldarchery.sport/news/157499/coach-kim-hyung-taks-5-keys-great-recurve-archery-technique).
+  Inspected its full-draw photograph: extended bow arm, drawing hand by the jaw,
+  and draw elbow behind the hand. The accompanying guidance emphasizes balanced
+  opposing forces and stable expansion powered by the back.
+- [USA Archery: sight-pin location](https://www.usarchery.org/article/transitioning-from-indoors-to-outdoors-sight-pin-location).
+  Maintaining grip height during the draw is a useful cue; rising shoulders and
+  drifting bow height undermine the stable draw we want to communicate.
+- [UNH Archery Club: shot cycle](https://sites.usnh.edu/archeryclub/shot-cycle/).
+  Keep the bow arm directed toward the target through follow-through.
+
+These inform a stylized squirrel action, not an exact human sports technique.
+Reference photographs are linked, not copied into game assets.
+
+### Applied changes
+
+- Bow grip stays at local height 370 for the whole cycle (previously rose 110).
+- Grip advances from x190 to x240 during loading, keeping the bow arm almost
+  straight at full draw without overextending it.
+- Drawing hand moves horizontally from x94.1 to x35; release follows another
+  10 units backward. The hand stays lower, beneath the muzzle, rather than
+  travelling up the cheek. It does not chase the returning string.
+- Bow arm remains extended through release, then relaxes during recovery.
+- Reduce torso shift from 16 to 4 units and remove forward body rebound.
+- Retain the 50ms string snap, short loaded hold and visible departing arrow.
+- Release origin now matches the revised full-draw hand at (35, 370).
+
+The original sleeve seam and draw-elbow silhouette remain artwork constraints.
+Do not mistake this iteration for final anatomy or projectile integration.
+
+`level-draw.png` records iteration 02; `full-draw.png` and `release.png` preserve
+iteration 01 so the feedback and response remain reproducible. Owner review of
+iteration 02 is pending.

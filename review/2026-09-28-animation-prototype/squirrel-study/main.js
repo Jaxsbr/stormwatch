@@ -99,7 +99,7 @@ function study(t) {
     tension = load * (1 - snap),
     follow = snap * (1 - settle);
   // A gentle continuous lean above the hips: boots stay exactly in place.
-  const lean = -16 * tension + 7 * follow,
+  const lean = -4 * load * (1 - settle),
     pos = body.geometry.attributes.position;
   for (let i = 0; i < pos.count; i++) {
     const x = baseVertices[i * 3],
@@ -113,23 +113,22 @@ function study(t) {
       .position.clone()
       .add(new T.Vector3(lean, 0, 0));
   const bow = cutout.parts.get("bow");
-  bow.position.set(
-    225 - 25 * tension + 6 * follow,
-    330 + 110 * load * (1 - settle),
-    0,
-  );
+  bow.position.set(190 + 50 * load * (1 - settle), 370, 0);
   bow.position.copy(
     arms.get("holdArm").reach(shoulder("holdArm"), bow.position, 1000),
   );
   bow.scale.y *= 1 - 0.045 * tension;
   bow.scale.x *= 1 + 0.1 * tension;
   const brace = point("braceCenter"),
-    drawn = point("drawCenter");
-  drawn.x += 15;
+    drawn = new T.Vector3(35, 370, 0);
   const stringHand = brace.clone().lerp(drawn, tension);
-  const target = brace.clone().lerp(drawn, load * (1 - settle));
-  target.x -= 27 * follow;
-  target.y += 14 * follow;
+  // Lower, horizontal draw path; never follows the bow upward or forward.
+  const target = new T.Vector3(
+    T.MathUtils.lerp(94.1, 35, load * (1 - settle)),
+    370,
+    0,
+  );
+  target.x -= 10 * follow;
   const hand = arms.get("drawArm").reach(shoulder("drawArm"), target, 1000);
   if (t < 0.74) stringHand.copy(hand);
   const vibration =
@@ -137,7 +136,7 @@ function study(t) {
   stringHand.x += vibration;
   setLine(lines[0], [point("tipNear"), stringHand, point("tipFar")]);
   const nock =
-    t < 0.74 ? hand.clone() : new T.Vector3(-19.85 + (t - 0.74) * 6500, 440, 0);
+    t < 0.74 ? hand.clone() : new T.Vector3(35 + (t - 0.74) * 6500, 370, 0);
   const tip = nock.clone().add(new T.Vector3(235, 0, 0));
   setLine(lines[1], [
     nock,
