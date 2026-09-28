@@ -1,0 +1,13 @@
+{
+  "generator": "OpenAI built-in ImageGen",
+  "date": "2026-09-28",
+  "prompt": "Use case: stylized-concept. Single production avatar atlas for Stormwatch, painterly child-friendly woodland adventure. A square image with four equal square portrait cells in a precise 2x2 grid: top left friendly russet squirrel, top right gentle brown rabbit, bottom left cheerful red fox, bottom right kind gray badger. Each is a cute FORWARD FACING centered head and small shoulders, symmetrical direct eye contact, expressive bright eyes, soft rounded shapes, detailed hand-painted fur, moss-green scarf, warm lantern highlights and subdued woodland palette. Each portrait on a solid dark teal background, identical scale and generous margin around ears. Faces must read clearly at 32px. No text, borders, grid lines, weapons, occult imagery or gore. Painted game art, not vector, not photographic.",
+  "source": "Generated square 2×2 portrait atlas",
+  "processing": "Equal quadrants extracted and resized to 256×256 WebP, quality 90, using sharp.",
+  "assets": [
+    "squirrel.webp",
+    "rabbit.webp",
+    "fox.webp",
+    "badger.webp"
+  ]
+}

@@ -1,36 +1,68 @@
 import { describe, expect, it } from "vitest";
 import { freshSave, recordVictory } from "../src/persistence/save";
-import { loadProfiles } from "../src/persistence/profiles";
+import { loadProfiles, createProfile } from "../src/persistence/profiles";
 
-describe("two local player slots", () => {
-  it("moves the legacy save into player one without changing its stars or settings", () => {
-    const legacy = {
-      ...freshSave(),
-      stars: { "lantern-pass": 2, "rainstone-crossing": 3 },
-      music: 0.25,
-      effects: 0.9,
-      muted: true,
-    };
-    const profiles = loadProfiles(null, JSON.stringify(legacy));
-
-    expect(profiles.active).toBe(0);
-    expect(profiles.slots[0]).toEqual({
-      ...legacy,
-      unlocked: ["squirrel-upgrade", "turtle"],
+describe("local woodland profiles", () => {
+  it("starts without invented users", () => {
+    expect(loadProfiles(null, null)).toEqual({
+      version: 2,
+      active: null,
+      users: [],
     });
-    expect(profiles.slots[1]).toEqual(freshSave());
+  });
+  it("preserves legacy progress and settings and skips unused slots", () => {
+    const progress = recordVictory(
+      { ...freshSave(), music: 0.25, muted: true },
+      "lantern-pass",
+      2,
+    );
+    const profiles = loadProfiles(
+      JSON.stringify({ version: 1, active: 0, slots: [progress, freshSave()] }),
+      null,
+    );
+    expect(profiles.users).toHaveLength(1);
+    expect(profiles.users[0].progress).toEqual(progress);
+    expect(
+      loadProfiles(null, JSON.stringify(progress)).users[0].progress,
+    ).toEqual(progress);
     expect(loadProfiles(JSON.stringify(profiles), null)).toEqual(profiles);
   });
-
-  it("keeps each player's victories and unlocks separate after a reload", () => {
+  it("keeps progress and last player through rename, avatar change and reload", () => {
     const profiles = loadProfiles(null, null);
-    profiles.slots[1] = recordVictory(profiles.slots[1], "lantern-pass", 2);
-    profiles.active = 1;
-    const reloaded = loadProfiles(JSON.stringify(profiles), null);
-
-    expect(reloaded.slots[0]).toEqual(freshSave());
-    expect(reloaded.slots[1].stars["lantern-pass"]).toBe(2);
-    expect(reloaded.slots[1].unlocked).toContain("squirrel-upgrade");
-    expect(reloaded.active).toBe(1);
+    profiles.users = [
+      createProfile("a", "Alice", "fox"),
+      createProfile("b", "Ben", "rabbit"),
+    ];
+    profiles.active = "b";
+    profiles.users[1].progress = recordVictory(
+      profiles.users[1].progress,
+      "lantern-pass",
+      2,
+    );
+    profiles.users[1].nickname = "Benny";
+    profiles.users[1].avatar = "badger";
+    const loaded = loadProfiles(JSON.stringify(profiles), null);
+    expect(loaded).toEqual(profiles);
+    expect(loaded.users[0].progress).toEqual(freshSave());
+  });
+  it("validates names and recovers invalid identities and stale active ids", () => {
+    expect(() => createProfile("a", "  ", "fox")).toThrow();
+    expect(() => createProfile("a", "a".repeat(25), "fox")).toThrow();
+    const user = createProfile("a", "  Alice  ", "fox");
+    expect(user.nickname).toBe("Alice");
+    const loaded = loadProfiles(
+      JSON.stringify({
+        version: 2,
+        active: "missing",
+        users: [user, user, { id: "bad", nickname: "" }],
+      }),
+      null,
+    );
+    expect(loaded.users).toHaveLength(1);
+    expect(loaded.active).toBe("a");
+    expect(loadProfiles("broken", null).users).toEqual([]);
+    expect(
+      loadProfiles(JSON.stringify({ version: 2, users: [] }), null).active,
+    ).toBeNull();
   });
 });

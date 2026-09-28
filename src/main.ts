@@ -5,6 +5,9 @@ import "./ui/game-chrome.css";
 import "./ui/button-skin.css";
 import "./ui/battle-ui.css";
 import "./ui/battle-menu.css";
+import "./ui/responsive-layout.css";
+import "./ui/title-layout.css";
+import "./ui/map-markers.css";
 import { BattleMenu } from "./ui/battle-menu";
 import { battleStats, defenderPanel, displayedWave } from "./ui/battle-ui";
 import { button, resultCard, type ResultReward } from "./ui/game-chrome";
@@ -24,11 +27,13 @@ import {
 import { Battlefield } from "./render/battlefield";
 import { towerPortrait, paintTowerPortraits } from "./render/portraits";
 import { Sound } from "./audio/sound";
-import { recordVictory, SAVE_KEY } from "./persistence/save";
+import { freshSave, recordVictory, SAVE_KEY } from "./persistence/save";
 import {
   loadProfiles,
   PROFILES_KEY,
-  type PlayerSlot,
+  AVATARS,
+  createProfile,
+  type Avatar,
 } from "./persistence/profiles";
 
 const app = document.querySelector<HTMLDivElement>("#app")!;
@@ -63,7 +68,14 @@ try {
 } catch {
   /* Storage is optional; play continues in memory. */
 }
-let save = profiles.slots[profiles.active];
+const activeProfile = () =>
+  profiles.users.find((user) => user.id === profiles.active);
+let save = activeProfile()?.progress ?? freshSave();
+let editingProfile: string | null = null;
+let profileEditorOpen = false;
+let chosenAvatar: Avatar = "squirrel";
+let profileName = "";
+let deletingProfile: string | null = null;
 function initialCardForLevel(index: number): CardId {
   return initialCard(availableCards(LEVELS[index], save));
 }
@@ -71,7 +83,7 @@ const sound = new Sound();
 sound.musicVolume = save.music;
 sound.effectsVolume = save.effects;
 sound.muted = save.muted;
-type Screen = "title" | "map" | "briefing" | "battle" | "result";
+type Screen = "title" | "map" | "briefing" | "battle" | "result" | "profiles";
 let screen: Screen = "title",
   levelIndex = 0,
   card: CardId = "none",
@@ -100,7 +112,8 @@ const portrait = (index: number, cls = "") =>
     : `<img class="portrait character-portrait ${cls}" src="${import.meta.env.BASE_URL}art/v2/${["rat", "weasel", "boar", "badger"][index - 4]}-rig-v1/body.webp" alt="" aria-hidden="true">`;
 const stars = (n: number) => "★".repeat(n) + "☆".repeat(3 - n);
 function persist() {
-  profiles.slots[profiles.active] = save;
+  const current = activeProfile();
+  if (current) current.progress = save;
   try {
     localStorage.setItem(PROFILES_KEY, JSON.stringify(profiles));
   } catch {
@@ -120,6 +133,24 @@ function toast(text: string) {
     }
   }
 }
+function avatarImage(avatar: Avatar) {
+  return `<img src="${import.meta.env.BASE_URL}art/profiles/${avatar}.webp" alt="${avatar}" class="user-avatar">`;
+}
+function selectCurrentProfile() {
+  save = activeProfile()?.progress ?? freshSave();
+  sound.musicVolume = save.music;
+  sound.effectsVolume = save.effects;
+  sound.muted = save.muted;
+  sound.apply();
+  levelIndex = 0;
+  card = "none";
+  lastDefeatLevelId = null;
+  persist();
+}
+function profilesScreen() {
+  const deleting = profiles.users.find((user) => user.id === deletingProfile);
+  return `<main class="menu-screen profiles-screen"><header class="profile-heading"><h1>Profile</h1>${button("new-profile", "New profile", "primary")}</header><section class="profile-list" aria-label="Saved profiles">${profiles.users.length ? profiles.users.map((user) => `<article class="profile-row"><div class="profile-person">${avatarImage(user.avatar)}<strong>${escapeHtml(user.nickname)}</strong></div><div class="profile-actions">${button(`select-profile:${user.id}`, profiles.active === user.id ? "Continue" : "Play", "quiet")}${button(`edit-profile:${user.id}`, "Edit", "quiet")}${button(`delete-profile:${user.id}`, "Delete", "quiet danger")}</div></article>`).join("") : `<p class="profile-empty">Create your first profile to play.</p>`}</section><footer>${button("title", "Back", "quiet")}</footer>${profileEditorOpen ? `<dialog class="profile-dialog" aria-labelledby="profile-editor-title"><section class="profile-editor"><h2 id="profile-editor-title">${editingProfile ? "Edit profile" : "New profile"}</h2><label for="profile-name">Your nickname</label><input id="profile-name" maxlength="24" required value="${escapeHtml(profileName)}" autocomplete="off" placeholder="Your nickname"><fieldset><legend>Choose your avatar</legend><div class="avatar-options">${AVATARS.map((avatar) => `<button data-action="avatar:${avatar}" aria-label="${avatar}" aria-pressed="${chosenAvatar === avatar}">${avatarImage(avatar)}</button>`).join("")}</div></fieldset><div class="profile-dialog-actions">${button("close-profile-editor", "Cancel", "quiet")}${button("save-profile", editingProfile ? "Save changes" : "Create profile", "primary")}</div></section></dialog>` : ""}${deleting ? `<dialog class="profile-dialog delete-dialog" aria-labelledby="delete-profile-title"><h2 id="delete-profile-title">Delete profile?</h2><p>Delete ${escapeHtml(deleting.nickname)} and all their progress? This cannot be undone.</p><div class="profile-dialog-actions">${button("cancel-delete", "Keep profile", "quiet", "autofocus")}${button(`confirm-delete:${deleting.id}`, "Delete profile", "quiet danger")}</div></dialog>` : ""}</main>`;
+}
 function render() {
   battleMenu?.destroy();
   battleMenu = null;
@@ -129,12 +160,13 @@ function render() {
   field = null;
   settings = false;
   if (screen === "title")
-    app.innerHTML = `<main class="title-screen"><div class="title-shade"></div><div class="title-top"><span></span>${button("settings", "Settings", "quiet")}</div><section class="title-copy"><h1>STORM<span>WATCH</span></h1>${button("map", "Play", "primary large")}</section></main>`;
+    app.innerHTML = `<main class="title-screen"><div class="title-shade"></div><div class="title-top"><span></span>${button("settings", "Settings", "quiet")}</div><section class="title-copy"><h1>STORM<span>WATCH</span></h1>${activeProfile() ? `${button("map", "Play", "primary large title-play")}<button class="title-profile" data-action="profiles" aria-label="Swap profile">${avatarImage(activeProfile()!.avatar)}<span class="title-profile-copy"><strong>${escapeHtml(activeProfile()!.nickname)}</strong><small>Swap profile</small></span><span class="title-profile-chevron" aria-hidden="true">›</span></button>` : `<p class="profile-guidance">Choose your nickname and avatar to begin.</p>${button("new-profile", "Create your profile", "primary large")}`}</section></main>`;
   if (screen === "map")
-    app.innerHTML = `<main class="menu-screen expedition"><section class="map-heading"><h1>Choose your crossing</h1><nav class="player-slots" aria-label="Player progress">${([0, 1] as const).map((slot) => `<button data-action="profile:${slot}" aria-pressed="${profiles.active === slot}">Player ${slot + 1}</button>`).join("")}</nav></section><div class="expedition-map ${LEVELS.length > 3 ? "expanded-campaign" : ""}"><div class="map-land"></div>${LEVELS.map(
+    app.innerHTML = `<main class="menu-screen expedition"><section class="map-heading"><h1>Choose your crossing</h1></section><div class="expedition-map ${LEVELS.length > 3 ? "expanded-campaign" : ""}"><div class="map-land"></div>${LEVELS.map(
       (l, i) => {
         const unlocked = levelUnlocked(LEVELS, i, save);
-        return `<button class="map-node node-${i} ${unlocked ? "" : "locked"}" data-action="level:${i}" ${unlocked ? "" : "disabled"}><span class="node-medallion">${unlocked ? "♜" : "⌑"}</span><span class="node-number">${String(i + 1).padStart(2, "0")}</span><strong>${escapeHtml(l.name)}</strong><span class="map-stars">${stars(save.stars[l.id] ?? 0)}</span><small>${unlocked ? "" : `Complete ${escapeHtml(LEVELS[i - 1].name)}`}</small></button>`;
+        const completed = (save.stars[l.id] ?? 0) > 0;
+        return `<button class="map-node node-${i} ${unlocked ? completed ? "completed" : "current" : "locked"}" aria-label="${escapeHtml(l.name)}${completed ? ", " + (save.stars[l.id] ?? 0) + " stars earned" : unlocked ? ", next crossing" : ""}${unlocked ? "" : ": complete " + escapeHtml(LEVELS[i - 1].name) + " to unlock"}" title="${escapeHtml(l.name)}" data-action="level:${i}" ${unlocked ? "" : "disabled"}><span class="node-medallion">${unlocked ? "♜" : "⌑"}</span><span class="node-number">${String(i + 1).padStart(2, "0")}</span><strong>${escapeHtml(l.name)}</strong><span class="map-stars">${stars(save.stars[l.id] ?? 0)}</span><small>${unlocked ? "" : `Complete ${escapeHtml(LEVELS[i - 1].name)}`}</small></button>`;
       },
     ).join(
       "",
@@ -147,9 +179,34 @@ function render() {
       lastDefeatLevelId === LEVELS[levelIndex].id,
     );
   }
+  if (screen === "profiles") app.innerHTML = profilesScreen();
   if (screen === "battle") renderBattle();
   if (screen === "result" && game)
     app.innerHTML = `<main class="result-screen">${resultCard(game.state, resultRewards, resultFirstBoardComplete)}</main>`;
+  if (screen !== "title" && activeProfile()) {
+    const user = activeProfile()!;
+    const badge = `<span class="profile-badge" role="img" aria-label="Playing as ${escapeHtml(user.nickname)}" title="${escapeHtml(user.nickname)}">${avatarImage(user.avatar)}</span>`;
+    const host =
+      screen === "battle"
+        ? app.querySelector(".battle-brand")
+        : screen === "map"
+          ? app.querySelector(".map-heading")
+          : screen === "briefing"
+            ? app.querySelector(".encounter-heading")
+            : screen === "profiles"
+              ? app.querySelector(".profile-heading")
+              : app.querySelector(".result-heading");
+    host?.insertAdjacentHTML("beforeend", badge);
+  }
+  const profileDialog = app.querySelector<HTMLDialogElement>(".profile-dialog");
+  if (profileDialog) {
+    profileDialog.showModal();
+    profileDialog.addEventListener("cancel", () => {
+      profileEditorOpen = false;
+      deletingProfile = null;
+      render();
+    });
+  }
   void paintTowerPortraits(app);
   app.insertAdjacentHTML(
     "beforeend",
@@ -418,6 +475,11 @@ function closeSettings() {
 app.addEventListener("input", (e) => {
   const el = e.target as HTMLInputElement,
     k = el.dataset.setting;
+  if (el.id === "profile-name") {
+    profileName = el.value;
+    return;
+  }
+  if (!k) return;
   if (k === "music") {
     save.music = Number(el.value);
     sound.musicVolume = save.music;
@@ -477,26 +539,93 @@ app.addEventListener("click", (e) => {
     closeSettings();
     return;
   }
-  if (action === "profile" && screen === "map") {
-    if (value !== "0" && value !== "1") return;
-    profiles.active = Number(value) as PlayerSlot;
-    save = profiles.slots[profiles.active];
-    sound.musicVolume = save.music;
-    sound.effectsVolume = save.effects;
-    sound.muted = save.muted;
-    sound.apply();
-    sound.pause(false);
-    levelIndex = 0;
-    card = "none";
-    lastDefeatLevelId = null;
-    persist();
+  if (
+    action === "profiles" ||
+    action === "new-profile" ||
+    action === "edit-profile"
+  ) {
+    if (screen === "battle") return;
+    profileEditorOpen = action !== "profiles";
+    editingProfile = action === "edit-profile" ? value : null;
+    const user = profiles.users.find((user) => user.id === editingProfile);
+    profileName = user?.nickname ?? "";
+    chosenAvatar = user?.avatar ?? "squirrel";
+    deletingProfile = null;
+    screen = "profiles";
     render();
+    return;
+  }
+  if (screen === "profiles" && action !== "title" && action !== "map") {
+    if (action === "close-profile-editor") {
+      profileEditorOpen = false;
+      render();
+    }
+    if (action === "avatar" && AVATARS.includes(value as Avatar)) {
+      profileName =
+        document.querySelector<HTMLInputElement>("#profile-name")?.value ??
+        profileName;
+      chosenAvatar = value as Avatar;
+      render();
+    }
+    if (action === "save-profile") {
+      const input = document.querySelector<HTMLInputElement>("#profile-name");
+      if (!input || !input.reportValidity()) return;
+      try {
+        const updated = createProfile(
+          editingProfile ?? crypto.randomUUID(),
+          input.value,
+          chosenAvatar,
+        );
+        const existing = profiles.users.find(
+          (user) => user.id === editingProfile,
+        );
+        if (existing) {
+          existing.nickname = updated.nickname;
+          existing.avatar = updated.avatar;
+        } else profiles.users.push(updated);
+        profiles.active = updated.id;
+        selectCurrentProfile();
+        profileEditorOpen = false;
+        screen = "profiles";
+        render();
+      } catch (error) {
+        toast((error as Error).message);
+      }
+    }
+    if (
+      action === "select-profile" &&
+      profiles.users.some((user) => user.id === value)
+    ) {
+      profiles.active = value;
+      selectCurrentProfile();
+      screen = "title";
+      render();
+    }
+    if (action === "delete-profile") {
+      profileEditorOpen = false;
+      deletingProfile = value;
+      render();
+    }
+    if (action === "cancel-delete") {
+      deletingProfile = null;
+      render();
+    }
+    if (action === "confirm-delete" && deletingProfile === value) {
+      profiles.users = profiles.users.filter((user) => user.id !== value);
+      if (!activeProfile()) profiles.active = profiles.users[0]?.id ?? null;
+      selectCurrentProfile();
+      deletingProfile = null;
+      editingProfile = null;
+      profileName = "";
+      render();
+    }
     return;
   }
   if (action === "title" || action === "map") {
     sound.pause(false);
     sound.unlock();
-    screen = action;
+    screen = action === "map" && !activeProfile() ? "profiles" : action;
+    profileEditorOpen = screen === "profiles" && !activeProfile();
     game = null;
     render();
     return;
@@ -504,10 +633,20 @@ app.addEventListener("click", (e) => {
   if (action === "level") {
     const nextLevel = Number(value);
     if (!levelUnlocked(LEVELS, nextLevel, save)) return;
-    levelIndex = nextLevel;
-    card = initialCardForLevel(levelIndex);
-    screen = "briefing";
-    render();
+    if (app.querySelector(".map-node.is-selecting")) return;
+    const openBriefing = () => {
+      if (screen !== "map" || !el.isConnected) return;
+      levelIndex = nextLevel;
+      card = initialCardForLevel(levelIndex);
+      screen = "briefing";
+      render();
+    };
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      openBriefing();
+    } else {
+      el.classList.add("is-selecting");
+      window.setTimeout(openBriefing, 160);
+    }
     return;
   }
   if (action === "card") {

@@ -1,0 +1,547 @@
+/* Final layout policy: explicit touch sizes, flow-based menus, reserved identity. */
+:root {
+  --action-height: 48px;
+  --action-type: 22px;
+  --profile-size: 48px;
+}
+:is(
+    .expedition,
+    .advantage-screen,
+    .profiles-screen,
+    .result-screen,
+    .modal-backdrop
+  )
+  .game-art-button.game-art-button {
+  min-height: var(--action-height);
+  min-width: 104px;
+  padding: 10px 18px;
+  font-size: var(--action-type);
+  line-height: 1.1;
+  --skin-corner: 12px;
+}
+.profile-badge {
+  display: inline-flex;
+  flex: 0 0 var(--profile-size);
+  width: var(--profile-size);
+  height: var(--profile-size);
+  align-items: center;
+  justify-content: center;
+  border: 2px solid #e1bf79;
+  border-radius: 50%;
+  background: #152b2c;
+  box-shadow:
+    0 0 0 3px #0f2024,
+    0 3px 8px #0005;
+}
+.profile-badge .user-avatar {
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+.map-heading,
+.encounter-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  width: 100%;
+}
+.expedition.menu-screen {
+  padding: 24px max(20px, calc((100vw - 1100px) / 2));
+  gap: 20px;
+  grid-template-rows: auto minmax(0, 1fr) auto;
+  overflow-y: auto;
+}
+.expedition .map-heading {
+  padding: 0;
+  text-align: left;
+}
+.expedition .map-heading h1 {
+  font-size: clamp(30px, 4vw, 44px);
+  margin: 0;
+}
+.expedition .expedition-map {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  align-content: center;
+  gap: 20px;
+  width: 100%;
+  max-width: none;
+  height: 100%;
+  min-height: 0;
+  aspect-ratio: auto;
+  margin: 0;
+  padding: 24px;
+  isolation: isolate;
+  overflow-y: auto;
+}
+.expedition .expedition-map::after {
+  display: none;
+}
+.expedition .map-land {
+  z-index: -1;
+  opacity: 0.32;
+  border-radius: 12px;
+  background-size: cover;
+}
+.expedition .expedition-map .map-node {
+  position: relative;
+  inset: auto;
+  transform: none;
+  width: 100%;
+  height: auto;
+  min-height: 200px;
+  padding: 20px 18px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 8px;
+}
+.expedition .map-node .node-number {
+  position: static;
+  width: 34px;
+  height: 34px;
+  margin: 0;
+  font-size: 21px;
+  flex-shrink: 0;
+}
+.expedition .map-node strong {
+  font-size: clamp(24px, 2.4vw, 30px);
+  margin: 0;
+  line-height: 1.1;
+}
+.expedition .map-node small {
+  font-size: 14px;
+  line-height: 1.35;
+  margin: 0;
+}
+.expedition .map-stars {
+  font-size: 22px;
+  line-height: 1.2;
+}
+.expedition .menu-footer {
+  padding: 0;
+}
+.advantage-screen {
+  position: relative;
+  grid-template-rows: auto auto minmax(min-content, 1fr) auto;
+  gap: 18px;
+  padding: 24px max(20px, calc((100vw - 1100px) / 2));
+}
+.encounter-heading h1 {
+  font-size: clamp(30px, 4vw, 44px);
+}
+.advantage-actions {
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+}
+.advantage-actions > [data-action="begin"] {
+  margin-left: auto;
+}
+.encounter-roster ul {
+  flex-wrap: wrap;
+}
+.profiles-screen {
+  min-height: 0;
+  height: var(--app-height, 100dvh);
+  padding: 24px max(20px, calc((100vw - 1000px) / 2));
+}
+.profile-heading {
+  max-width: none;
+}
+.profile-heading h1 {
+  font-size: clamp(32px, 4vw, 44px);
+}
+.profile-heading .profile-badge {
+  margin-left: 0;
+}
+.profile-heading > .game-art-button {
+  margin-left: auto;
+}
+.profile-list {
+  max-width: none;
+}
+.profiles-screen .profile-actions .game-art-button {
+  width: 112px;
+  min-width: 0;
+  padding: 10px 12px;
+  font-size: 21px;
+  min-height: 48px;
+}
+.profile-person {
+  flex: 1;
+  min-width: 0;
+}
+.profile-person .user-avatar {
+  width: 60px;
+  height: 60px;
+}
+.profile-person strong {
+  font-size: 22px;
+}
+.profile-dialog .profile-dialog-actions {
+  flex-wrap: wrap;
+}
+.result-heading {
+  position: relative;
+  display: block;
+  padding-inline: 60px;
+}
+.result-heading .profile-badge {
+  position: absolute;
+  top: 0;
+  right: 0;
+}
+.result-screen .result-actions {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+.battle-brand .profile-badge {
+  --profile-size: 40px;
+}
+.battle-brand {
+  min-width: 0;
+}
+.battle-brand > div {
+  min-width: 0;
+}
+.battle-brand strong {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  display: block;
+}
+.menu-page {
+  justify-content: safe center;
+}
+.menu-page label {
+  min-height: 44px;
+  flex-shrink: 0;
+}
+.menu-page input[type="range"],
+.settings-card input[type="range"] {
+  min-height: 44px;
+}
+.settings-card {
+  width: min(450px, calc(100vw - 32px));
+}
+@media (max-width: 600px) {
+  :root {
+    --action-type: 20px;
+  }
+  .expedition.menu-screen,
+  .advantage-screen,
+  .profiles-screen {
+    padding: 18px 16px;
+    gap: 16px;
+  }
+  .expedition .map-heading h1,
+  .encounter-heading h1 {
+    font-size: 30px;
+  }
+  .expedition .expedition-map {
+    grid-template-columns: minmax(0, 1fr);
+    padding: 16px;
+    gap: 14px;
+    align-content: start;
+  }
+  .expedition .expedition-map .map-node {
+    min-height: 145px;
+    padding: 16px;
+  }
+  .expedition .map-node strong {
+    font-size: 26px;
+  }
+  .profile-heading {
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+  .profile-heading h1 {
+    font-size: 34px;
+  }
+  .profile-heading .profile-badge {
+    --profile-size: 40px;
+  }
+  .profile-heading .game-art-button {
+    min-width: 0;
+    font-size: 19px;
+    padding: 10px 12px;
+  }
+  .profile-row {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+    padding: 16px 0;
+  }
+  .profile-person .user-avatar {
+    width: 56px;
+    height: 56px;
+  }
+  .profile-person strong {
+    font-size: 22px;
+    white-space: normal;
+  }
+  .profile-actions {
+    width: 100%;
+    gap: 8px;
+  }
+  .profiles-screen .profile-actions .game-art-button {
+    width: auto;
+    flex: 1;
+    min-height: 44px;
+    font-size: 20px;
+    padding: 10px 8px;
+  }
+  .first-watch-brief {
+    padding: 18px;
+  }
+  .first-watch-brief p {
+    font-size: 15px;
+  }
+  .encounter-roster ul {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+  }
+  .encounter-roster li {
+    width: min(290px, 100%);
+  }
+  .encounter-roster span {
+    font-size: 13px;
+  }
+  .advantage-options {
+    gap: 12px;
+  }
+  .advantage-option {
+    flex-basis: 100%;
+    min-height: 120px;
+  }
+  .advantage-option:not(.no-advantage) {
+    flex-direction: row;
+    gap: 12px;
+  }
+  .advantage-art {
+    width: 100px;
+    height: 90px;
+  }
+  .advantage-effect strong {
+    font-size: 30px;
+  }
+  .advantage-effect > span {
+    font-size: 16px;
+  }
+}
+@media (orientation: landscape) and (max-height: 600px) {
+  :root {
+    --action-height: 44px;
+    --action-type: 20px;
+    --profile-size: 44px;
+  }
+  .expedition.menu-screen,
+  .advantage-screen,
+  .profiles-screen {
+    padding: 12px 20px;
+    gap: 10px;
+  }
+  .expedition .map-heading h1,
+  .encounter-heading h1 {
+    font-size: 28px;
+  }
+  .expedition .expedition-map {
+    padding: 14px;
+    gap: 14px;
+  }
+  .expedition .expedition-map .map-node {
+    min-height: 155px;
+    padding: 16px 12px;
+    gap: 5px;
+  }
+  .expedition .map-node strong {
+    font-size: 23px;
+  }
+  .expedition .map-node small {
+    font-size: 13px;
+  }
+  .expedition .map-stars {
+    font-size: 20px;
+  }
+  .encounter-roster img {
+    height: 44px;
+    width: 44px;
+  }
+  .encounter-roster span {
+    font-size: 13px;
+  }
+  .first-watch-brief {
+    padding: 12px 18px;
+  }
+  .first-watch-brief p {
+    font-size: 14px;
+  }
+  .battle-brand strong {
+    display: none;
+  }
+  .battle-brand .profile-badge {
+    --profile-size: 36px;
+  }
+  .battle-screen .selection-actions .game-art-button {
+    font-size: 14px;
+  }
+  .hero-identity .upgrade-lock {
+    font-size: 11px;
+    line-height: 1.2;
+    margin-top: 4px;
+  }
+  .menu-page label {
+    min-height: 44px;
+  }
+}
+@media (max-height: 350px) {
+  .game-menu-surface {
+    padding-top: 16px;
+    padding-bottom: 16px;
+  }
+  .game-menu-surface h2 {
+    font-size: 24px;
+    margin-bottom: 6px;
+  }
+  .menu-page {
+    justify-content: flex-start;
+  }
+}
+
+@media (orientation: landscape) and (max-height: 600px) {
+  .menu-page[data-menu-view="settings"] {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    grid-auto-rows: min-content;
+    align-content: start;
+    gap: 6px;
+  }
+  .menu-page[data-menu-view="settings"] :is(h3, label) {
+    grid-column: 1 / -1;
+  }
+  .menu-page[data-menu-view="settings"] .game-art-button {
+    min-width: 0;
+    padding: 8px;
+    font-size: 18px;
+  }
+  .battle-brand .profile-badge {
+    --profile-size: 40px;
+  }
+}
+
+.profile-dialog {
+  max-height: calc(var(--app-height, 100dvh) - 32px);
+}
+.avatar-options {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  max-width: 300px;
+}
+.avatar-options button {
+  justify-self: start;
+}
+
+.profile-editor fieldset {
+  margin-block: 14px;
+}
+
+.advantage-reward .reward-art svg {
+  height: 100%;
+  max-height: 100%;
+  width: 100%;
+}
+
+.advantage-screen {
+  grid-template-rows: auto minmax(0, 1fr) auto;
+  overflow: hidden;
+}
+.briefing-content {
+  min-height: 0;
+  overflow-y: auto;
+  padding: 4px;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+.briefing-content > .encounter-roster {
+  flex-shrink: 0;
+}
+.briefing-content > :is(.advantage-choice, .first-watch-brief) {
+  margin-block: auto;
+  flex-shrink: 0;
+}
+@media (orientation: landscape) and (max-height: 600px) {
+  .briefing-content {
+    gap: 10px;
+  }
+}
+
+@media (orientation: landscape) and (max-height: 600px) {
+  .advantage-art {
+    height: 60px;
+  }
+}
+@media (orientation: landscape) and (max-height: 380px) {
+  .advantage-art {
+    height: 52px;
+  }
+}
+
+/* The expedition is a progress board: markers stay anchored to its artwork. */
+.expedition .expedition-map:not(.expanded-campaign) {
+  display: block;
+  width: min(100%, calc((var(--app-height, 100dvh) - 190px) * 1.7768));
+  height: auto;
+  aspect-ratio: 1672 / 941;
+  align-self: center;
+  justify-self: center;
+  padding: 0;
+  overflow: visible;
+}
+.expedition .expedition-map:not(.expanded-campaign) .map-land {
+  opacity: 1;
+  background-size: 100% 100%;
+}
+.expedition .expedition-map:not(.expanded-campaign) .map-node {
+  position: absolute;
+  inset: auto;
+  left: 20%;
+  top: 72%;
+  transform: translate(-50%, -50%);
+  width: 132px;
+  min-height: 0;
+  height: auto;
+  padding: 6px;
+  gap: 3px;
+  border-width: 8px;
+}
+.expedition .expedition-map:not(.expanded-campaign) .node-1 { left: 62%; top: 78%; }
+.expedition .expedition-map:not(.expanded-campaign) .node-2 { left: 82%; top: 30%; }
+.expedition .expedition-map:not(.expanded-campaign) .node-number {
+  width: 32px;
+  height: 32px;
+  font-size: 18px;
+}
+.expedition .expedition-map:not(.expanded-campaign) .map-node strong { font-size: 18px; }
+.expedition .expedition-map:not(.expanded-campaign) .map-stars { font-size: 15px; }
+.expedition .expedition-map:not(.expanded-campaign) .map-node small { display: none; }
+.profile-editor input { margin-bottom: 18px; }
+.profile-editor fieldset { margin-top: 0; }
+@media (max-width: 600px), (orientation: landscape) and (max-height: 450px) {
+  .expedition .expedition-map:not(.expanded-campaign) .map-node {
+    width: 56px;
+    height: 62px;
+    padding: 4px;
+    border: 2px solid #bfa36b;
+    border-radius: 14px;
+    background: #172b29ee;
+    box-shadow: 0 3px 8px #0009;
+  }
+  .expedition .expedition-map:not(.expanded-campaign) .map-node strong { display: none; }
+  .expedition .expedition-map:not(.expanded-campaign) .map-stars { font-size: 12px; white-space: nowrap; }
+}

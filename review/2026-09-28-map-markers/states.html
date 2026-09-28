@@ -1,0 +1,12 @@
+<!doctype html>
+<html lang="en"><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Waypoint states review fixture</title>
+<link rel="stylesheet" href="/src/style.css"><link rel="stylesheet" href="/src/ui/button-skin.css"><link rel="stylesheet" href="/src/ui/responsive-layout.css"><link rel="stylesheet" href="/src/ui/map-markers.css">
+<body><div id="app"><main class="menu-screen expedition"><header class="map-heading"><h1>Waypoint states</h1></header><div class="expedition-map"><div class="map-land"></div>
+<button class="map-node node-0 completed" aria-label="Lantern Pass, three stars earned"><span class="node-number">01</span><strong>Lantern Pass</strong><span class="map-stars">★★★</span></button>
+<button class="map-node node-1 current is-selecting" aria-label="Rainstone Crossing, next crossing"><span class="node-number">02</span><strong>Rainstone Crossing</strong><span class="map-stars">☆☆☆</span></button>
+<button class="map-node node-2 locked" disabled aria-label="The Last Lantern, locked"><span class="node-number">03</span><strong>The Last Lantern</strong><span class="map-stars">☆☆☆</span></button>
+</div><footer class="menu-footer"><p>Review fixture: completed · selecting · locked</p></footer></main></div>
+<style>/* Slow the actual selection animation for visual inspection only. */
+.expedition .expedition-map .map-node.is-selecting .node-number,
+.expedition .expedition-map .map-node.is-selecting::after { animation-duration: 1.5s; animation-iteration-count: infinite; }
+</style></body></html>

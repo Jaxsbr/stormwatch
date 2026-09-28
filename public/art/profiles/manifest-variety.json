@@ -1,0 +1,20 @@
+{
+  "generator": "OpenAI built-in ImageGen",
+  "date": "2026-09-28",
+  "prompt": "Use case: stylized-concept. Production profile avatar atlas for Stormwatch painterly child-friendly woodland adventure. Precisely 4 columns by 2 rows of equal square cells, landscape image 2:1 aspect ratio. In order left to right: top row squirrel, rabbit, fox, badger; bottom row bear, otter, hedgehog, owl. Cute forward-facing animal HEAD portraits only, face and ears framed generously entirely within each cell. No shoulders, clothing, accessories, scarves or green fabric. Variety is essential: squirrel with tufted ears, russet fur and excited open smile; cream rabbit with one slightly bent ear and gentle curious expression; amber fox with confident playful grin; silver badger with bold natural face stripes and calm friendly expression; chocolate brown bear with round ears and soft bashful smile; sandy otter with whiskers and delighted expression; chestnut hedgehog with textured spines and tiny inquisitive smile; tawny owl with feather tufts and bright attentive eyes. Distinct natural animal colouring, proportions, expressions and fur/feather textures while all look directly forward. Match warm detailed hand-painted game character art, expressive eyes and rounded silhouettes. Solid dark teal background in every cell. No text, grid lines, borders, costumes, weapons, occult or gore. Readable small icons, not vector or photorealism.",
+  "processing": "Eight equal atlas cells extracted and resized to 256×256 WebP quality 90 using sharp.",
+  "assets": [
+    "squirrel.webp",
+    "rabbit.webp",
+    "fox.webp",
+    "badger.webp",
+    "bear.webp",
+    "otter.webp",
+    "hedgehog.webp",
+    "owl.webp"
+  ],
+  "supersedes": [
+    "manifest.json",
+    "manifest-additional.json"
+  ]
+}

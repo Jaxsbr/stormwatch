@@ -64,7 +64,8 @@ export function advantageScreen(
   const firstWatch =
     level.id === "lantern-pass" && !level.availableTowers?.includes("net");
   return `<main class="advantage-screen" aria-labelledby="encounter-title">
-    <h1 id="encounter-title">${escapeHtml(level.name)}</h1>
+    <header class="encounter-heading"><h1 id="encounter-title">${escapeHtml(level.name)}</h1></header>
+    <div class="briefing-content">
     <section class="encounter-roster" aria-labelledby="roster-title">
       <h2 id="roster-title">On the trail</h2>
       <ul>${encounterEnemies(level)
@@ -101,6 +102,7 @@ export function advantageScreen(
     </section>`
         : `<section class="first-watch-brief"><strong>${firstWatch ? "First watch" : "Ready for the crossing"}</strong><p>${firstWatch ? "Begin with the Squirrel archer. More defenders and advantages are discovered as the expedition continues." : `Available defenders: ${defenders}. Watch the threats above and choose where to build.`}</p></section>`
     }
+    </div>
     <nav class="advantage-actions" aria-label="Encounter navigation">
       <button class="game-art-button" data-action="map">Back</button>
       <button class="game-art-button game-art-button--primary" data-action="begin">Play</button>

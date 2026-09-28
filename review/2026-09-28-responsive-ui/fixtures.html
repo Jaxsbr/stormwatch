@@ -1,0 +1,26 @@
+<!doctype html><html lang="en"><head><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="stylesheet" href="/fonts/fonts.css"><title>UI review fixtures</title></head><body><div id="app"></div><script type="module">
+import '/src/style.css';
+import '/src/ui/advantage-screen.css';
+import '/src/ui/game-chrome.css';
+import '/src/ui/button-skin.css';
+import '/src/ui/battle-ui.css';
+import '/src/ui/battle-menu.css';
+import '/src/ui/responsive-layout.css';
+import { resultCard } from '/src/ui/game-chrome.ts';
+import { advantageScreen } from '/src/ui/advantage-screen.ts';
+import { LEVELS } from '/src/content/levels.ts';
+import { paintTowerPortraits } from '/src/render/portraits.ts';
+import { fitVisibleViewport } from '/src/ui/visible-viewport.ts';
+const fit=()=>fitVisibleViewport(document.documentElement.style,window); fit(); window.addEventListener('resize',fit);
+const params=new URLSearchParams(location.search),view=params.get('view')??'victory';
+const badge='<span class="profile-badge" role="img" aria-label="Playing as Forest Scout"><img class="user-avatar" src="/art/profiles/rabbit.webp" alt=""></span>';
+if(view==='cards') {
+ document.querySelector('#app').innerHTML=advantageScreen(LEVELS[2],['reach','nets'],'reach');
+ document.querySelector('.encounter-heading').insertAdjacentHTML('beforeend',badge);
+} else {
+ const won=view!=='defeat';
+ document.querySelector('#app').innerHTML=`<main class="result-screen">${resultCard({phase:won?'won':'lost', stars:won?3:0, goldEarned:420,kills:28,killsByKind:{raider:14,runner:8,armored:5,boss:1}},won?[{kind:'advantage-unlock',card:'reach'},{kind:'advantage-unlock',card:'nets'}]:[],won)}</main>`;
+ document.querySelector('.result-heading').insertAdjacentHTML('beforeend',badge);
+}
+void paintTowerPortraits(document.querySelector('#app'));
+</script></body></html>

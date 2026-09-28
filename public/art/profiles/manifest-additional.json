@@ -1,0 +1,12 @@
+{
+  "generator": "OpenAI built-in ImageGen",
+  "date": "2026-09-28",
+  "prompt": "Use case: stylized-concept. Single production avatar atlas for Stormwatch, painterly child-friendly woodland adventure. Square image with four equal square portrait cells in precise 2x2 grid: top left friendly brown bear, top right cheerful brown otter, bottom left cute hedgehog, bottom right kind tawny owl. Each is a cute FORWARD FACING centered head and small shoulders, direct eye contact, expressive bright eyes, rounded shapes, detailed hand-painted fur or feathers, moss-green scarf, warm lantern highlights and subdued woodland palette. Each on a solid dark teal background, identical scale and generous margins. Faces readable at 32px. Match existing warm painted squirrel/rabbit/fox/badger profile art. No text, borders, grid lines, weapons, occult imagery or gore. Painted game art, not vector, not photographic.",
+  "processing": "Equal atlas quadrants resized to 256×256 WebP quality 90 using sharp.",
+  "assets": [
+    "bear.webp",
+    "otter.webp",
+    "hedgehog.webp",
+    "owl.webp"
+  ]
+}

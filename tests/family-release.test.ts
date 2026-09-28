@@ -5,7 +5,7 @@ import {
   levelForAttempt,
   levelUnlocked,
 } from "../src/content/progression";
-import { loadProfiles } from "../src/persistence/profiles";
+import { loadProfiles, createProfile } from "../src/persistence/profiles";
 import {
   freshSave,
   recordVictory,
@@ -106,20 +106,28 @@ it.each([false, true])(
   "takes a fresh second player through the chapter, saved rewards and replay (boss assist=%s)",
   (assist) => {
     let profiles = loadProfiles(null, null);
-    profiles.active = 1;
+    profiles.users = [
+      createProfile("one", "One", "fox"),
+      createProfile("two", "Two", "rabbit"),
+    ];
+    profiles.active = "two";
     for (let index = 0; index < 2; index++) {
-      const save = profiles.slots[1];
+      const save = profiles.users[1].progress;
       expect(levelUnlocked(LEVELS, index, save)).toBe(true);
       expect(levelUnlocked(LEVELS, index + 1, save)).toBe(false);
       expect(availableCards(LEVELS[index], save)).toEqual([]);
       const game = play(index, save);
       expect(game.state.phase).toBe("won");
-      profiles.slots[1] = recordVictory(save, game.level.id, game.state.stars);
+      profiles.users[1].progress = recordVictory(
+        save,
+        game.level.id,
+        game.state.stars,
+      );
       profiles = loadProfiles(JSON.stringify(profiles), null);
-      expect(profiles.slots[0]).toEqual(freshSave());
-      expect(profiles.active).toBe(1);
+      expect(profiles.users[0].progress).toEqual(freshSave());
+      expect(profiles.active).toBe("two");
     }
-    const beforeBoss = structuredClone(profiles.slots[1]);
+    const beforeBoss = structuredClone(profiles.users[1].progress);
     expect(beforeBoss.unlocked).toEqual(
       expect.arrayContaining(["squirrel-upgrade", "turtle"]),
     );
@@ -133,35 +141,35 @@ it.each([false, true])(
     )
       emptyAttempt.tick(1 / 30);
     expect(emptyAttempt.state.phase).toBe("lost");
-    expect(profiles.slots[1]).toEqual(beforeBoss);
+    expect(profiles.users[1].progress).toEqual(beforeBoss);
     const retry = play(2, beforeBoss, assist);
     expect(retry.state.phase).toBe("won");
     expect(retry.state.wave).toBe(6);
     expect(retry.state.killsByKind.boss).toBe(1);
-    profiles.slots[1] = recordVictory(
+    profiles.users[1].progress = recordVictory(
       beforeBoss,
       retry.level.id,
       retry.state.stars,
     );
     profiles = loadProfiles(JSON.stringify(profiles), null);
-    const complete = profiles.slots[1];
+    const complete = profiles.users[1].progress;
     expect(complete.stars["the-last-lantern"]).toBeGreaterThan(0);
     expect(availableCards(LEVELS[2], complete)).toEqual(["reach", "nets"]);
     expect(levelUnlocked(LEVELS, 3, complete)).toBe(false);
     const replay = play(0, complete, false, "reach");
     expect(replay.state.phase).toBe("won");
     expect(replay.level.availableTowers).toContain("net");
-    profiles.slots[1] = recordVictory(
+    profiles.users[1].progress = recordVictory(
       complete,
       replay.level.id,
       replay.state.stars,
     );
-    expect(profiles.slots[1].stars["lantern-pass"]).toBeGreaterThanOrEqual(
-      complete.stars["lantern-pass"],
-    );
-    expect(profiles.slots[1].stars["the-last-lantern"]).toBe(
+    expect(
+      profiles.users[1].progress.stars["lantern-pass"],
+    ).toBeGreaterThanOrEqual(complete.stars["lantern-pass"]);
+    expect(profiles.users[1].progress.stars["the-last-lantern"]).toBe(
       complete.stars["the-last-lantern"],
     );
-    expect(profiles.slots[0]).toEqual(freshSave());
+    expect(profiles.users[0].progress).toEqual(freshSave());
   },
 );

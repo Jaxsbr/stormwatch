@@ -1,0 +1,266 @@
+/* Waypoints belong to the painted board; their centre stays at the authored point. */
+.expedition .expedition-map .map-node {
+  --waypoint-size: 58px;
+  --waypoint-ink: #f5e5b9;
+  width: var(--waypoint-size);
+  height: var(--waypoint-size);
+  min-height: 44px;
+  padding: 0;
+  gap: 0;
+  border: 0;
+  border-image: none;
+  border-radius: 50%;
+  background: none;
+  box-shadow: none;
+  filter: none;
+  opacity: 1;
+  color: var(--waypoint-ink);
+  overflow: visible;
+  touch-action: manipulation;
+  transition: none;
+}
+.expedition .expedition-map:not(.expanded-campaign) .map-node {
+  width: var(--waypoint-size);
+  height: var(--waypoint-size);
+  min-height: 44px;
+  padding: 0;
+  gap: 0;
+  border: 0;
+  background: none;
+  box-shadow: none;
+  transform: translate(-50%, -50%);
+}
+.expedition .expedition-map .map-node::before {
+  content: none;
+  border: 0;
+  border-image: none;
+}
+.expedition .expedition-map .map-node::after {
+  content: "";
+  position: absolute;
+  inset: -5px;
+  border: 1px solid #e9cb8b;
+  border-radius: 50%;
+  opacity: 0;
+  pointer-events: none;
+  transition:
+    opacity 160ms,
+    transform 160ms;
+}
+.expedition .expedition-map .map-node .node-number {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  border: 2px solid #c5a969;
+  border-radius: 50%;
+  background: radial-gradient(circle at 40% 25%, #435646, #1a2e28 72%);
+  box-shadow:
+    inset 0 0 0 3px #11241f,
+    0 3px 8px #000b;
+  color: var(--waypoint-ink);
+  font-family: var(--serif);
+  font-size: 25px;
+  font-weight: 600;
+  line-height: 1;
+  transition:
+    transform 160ms,
+    box-shadow 160ms,
+    background 160ms;
+}
+.expedition .expedition-map .map-node strong {
+  position: absolute;
+  top: auto;
+  bottom: calc(100% + 10px);
+  left: 50%;
+  width: max-content;
+  max-width: 152px;
+  transform: translateX(-50%);
+  display: block;
+  padding: 3px 9px 4px;
+  margin: 0;
+  border-radius: 50%;
+  background: radial-gradient(ellipse, #10221fea 35%, #10221f00 73%);
+  color: #fff0cc;
+  font-size: 18px;
+  line-height: 1.12;
+  text-align: center;
+  text-shadow:
+    0 2px 2px #000,
+    0 0 5px #000;
+  pointer-events: none;
+}
+.expedition .expedition-map .map-node .map-stars {
+  position: absolute;
+  top: calc(100% + 2px);
+  left: 50%;
+  transform: translateX(-50%);
+  margin: 0;
+  color: #efcb79;
+  font-size: 16px;
+  line-height: 1;
+  letter-spacing: 1px;
+  white-space: nowrap;
+  text-shadow:
+    0 2px 2px #000,
+    0 0 4px #000;
+  pointer-events: none;
+}
+.expedition .expedition-map .map-node :is(small, .node-medallion) {
+  display: none;
+}
+.expedition .expedition-map .map-node.current .node-number {
+  color: #263327;
+  border-color: #ffe2a2;
+  background: radial-gradient(circle at 40% 25%, #ffe8b0, #c79c53 78%);
+  box-shadow:
+    inset 0 0 0 3px #ffe5a744,
+    0 0 0 4px #ebc47722,
+    0 3px 10px #000b;
+}
+.expedition .expedition-map .map-node.completed .node-number {
+  border-color: #e3c384;
+  box-shadow:
+    inset 0 0 0 3px #11241f,
+    0 0 0 3px #e3c38422,
+    0 3px 8px #000b;
+}
+.expedition .expedition-map .map-node.locked {
+  --waypoint-ink: #d3d8cc;
+}
+.expedition .expedition-map .map-node.locked .node-number {
+  border: 1px dashed #b6bca9;
+  background: #1b2a25e8;
+  box-shadow: 0 3px 8px #000a;
+}
+.expedition .expedition-map .map-node.locked .node-number::before {
+  content: "";
+  position: absolute;
+  right: 0;
+  bottom: 6px;
+  width: 9px;
+  height: 9px;
+  border: 2px solid #d8dbc9;
+  border-radius: 6px 6px 0 0;
+  background: #23362d;
+  box-shadow: 0 0 0 2px #23362d;
+}
+.expedition .expedition-map .map-node.locked .node-number::after {
+  content: "";
+  position: absolute;
+  right: -3px;
+  bottom: -3px;
+  width: 15px;
+  height: 12px;
+  border: 2px solid #23362d;
+  border-radius: 3px;
+  background:
+    radial-gradient(circle at 50% 45%, #23362d 1px, transparent 2px), #d8dbc9;
+}
+.expedition .expedition-map .map-node.locked .map-stars {
+  color: #aeb9aa;
+}
+.expedition .expedition-map .map-node:focus-visible {
+  outline: 3px solid #fff1c8;
+  outline-offset: 7px;
+}
+.expedition .expedition-map .map-node:focus-visible::after {
+  opacity: 0.8;
+}
+@media (hover: hover) {
+  .expedition .expedition-map .map-node:hover:not(:disabled) {
+    filter: none;
+    z-index: 4;
+  }
+  .expedition .expedition-map .map-node:hover:not(:disabled) .node-number {
+    transform: translateY(-3px);
+    box-shadow:
+      inset 0 0 0 3px #e6c58433,
+      0 5px 14px #000b,
+      0 0 18px #e6c58455;
+  }
+  .expedition .expedition-map .map-node:hover:not(:disabled)::after {
+    opacity: 0.75;
+  }
+}
+.expedition .expedition-map .map-node:active:not(:disabled) .node-number {
+  transform: scale(0.93);
+}
+.expedition .expedition-map .map-node.is-selecting .node-number {
+  animation: waypoint-select 160ms ease-out both;
+}
+.expedition .expedition-map .map-node.is-selecting::after {
+  animation: waypoint-ripple 160ms ease-out both;
+}
+@keyframes waypoint-select {
+  0% {
+    transform: scale(0.94);
+  }
+  65% {
+    transform: scale(1.08);
+  }
+  100% {
+    transform: scale(1.03);
+    box-shadow:
+      0 0 0 5px #f5d99155,
+      0 0 22px #f5d99188;
+  }
+}
+@keyframes waypoint-ripple {
+  from {
+    opacity: 1;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 0;
+    transform: scale(1.45);
+  }
+}
+/* The compact board keeps every point readable without covering the artwork. */
+@media (max-width: 600px), (orientation: landscape) and (max-height: 450px) {
+  .expedition .expedition-map .map-node {
+    --waypoint-size: 46px;
+  }
+  .expedition .expedition-map .map-node .node-number {
+    font-size: 21px;
+  }
+  .expedition .expedition-map .map-node .map-stars {
+    font-size: 13px;
+    top: calc(100% + 3px);
+  }
+  .expedition .expedition-map:not(.expanded-campaign) .map-node strong {
+    display: none;
+  }
+}
+@media (max-width: 360px) {
+  .expedition .expedition-map .map-node {
+    --waypoint-size: 44px;
+  }
+  .expedition .expedition-map .map-node .map-stars {
+    top: calc(100% + 1px);
+    font-size: 12px;
+  }
+}
+
+/* Additional authored encounters retain the supported scrollable layout. */
+.expedition .expedition-map.expanded-campaign .map-node {
+  justify-self: center;
+  margin: 8px 0 70px;
+  min-height: var(--waypoint-size);
+}
+.expedition .expedition-map.expanded-campaign .map-node strong {
+  top: calc(100% + 21px);
+  bottom: auto;
+}
+@media (prefers-reduced-motion: reduce) {
+  .expedition .expedition-map .map-node,
+  .expedition .expedition-map .map-node::after,
+  .expedition .expedition-map .map-node .node-number {
+    animation: none;
+    transition: none;
+  }
+}

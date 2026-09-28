@@ -36,8 +36,8 @@ it("registers appended recipes in campaign order and preserves their earned star
     JSON.stringify({ version: 1, active: 0, slots: [progress, freshSave()] }),
     null,
   );
-  expect(profiles.slots[0].stars["new-crossing"]).toBe(3);
-  expect(profiles.slots[1].stars["new-crossing"]).toBeUndefined();
+  expect(profiles.users[0].progress.stars["new-crossing"]).toBe(3);
+  expect(profiles.users).toHaveLength(1);
   expect(recordVictory(progress, "not-promoted", 3)).toBe(progress);
   expect(
     parseSave(

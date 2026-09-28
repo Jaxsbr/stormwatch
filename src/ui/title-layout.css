@@ -1,0 +1,176 @@
+/* Title actions share a column, with the player portrait as the switch control. */
+.title-screen {
+  min-height: 0;
+  overflow: auto;
+}
+
+.title-screen .title-top {
+  top: max(18px, env(safe-area-inset-top));
+  right: max(24px, env(safe-area-inset-right));
+  left: 24px;
+}
+
+.title-screen .title-top .game-art-button {
+  min-height: 48px;
+  min-width: 112px;
+  padding: 10px 20px;
+  font-size: 20px;
+  --skin-corner: 12px;
+}
+
+.title-screen .title-copy {
+  position: relative;
+  inset: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  width: min(440px, 48%);
+  max-width: none;
+  margin-left: 7.5%;
+  padding-top: clamp(100px, 19vh, 220px);
+  padding-bottom: 28px;
+  gap: 22px;
+}
+
+.title-screen .title-copy h1 {
+  margin: 0 0 20px;
+  font-size: clamp(64px, 7.4vw, 108px);
+  letter-spacing: 3px;
+}
+
+.title-screen .title-copy h1 span {
+  letter-spacing: 10px;
+  margin-top: 16px;
+}
+
+.title-screen .title-copy > .game-art-button {
+  width: 240px;
+  max-width: 100%;
+  min-width: 0;
+  min-height: 62px;
+  margin: 0;
+  padding: 12px 24px;
+  font-size: 28px;
+}
+
+.title-screen .title-profile {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 240px;
+  max-width: 100%;
+  min-height: 76px;
+  padding: 6px 9px 6px 0;
+  text-align: left;
+  border-radius: 40px 10px 10px 40px;
+  background: linear-gradient(90deg, #0e2025b8, #0e20253d);
+}
+
+.title-profile .user-avatar {
+  width: 64px;
+  height: 64px;
+  border: 2px solid #dec18a;
+  box-shadow:
+    0 0 0 3px #14292bcc,
+    0 4px 12px #0007;
+}
+
+.title-profile-copy {
+  min-width: 0;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.title-profile-copy strong {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 17px;
+  font-weight: 600;
+  color: #f1e6cd;
+}
+
+.title-profile-copy small {
+  font-size: 12px;
+  color: #d3c6a8;
+}
+
+.title-profile-chevron {
+  color: #dec18a;
+  font-size: 28px;
+}
+
+.title-screen .profile-guidance {
+  max-width: 310px;
+  font-size: 16px;
+  line-height: 1.5;
+}
+
+@media (max-width: 649px) and (orientation: portrait) {
+  .title-screen .title-copy {
+    width: 86%;
+    margin-left: 7%;
+    padding-top: clamp(110px, 22vh, 210px);
+    gap: 22px;
+  }
+
+  .title-screen .title-copy h1 {
+    font-size: clamp(62px, 17vw, 92px);
+    margin-bottom: 16px;
+  }
+
+  .title-screen .title-copy h1 span {
+    letter-spacing: 8px;
+  }
+
+  .title-screen .title-top {
+    top: max(14px, env(safe-area-inset-top));
+    right: max(16px, env(safe-area-inset-right));
+  }
+}
+
+@media (orientation: landscape) and (max-height: 600px) {
+  .title-screen .title-copy {
+    padding-top: 48px;
+    padding-bottom: 18px;
+    gap: 12px;
+    width: 45%;
+  }
+
+  .title-screen .title-copy h1 {
+    font-size: clamp(46px, 14vh, 76px);
+    margin-bottom: 8px;
+    letter-spacing: 2px;
+  }
+
+  .title-screen .title-copy h1 span {
+    margin-top: 10px;
+    letter-spacing: 7px;
+  }
+
+  .title-screen .title-copy > .game-art-button {
+    min-height: 50px;
+    width: 208px;
+    padding: 10px 20px;
+    font-size: 24px;
+  }
+
+  .title-screen .title-profile {
+    width: 208px;
+    min-height: 60px;
+    padding-top: 3px;
+    padding-bottom: 3px;
+  }
+
+  .title-profile .user-avatar {
+    width: 52px;
+    height: 52px;
+  }
+
+  .title-screen .profile-guidance {
+    font-size: 14px;
+    line-height: 1.4;
+  }
+}
