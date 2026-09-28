@@ -90,24 +90,62 @@ export class BattleSelection {
   }
 }
 
-/** Prefer beside the tile; flip at edges and clamp in compact landscapes. */
+/** Reserve the whole projected cell plus a gap, including when space is tight. */
 export function popupPosition(
   anchor: { x: number; y: number },
   size: { width: number; height: number },
   bounds: { width: number; height: number },
+  tile = { width: 0, height: 0 },
 ) {
-  const gap = 38,
+  const gap = 12,
     edge = 8;
-  let x = anchor.x - size.width / 2,
-    y = anchor.y + gap;
-  if (y + size.height > bounds.height - edge) y = anchor.y - size.height - gap;
-  if (y < edge) {
-    y = anchor.y - size.height / 2;
-    x = anchor.x + gap;
-    if (x + size.width > bounds.width - edge) x = anchor.x - size.width - gap;
-  }
+  const left = anchor.x - tile.width / 2 - gap;
+  const right = anchor.x + tile.width / 2 + gap;
+  const top = anchor.y - tile.height / 2 - gap;
+  const bottom = anchor.y + tile.height / 2 + gap;
+  const regions = [
+    {
+      x: edge,
+      y: bottom,
+      width: bounds.width - 2 * edge,
+      height: bounds.height - edge - bottom,
+    },
+    { x: edge, y: edge, width: bounds.width - 2 * edge, height: top - edge },
+    {
+      x: right,
+      y: edge,
+      width: bounds.width - edge - right,
+      height: bounds.height - 2 * edge,
+    },
+    { x: edge, y: edge, width: left - edge, height: bounds.height - 2 * edge },
+  ].filter((r) => r.width > 0 && r.height > 0);
+  // If no side fits at natural size, use the largest region and scroll internally.
+  const region = regions.find(
+    (r) => r.width >= size.width && r.height >= size.height,
+  ) ??
+    regions.sort(
+      (a, b) =>
+        Math.min(b.width, size.width) * Math.min(b.height, size.height) -
+        Math.min(a.width, size.width) * Math.min(a.height, size.height),
+    )[0] ?? {
+      x: edge,
+      y: edge,
+      width: Math.max(0, bounds.width - 2 * edge),
+      height: Math.max(0, bounds.height - 2 * edge),
+    };
+  const width = Math.min(size.width, region.width),
+    height = Math.min(size.height, region.height);
+  const y = Math.max(
+    region.y,
+    Math.min(anchor.y - height / 2, region.y + region.height - height),
+  );
   return {
-    x: Math.max(edge, Math.min(x, bounds.width - size.width - edge)),
-    y: Math.max(edge, Math.min(y, bounds.height - size.height - edge)),
+    x: Math.max(
+      region.x,
+      Math.min(anchor.x - width / 2, region.x + region.width - width),
+    ),
+    y,
+    width,
+    maxHeight: region.y + region.height - y,
   };
 }

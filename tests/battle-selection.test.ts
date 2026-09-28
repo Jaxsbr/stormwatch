@@ -126,3 +126,44 @@ it("keeps edge popups inside short landscape bounds", () => {
       expect(p.y + 240).toBeLessThanOrEqual(272);
     }
 });
+
+it("leaves space beyond a large projected tile rather than its centre", () => {
+  const p = popupPosition(
+    { x: 400, y: 200 },
+    { width: 300, height: 200 },
+    { width: 900, height: 600 },
+    { width: 110, height: 90 },
+  );
+  // A 110 x 90 projected tile needs at least 12px clear space on one side.
+  expect(p.x + 300 <= 333 || p.x >= 467 || p.y + 200 <= 143 || p.y >= 257).toBe(
+    true,
+  );
+});
+
+it("keeps the whole cell clear even when the popup must shrink at screen edges", () => {
+  for (const width of [568, 844, 1280])
+    for (const height of [260, 390, 720]) {
+      for (const x of [60, width / 2, width - 60])
+        for (const y of [50, height / 2, height - 50]) {
+          const p = popupPosition(
+            { x, y },
+            { width: 320, height: 270 },
+            { width, height },
+            { width: 110, height: 90 },
+          );
+          const h = Math.min(270, p.maxHeight);
+          expect(
+            p.x >= 8 &&
+              p.y >= 8 &&
+              p.x + p.width <= width - 8 &&
+              p.y + h <= height - 8,
+          ).toBe(true);
+          expect(
+            p.x + p.width <= x - 55 - 12 ||
+              p.x >= x + 55 + 12 ||
+              p.y + h <= y - 45 - 12 ||
+              p.y >= y + 45 + 12,
+          ).toBe(true);
+        }
+    }
+});

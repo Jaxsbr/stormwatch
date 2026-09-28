@@ -165,11 +165,6 @@ export class DefenderPopups {
     this.focusOnOpen = false;
     this.previousSelection = key;
     this.ghost.hidden = !model.point;
-    if (model.point && this.ghost.dataset.kind !== model.kind) {
-      this.ghost.dataset.kind = model.kind;
-      this.ghost.innerHTML = towerPortrait(model.kind);
-      void paintTowerPortraits(this.ghost);
-    }
     this.position();
   }
   position() {
@@ -184,14 +179,23 @@ export class DefenderPopups {
       x: projected.x - bounds.left,
       y: projected.y - bounds.top,
     };
+    const corner = this.project({ x: point.x + 0.5, z: point.z + 0.5 });
+    const tile = {
+      width: Math.abs(corner.x - projected.x) * 2,
+      height: Math.abs(corner.y - projected.y) * 2,
+    };
+    this.panel.style.width = "";
+    this.panel.style.maxHeight = "";
     const pos = popupPosition(
       anchor,
       this.panel.getBoundingClientRect(),
       bounds,
+      tile,
     );
     this.panel.style.left = `${pos.x}px`;
     this.panel.style.top = `${pos.y}px`;
-    const corner = this.project({ x: point.x + 0.5, z: point.z + 0.5 });
+    this.panel.style.width = `${pos.width}px`;
+    this.panel.style.maxHeight = `${pos.maxHeight}px`;
     this.ghost.style.cssText = `left:${anchor.x}px;top:${anchor.y}px;width:${Math.abs(corner.x - projected.x) * 2}px;height:${Math.abs(corner.y - projected.y) * 2}px`;
   }
   destroy() {
