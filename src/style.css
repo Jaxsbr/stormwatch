@@ -2717,9 +2717,13 @@ button:active:not(:disabled) {
   margin-top: 10px;
 }
 .avatar-options button {
+  display: grid;
+  place-items: center;
   padding: 3px;
-  min-width: 52px;
-  min-height: 52px;
+  width: 58px;
+  height: 58px;
+  min-width: 58px;
+  min-height: 58px;
   border-radius: 50%;
 }
 .avatar-options .user-avatar {
