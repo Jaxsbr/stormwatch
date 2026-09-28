@@ -28,3 +28,5 @@ Read the accepted records before changing consequential behavior. For a new deci
 - [021: Local designer workbench and canonical attempt configuration](021-designer-workbench.md)
 - [022: Task-first designer workbench and reliable edit/play loop](022-workbench-task-first-interface.md)
 - [027: Tablet renderer lifetime and viewport settling](027-tablet-renderer-lifetime.md)
+
+- [029: Tile-first placement and defender popups](029-tile-anchored-defender-popups.md)

@@ -1,10 +1,11 @@
 import { Battlefield } from "../render/battlefield";
 import { Sound } from "../audio/sound";
-import { battleStats, defenderPanel, displayedWave } from "../ui/battle-ui";
+import { battleStats, displayedWave } from "../ui/battle-ui";
 import { button } from "../ui/game-chrome";
-import { towerPortrait, paintTowerPortraits } from "../render/portraits";
+import { BattleSelection } from "../ui/battle-selection";
+import { DefenderPopups } from "../ui/defender-popups";
 import type { Game } from "../sim/game";
-import type { GameEvent, TowerKind } from "../sim/types";
+import type { GameEvent } from "../sim/types";
 import type { LegalCommand } from "./commands";
 
 const escape = (value: string) =>
@@ -34,8 +35,9 @@ export function mountAttempt(
   game: Game,
   options: AttemptViewOptions,
 ) {
-  let build: TowerKind | null = null;
-  let selected: number | null = null;
+  const selection = new BattleSelection(game, (command) =>
+    options.command(command),
+  );
   let speed = 1;
   let disposed = false;
   let finished = false;
@@ -44,8 +46,8 @@ export function mountAttempt(
   const sound = new Sound();
   sound.setMuted(true);
   sound.unlock();
-  const kinds = game.level.availableTowers ?? ["bolt", "stone", "net"];
-  host.innerHTML = `<main class="battle-screen workbench-attempt"><header class="battle-header"><div class="battle-brand"><strong>${escape(game.level.name)}</strong><small>${escape(options.label)}</small></div>${battleStats(game.level.waves.length)}<div class="battle-tools">${button("speed", "1×", "icon-button")}${button("pause", "Pause", "quiet")}${button("restart", "Restart", "quiet")}${button("exit", "Workbench", "quiet")}</div></header><div class="battle-middle"><section class="battlefield"><div id="canvas-host"></div><div id="wave-countdown" class="wave-countdown" hidden></div><div class="wb-attempt-notice" role="status"></div><div class="wb-boss" hidden></div></section><aside class="battle-aside"><div class="wave-controls">${button("start", "Start first wave", "primary")}${options.onBranch ? button("branch", "Take manual control at preparation", "quiet") : ""}${options.onContinueReplay ? button("continue-replay", "Continue replay", "quiet") : ""}</div></aside></div><footer class="build-tray"><section id="selection-panel" class="selection-panel" hidden></section><div class="tray-label"><strong id="build-label">Choose a defender</strong>${button("cancel", "Cancel", "quiet small")}</div><div class="tower-buttons">${kinds.map((kind) => `<button class="tower-button" data-action="build:${kind}" aria-pressed="false">${towerPortrait(kind)}<span><strong>${escape(game.towers[kind].name)}</strong><small>${escape(game.towers[kind].role)}</small></span><b>${game.towers[kind].cost}<small> crowns</small></b></button>`).join("")}</div></footer></main>`;
+
+  host.innerHTML = `<main class="battle-screen popup-battle workbench-attempt"><header class="battle-header"><div class="battle-brand"><strong>${escape(game.level.name)}</strong><small>${escape(options.label)}</small></div>${battleStats(game.level.waves.length)}<div class="battle-tools">${button("speed", "1×", "icon-button")}${button("pause", "Pause", "quiet")}${button("restart", "Restart", "quiet")}${button("exit", "Workbench", "quiet")}</div></header><div class="battle-middle"><section class="battlefield"><div id="canvas-host"></div><div class="defender-popup-root"></div><div id="wave-countdown" class="wave-countdown" hidden></div><div class="wb-attempt-notice" role="status"></div><div class="wb-boss" hidden></div></section><aside class="battle-aside"><div class="wave-controls">${button("start", "Start first wave", "primary")}${options.onBranch ? button("branch", "Take manual control at preparation", "quiet") : ""}${options.onContinueReplay ? button("continue-replay", "Continue replay", "quiet") : ""}</div></aside></div></main>`;
   let field: Battlefield;
   try {
     field = new Battlefield(host.querySelector<HTMLElement>("#canvas-host")!);
@@ -62,7 +64,7 @@ export function mountAttempt(
       sound.pause(true);
     };
   }
-  void paintTowerPortraits(host);
+
   const notice = (text: string) => {
     host.querySelector(".wb-attempt-notice")!.textContent = text;
   };
@@ -73,19 +75,25 @@ export function mountAttempt(
     update();
     return accepted;
   };
-  field.onPick = (point) => {
-    if (build) {
-      if (act({ type: "place", kind: build, point }))
-        selected = game.state.towers.at(-1)!.id;
-    } else
-      selected =
-        game.state.towers.find(
-          (tower) => tower.x === point.x && tower.z === point.z,
-        )?.id ?? null;
-    update();
+  const popups = new DefenderPopups(
+    host.querySelector<HTMLElement>(".defender-popup-root")!,
+    selection,
+    (point) => field.project(point),
+    (_action, accepted) => {
+      if (!accepted)
+        notice("Command rejected: check gold, placement and available tools.");
+      update();
+    },
+    () => options.isReplayLocked?.() ?? false,
+  );
+  field.onMiss = () => {
+    selection.close();
+    popups.update();
   };
-  field.onHover = (point) => {
-    if (build) field.highlight(point, !!point && game.canPlace(point));
+  field.onPick = (point) => {
+    if (options.isReplayLocked?.()) return;
+    popups.pick(point);
+    update();
   };
   function update() {
     const state = game.state;
@@ -102,10 +110,6 @@ export function mountAttempt(
     text(
       '[data-action="pause"]',
       state.phase === "paused" ? "Resume" : "Pause",
-    );
-    text(
-      "#build-label",
-      build ? `Placing ${game.towers[build].name}` : "Choose a defender",
     );
     const countdown = host.querySelector<HTMLElement>("#wave-countdown")!;
     countdown.hidden =
@@ -133,37 +137,11 @@ export function mountAttempt(
     bossPanel.hidden = !boss;
     if (boss)
       bossPanel.textContent = `${game.enemies.boss.name} · ${Math.ceil(boss.hp)} / ${boss.maxHp}`;
-    const tower = state.towers.find((entry) => entry.id === selected);
-    const panel = host.querySelector<HTMLElement>("#selection-panel")!;
-    panel.hidden = !tower || !!build;
-    host
-      .querySelector(".build-tray")!
-      .classList.toggle("inspecting", !panel.hidden);
-    const markup = tower && !build ? defenderPanel(game, tower) : "";
-    if (panel.dataset.content !== markup) {
-      panel.innerHTML = markup;
-      panel.dataset.content = markup;
-      void paintTowerPortraits(panel);
-    }
-    for (const node of host.querySelectorAll<HTMLButtonElement>(
-      '[data-action^="build:"]',
-    )) {
-      const kind = node.dataset.action!.split(":")[1] as TowerKind;
-      node.setAttribute("aria-pressed", String(build === kind));
-      node.classList.toggle("selected", build === kind);
-      node.classList.toggle(
-        "unaffordable",
-        state.coins < game.towers[kind].cost,
-      );
-      node.disabled = replayLocked || !game.canAct();
-    }
+    if (!game.canAct()) selection.close();
+    popups.update();
     const branch = host.querySelector<HTMLButtonElement>(
       '[data-action="branch"]',
     );
-    for (const node of panel.querySelectorAll<HTMLButtonElement>(
-      '[data-action="upgrade"],[data-action="sell"]',
-    ))
-      if (replayLocked) node.disabled = true;
     const held = options.isPreparationHeld?.() ?? false;
     host.querySelector<HTMLButtonElement>('[data-action="pause"]')!.disabled =
       held;
@@ -183,32 +161,15 @@ export function mountAttempt(
       "[data-action]",
     )?.dataset.action;
     if (!action) return;
-    if (
-      (options.isReplayLocked?.() ?? false) &&
-      (action.startsWith("build:") ||
-        ["upgrade", "sell", "start"].includes(action))
-    ) {
+    if ((options.isReplayLocked?.() ?? false) && action === "start") {
       notice(
         "Replay controls are locked. Take manual control at preparation to change the defense.",
       );
       return;
     }
-    if (action.startsWith("build:")) {
-      build = action.split(":")[1] as TowerKind;
-      selected = null;
-    } else if (action === "cancel" || action === "inspect-close") {
-      build = null;
-      selected = null;
-      field.highlight(null);
-    } else if (action === "start") {
+    if (action === "start") {
       act({ type: "start" });
-      build = null;
-      selected = null;
-    } else if (action === "upgrade" && selected !== null)
-      act({ type: "upgrade", id: selected });
-    else if (action === "sell" && selected !== null) {
-      act({ type: "sell", id: selected });
-      selected = null;
+      selection.close();
     } else if (action === "pause") {
       act({ type: "pause" });
       sound.pause(game.state.phase === "paused");
@@ -227,6 +188,7 @@ export function mountAttempt(
       );
     update();
   };
+  let lastPhase = game.state.phase;
   function frame(now: number) {
     if (disposed) return;
     const elapsed = Math.min(0.1, (now - last) / 1000);
@@ -248,7 +210,17 @@ export function mountAttempt(
         accumulator -= 1 / 30;
       }
     }
-    field.update(game, selected, elapsed);
+    if (game.state.phase === "wave" && lastPhase === "preparation")
+      selection.close();
+    lastPhase = game.state.phase;
+    field.update(
+      game,
+      selection.selected,
+      elapsed,
+      selection.point
+        ? { point: selection.point, kind: selection.kind }
+        : undefined,
+    );
     update();
     if (
       !finished &&
@@ -268,6 +240,7 @@ export function mountAttempt(
   return () => {
     disposed = true;
     host.onclick = null;
+    popups.destroy();
     field.dispose();
     sound.pause(true);
   };

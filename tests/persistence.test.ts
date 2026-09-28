@@ -83,3 +83,15 @@ describe("save persistence adapter", () => {
     expect(recordVictory(earned, "unknown-level", 3)).toBe(earned);
   });
 });
+
+it("defaults missing or malformed grid preferences to hidden", () => {
+  expect(freshSave().showGrid).toBe(false);
+  for (const showGrid of [undefined, "true", 1, null]) {
+    expect(parseSave(JSON.stringify({ version: 2, showGrid })).showGrid).toBe(
+      false,
+    );
+  }
+  expect(
+    parseSave(JSON.stringify({ version: 2, showGrid: true })).showGrid,
+  ).toBe(true);
+});

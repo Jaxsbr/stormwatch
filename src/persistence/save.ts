@@ -11,6 +11,7 @@ export interface SaveData {
   music: number;
   effects: number;
   muted: boolean;
+  showGrid: boolean;
   tutorialSeen: boolean;
 }
 
@@ -128,6 +129,7 @@ export function freshSave(): SaveData {
     music: DEFAULT_MUSIC,
     effects: DEFAULT_EFFECTS,
     muted: false,
+    showGrid: false,
     tutorialSeen: false,
   };
 }
@@ -190,6 +192,7 @@ export function parseSave(raw: string | null): SaveData {
     music,
     effects,
     muted: toStrictBoolean(parsed.muted, false),
+    showGrid: toStrictBoolean(parsed.showGrid, false),
     tutorialSeen: toStrictBoolean(parsed.tutorialSeen, false),
   };
 }
@@ -247,6 +250,7 @@ export function recordVictory(
     music: save.music,
     effects: save.effects,
     muted: save.muted,
+    showGrid: save.showGrid,
     tutorialSeen: save.tutorialSeen,
   };
 }

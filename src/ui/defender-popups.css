@@ -1,0 +1,239 @@
+/* A2 placement and S1 inspection: transient controls leave the map its full height. */
+.battle-screen.popup-battle {
+  grid-template-rows: 62px minmax(0, 1fr);
+}
+.defender-popup-root {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 45;
+}
+.defender-popup {
+  position: absolute;
+  pointer-events: auto;
+  width: 320px;
+  max-width: calc(100% - 16px);
+  max-height: calc(100% - 16px);
+  overflow-y: auto;
+  padding: 10px;
+  border: 1px solid #a8b588;
+  border-radius: 16px;
+  background: #142d2bf7;
+  color: #f4efd9;
+  box-shadow: 0 8px 24px #0007;
+  font: 14px system-ui;
+}
+.defender-popup[hidden],
+.placement-ghost[hidden] {
+  display: none;
+}
+.defender-popup header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.defender-popup button {
+  min-width: 44px;
+  min-height: 44px;
+  padding: 7px 10px;
+  border: 1px solid #6e8478;
+  border-radius: 10px;
+  background: #28403b;
+  color: #eeeeda;
+  font: inherit;
+  cursor: pointer;
+  touch-action: manipulation;
+}
+.defender-popup button:hover:not(:disabled) {
+  background: #41594c;
+}
+.defender-popup button:focus-visible,
+.defender-popup:focus-visible {
+  outline: 2px solid #ffe3a3;
+  outline-offset: 2px;
+}
+.defender-popup .popup-primary {
+  background: #e6bd6b;
+  color: #202b24;
+  border-color: #f9db96;
+  font-weight: 700;
+}
+.defender-popup .popup-primary:hover:not(:disabled) {
+  background: #f4d18a;
+}
+.defender-popup button:disabled {
+  opacity: 1;
+  background: #473734;
+  color: #d4ada1;
+  border-color: #825e55;
+  cursor: default;
+}
+.defender-popup .popup-close {
+  font-size: 24px;
+  padding: 0;
+  width: 44px;
+  background: transparent;
+}
+.defender-popup .portrait {
+  position: relative;
+  display: block;
+  width: 56px;
+  height: 56px;
+  flex-shrink: 0;
+  margin: 0;
+}
+.popup-carousel {
+  display: grid;
+  grid-template-columns: 72px minmax(0, 1fr) 72px;
+  align-items: center;
+  gap: 8px;
+  margin: 6px 0;
+}
+.popup-carousel.single {
+  grid-template-columns: 1fr;
+}
+.popup-chosen {
+  text-align: center;
+  min-width: 0;
+}
+.popup-chosen .portrait {
+  margin: 0 auto;
+}
+.popup-chosen strong,
+.popup-chosen small,
+.popup-identity strong,
+.popup-identity small {
+  display: block;
+}
+.popup-chosen small,
+.popup-identity small,
+.popup-lock {
+  color: #c0cbb7;
+  font-size: 11px;
+  line-height: 1.3;
+}
+.defender-popup .popup-neighbour {
+  padding: 5px 3px;
+  text-align: center;
+  min-width: 0;
+}
+.popup-neighbour .portrait {
+  width: 42px;
+  height: 42px;
+  margin: 0 auto;
+}
+.popup-neighbour span:not(.portrait),
+.popup-neighbour small {
+  display: block;
+  font-size: 10px;
+  line-height: 1.2;
+}
+.popup-stack {
+  display: grid;
+  gap: 6px;
+  margin-top: 8px;
+}
+.popup-identity {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  margin: 4px 0;
+}
+.popup-stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 12px;
+  background: #dec68118;
+  border-radius: 8px;
+  padding: 6px 8px;
+  margin: 6px 0;
+  font-size: 11px;
+}
+.popup-stats span {
+  display: flex;
+  gap: 5px;
+}
+.popup-actions {
+  display: flex;
+  gap: 8px;
+}
+.popup-actions > * {
+  flex: 1;
+}
+.defender-popup [data-popup="sell"] {
+  background: transparent;
+  color: #c9cebb;
+  font-size: 12px;
+}
+.placement-ghost {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  border: 2px solid #ffdf95;
+  border-radius: 7px;
+  background: #e8cf772b;
+  pointer-events: none;
+}
+.placement-ghost::after {
+  content: "+";
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  display: grid;
+  place-items: center;
+  width: 24px;
+  height: 24px;
+  border: 1px solid #ffdf95aa;
+  border-radius: 50%;
+  background: #142d2bbf;
+  color: #ffdf95;
+  font: 18px/1 system-ui;
+}
+.battle-placement-hint {
+  position: absolute;
+  bottom: 10px;
+  left: 12px;
+  pointer-events: none;
+  background: #102a26c9;
+  border-radius: 8px;
+  padding: 6px 10px;
+  font-size: 12px;
+  color: #dfdfc6;
+}
+@media (max-height: 500px) {
+  .battle-screen.popup-battle {
+    grid-template-rows: 48px minmax(0, 1fr);
+  }
+  .defender-popup {
+    width: 300px;
+    padding: 7px;
+  }
+  .defender-popup .portrait {
+    height: 42px;
+    width: 44px;
+  }
+  .popup-neighbour .portrait {
+    height: 32px;
+    width: 36px;
+  }
+  .popup-stack {
+    margin-top: 5px;
+    gap: 4px;
+  }
+  .popup-carousel {
+    margin: 2px 0;
+  }
+  .popup-stats {
+    margin: 3px 0;
+    padding: 4px 6px;
+  }
+  .battle-placement-hint {
+    font-size: 10px;
+    bottom: 4px;
+    padding: 3px 6px;
+  }
+}
