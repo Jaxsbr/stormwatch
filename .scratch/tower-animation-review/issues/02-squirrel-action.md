@@ -39,3 +39,12 @@ upper-body poses are recommended before any part extraction. See
 `review/2026-09-28-animation-prototype/squirrel-study/pose-research/README.md`.
 Concept 01 failed the front shooting-axis check; concept 02 corrects that aspect
 and awaits owner pose review. Neither is a runtime asset or an approved animation.
+
+## Assembled poses approved; motion test 04
+
+Owner approved the new concept poses and requested animation. A separate
+whole-pose atlas loop is at `squirrel-study/pose-motion/index.html`, run with
+`npm run prototype:squirrel-poses`. Both cardinal views stay assembled. Four
+keyframes, translated to matching boot anchors, avoid the rejected limb scaling
+and socket overlay. Awaiting owner review of stepped motion and generated shape
+drift before intermediate drawings or production integration.
