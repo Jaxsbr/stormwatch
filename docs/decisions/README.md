@@ -30,3 +30,5 @@ Read the accepted records before changing consequential behavior. For a new deci
 - [027: Tablet renderer lifetime and viewport settling](027-tablet-renderer-lifetime.md)
 
 - [029: Tile-first placement and defender popups](029-tile-anchored-defender-popups.md)
+
+- [031: Side-only towers and pose-first animation](031-side-only-tower-animation.md)

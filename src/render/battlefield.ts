@@ -149,16 +149,12 @@ export class Battlefield {
       kind,
       {
         side: new CutoutResource(`${animal}-side-defender-v1`),
-        front: new CutoutResource(`${animal}-front-defender-v1`),
-        rear: new CutoutResource(`${animal}-rear-defender-v1`),
       },
     ]),
   ) as Record<
     TowerKind,
     {
       side: CutoutResource;
-      front: CutoutResource | null;
-      rear: CutoutResource | null;
     }
   >;
   private placementTile: THREE.Texture;
@@ -747,19 +743,12 @@ export class Battlefield {
           const target = s.enemies
             .filter((e) => Math.hypot(e.x - t.x, e.z - t.z) <= game.range(t))
             .sort((a, b) => b.distance - a.distance)[0];
-          let view: "side" | "front" | "rear" = "side",
-            mirrored = false;
-          if (target) {
-            const dx = (target.x - t.x) * X,
-              dy = (target.z - t.z) * Y;
-            if (Math.abs(dy) > Math.abs(dx)) view = dy > 0 ? "front" : "rear";
-            else mirrored = dx < 0;
-          } else if (f.defender) {
-            view = f.defender.cutout.resource.definition?.view ?? "side";
-            mirrored = f.defender.mirrored;
-          }
-          let resource = defenderResources[view];
-          if (!resource?.definition) resource = defenderResources.side;
+          // Towers use one side illustration, reflected toward the target.
+          // Retain facing close to vertical to avoid flickering left/right.
+          const dx = target ? (target.x - t.x) * X : 0;
+          let mirrored =
+            Math.abs(dx) > 2 ? dx < 0 : (f.defender?.mirrored ?? false);
+          let resource = defenderResources.side;
           // Preserve the release pose so the visual muzzle cannot jump views
           // during the first frames of a shot.
           if (f.defender && s.clock - fired.at < 0.16) {

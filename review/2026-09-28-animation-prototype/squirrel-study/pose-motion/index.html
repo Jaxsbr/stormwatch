@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en">
+  <meta charset="utf-8" /><meta
+    name="viewport"
+    content="width=device-width, initial-scale=1"
+  /><title>Squirrel · assembled pose animation</title
+  ><link rel="stylesheet" href="style.css" />
+  <header>
+    <div>
+      <small>STORMWATCH · MOTION TEST 04</small>
+      <h1>Squirrel: assembled pose animation</h1>
+      <p>South and north · connected artwork · same one-second attack rhythm</p>
+    </div>
+    <button id="play">Pause</button
+    ><label
+      >Speed
+      <select id="speed">
+        <option value="1">Normal</option>
+        <option value="0.35">Slow</option>
+      </select></label
+    ><label><input type="checkbox" id="small" /> Game-size reference</label>
+  </header>
+  <main>
+    <section>
+      <h2>South · toward viewer</h2>
+      <canvas id="south" aria-label="South-facing squirrel animation"></canvas>
+    </section>
+    <section>
+      <h2>North · away from viewer</h2>
+      <canvas id="north" aria-label="North-facing squirrel animation"></canvas>
+    </section>
+  </main>
+  <footer>
+    <div id="poses">
+      <button data-time="0.1">Ready</button
+      ><button data-time="0.64">Loaded hold</button
+      ><button data-time="0.77">Release</button
+      ><button data-time="0.91">Recover</button>
+    </div>
+    <label
+      >Cycle
+      <input id="time" type="range" min="0" max="0.999" step="0.001" /></label
+    ><output id="status">Loading keyframes…</output>
+    <p>
+      First keyframe animation test. Feet are aligned; north motion is
+      deliberately restrained. Generated shape drift and the reload transition
+      still need review.
+    </p>
+    <a href="../index.html">Accepted side-view study</a>
+  </footer>
+  <script type="module" src="main.js"></script>
+</html>

@@ -21,7 +21,10 @@
     "check:artifact": "node tools/check-production-artifact.mjs",
     "workbench:promote": "node tools/promote-workbench.mjs",
     "workbench": "node tools/workbench.mjs",
-    "preview:workbench": "vite preview --mode workbench --host 127.0.0.1 --outDir dist-workbench"
+    "preview:workbench": "vite preview --mode workbench --host 127.0.0.1 --outDir dist-workbench",
+    "prototype:animations": "vite --host 127.0.0.1 --open /review/2026-09-28-animation-prototype/index.html",
+    "prototype:squirrel": "vite --host 127.0.0.1 --open /review/2026-09-28-animation-prototype/squirrel-study/index.html",
+    "prototype:squirrel-poses": "vite --host 127.0.0.1 --open /review/2026-09-28-animation-prototype/squirrel-study/pose-motion/index.html"
   },
   "dependencies": {
     "three": "0.186.0"

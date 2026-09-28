@@ -6,7 +6,7 @@
     "role: archer | thrower | trader",
     "costume and palette",
     "held object",
-    "view: side | front | rear"
+    "view: side only; reflect for left-facing combat"
   ],
   "camera": "Use style.json defenderCamera; same scale and light in all views.",
   "parts": {
@@ -22,20 +22,9 @@
       "drawShoulder",
       "bowGrip or payloadGrip"
     ],
-    "arm.joints": [
-      "elbow",
-      "grip"
-    ],
-    "bow.string": [
-      "tipNear",
-      "tipFar",
-      "braceCenter",
-      "drawCenter"
-    ],
-    "bow.rail": [
-      "rear",
-      "release"
-    ],
+    "arm.joints": ["elbow", "grip"],
+    "bow.string": ["tipNear", "tipFar", "braceCenter", "drawCenter"],
+    "bow.rail": ["rear", "release"],
     "portrait.bodyCrop": "Optional side-body crop in body-local pixels; use for UI portrait."
   },
   "referenceSpecs": [
@@ -45,12 +34,12 @@
     "donkey-side-defender-v1.json"
   ],
   "process": [
-    "Generate native separated-parts sheet and retain exact prompt/source.",
+    "Research the unique action, review coherent side-view key poses, and revise until approved before separating any parts. See docs/TOWER-ANIMATION-PROCESS.md. Retain exact prompts and references.",
     "Measure actual crop rectangles and landmarks; never assume requested dimensions.",
     "Inspect then import to a NEW id with cutout-pipeline; never overwrite an approved id.",
     "Encode delivery with encode-rig; exact alpha check must pass.",
     "Keep descriptor spec and runtime behavioral metadata in sync.",
-    "Review four facings and windup/release/recovery at real game size; verify fixed limbs, held-object contact, projectile origin and planted feet.",
+    "Review both side facings and windup/release/recovery at real game size; verify fixed limbs, held-object contact, projectile origin and planted feet.",
     "Review selection at adjacent tiles and phone landscape. Numeric validation never substitutes for visual review."
   ]
 }

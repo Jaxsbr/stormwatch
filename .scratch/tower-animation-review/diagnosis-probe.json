@@ -1,0 +1,128 @@
+[
+  {
+    "context": "squirrel/side/F5",
+    "part": "holdArm",
+    "reachRatio": 1.11,
+    "elbowYFromShoulder": -17.6,
+    "handError": 22.7
+  },
+  {
+    "context": "squirrel/side/F5",
+    "part": "drawArm",
+    "reachRatio": 0.96,
+    "elbowYFromShoulder": -36.4,
+    "handError": 0
+  },
+  {
+    "context": "squirrel/front/F5",
+    "part": "holdArm",
+    "reachRatio": 0.79,
+    "elbowYFromShoulder": 9.2,
+    "handError": 0
+  },
+  {
+    "context": "squirrel/front/F5",
+    "part": "drawArm",
+    "reachRatio": 0.68,
+    "elbowYFromShoulder": -63.1,
+    "handError": 0
+  },
+  {
+    "context": "squirrel/rear/F5",
+    "part": "holdArm",
+    "reachRatio": 0.53,
+    "elbowYFromShoulder": -88.4,
+    "handError": 0
+  },
+  {
+    "context": "squirrel/rear/F5",
+    "part": "drawArm",
+    "reachRatio": 1.01,
+    "elbowYFromShoulder": -46.9,
+    "handError": 1.1
+  },
+  {
+    "context": "turtle/side/F0",
+    "part": "drawArm",
+    "reachRatio": 1.29,
+    "elbowYFromShoulder": -15.2,
+    "handError": 88.8
+  },
+  {
+    "context": "turtle/side/F0",
+    "part": "holdArm",
+    "reachRatio": 0.78,
+    "elbowYFromShoulder": -42.3,
+    "handError": 0
+  },
+  {
+    "context": "turtle/front/F0",
+    "part": "drawArm",
+    "reachRatio": 1.44,
+    "elbowYFromShoulder": -89.2,
+    "handError": 100.6
+  },
+  {
+    "context": "turtle/front/F0",
+    "part": "holdArm",
+    "reachRatio": 0.95,
+    "elbowYFromShoulder": -73.4,
+    "handError": 0
+  },
+  {
+    "context": "turtle/rear/F0",
+    "part": "drawArm",
+    "reachRatio": 0.86,
+    "elbowYFromShoulder": 83.4,
+    "handError": 0
+  },
+  {
+    "context": "turtle/rear/F0",
+    "part": "holdArm",
+    "reachRatio": 1.82,
+    "elbowYFromShoulder": -55.6,
+    "handError": 175.5
+  },
+  {
+    "context": "skunk/side/F0",
+    "part": "drawArm",
+    "reachRatio": 1.89,
+    "elbowYFromShoulder": -5.2,
+    "handError": 169.4
+  },
+  {
+    "context": "skunk/side/F0",
+    "part": "holdArm",
+    "reachRatio": 0.65,
+    "elbowYFromShoulder": -53.1,
+    "handError": 0
+  },
+  {
+    "context": "skunk/front/F0",
+    "part": "drawArm",
+    "reachRatio": 1.21,
+    "elbowYFromShoulder": -64.7,
+    "handError": 42.9
+  },
+  {
+    "context": "skunk/front/F0",
+    "part": "holdArm",
+    "reachRatio": 0.67,
+    "elbowYFromShoulder": -33,
+    "handError": 0
+  },
+  {
+    "context": "skunk/rear/F0",
+    "part": "drawArm",
+    "reachRatio": 0.8,
+    "elbowYFromShoulder": -24.5,
+    "handError": 0
+  },
+  {
+    "context": "skunk/rear/F0",
+    "part": "holdArm",
+    "reachRatio": 0.68,
+    "elbowYFromShoulder": -46.6,
+    "handError": 0
+  }
+]

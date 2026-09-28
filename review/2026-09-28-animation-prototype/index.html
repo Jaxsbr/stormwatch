@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Stormwatch · Tower animation review</title>
+    <link rel="stylesheet" href="./style.css" />
+  </head>
+  <body>
+    <header>
+      <div>
+        <span class="eyebrow">STORMWATCH / ART WORKSHOP</span>
+        <h1>Tower animation review</h1>
+      </div>
+      <div class="controls">
+        <label for="tower">Tower</label>
+        <select id="tower">
+          <option value="squirrel">Squirrel</option>
+          <option value="turtle">Turtle</option>
+          <option value="skunk">Skunk</option>
+        </select>
+        <button id="play" type="button">Pause</button>
+      </div>
+    </header>
+    <main id="stage">
+      <canvas
+        id="render"
+        aria-label="Animated tower in four directions"
+      ></canvas>
+      <div id="tiles" aria-label="Four directions">
+        <section data-dir="N" aria-label="North">
+          <h2>NORTH <span>· REAR</span></h2>
+          <output></output>
+        </section>
+        <section data-dir="E" aria-label="East">
+          <h2>EAST <span>· SIDE</span></h2>
+          <output></output>
+        </section>
+        <section data-dir="W" aria-label="West">
+          <h2>WEST <span>· MIRRORED SIDE</span></h2>
+          <output></output>
+        </section>
+        <section data-dir="S" aria-label="South">
+          <h2>SOUTH <span>· FRONT</span></h2>
+          <output></output>
+        </section>
+      </div>
+      <p id="loading" role="status">Loading game artwork…</p>
+    </main>
+    <script type="module" src="./main.js"></script>
+  </body>
+</html>

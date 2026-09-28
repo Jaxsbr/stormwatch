@@ -177,3 +177,11 @@ The renderer projects cell anchors for bounded nonmodal popups and draws preview
 range. The optional thin placement grid follows buildable terrain, excluding paths
 and blocked cells. `showGrid` is a strict boolean in each player's saved settings,
 defaulting off for existing and new profiles. See decision 029.
+
+### Tower animation direction
+
+Tower combat uses only side cutouts, mirrored toward horizontal target position;
+near-vertical targets retain the previous facing. The release pose is briefly
+locked to keep the muzzle stable. North/south tower resources are no longer
+loaded. Enemy travel rendering remains directional. See [ADR 031](decisions/031-side-only-tower-animation.md)
+and the [tower animation process](TOWER-ANIMATION-PROCESS.md).

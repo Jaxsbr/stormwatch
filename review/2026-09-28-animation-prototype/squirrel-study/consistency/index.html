@@ -1,0 +1,159 @@
+<!doctype html>
+<html lang="en">
+  <meta charset="utf-8" /><meta
+    name="viewport"
+    content="width=device-width,initial-scale=1"
+  /><title>Squirrel direction consistency</title
+  ><style>
+    body {
+      background: #142019;
+      color: #e8eee6;
+      font: 16px system-ui;
+      margin: 30px auto;
+      max-width: 1150px;
+      padding: 0 20px;
+    }
+    h1 {
+      font-size: 26px;
+    }
+    p {
+      color: #b7c9b9;
+      line-height: 1.5;
+    }
+    canvas {
+      display: block;
+      width: 100%;
+      background: #263b2d;
+      border: 1px solid #47604d;
+      border-radius: 10px;
+    }
+    table {
+      border-collapse: collapse;
+      width: 100%;
+      margin-top: 24px;
+    }
+    td,
+    th {
+      padding: 12px;
+      border-bottom: 1px solid #496050;
+      text-align: left;
+      vertical-align: top;
+    }
+    a {
+      color: #e8bc70;
+    }
+  </style>
+  <h1>Same squirrel, different visual treatment</h1>
+  <p>
+    Full-draw captures at the same cycle time (0.64s). Body height is
+    approximately matched from ear tips to boot baseline, excluding the bow.
+    Upper row: 300px body reference. Lower row: 112px. Alignment uses manually
+    identified landmarks; this is a visual comparison, not a production scale
+    specification.
+  </p>
+  <canvas width="1140" height="640" id="comparison"></canvas>
+  <table>
+    <tr>
+      <th>Area</th>
+      <th>Side rig</th>
+      <th>North/south atlas</th>
+    </tr>
+    <tr>
+      <td>Equipment scale</td>
+      <td>Compact bow; about 60% of body height</td>
+      <td>Near body-height bow; visibly larger equipment</td>
+    </tr>
+    <tr>
+      <td>Character drawing</td>
+      <td>Soft rounded muzzle, fine fur, restrained leather detail</td>
+      <td>Sharper expression, stronger outlines, larger cuff/boot details</td>
+    </tr>
+    <tr>
+      <td>Motion</td>
+      <td>Continuous draw, short hold, fast release</td>
+      <td>Two similar loaded poses, abrupt open-hand pose, stepped recovery</td>
+    </tr>
+    <tr>
+      <td>Temporal stability</td>
+      <td>Body and costume drawing stay constant</td>
+      <td>Tail, clothing and face vary slightly between generated frames</td>
+    </tr>
+  </table>
+  <p>
+    <strong>Assessment:</strong> retain the improved archery poses as direction
+    references. Do not promote this mixed implementation yet. Match body and bow
+    proportions, costume treatment and the continuous draw/hold/release
+    behaviour before choosing the renderer.
+  </p>
+  <p>
+    <a href="../index.html">Side motion</a> ·
+    <a href="../pose-motion/index.html">North/south motion</a>
+  </p>
+  <script type="module">
+    const source = async (path) => {
+      const im = new Image();
+      im.src = path;
+      await im.decode();
+      return im;
+    };
+    const [side, poses] = await Promise.all([
+      source("../level-draw.png"),
+      source("../pose-motion/loaded.png"),
+    ]);
+    const ctx = document.querySelector("canvas").getContext("2d");
+    const refs = [
+      {
+        im: side,
+        r: [820, 240, 550, 540],
+        root: [1135, 762],
+        height: 498,
+        label: "SIDE · articulated",
+      },
+      {
+        im: poses,
+        r: [155, 235, 390, 510],
+        root: [380, 737],
+        height: 444,
+        label: "SOUTH · keyframes",
+      },
+      {
+        im: poses,
+        r: [925, 235, 400, 510],
+        root: [1100, 737],
+        height: 448,
+        label: "NORTH · keyframes",
+      },
+    ];
+    for (let i = 0; i < 3; i++) {
+      const ref = refs[i],
+        cx = 190 + i * 380;
+      ctx.fillStyle = "#e8eee6";
+      ctx.font = "bold 15px system-ui";
+      ctx.textAlign = "center";
+      ctx.fillText(ref.label, cx, 28);
+      for (const [height, baseline] of [
+        [300, 400],
+        [112, 592],
+      ]) {
+        const scale = height / ref.height,
+          [x, y, w, h] = ref.r;
+        ctx.drawImage(
+          ref.im,
+          x,
+          y,
+          w,
+          h,
+          cx + (x - ref.root[0]) * scale,
+          baseline + (y - ref.root[1]) * scale,
+          w * scale,
+          h * scale,
+        );
+        ctx.strokeStyle = "#65816b";
+        ctx.beginPath();
+        ctx.moveTo(cx - 170, baseline + 2);
+        ctx.lineTo(cx + 170, baseline + 2);
+        ctx.stroke();
+      }
+    }
+  </script>
+</html>
