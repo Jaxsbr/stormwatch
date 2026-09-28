@@ -2,7 +2,7 @@
 
 Ticket: holiday-expedition 06. Baseline: `7045287`. The release-hardening commit
 adds journey coverage and handoff instructions; it changes no campaign content,
-combat rules or assets. Ticket acceptance remains pending full browser/device play observations.
+combat rules or assets. Ticket 06 was closed by owner acceptance on 28 September 2026; see the final acceptance below.
 Public Pages delivery is now verified; see the upstream follow-up below.
 
 ## Candidate and delivery
@@ -172,3 +172,14 @@ countdown resume checks, actual listening, physical tablet/laptop play, both
 children's comprehension/progress observations, and corrections from that feedback.
 All commits reachable from main already use the Jaxsbr GitHub no-reply identity
 for both author and committer; an author rewrite was unnecessary.
+
+## Final owner acceptance — 28 September 2026
+
+The owner is satisfied with their manual play test and explicitly accepted
+closure of ticket 06. Published gameplay candidate: `6a5a6c9`. All 263 tests,
+types, formatting, production/QA builds and two-axis reviews passed for that
+candidate. The earlier action checklist is historical; unobserved supplementary
+checks are not claimed complete and no longer block the accepted release.
+
+The tablet crash itself was not reproduced or proven fixed. The owner will treat
+any recurrence, profiling and physical crash retest as separate new work.

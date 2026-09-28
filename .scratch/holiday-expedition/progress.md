@@ -2,7 +2,7 @@
 
 ## Current state
 
-Tickets 01–05 are implemented at the approved scope. The Last Lantern is registered with six teaching/finale waves, required Roadwarden defeat, first-board completion and persistent replay advantages. Ticket 06 owns family-device validation and release hardening. Historical checkpoints below are retained; newer sections supersede earlier status snapshots.
+Tickets 01–06 are complete at the owner-approved scope. Ticket 06 was accepted after owner manual play on 28 September 2026; any recurring tablet crash is separate follow-up work. The Last Lantern is registered with six teaching/finale waves, required Roadwarden defeat, first-board completion and persistent replay advantages. Ticket 06 delivered release hardening and was closed by owner acceptance. Historical checkpoints below are retained; newer sections supersede earlier status snapshots.
 
 Two player slots, Squirrel upgrade discovery, four-wave mixed Rainstone, deterministic Weasel evasion and Turtle discovery are implemented. The owner confirmed Turtle unlock after Rainstone. Completed Lantern Pass and Rainstone replays now use earned Turtle and Squirrel upgrades to support star improvement. Earlier observations below are historical snapshots.
 
@@ -21,22 +21,20 @@ Two player slots, Squirrel upgrade discovery, four-wave mixed Rainstone, determi
 - `issues/04-turtle-and-final-route.md`: complete; route, teaching waves, woven slow cue and earned-defender replay behavior are implemented.
 - `issues/05-boss-and-chapter-ending.md`: complete; boss, required defeat, ending, replay rewards and approved denser waves are implemented.
 - `issues/06-family-release.md`: Day 3 corrective feedback, broader integration and family-device readiness.
-- Tickets 01–05: complete at the owner-approved scope. Ticket 06 remains.
+- Tickets 01–06: complete at the owner-approved scope.
 - `expanded-wave-plan.md`: optional future design, excluded from this release.
 
-## Next execution step
+## Release accepted — 28 September 2026
 
-Continue with ticket 06: review the integrated three-map board with the owner on actual family devices, correct observed issues, and record release-readiness evidence. Do not claim physical-device performance or child comprehension from scripted tests or browser emulation.
+The owner accepted their manual play test and requested ticket 06 closure. The
+game is published at https://jaxsbr.github.io/stormwatch/; gameplay candidate
+`6a5a6c9` passed 263 tests, types, formatting, production/QA builds and two-axis
+review. All current holiday-expedition tickets are complete. Historical status
+entries below describe earlier checkpoints, not outstanding release gates.
 
-## Known release dependencies
-
-- No public holiday deployment route is established by this planning work.
-- Actual tablet models/browser behavior and physical performance require owner/device evidence.
-- Actual tablet models/browser behavior, physical performance, and child comprehension still require owner/device evidence under ticket 06.
-
-## Resume prompt
-
-Continue `.scratch/holiday-expedition/spec.md` at ticket 06. Preserve completed campaign progress and first-board ending/replay rewards. Leave CuteDefense unchanged. Use actual family devices for touch/readability observations; report unavailable checks precisely. Do not create a new public deployment destination or buy assets without authorization.
+Any recurring Samsung S7 FE crash and subsequent device profiling/retest will
+be new work. This acceptance does not assert that the crash was reproduced or
+fixed, or that all supplementary browser/audio/child checks were observed.
 
 ## Explicit historical-ticket review — 02 (25 September 2026)
 

@@ -1,6 +1,6 @@
 # 06 — Correct, harden and hand over the family release
 
-Status: ready-for-human
+Status: complete
 
 Depends on: 05. Incorporate owner play observations as they arrive; automated checks and independent hardening may proceed while feedback is pending. Child comprehension and physical-device claims require actual observations.
 
@@ -54,3 +54,16 @@ regressions to investigate. See `docs/evidence/tablet-retry.md` and ADR 027 for
 reproduction/fixes; do not close physical-device acceptance until the owner
 repeats that sequence on the corrected candidate. Map illustration border should
 match the current button/selection-card skin.
+
+## Owner acceptance — 28 September 2026
+
+The owner is satisfied with their manual play test and explicitly requested
+closure of ticket 06. The accepted published gameplay candidate is `6a5a6c9` at
+https://jaxsbr.github.io/stormwatch/. Implementation, journey tests, renderer
+lifecycle fixes, map-frame correction and optional fullscreen are delivered.
+
+Closure is based on owner acceptance, not a claim that every previously listed
+agent/device/audio/child observation was completed. Outstanding supplementary
+checks no longer block this release. The Samsung crash was not reproduced or
+proven fixed; the owner will treat any recurrence and crash retest as separate
+new work rather than reopening this release acceptance.

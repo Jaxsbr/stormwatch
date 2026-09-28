@@ -98,3 +98,9 @@ redundant resizes 0, and identical resource peaks above. p95 was 18.4 ms and wor
 captured. The build revision identifies the parent of the uncommitted tested patch;
 the release commit records that patch. Battle settings also exposed fullscreen
 while retaining its paused state.
+
+## Release acceptance — 28 September 2026
+
+The owner accepted manual play and closed ticket 06. Physical crash retest is
+deferred; any recurrence will be investigated as new work. The measured fixes
+and diagnostic limitations above remain unchanged by this acceptance.
