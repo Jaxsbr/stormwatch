@@ -3,191 +3,50 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Stormwatch · Animation desk</title>
+    <title>Stormwatch · Tower animation review</title>
     <link rel="stylesheet" href="./style.css" />
   </head>
   <body>
-    <header class="masthead">
+    <header>
       <div>
         <span class="eyebrow">STORMWATCH / ART WORKSHOP</span>
-        <h1>Animation desk <span class="badge">PROTOTYPE</span></h1>
+        <h1>Tower animation review</h1>
       </div>
-      <div class="session-actions">
-        <button id="copy-notes">Share feedback</button>
-        <button id="import">Open notes</button
-        ><button id="export">
-          Save notes file <span id="note-count">3</span></button
-        ><input id="import-file" type="file" accept="application/json" hidden />
+      <div class="controls">
+        <label for="tower">Tower</label>
+        <select id="tower">
+          <option value="squirrel">Squirrel</option>
+          <option value="turtle">Turtle</option>
+          <option value="skunk">Skunk</option>
+        </select>
+        <button id="play" type="button">Pause</button>
       </div>
     </header>
-    <main>
-      <section class="toolbar" aria-label="Animation settings">
-        <label
-          >Tower<select id="tower">
-            <option value="squirrel">Squirrel · Archer</option>
-            <option value="turtle">Turtle · Net thrower</option>
-            <option value="skunk">Skunk · Lobber</option>
-          </select></label
-        >
-        <fieldset class="directions">
-          <legend>Facing <span>north = top of the battlefield</span></legend>
-          <div>
-            <button data-dir="N">↑ North</button
-            ><button data-dir="E">→ East</button
-            ><button data-dir="S">↓ South</button
-            ><button data-dir="W">← West</button>
-          </div>
-        </fieldset>
-        <label
-          >Attack timing<select id="level">
-            <option value="1">Base tower</option>
-            <option value="2">Upgraded tower</option>
-          </select></label
-        >
-        <label
-          >View<select id="diagnostic">
-            <option value="normal">As in game</option>
-            <option value="ghost">See through body</option>
-            <option value="arms">Arms only</option>
-            <option value="equipment">Equipment only</option>
-          </select></label
-        >
-      </section>
-      <div class="workspace">
-        <section class="viewer">
-          <div class="viewer-heading">
-            <div>
-              <h2 id="view-title">Inspect one direction</h2>
-              <p id="view-help">Pause, then click a problem spot to mark it.</p>
-            </div>
-            <label class="zoom"
-              >Zoom
-              <input
-                id="zoom"
-                aria-label="Zoom"
-                type="range"
-                min="0.7"
-                max="2"
-                step="0.1"
-                value="1"
-              /><output id="zoom-label">1×</output></label
-            >
-          </div>
-          <div id="stage">
-            <canvas id="render" aria-label="Live tower animation"></canvas>
-            <div id="tiles"></div>
-            <div id="loading">Loading original game artwork…</div>
-          </div>
-          <div class="transport">
-            <button id="play" class="primary">Pause</button
-            ><button id="previous" aria-label="Previous frame">−1 frame</button
-            ><button id="next" aria-label="Next frame">+1 frame</button
-            ><label
-              >Speed<select id="speed">
-                <option value="0.1">0.1×</option>
-                <option value="0.25" selected>0.25×</option>
-                <option value="0.5">0.5×</option>
-                <option value="1">1×</option>
-              </select></label
-            ><output id="timecode"></output>
-          </div>
-          <input
-            id="timeline"
-            aria-label="Animation frame"
-            type="range"
-            min="0"
-            max="30"
-            value="0"
-          />
-          <div class="timeline-labels">
-            <span>Shot / release</span><span>Recovery & reload</span
-            ><span>Next shot →</span>
-          </div>
-          <div class="viewer-footer">
-            <span id="pose-details"></span
-            ><button id="copy-pose">Copy pose link</button>
-          </div>
-          <p class="scope">
-            Actual game rigs, repeating one attack at the catalog cadence.
-            Isolated pose review: projectiles, targeting changes and battlefield
-            effects are not shown. Frame numbers sample the animation at 30 fps.
-          </p>
+    <main id="stage">
+      <canvas
+        id="render"
+        aria-label="Animated tower in four directions"
+      ></canvas>
+      <div id="tiles" aria-label="Four directions">
+        <section data-dir="N" aria-label="North">
+          <h2>NORTH <span>· REAR</span></h2>
+          <output></output>
         </section>
-        <aside class="notes">
-          <div class="notes-heading">
-            <span class="eyebrow">MAKE THE FEEDBACK PRECISE</span>
-            <h2>Mark it. Describe it.</h2>
-            <p>
-              Click the artwork to freeze a pose and pin a spot. Save what you
-              see and what should change.
-            </p>
-          </div>
-          <form id="note-form">
-            <div id="note-context" class="context">
-              Pause or click a spot to capture a pose.
-            </div>
-            <label
-              >Part<select id="part">
-                <option value="bow">Bow / bowstring</option>
-                <option value="payload">Net / payload</option>
-                <option value="holdArm">Holding arm</option>
-                <option value="drawArm">Drawing / throwing arm</option>
-                <option value="body">Body / shell</option>
-                <option value="whole">Whole pose / unsure</option>
-              </select></label
-            >
-            <label
-              >What looks wrong?<textarea
-                id="observed"
-                rows="3"
-                placeholder="e.g. The bow lies across the squirrel’s back."
-                required
-              ></textarea>
-            </label>
-            <label
-              >What should happen instead? <span class="optional">optional</span
-              ><textarea
-                id="wanted"
-                rows="2"
-                placeholder="e.g. The bow should be in front of the body, partly hidden."
-              ></textarea>
-            </label>
-            <button class="primary" type="submit">Add review note</button>
-            <p class="small">
-              Notes stay in this tab. Save a notes file before closing; reopen
-              it to continue or give the file to Codex.
-            </p>
-          </form>
-          <div class="note-list-heading">
-            <h3>Review notes</h3>
-          </div>
-          <div id="note-list"></div>
-        </aside>
+        <section data-dir="E" aria-label="East">
+          <h2>EAST <span>· SIDE</span></h2>
+          <output></output>
+        </section>
+        <section data-dir="W" aria-label="West">
+          <h2>WEST <span>· MIRRORED SIDE</span></h2>
+          <output></output>
+        </section>
+        <section data-dir="S" aria-label="South">
+          <h2>SOUTH <span>· FRONT</span></h2>
+          <output></output>
+        </section>
       </div>
+      <p id="loading" role="status">Loading game artwork…</p>
     </main>
-    <nav class="variant-switcher" aria-label="Prototype layouts">
-      <button id="variant-prev" aria-label="Previous layout">←</button>
-      <div>
-        <span>TRY A REVIEW LAYOUT</span
-        ><strong id="variant-name">A · Close-up</strong>
-      </div>
-      <button id="variant-next" aria-label="Next layout">→</button>
-    </nav>
-    <div id="toast" role="status" aria-live="polite"></div>
-    <dialog id="transfer" aria-labelledby="transfer-title">
-      <h2 id="transfer-title">Share feedback</h2>
-      <p id="transfer-help"></p>
-      <textarea
-        id="transfer-text"
-        aria-label="Notes to copy or open"
-        rows="12"
-      ></textarea>
-      <div class="transfer-actions">
-        <button id="choose-file">Choose notes file</button>
-        <button id="transfer-action" class="primary">Copy text</button>
-        <button id="transfer-close">Close</button>
-      </div>
-    </dialog>
     <script type="module" src="./main.js"></script>
   </body>
 </html>

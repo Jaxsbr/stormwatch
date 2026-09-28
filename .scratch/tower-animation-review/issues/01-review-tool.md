@@ -6,7 +6,7 @@ Status: ready-for-human
 Question: which layout helps the owner identify the exact pose and explain the
 required visual change most clearly?
 
-## Delivered
+## Initial prototype (superseded below)
 
 Three working layouts with actual runtime rigs: A close-up, B direction board,
 C frame storyboard. Controls include slow playback, frame stepping, direction,
@@ -26,5 +26,13 @@ the intended correction. No animation changes have been made.
 
 ## Answer
 
-Pending owner use and feedback. The working tool is delivered; neither a winning
-layout nor permanent workbench integration has been approved.
+Owner selected option B. The simplified review tool is delivered; permanent
+workbench integration remains a separate decision.
+
+## Owner decision — 28 September 2026
+
+Option B is sufficient. Keep only the four directions, tower selection and
+play/pause, so the owner can screenshot and annotate. Feedback UI removed.
+The simplified board is delivered at the same URL. Owner-supplied screenshots
+and the requested self-diagnosis are recorded in
+`review/2026-09-28-animation-diagnosis/README.md`.

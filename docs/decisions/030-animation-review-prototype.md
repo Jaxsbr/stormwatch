@@ -28,3 +28,14 @@ prototype on its branch until the owner chooses what is useful.
 
 See `review/2026-09-28-animation-prototype/README.md` for browser verification,
 export/restoration evidence, limits and successful repository checks.
+
+## Owner selection — 28 September 2026
+
+The owner selected option B and requested only four directions and play/pause for
+screenshots and manual annotation. Keep tower selection, synchronized playback
+and frame labels. Remove notes, exports, diagnostic controls and variant switching.
+The earlier prototype is preserved in commit `675a7f9`; the same development URL
+now presents the simplified board. The current renderer remains shared with the
+game so review exposes genuine defects. The owner supplied annotated squirrel,
+turtle and skunk captures; diagnosis is recorded under
+`review/2026-09-28-animation-diagnosis/`, separate from any future animation fix.

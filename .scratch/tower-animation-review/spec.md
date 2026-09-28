@@ -10,5 +10,7 @@ The owner authorized a throwaway or reusable tool and invited a first version.
 Prototype: `review/2026-09-28-animation-prototype/` on branch
 `codex/tower-animation-review-prototype`.
 
-Next: owner tries close-up, direction board and storyboard, then chooses what to
-keep. Actual animation changes are a separate follow-up based on captured notes.
+Owner selected the four-direction board with tower selection and play/pause.
+Feedback controls were removed. Annotated screenshot diagnosis is recorded in
+`review/2026-09-28-animation-diagnosis/README.md`; character corrections remain
+a separate implementation step.
