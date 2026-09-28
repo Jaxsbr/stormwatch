@@ -97,11 +97,10 @@ coat tails, above the legs, is already painted into `skunk-rear-defender-v1/body
 It remains with all moving arms and props absent. No runtime leg or pelvis
 animation exists in `DefenderRig`; the body stays a single planted sprite.
 
-**Visual interpretation:** it reads like exposed front/belly fur continuing onto
-the rear, giving that area an odd rear silhouette. Whether the intended correction
-is a different fur marking or coat coverage is an art-direction choice; a code
-or arm-layer change cannot remove it. Review/redraw that region of the rear body
-against a consistent rear character design, including the tail root.
+**Owner correction:** the annotation concerns where the tail connects to the
+body, not the pale fur marking. The original visual interpretation was incorrect.
+Tail-root anatomy needs a separate review; skunk is deferred while beta work
+focuses on squirrel and turtle.
 
 ## Reproduction and confidence
 
