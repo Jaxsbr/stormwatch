@@ -22,3 +22,11 @@ and synchronize the actual projectile handoff.
 Verification: `npm run check`, `npm test` (276 tests / 50 files), and
 `npm run build` passed. Browser captures cover full draw and release; small-scale
 playback and pause were checked. Existing build size warning remains.
+
+## Owner decision and next study
+
+Owner accepted the level push–pull side improvement as a keeper, then requested
+north and south. Iteration 03 adds their projected pose candidates and a four-way
+direction selector. North/south are awaiting visual feedback; they are not yet
+promoted into runtime. See the recipe's iteration 03 for projection/occlusion
+choices and known anatomy/projectile limitations.

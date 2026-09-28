@@ -118,3 +118,35 @@ Do not mistake this iteration for final anatomy or projectile integration.
 `level-draw.png` records iteration 02; `full-draw.png` and `release.png` preserve
 iteration 01 so the feedback and response remain reproducible. Owner review of
 iteration 02 is pending.
+
+## Iteration 03 — north and south
+
+Owner accepted iteration 02 as a keeper improvement and requested north/south.
+The accepted side pose function remains unchanged. A Direction selector now
+compares current/proposed North, South, East and mirrored West at the same time
+in the cycle. This preserves the useful before/after layout.
+
+Directional projection choices:
+
+- Upright bow in both views; aim direction no longer rotates the bow sideways.
+- Narrower bow profile (38% horizontal scale) approximates its depth projection.
+- Per-view grip, rest-hand and anchor positions replace side-view coordinates.
+- Arm meshes are posed at longer virtual reach, then projected to 72% around
+  their shoulder anchors. This is an illustrative depth approximation, not a
+  true 3D limb or new drawn arm pose.
+- Rear bow, string, arrow and arms draw behind the body. Only exposed portions
+  remain visible. A small elliptical shoulder overlap pass reveals the existing
+  arm texture at each painted sleeve opening while keeping the remaining arm
+  behind the torso. No new raster artwork was generated.
+- String release and hand follow-through use the same accepted timing. Review
+  arrows indicate north/south travel; they are still isolated study graphics,
+  not verified gameplay projectile handoffs. In particular, the projected shaft
+  and grip alignment need final art/integration review.
+
+Remaining limits: existing arm texture orientation, sleeve silhouettes and the
+bounded shoulder overlap are candidates for owner review, not approved final
+anatomy. Real foreshortened hand/arm drawings may still be needed. No runtime
+code, content balance, turtle or skunk art changed.
+
+Evidence: `north-draw.png`, `south-draw.png`; browser inspection of north rest
+and south release. Standard check, 276 tests and production build passed.
