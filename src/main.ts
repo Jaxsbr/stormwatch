@@ -8,15 +8,16 @@ import "./ui/battle-menu.css";
 import "./ui/responsive-layout.css";
 import "./ui/title-layout.css";
 import "./ui/map-markers.css";
+import { BattleSelection } from "./ui/battle-selection";
+import { DefenderPopups } from "./ui/defender-popups";
 import { BattleMenu } from "./ui/battle-menu";
-import { battleStats, defenderPanel, displayedWave } from "./ui/battle-ui";
+import { battleStats, displayedWave } from "./ui/battle-ui";
 import { button, resultCard, type ResultReward } from "./ui/game-chrome";
 import { fitVisibleViewport } from "./ui/visible-viewport";
 import { advanceBattleFrame } from "./ui/battle-clock";
 import { advantageScreen } from "./ui/advantage-screen";
 import { Game } from "./sim/game";
-import type { CardId, Point, TowerKind } from "./sim/types";
-import { TOWERS } from "./content/catalog";
+import type { CardId, Point } from "./sim/types";
 import { LEVELS } from "./content/levels";
 import {
   availableCards,
@@ -25,7 +26,7 @@ import {
   levelForAttempt,
 } from "./content/progression";
 import { Battlefield } from "./render/battlefield";
-import { towerPortrait, paintTowerPortraits } from "./render/portraits";
+import { paintTowerPortraits } from "./render/portraits";
 import { Sound } from "./audio/sound";
 import { freshSave, recordVictory, SAVE_KEY } from "./persistence/save";
 import {
@@ -89,8 +90,7 @@ let screen: Screen = "title",
   card: CardId = "none",
   game: Game | null = null,
   field: Battlefield | null = null,
-  build: TowerKind | null = null,
-  selected: number | null = null,
+  selection: BattleSelection | null = null,
   settings = false,
   settingsPaused = false,
   resultSaved = false,
@@ -104,12 +104,9 @@ let noticeText = "";
 let lastDefeatLevelId: string | null = null;
 let frameHandle = 0;
 let battleMenu: BattleMenu | null = null;
+let popups: DefenderPopups | null = null;
 let disposeRecording: (() => void) | undefined;
 const frames: number[] = [];
-const portrait = (index: number, cls = "") =>
-  index < 3
-    ? towerPortrait((["bolt", "stone", "net"] as const)[index])
-    : `<img class="portrait character-portrait ${cls}" src="${import.meta.env.BASE_URL}art/v2/${["rat", "weasel", "boar", "badger"][index - 4]}-rig-v1/body.webp" alt="" aria-hidden="true">`;
 const stars = (n: number) => "★".repeat(n) + "☆".repeat(3 - n);
 function persist() {
   const current = activeProfile();
@@ -152,6 +149,8 @@ function profilesScreen() {
   return `<main class="menu-screen profiles-screen"><header class="profile-heading"><h1>Profile</h1>${button("new-profile", "New profile", "primary")}</header><section class="profile-list" aria-label="Saved profiles">${profiles.users.length ? profiles.users.map((user) => `<article class="profile-row"><div class="profile-person">${avatarImage(user.avatar)}<strong>${escapeHtml(user.nickname)}</strong></div><div class="profile-actions">${button(`select-profile:${user.id}`, profiles.active === user.id ? "Continue" : "Play", "quiet")}${button(`edit-profile:${user.id}`, "Edit", "quiet")}${button(`delete-profile:${user.id}`, "Delete", "quiet danger")}</div></article>`).join("") : `<p class="profile-empty">Create your first profile to play.</p>`}</section><footer>${button("title", "Back", "quiet")}</footer>${profileEditorOpen ? `<dialog class="profile-dialog" aria-labelledby="profile-editor-title"><section class="profile-editor"><h2 id="profile-editor-title" tabindex="-1" autofocus>${editingProfile ? "Edit profile" : "New profile"}</h2><label for="profile-name">Your nickname</label><input id="profile-name" maxlength="24" required value="${escapeHtml(profileName)}" autocomplete="off" placeholder="Your nickname"><fieldset><legend>Choose your avatar</legend><div class="avatar-options">${AVATARS.map((avatar) => `<button type="button" data-action="avatar:${avatar}" aria-label="${avatar}" aria-pressed="${chosenAvatar === avatar}">${avatarImage(avatar)}</button>`).join("")}</div></fieldset><div class="profile-dialog-actions">${button("close-profile-editor", "Cancel", "quiet")}${button("save-profile", editingProfile ? "Save changes" : "Create profile", "primary")}</div></section></dialog>` : ""}${deleting ? `<dialog class="profile-dialog delete-dialog" aria-labelledby="delete-profile-title"><h2 id="delete-profile-title">Delete profile?</h2><p>Delete ${escapeHtml(deleting.nickname)} and all their progress? This cannot be undone.</p><div class="profile-dialog-actions">${button("cancel-delete", "Keep profile", "quiet", "autofocus")}${button(`confirm-delete:${deleting.id}`, "Delete profile", "quiet danger")}</div></dialog>` : ""}</main>`;
 }
 function render() {
+  popups?.destroy();
+  popups = null;
   battleMenu?.destroy();
   battleMenu = null;
   disposeRecording?.();
@@ -215,12 +214,12 @@ function render() {
 }
 function renderBattle() {
   const l = game!.level;
-  const availableTowers =
-    l.availableTowers ?? (Object.keys(TOWERS) as TowerKind[]);
-  app.innerHTML = `<main class="battle-screen"><header class="battle-header"><div class="battle-brand"><div><strong>${escapeHtml(l.name)}</strong></div></div>${battleStats(l.waves.length)}<div class="battle-tools">${button("speed", "1×", "icon-button", 'aria-label="Game speed" id="speed"')}${button("menu", "Menu", "icon-button", 'aria-label="Menu" id="battle-menu"')}</div></header><div class="battle-middle"><section class="battlefield"><div id="canvas-host"></div><div id="wave-countdown" class="wave-countdown" role="status" aria-live="polite" hidden><span>Next wave in</span> <strong id="countdown-number">10</strong></div><section class="boss-health-panel" id="boss-health-panel" aria-label="Boss health" hidden><div><strong>The Roadwarden</strong><span id="boss-health-value"></span></div><div class="boss-health-track" id="boss-health-track" role="progressbar" aria-label="The Roadwarden's health" aria-valuemin="0" aria-valuemax="100" aria-valuenow="100"><span id="boss-health-fill"></span></div></section></section><aside class="battle-aside"><div class="wave-controls">${button("start", "Start first wave", "primary", 'id="start-wave"')}</div></aside></div><footer class="build-tray"><section id="selection-panel" class="selection-panel"></section><div class="tray-label"><strong id="build-label">Choose a structure</strong>${button("cancel", "Cancel", "quiet small", 'id="cancel" hidden')}</div><div class="tower-buttons">${availableTowers.map((k) => `<button class="tower-button" data-action="build:${k}" id="build-${k}">${portrait(TOWERS[k].sprite)}<span><strong>${TOWERS[k].name}</strong><small>${TOWERS[k].role}</small></span><b>${TOWERS[k].cost}<small> gold</small></b></button>`).join("")}</div></footer></main>`;
+  selection = new BattleSelection(game!);
+  app.innerHTML = `<main class="battle-screen popup-battle"><header class="battle-header"><div class="battle-brand"><div><strong>${escapeHtml(l.name)}</strong></div></div>${battleStats(l.waves.length)}<div class="battle-tools">${button("speed", "1×", "icon-button", 'aria-label="Game speed" id="speed"')}${button("menu", "Menu", "icon-button", 'aria-label="Menu" id="battle-menu"')}</div></header><div class="battle-middle"><section class="battlefield"><div id="canvas-host"></div><div class="defender-popup-root" id="defender-popups"></div><div class="battle-placement-hint">Tap clear ground to place a defender</div><div id="wave-countdown" class="wave-countdown" role="status" aria-live="polite" hidden><span>Next wave in</span> <strong id="countdown-number">10</strong></div><section class="boss-health-panel" id="boss-health-panel" aria-label="Boss health" hidden><div><strong>The Roadwarden</strong><span id="boss-health-value"></span></div><div class="boss-health-track" id="boss-health-track" role="progressbar" aria-label="The Roadwarden's health" aria-valuemin="0" aria-valuemax="100" aria-valuenow="100"><span id="boss-health-fill"></span></div></section></section><aside class="battle-aside"><div class="wave-controls">${button("start", "Start first wave", "primary", 'id="start-wave"')}</div></aside></div></main>`;
   try {
     field = new Battlefield(document.querySelector("#canvas-host")!);
     field.load(l);
+    field.setGridVisible(save.showGrid);
     if (
       import.meta.env.DEV &&
       new URLSearchParams(location.search).has("record")
@@ -231,10 +230,21 @@ function renderBattle() {
           disposeRecording = attachRecording(canvas);
       });
     }
+    popups = new DefenderPopups(
+      document.getElementById("defender-popups")!,
+      selection,
+      (p) => field!.project(p),
+      (action, accepted) => {
+        if (accepted) sound.play("ui");
+        if (!accepted)
+          toast("That action is unavailable. Check gold and clear ground.");
+        if (accepted && action === "place")
+          toast(`${game!.towers[selection!.kind].name} ready.`);
+        updateHud();
+      },
+    );
     field.onPick = pick;
-    field.onHover = (p) => {
-      if (build) field?.highlight(p, !!p && game!.canPlace(p));
-    };
+    field.onMiss = clearBattleSelection;
   } catch (error) {
     document.querySelector("#canvas-host")!.innerHTML =
       '<div class="render-error">Stormwatch needs WebGL to draw its battlefield. Enable hardware acceleration or try a current browser.</div>';
@@ -243,27 +253,13 @@ function renderBattle() {
   updateHud();
 }
 function pick(p: Point) {
-  if (!game) return;
-  const s = game.state;
-  if (!game.canAct()) return;
-  if (build) {
-    if (game.place(build, p)) {
-      selected = s.towers[s.towers.length - 1].id;
-      toast(`${TOWERS[build].name} ready.`);
-    } else
-      toast(
-        game.canPlace(p)
-          ? "Not enough gold."
-          : "Choose clear ground beside the trail.",
-      );
-  } else {
-    selected = s.towers.find((t) => t.x === p.x && t.z === p.z)?.id ?? null;
-  }
+  if (!game?.canAct()) return;
+  popups?.pick(p);
   updateHud();
 }
 function clearBattleSelection() {
-  build = null;
-  selected = null;
+  selection?.close();
+  popups?.update();
   field?.highlight(null);
 }
 function beginWave() {
@@ -292,8 +288,7 @@ function begin(assist = false) {
       ? ["bolt"]
       : [],
   });
-  build = null;
-  selected = null;
+  selection = null;
   resultSaved = false;
   resultFirstBoardComplete = false;
   resultRewards = [];
@@ -334,11 +329,6 @@ function updateHud() {
   document
     .querySelector(".battle-screen")
     ?.classList.toggle("is-paused", s.phase === "paused");
-  text(
-    "build-label",
-    build ? `Placing ${TOWERS[build].name}` : "Choose a structure",
-  );
-  document.getElementById("cancel")!.hidden = !build;
   const start = document.querySelector<HTMLButtonElement>("#start-wave")!;
   const activeWave =
     s.phase === "wave" || (s.phase === "paused" && s.resumePhase === "wave");
@@ -362,41 +352,9 @@ function updateHud() {
     text("countdown-number", String(seconds));
   }
   if (s.phase === "paused" && !battleMenu) openBattleMenu();
-  for (const k of Object.keys(TOWERS) as TowerKind[]) {
-    const el = document.querySelector<HTMLButtonElement>(`#build-${k}`);
-    if (!el) continue;
-    el.classList.toggle("selected", build === k);
-    el.classList.toggle("unaffordable", s.coins < TOWERS[k].cost);
-    el.disabled = !game.canAct();
-    el.setAttribute("aria-pressed", String(build === k));
-  }
-  const t = s.towers.find((t) => t.id === selected),
-    panel = document.getElementById("selection-panel")!;
-  const content = t ? defenderPanel(game, t) : "";
-  const inspecting = !!t && !build;
-  panel.hidden = !inspecting;
-  document
-    .querySelector(".build-tray")!
-    .classList.toggle("inspecting", inspecting);
-  if (panel.dataset.content !== content) {
-    const active = document.activeElement as HTMLElement | null;
-    const focusedAction =
-      active && panel.contains(active) ? active.dataset.action : undefined;
-    panel.dataset.content = content;
-    panel.innerHTML = content;
-    void paintTowerPortraits(panel);
-    if (focusedAction) {
-      const replacement = [
-        ...panel.querySelectorAll<HTMLButtonElement>("button"),
-      ].find(
-        (button) => button.dataset.action === focusedAction && !button.disabled,
-      );
-      (
-        replacement ??
-        panel.querySelector<HTMLButtonElement>('[data-action="inspect-close"]')
-      )?.focus();
-    }
-  }
+  popups?.update();
+  const hint = document.querySelector<HTMLElement>(".battle-placement-hint");
+  if (hint) hint.hidden = !!selection?.point || selection?.selected != null;
   if (s.phase === "won" || s.phase === "lost") showResult();
 }
 function showResult() {
@@ -441,6 +399,7 @@ function openBattleMenu() {
   if (!root) return;
   if (game.state.phase === "wave" || game.state.phase === "preparation")
     game.pause();
+  clearBattleSelection();
   sound.pause(true);
   document.querySelector<HTMLElement>(".battle-screen")!.inert = true;
   battleMenu = new BattleMenu(root, save, fullscreenLabel());
@@ -461,7 +420,7 @@ function settingsModal() {
   if (settingsPaused) game!.pause();
   sound.pause(true);
   const root = document.getElementById("modal-root")!;
-  root.innerHTML = `<div class="modal-backdrop"><section class="settings-card" role="dialog" aria-modal="true" aria-labelledby="settings-title"><h2 id="settings-title">Settings</h2><label>Music <input data-setting="music" type="range" min="0" max="1" step="0.05" value="${save.music}"></label><label>Sound effects <input data-setting="effects" type="range" min="0" max="1" step="0.05" value="${save.effects}"></label><label class="mute-row"><input data-setting="muted" type="checkbox" ${save.muted ? "checked" : ""}> Mute all sound</label><details class="game-credits"><summary>Credits</summary><p>Music: Treasure Hunter by TAD · CC0<br>Artwork generated for Stormwatch.</p></details>${fullscreenLabel() ? button("fullscreen", fullscreenLabel()!) : ""}${button("close-settings", "Back", "primary")}</section></div>`;
+  root.innerHTML = `<div class="modal-backdrop"><section class="settings-card" role="dialog" aria-modal="true" aria-labelledby="settings-title"><h2 id="settings-title">Settings</h2><label>Music <input data-setting="music" type="range" min="0" max="1" step="0.05" value="${save.music}"></label><label>Sound effects <input data-setting="effects" type="range" min="0" max="1" step="0.05" value="${save.effects}"></label><label class="mute-row"><input data-setting="muted" type="checkbox" ${save.muted ? "checked" : ""}> Mute all sound</label><label class="mute-row"><input data-setting="showGrid" type="checkbox" ${save.showGrid ? "checked" : ""}> Show placement grid</label><details class="game-credits"><summary>Credits</summary><p>Music: Treasure Hunter by TAD · CC0<br>Artwork generated for Stormwatch.</p></details>${fullscreenLabel() ? button("fullscreen", fullscreenLabel()!) : ""}${button("close-settings", "Back", "primary")}</section></div>`;
   root.querySelector("input")?.focus();
 }
 function closeSettings() {
@@ -491,6 +450,10 @@ app.addEventListener("input", (e) => {
   if (k === "muted") {
     save.muted = el.checked;
     sound.setMuted(save.muted);
+  }
+  if (k === "showGrid") {
+    save.showGrid = el.checked;
+    field?.setGridVisible(save.showGrid);
   }
   sound.apply();
   persist();
@@ -685,15 +648,6 @@ app.addEventListener("click", (e) => {
     return;
   }
   if (!game) return;
-  if (action === "build") {
-    build = build === value ? null : (value as TowerKind);
-    selected = null;
-  }
-  if (action === "inspect-close") selected = null;
-  if (action === "cancel") {
-    build = null;
-    field?.highlight(null);
-  }
   if (action === "start") {
     beginWave();
     sound.unlock();
@@ -701,11 +655,6 @@ app.addEventListener("click", (e) => {
   if (action === "speed") {
     speed = speed === 1 ? 2 : 1;
     text("speed", `${speed}×`);
-  }
-  if (action === "upgrade" && selected !== null) game.upgrade(selected);
-  if (action === "sell" && selected !== null) {
-    game.sell(selected);
-    selected = null;
   }
   updateHud();
 });
@@ -756,13 +705,15 @@ document.addEventListener("keydown", (e) => {
   if (e.key !== "Escape" && (e.target as HTMLElement).matches("input,button"))
     return;
   if (e.key === "Escape") {
-    if (screen === "battle" && !build && selected === null) {
+    if (
+      screen === "battle" &&
+      !selection?.point &&
+      selection?.selected == null
+    ) {
       openBattleMenu();
       return;
     }
-    build = null;
-    selected = null;
-    field?.highlight(null);
+    clearBattleSelection();
     updateHud();
   }
   if (
@@ -838,8 +789,14 @@ function frame(now: number) {
         toast(`Wave cleared · +${e.value} gold`);
       }
     }
-    field.preferGround = !!build;
-    field.update(game, selected, dt);
+    field.update(
+      game,
+      selection?.selected ?? null,
+      dt,
+      selection?.point
+        ? { point: selection.point, kind: selection.kind }
+        : undefined,
+    );
     if (now - lastHud > 100) {
       refreshHud(now);
     }

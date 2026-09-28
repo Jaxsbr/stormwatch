@@ -5,7 +5,7 @@ import {
   type MenuView,
 } from "../src/ui/battle-menu";
 
-const save = { music: 0.35, effects: 0.8, muted: false };
+const save = { music: 0.35, effects: 0.8, muted: false, showGrid: false };
 
 /** Only the DOM/Animation surface used by BattleMenu; no layout emulation. */
 function fixture(reduced = false) {

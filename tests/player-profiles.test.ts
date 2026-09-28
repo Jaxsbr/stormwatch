@@ -66,3 +66,18 @@ describe("local woodland profiles", () => {
     ).toBeNull();
   });
 });
+
+it("persists placement-grid preferences independently per player and through victory", () => {
+  const a = createProfile("grid-on", "Alice", "fox");
+  const b = createProfile("grid-off", "Ben", "rabbit");
+  a.progress.showGrid = true;
+  a.progress = recordVictory(a.progress, "lantern-pass", 2);
+  const restored = loadProfiles(
+    JSON.stringify({ version: 2, active: a.id, users: [a, b] }),
+    null,
+  );
+  expect(restored.users.map((user) => user.progress.showGrid)).toEqual([
+    true,
+    false,
+  ]);
+});

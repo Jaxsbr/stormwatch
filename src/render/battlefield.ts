@@ -18,7 +18,7 @@ import {
 } from "./status-glyph";
 import { ratShieldState } from "../sim/rat-shield";
 import { netGeometry } from "./combat-shapes";
-import { pointOnPath } from "../sim/path";
+import { onPath, pointOnPath } from "../sim/path";
 import type { Game } from "../sim/game";
 import type { EnemyKind, LevelDef, Point, TowerKind } from "../sim/types";
 
@@ -75,6 +75,8 @@ export class Battlefield {
   readonly scene = new THREE.Scene();
   readonly camera = new THREE.OrthographicCamera();
   private world = new THREE.Group();
+  private placementGrid: THREE.LineSegments | null = null;
+  private gridVisible = false;
   private backdrop: THREE.Sprite | null = null;
   private generation = 0;
   private sceneryKey: string | null = null;
@@ -166,6 +168,7 @@ export class Battlefield {
   private depth = 8;
   preferGround = false;
   onPick: (p: Point) => void = () => {};
+  onMiss: () => void = () => {};
   onHover: (p: Point | null) => void = () => {};
   constructor(readonly host: HTMLElement) {
     if (__STORMWATCH_QA__) {
@@ -190,9 +193,10 @@ export class Battlefield {
     this.renderer.outputColorSpace = THREE.SRGBColorSpace;
     this.renderer.domElement.setAttribute(
       "aria-label",
-      "Battlefield. Choose a structure, then tap open ground.",
+      "Battlefield. Tap clear ground to preview a defender, or tap a defender to inspect it.",
     );
     this.renderer.domElement.setAttribute("role", "img");
+    this.renderer.domElement.tabIndex = 0;
     host.append(this.renderer.domElement);
     // Include top-row animal ears/selection marker and bottom-row tile edges.
     this.camera.position.set(W / 2, H / 2 + 50, 100);
@@ -299,6 +303,7 @@ export class Battlefield {
       if (e.button === 0) {
         const p = this.pick(e.clientX, e.clientY);
         if (p) this.onPick(p);
+        else this.onMiss();
       }
     });
     this.renderer.domElement.addEventListener("pointermove", (e) =>
@@ -370,6 +375,7 @@ export class Battlefield {
       level.width,
       level.depth,
       level.path,
+      level.blocked,
     ]);
     const retainScenery = this.sceneryKey === sceneryKey;
     this.clearWorld(retainScenery);
@@ -476,12 +482,71 @@ export class Battlefield {
     trail.scale.set(W + pathPadding * 2, H, 1);
     trail.renderOrder = 10;
     this.world.add(trail);
+    // Subtle cell outlines only on buildable terrain; leave the trail and
+    // blocked scenery clear. Occupied terrain retains its spatial reference.
+    const vertices: number[] = [];
+    const edges = new Set<string>();
+    for (let z = 0; z < level.depth; z++) {
+      for (let x = 0; x < level.width; x++) {
+        const p = { x, z };
+        if (
+          onPath(level, p) ||
+          level.blocked.some((b) => b.x === x && b.z === z)
+        )
+          continue;
+        const corners = [
+          [x - 0.5, z - 0.5],
+          [x + 0.5, z - 0.5],
+          [x + 0.5, z + 0.5],
+          [x - 0.5, z + 0.5],
+        ];
+        for (let i = 0; i < 4; i++) {
+          const a = corners[i],
+            b = corners[(i + 1) % 4];
+          const key = [a.join(","), b.join(",")].sort().join(":");
+          if (edges.has(key)) continue;
+          edges.add(key);
+          for (const [cx, cz] of [a, b]) {
+            const v = position({ x: cx, z: cz });
+            vertices.push(v.x, v.y, 0);
+          }
+        }
+      }
+    }
+    const geometry = new THREE.BufferGeometry();
+    geometry.setAttribute(
+      "position",
+      new THREE.Float32BufferAttribute(vertices, 3),
+    );
+    this.placementGrid = new THREE.LineSegments(
+      geometry,
+      new THREE.LineBasicMaterial({
+        color: 0xd9dfb0,
+        transparent: true,
+        opacity: 0.14,
+        depthTest: false,
+        depthWrite: false,
+      }),
+    );
+    this.placementGrid.renderOrder = 11;
+    this.placementGrid.visible = this.gridVisible;
+    this.world.add(this.placementGrid);
+  }
+
+  setGridVisible(visible: boolean) {
+    this.gridVisible = visible;
+    if (this.placementGrid) this.placementGrid.visible = visible;
   }
 
   private releaseObject(root: THREE.Object3D) {
     root.traverse((o) => {
-      if (o instanceof THREE.Mesh) o.geometry.dispose();
-      if (o instanceof THREE.Mesh || o instanceof THREE.Sprite) {
+      if (o instanceof THREE.Mesh || o instanceof THREE.LineSegments)
+        o.geometry.dispose();
+      if (
+        o instanceof THREE.Mesh ||
+        o instanceof THREE.Sprite ||
+        o instanceof THREE.LineSegments
+      ) {
         const ms = Array.isArray(o.material) ? o.material : [o.material];
         ms.forEach((m) => m.dispose());
       }
@@ -491,6 +556,7 @@ export class Battlefield {
     if (!retainScenery) {
       this.generation++;
       this.backdrop = null;
+      this.placementGrid = null;
       this.sceneryKey = null;
     }
     this.range.visible = false;
@@ -641,7 +707,12 @@ export class Battlefield {
       );
     }
   }
-  update(game: Game, selected: number | null, _dt: number) {
+  update(
+    game: Game,
+    selected: number | null,
+    _dt: number,
+    preview?: { point: Point; kind: TowerKind },
+  ) {
     const reducedMotion = matchMedia(
       "(prefers-reduced-motion: reduce)",
     ).matches;
@@ -893,7 +964,14 @@ export class Battlefield {
     const selectedTower = s.towers.find((t) => t.id === selected);
     this.selection.visible = false;
     this.selectedMarker.visible = false;
-    this.range.visible = !!selectedTower;
+    this.range.visible = !!selectedTower || !!preview;
+    if (preview && !selectedTower) {
+      const r =
+        game.towers[preview.kind].range *
+        (game.state.card === "reach" ? game.rules.reachScale : 1);
+      this.range.scale.set(r * X, r * Y, 1);
+      this.range.position.copy(position(preview.point));
+    }
     this.baseGlow.visible = !!selectedTower;
     if (selectedTower) {
       this.updateRank(selectedTower.level);

@@ -35,8 +35,8 @@ onto a flat orthographic stage with separate horizontal/vertical spacing, a pain
 biome plate, and a textured continuous trail. Approved tower footprints remain
 screen aligned. Runtime character rigs choose front/rear views for vertical travel
 and side views for current rightward segments. Gait, reload and idle motion read
-simulation time/distance, so pause freezes them. A structure hit is tested before
-ground picking except during construction, when the exact ground cell wins.
+simulation time/distance, so pause freezes them. A defender hit is tested before ground picking, including during placement previews.
+Ground taps select a pending cell; an explicit confirmation issues the placement command.
 
 ## Add an encounter
 
@@ -160,3 +160,20 @@ Canonical `abilityDefaults` supplies Rat shield and Weasel evade cycles. Per-wav
 boolean switches enable them; `compileLevel` applies shared cycles to each group.
 The workbench migrates legacy drafts and promotes shared timings with a selected
 map/wave, with conflict checks for the global scope. See [decision 026](decisions/026-shared-wave-abilities.md).
+
+
+### Tile-anchored defender controls
+
+`src/ui/battle-selection.ts` owns pending placement, remembered roster choice,
+inspection and sale confirmation. It issues commands only after explicit actions;
+the simulation remains authoritative for affordability, roster, occupancy, upgrade
+locks and refunds. `src/ui/defender-popups.ts` presents the approved portrait
+carousel and upgrade-first selection card. Campaign and workbench use the same
+components; workbench commands still pass through its evidence recorder and replay
+lock. Closing, pausing or starting a wave clears pending interaction without
+forgetting the chosen defender within the attempt.
+
+The renderer projects cell anchors for bounded nonmodal popups and draws preview
+range. The optional thin placement grid follows buildable terrain, excluding paths
+and blocked cells. `showGrid` is a strict boolean in each player's saved settings,
+defaulting off for existing and new profiles. See decision 029.
