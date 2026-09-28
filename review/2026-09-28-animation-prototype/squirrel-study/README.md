@@ -150,3 +150,12 @@ code, content balance, turtle or skunk art changed.
 
 Evidence: `north-draw.png`, `south-draw.png`; browser inspection of north rest
 and south release. Standard check, 276 tests and production build passed.
+
+## Iteration 03 rejected — research reset
+
+Owner rejected both cardinal poses: incorrect bow/string geometry, hand-through-
+shoulder artifact in north, shrunken arms and wrong anatomy in south. The code
+and screenshots remain failure evidence; do not promote this iteration.
+See [the subsequent archery study](pose-research/README.md) for source references,
+causes, an alternative-parts recommendation, and an assembled concept candidate.
+The accepted side-view animation remains the keeper baseline.

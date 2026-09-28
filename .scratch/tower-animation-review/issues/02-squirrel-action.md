@@ -30,3 +30,12 @@ north and south. Iteration 03 adds their projected pose candidates and a four-wa
 direction selector. North/south are awaiting visual feedback; they are not yet
 promoted into runtime. See the recipe's iteration 03 for projection/occlusion
 choices and known anatomy/projectile limitations.
+
+## North/south rejected
+
+Owner rejected iteration 03. A second archery study identifies uniform arm
+scaling and the rear socket overlay as invalid techniques. New assembled
+upper-body poses are recommended before any part extraction. See
+`review/2026-09-28-animation-prototype/squirrel-study/pose-research/README.md`.
+Concept 01 failed the front shooting-axis check; concept 02 corrects that aspect
+and awaits owner pose review. Neither is a runtime asset or an approved animation.
