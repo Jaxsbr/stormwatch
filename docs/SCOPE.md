@@ -2,6 +2,8 @@
 
 > Direction updates: the owner subsequently approved the horizontal visual reboot, animal defenders, and progressive discovery with a simple wave economy. [ADR 004](decisions/004-visual-course-correction.md), [ADR 005](decisions/005-animal-defenders.md), and [ADR 014](decisions/014-progressive-discovery-and-simple-wave-economy.md) supersede the original presentation and economy commitments below. Current verification is tracked in the [reboot audit](../review/2026-09-20-reboot/current-rubric-audit.md).
 
+> Tower presentation update (29 September 2026): side-only towers and pose-first animation are approved in [ADR 031](decisions/031-side-only-tower-animation.md). Follow the [tower animation process](TOWER-ANIMATION-PROCESS.md).
+
 Status: confirmed by the owner on 20 September 2026; implementation authorized. Approved title and personal repository name: Stormwatch / `Jaxsbr/stormwatch`. This document records the confirmed product decisions; architectural records live in `decisions/`.
 
 ## Product promise

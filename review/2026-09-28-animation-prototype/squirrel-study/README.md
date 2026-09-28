@@ -159,3 +159,14 @@ and screenshots remain failure evidence; do not promote this iteration.
 See [the subsequent archery study](pose-research/README.md) for source references,
 causes, an alternative-parts recommendation, and an assembled concept candidate.
 The accepted side-view animation remains the keeper baseline.
+
+## Side-facing battlefield experiment
+
+The owner accepted the side-only battlefield playtest on 29 September 2026.
+Side-only is now the normal game behavior; the temporary `towerFacing` switch and
+comparison toggle have been removed. The recorded playtest used existing runtime
+side motion, not this improved side study. See [ADR 031](../../../docs/decisions/031-side-only-tower-animation.md)
+and the [tower process](../../../docs/TOWER-ANIMATION-PROCESS.md).
+
+The north/south studies in this directory are retained as historical evidence and
+are not approved production directions.

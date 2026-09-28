@@ -10,9 +10,10 @@ An attractive source image is not a finished game asset.
   distant valley, or oversized foreground framing. Woodland v3 is the approved
   projection reference.
 - Animal defenders: upright woodland characters standing on a ground tile, matching
-  the approved enemies. Author side, front and rear views; reflect the side view
-  with its attachment points for left-facing combat. Preserve consistent body
-  height, ground contact, equipment and lighting across views.
+  the approved enemies. Author only a side view; reflect it with its attachment points for left-facing
+  combat. North/south tower views are retired. Preserve body height, ground
+  contact, equipment and lighting throughout the action. Follow the
+  [tower animation process](TOWER-ANIMATION-PROCESS.md) before producing parts.
 - Mechanical tower art is historical reference only. The former mostly-overhead
   platform recipe was superseded by `decisions/005-animal-defenders.md`.
 
@@ -169,7 +170,7 @@ and structure fixed while authored joints control motion.
 
 ## Animal defender recipe
 
-The active defense presentation uses squirrel (focused arrows), skunk (splash rocks), turtle (slowing nets) and donkey (income). Each role has native side, front and rear sheets. Mirror the side rig for the fourth direction; reflect geometry, sprite anchors, bowstring and projectile origin together.
+The active defense presentation uses squirrel (focused arrows), skunk (splash rocks), turtle (slowing nets) and donkey (income). Tower combat now uses side views only (ADR 031). Old front/rear sheets are historical assets, not production inputs. Mirror the side rig for leftward targets; reflect geometry, sprite anchors, bowstring and projectile origin together.
 
 Source sheets and exact generation prompts are retained under `assets/source/defenders-v1/`. Runtime crops, prompt copies and descriptors live under `public/art/v2/<animal>-<view>-defender-v1/`. Import specifications live under `assets/pipeline/specs/`. Preserve transparent source pixels; delivery encoding uses WebP quality 92 with alpha verified byte-for-byte against the native crop.
 

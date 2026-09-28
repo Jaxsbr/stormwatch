@@ -48,3 +48,15 @@ whole-pose atlas loop is at `squirrel-study/pose-motion/index.html`, run with
 keyframes, translated to matching boot anchors, avoid the rejected limb scaling
 and socket overlay. Awaiting owner review of stepped motion and generated shape
 drift before intermediate drawings or production integration.
+
+## Acceptance reopened — consistency review
+
+Owner questioned the side versus cardinal scale/style/motion split after accepting
+the isolated test. Treat the atlas acceptance as provisional; no hybrid runtime
+integration is authorized by that earlier isolated acceptance. A matched body-
+height visual comparison is in `squirrel-study/consistency/index.html`.
+Finding: near body-height bow versus roughly 60% in side view, changed costume/
+face rendering, continuous draw versus four held poses, generated frame drift.
+The archery poses are useful references; this mixed result is not cohesive enough
+to promote. Recommendation remains a proposal: normalize design and motion first,
+then validate coherent upper-body art with minimal movement before renderer choice.

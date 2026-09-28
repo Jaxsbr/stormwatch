@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="en">
+  <meta charset="utf-8" /><meta
+    name="viewport"
+    content="width=device-width,initial-scale=1"
+  /><title>Turtle · casting motion study</title
+  ><link rel="stylesheet" href="style.css" />
+  <header>
+    <div>
+      <small>STORMWATCH · TURTLE · MOTION STUDY 01</small>
+      <h1>Turtle: gather, load, cast</h1>
+      <p>
+        Approved two-hand pose · planted feet, body weight shift · motion review
+      </p>
+    </div>
+    <label
+      >Direction
+      <select id="direction">
+        <option value="side">East</option>
+        <option value="west">West</option>
+      </select></label
+    >
+    <button id="play">Pause</button
+    ><label
+      >Speed
+      <select id="speed">
+        <option value="1">Normal</option>
+        <option value="0.35">Slow</option>
+      </select></label
+    ><label><input id="small" type="checkbox" /> Small scale</label>
+  </header>
+  <main>
+    <section data-mode="current"><h2>Current</h2></section>
+    <section data-mode="study"><h2>Proposed</h2></section>
+    <canvas id="canvas"></canvas>
+  </main>
+  <footer>
+    <div id="poses">
+      <button data-time="0">Gather</button
+      ><button data-time="0.54">Two-hand load</button
+      ><button data-time="0.72">Release</button
+      ><button data-time="0.84">Follow-through</button>
+    </div>
+    <label
+      >Cycle
+      <input
+        id="time"
+        type="range"
+        min="0"
+        max="1"
+        step="0.001"
+        value="0" /></label
+    ><output id="beat">Loading artwork…</output>
+    <p>
+      Look for a backward body load, two-hand contact, a forceful sweep and an
+      opening net. Small scale is a 112px figure reference; battlefield
+      verification comes later.
+    </p>
+  </footer>
+  <script type="module" src="main.js"></script>
+</html>
