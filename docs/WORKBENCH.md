@@ -111,3 +111,8 @@ timings together with the current map/wave. Reload the game to use them.
 Old draft arrival patterns are preserved while individual shield/evade timing
 variations are replaced by shared settings. Introductory waves that lacked evade
 keep it off. Concurrent edits to shared settings are checked before promotion.
+
+Boss rage speed multipliers appear under **Shared ability settings**. They apply
+at ⅔ and ⅓ health in every boss wave, are saved with either Promote action, and
+require raging speed to be at least angry speed. Old drafts receive the canonical
+defaults (1.35× / 1.8×); Turtle slow remains fully effective in both phases.

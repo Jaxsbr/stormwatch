@@ -133,3 +133,29 @@ it("adopts external defaults when the draft has no shared edits, and validates t
   c.abilityDefaults!.ratShield.upSeconds = 0;
   expect(() => validateContent(c)).toThrow();
 });
+
+it("migrates, promotes and reloads boss rage speed settings through the shared ability scope", () => {
+  const c = content();
+  delete c.abilityDefaults!.bossRage;
+  const draft = createWorkingDraft(c);
+  expect(draft.content.abilityDefaults!.bossRage).toEqual({
+    angrySpeedScale: 1.35,
+    ragingSpeedScale: 1.8,
+  });
+  draft.content.abilityDefaults!.bossRage = {
+    angrySpeedScale: 1.5,
+    ragingSpeedScale: 2,
+  };
+  const promoted = promoteWorkingWave(c, draft);
+  const snapshot = resolveConfiguration(
+    JSON.parse(JSON.stringify(promoted)),
+    promoted.levels[2].id,
+  );
+  const game = new Game(snapshot.level, "none", false, 42, {
+    configuration: snapshot,
+  });
+  expect(game.bossRage).toEqual({ angrySpeedScale: 1.5, ragingSpeedScale: 2 });
+  expect(promoted.levels).toEqual(c.levels);
+  promoted.abilityDefaults!.bossRage!.ragingSpeedScale = 1.1;
+  expect(() => validateContent(promoted)).toThrow();
+});

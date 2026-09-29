@@ -1505,6 +1505,10 @@
     "weaselEvade": {
       "upSeconds": 2,
       "downSeconds": 3
+    },
+    "bossRage": {
+      "angrySpeedScale": 1.35,
+      "ragingSpeedScale": 1.8
     }
   }
 }

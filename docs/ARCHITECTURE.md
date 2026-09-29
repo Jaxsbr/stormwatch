@@ -202,3 +202,12 @@ The workbench offers explicit Promote wave and Promote all changes actions.
 All promotion merges only changed map metadata, individual waves and shared
 abilities, preserving unedited disk content and rejecting conflicts atomically.
 See decision 032.
+
+### Roadwarden phases
+
+The simulation and renderer share inclusive health thresholds from `boss-rage.ts`.
+Shared ability settings supply angry/raging movement multipliers to immutable
+attempt configurations; Turtle slow still multiplies the result. Successful rally
+casts expose simulation timestamps for renderer-only pulses and escort streaks.
+Approved side/front expression resources share the original leg textures. See
+decision 034 and the boss-wave review fixture.

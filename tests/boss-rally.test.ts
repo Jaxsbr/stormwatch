@@ -243,3 +243,48 @@ describe("Roadwarden rally", () => {
     expect(boss.hp).toBe(1);
   });
 });
+
+describe("Roadwarden rage", () => {
+  it("steps up at both exact health thresholds while preserving the full Turtle slow", () => {
+    const game = new Game(level());
+    game.startWave();
+    while (!game.state.enemies.length) game.tick(DT);
+    const boss = game.state.enemies[0];
+    for (const [health, multiplier] of [
+      [1, 1],
+      [2 / 3, 1.35],
+      [1 / 3, 1.8],
+    ] as const) {
+      boss.hp = health * boss.maxHp;
+      for (const slowed of [false, true]) {
+        boss.slowUntil = slowed ? game.state.clock + 5 : 0;
+        const before = boss.distance;
+        game.tick(DT);
+        expect(boss.distance - before).toBeCloseTo(
+          game.enemies.boss.speed *
+            multiplier *
+            (slowed ? game.rules.slowScale : 1) *
+            DT,
+          8,
+        );
+      }
+    }
+    game.pause();
+    const before = boss.distance;
+    step(game, 1);
+    expect(boss.distance).toBe(before);
+  });
+  it("uses the raging phase immediately when a hit crosses both thresholds", () => {
+    const game = new Game(level());
+    game.startWave();
+    while (!game.state.enemies.length) game.tick(DT);
+    const boss = game.state.enemies[0];
+    boss.hp = boss.maxHp * 0.2;
+    const before = boss.distance;
+    game.tick(DT);
+    expect(boss.distance - before).toBeCloseTo(
+      game.enemies.boss.speed * 1.8 * DT,
+      8,
+    );
+  });
+});

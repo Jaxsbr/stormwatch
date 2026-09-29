@@ -14,6 +14,8 @@
 | Leak                             | An enemy reaches the end of the trail and removes village hearts.                                                                                                  |
 | Splash                           | Damage to enemies within a radius of a stone impact.                                                                                                               |
 | Evasion                          | A visible, temporary Weasel state in which arriving projectiles miss; an existing slow remains in effect.                                                          |
+| Rage | The Roadwarden’s health-driven escalation: angry at two-thirds health, raging at one-third, with faster movement while still vulnerable to nets. |
+| Rally | The Roadwarden’s temporary speed boost for nearby escorts; independent of his own rage. |
 | Slow                             | Temporary movement reduction from nets.                                                                                                                            |
 | Matchup                          | The way a tower role performs against an enemy behavior; each has a distinctive role, while multiple towers can remain useful through different trade-offs.        |
 | Combat feedback                  | Visual, animation, and audio cues that show an attack, hit, status effect, leak, or reward outcome.                                                                |

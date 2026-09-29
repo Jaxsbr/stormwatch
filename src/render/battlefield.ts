@@ -1,3 +1,5 @@
+import { RallyEffect } from "./rally-effect";
+import { bossRagePhase } from "../sim/boss-rage";
 import * as THREE from "three";
 import { RANK_BADGE, rankFontSize, rankLabel } from "../ui/rank-badge";
 import { selectionMaterial } from "./selection-material";
@@ -49,6 +51,7 @@ type Figure = {
   character?: CharacterRig;
   defender?: DefenderRig;
   pad?: THREE.Sprite;
+  rallyEffect?: RallyEffect;
   direction?: { x: number; y: number };
   statusGlyphs?: Map<StatusGlyphKind, StatusGlyph>;
 };
@@ -139,6 +142,16 @@ export class Battlefield {
       front: new CutoutResource("badger-front-rig-v1"),
       rear: new CutoutResource("badger-rear-rig-v1"),
     },
+  };
+  private bossExpressionRigs = {
+    front: [
+      new CutoutResource("badger-front-angry-v1"),
+      new CutoutResource("badger-front-raging-v1"),
+    ],
+    side: [
+      new CutoutResource("badger-side-angry-v1"),
+      new CutoutResource("badger-side-raging-v1"),
+    ],
   };
   private defenderRigs = Object.fromEntries(
     Object.entries({
@@ -578,6 +591,7 @@ export class Battlefield {
           this.scene.remove(o);
           this.releaseObject(o);
         }
+      f.rallyEffect?.dispose();
       for (const glyph of f.statusGlyphs?.values() ?? []) {
         this.scene.remove(glyph.group);
         glyph.dispose();
@@ -825,7 +839,7 @@ export class Battlefield {
       f.sprite.material.color.set(
         !e.shieldRaised && s.clock - e.hitAt < 0.1
           ? 0xffc5a2
-          : e.slowUntil > s.clock
+          : e.kind !== "boss" && e.slowUntil > s.clock
             ? 0xb9dfd1
             : e.rallyUntil !== undefined && e.rallyUntil > s.clock
               ? 0xffd28e
@@ -861,7 +875,13 @@ export class Battlefield {
         e.kind === "boss" &&
         e.nextRallyAt !== undefined &&
         s.clock >= e.nextRallyAt - game.rules.boss.warningSeconds &&
-        s.clock < e.nextRallyAt;
+        s.clock < e.nextRallyAt &&
+        s.enemies.some(
+          (escort) =>
+            escort.alive &&
+            escort.kind !== "boss" &&
+            Math.abs(escort.distance - e.distance) <= game.rules.boss.radius,
+        );
       const statuses: StatusGlyphView[] = [];
       if (e.kind === "raider")
         statuses.push({ kind: "shield", opacity: guard.strength, flash });
@@ -871,25 +891,54 @@ export class Battlefield {
           opacity: evasion.active ? 1 : evasion.warning ? 0.35 : 0,
           flash: evadeFlash,
         });
-      if (e.rallyUntil !== undefined && e.rallyUntil > s.clock)
-        statuses.push({ kind: "rally", opacity: 1, flash: 0 });
-      if (rallyWarning)
+      const boosted = e.rallyUntil !== undefined && e.rallyUntil > s.clock;
+      const castAge =
+        e.rallyCastAt === undefined ? Infinity : s.clock - e.rallyCastAt;
+      const rallyActive =
+        e.kind === "boss" &&
+        castAge >= 0 &&
+        castAge < game.rules.boss.durationSeconds;
+      if (rallyWarning || rallyActive)
         statuses.push({
           kind: "rally",
           opacity: 1,
-          flash: Math.sin(
-            (s.clock - (e.nextRallyAt! - game.rules.boss.warningSeconds)) *
-              Math.PI,
-          ),
+          flash: reducedMotion
+            ? 0
+            : rallyActive
+              ? Math.max(0, 1 - castAge)
+              : Math.sin(
+                  (s.clock -
+                    (e.nextRallyAt! - game.rules.boss.warningSeconds)) *
+                    Math.PI,
+                ),
         });
       this.updateStatusGlyphs(f, e, height, statuses);
+      if ((boosted || castAge < 0.75) && !f.rallyEffect) {
+        f.rallyEffect = new RallyEffect();
+        this.scene.add(f.rallyEffect.group);
+      }
+      if (f.rallyEffect) {
+        f.rallyEffect.group.position.copy(position(e));
+        f.rallyEffect.update(
+          s.clock,
+          f.direction ?? { x: 1, y: 0 },
+          boosted,
+          castAge,
+          reducedMotion,
+        );
+      }
       const next = pointOnPath(game.level.path, e.distance + 0.02);
       const vertical = Math.abs(next.z - e.z) > Math.abs(next.x - e.x);
-      const desiredRig = vertical
+      const rage = e.kind === "boss" ? bossRagePhase(e.hp, e.maxHp) : 0;
+      let desiredRig = vertical
         ? next.z > e.z
           ? this.directionalRigs[e.kind].front
           : this.directionalRigs[e.kind].rear
         : this.characterRigs[e.kind];
+      if (rage && !vertical)
+        desiredRig = this.bossExpressionRigs.side[rage - 1];
+      if (rage && vertical && next.z > e.z)
+        desiredRig = this.bossExpressionRigs.front[rage - 1];
       const characterResource = desiredRig.definition
         ? desiredRig
         : this.characterRigs[e.kind];
@@ -919,6 +968,8 @@ export class Battlefield {
           f.sprite.material.color,
           e.shieldRaised ? Infinity : s.clock - e.hitAt,
           e.shieldRaised,
+          rage,
+          reducedMotion,
         );
       }
     }
@@ -943,6 +994,7 @@ export class Battlefield {
             this.scene.remove(o);
             this.releaseObject(o);
           }
+        f.rallyEffect?.dispose();
         for (const glyph of f.statusGlyphs?.values() ?? []) {
           this.scene.remove(glyph.group);
           glyph.dispose();
@@ -1144,6 +1196,9 @@ export class Battlefield {
     this.defenderPool.dispose();
     this.owned.forEach((t) => t.dispose());
     Object.values(this.characterRigs).forEach((r) => r.dispose());
+    Object.values(this.bossExpressionRigs)
+      .flat()
+      .forEach((r) => r.dispose());
     Object.values(this.directionalRigs).forEach(({ front, rear }) => {
       front.dispose();
       rear.dispose();

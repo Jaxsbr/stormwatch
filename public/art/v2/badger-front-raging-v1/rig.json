@@ -1,0 +1,146 @@
+{
+  "version": 1,
+  "id": "badger-front-raging-v1",
+  "kind": "cutout-character",
+  "source": "assets/source/reboot/badger-front-rig-parts-v1.png",
+  "width": 2172,
+  "height": 724,
+  "view": "front",
+  "units": "sourcepixels localtoeachcrop; restPositionrootrelativeYup",
+  "parts": [
+    {
+      "id": "body",
+      "rect": [
+        100,
+        0,
+        820,
+        700
+      ],
+      "pivot": [
+        445,
+        600
+      ],
+      "scale": 1,
+      "z": 2,
+      "attachments": {
+        "nearHip": [
+          380,
+          595
+        ],
+        "farHip": [
+          510,
+          595
+        ]
+      },
+      "restPosition": [
+        0,
+        0
+      ],
+      "texture": "art/v2/badger-front-raging-v1/body.webp",
+      "sha256": "2959bc4a899d0a345fb1b09d99eaeaf9a20dfe96a349cab0b0dee223adfe0b05",
+      "bytes": 129148
+    },
+    {
+      "id": "nearLeg",
+      "rect": [
+        1180,
+        85,
+        260,
+        625
+      ],
+      "pivot": [
+        130,
+        80
+      ],
+      "scale": 0.55,
+      "z": 1,
+      "joints": {
+        "hip": [
+          130,
+          80
+        ],
+        "knee": [
+          130,
+          270
+        ],
+        "ankle": [
+          130,
+          470
+        ],
+        "sole": [
+          130,
+          595
+        ]
+      },
+      "attachTo": "body.nearHip",
+      "restPosition": [
+        -65,
+        5
+      ],
+      "texture": "art/v2/badger-front-rig-v1/nearLeg.webp",
+      "sha256": "2dd323c692e76b627e124b39e97fca4f8f7d5fa958adfe6bbe4006730856b76b",
+      "bytes": 40676
+    },
+    {
+      "id": "farLeg",
+      "rect": [
+        1660,
+        85,
+        260,
+        625
+      ],
+      "pivot": [
+        130,
+        80
+      ],
+      "scale": 0.55,
+      "z": 0,
+      "joints": {
+        "hip": [
+          130,
+          80
+        ],
+        "knee": [
+          130,
+          270
+        ],
+        "ankle": [
+          130,
+          470
+        ],
+        "sole": [
+          130,
+          595
+        ]
+      },
+      "attachTo": "body.farHip",
+      "restPosition": [
+        65,
+        5
+      ],
+      "texture": "art/v2/badger-front-rig-v1/farLeg.webp",
+      "sha256": "68c77c509e186e00a6826047cef71cb3aa82f64cd8a6684ac93ff20d0285883d",
+      "bytes": 40610
+    }
+  ],
+  "animation": {
+    "hipHeight": 155,
+    "suggestedCycleSeconds": 1.05,
+    "nearPhase": 0,
+    "farPhase": 0.5,
+    "footTravelAxis": "screenY",
+    "nearLegAnatomy": "character right",
+    "farLegAnatomy": "character left"
+  },
+  "sourceSha256": "e7ab85eef8f3e881d334b68fef779b9bbf51265efe40997d05c8a5f95d5d0949",
+  "provenance": {
+    "tool": "Native ImageGen",
+    "base": "art/v2/badger-front-rig-v1/body.webp",
+    "phase": "raging",
+    "approval": "Owner approved expressions in conversation, 30 September 2026",
+    "processing": "Resize to original torso rectangle; WebP quality 92 with alpha preserved",
+    "prompt": "Preserve exact view, framing, silhouette, helmet, shield, armor, hands, cape, belt and painterly rendering. Change only expression and facial fur warmth. Angry: closed-mouth scowl, lowered brows, narrowed eyes, flushed cheeks. Raging: open-mouth roar, stronger red face, small natural teeth. Child-friendly, non-occult, gore-free. Transparent background.",
+    "expressionSource": "assets/source/boss-rage/front-raging.png",
+    "expressionSourceSha256": "5fa18ea243c90fcdc3380429e4d87f10bb0ab2e72d91a3d033f3af8f7f8d043f"
+  }
+}

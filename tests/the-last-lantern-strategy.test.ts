@@ -258,6 +258,7 @@ describe("The Last Lantern's first-board lessons", () => {
     expect(runner!.distance - restoredDistance).toBeCloseTo(1.25 * DT, 5);
   });
 
+  // Boss rage shortens the final wave; preserve the existing loss/pressure assertions.
   // Balance evidence refreshed for the owner-promoted September 29 wave tuning.
   it.each(["mixed", "squirrels"] as const)(
     "records wave-six pressure against the %s opening line",
@@ -276,7 +277,7 @@ describe("The Last Lantern's first-board lessons", () => {
               [3, 106.5, 12, 0, 67, 142, 8, 3],
               [4, 97.1, 12, 0, 60, 208, 12, 4],
               [5, 134.7, 12, 0, 84, 299, 12, 9],
-              [6, 68.2, 6, 1, 40, 66, 12, 11],
+              [6, 59.8, 6, 1, 36, 62, 12, 11],
             ]
           : [
               [1, 63.9, 12, 0, 50, 85, 4, 2],
@@ -284,7 +285,7 @@ describe("The Last Lantern's first-board lessons", () => {
               [3, 101, 12, 0, 52, 142, 10, 2],
               [4, 94.8, 12, 0, 70, 208, 12, 4],
               [5, 133.3, 12, 0, 39, 299, 12, 10],
-              [6, 66.7, 6, 1, 54, 70, 12, 11],
+              [6, 56.8, 6, 1, 46, 62, 12, 11],
             ],
       );
     },
@@ -302,7 +303,7 @@ describe("The Last Lantern's first-board lessons", () => {
       [3, 101.1, 12, 0, 52, 142, 10, 2],
       [4, 95.6, 12, 0, 70, 208, 12, 4],
       [5, 133.5, 12, 0, 39, 299, 12, 10],
-      [6, 66.7, 6, 1, 50, 66, 12, 11],
+      [6, 57.8, 6, 1, 46, 62, 12, 11],
     ]);
   });
 });
