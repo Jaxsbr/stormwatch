@@ -24,11 +24,17 @@ session; Escape cancels a drag.
 normal difficulty and legitimate first-arrival tools. Its progress stays separate
 from family profiles. Return with Workbench to continue editing.
 
-**Promote** writes the selected wave and its map settings into
+**Promote wave** writes the selected wave and its map settings into
 `src/content/recipes.json`. Changed shared ability timings are saved with it. Other waves, maps and global catalogs stay unchanged;
 their pending edits remain in the working draft. New selected maps/waves are
 inserted into the canonical configuration. Promotion is data-only: it does not
 compile JavaScript, restart a game attempt, commit or publish a deployment.
+**Promote all changes** saves pending map settings, waves and shared ability timings
+across the entire working draft in one atomic operation. Unedited content on disk
+is preserved; a conflict in any edited scope rejects the whole operation. Empty
+new waves must receive enemies before all changes can be promoted. The status
+shows when other draft changes remain after promoting one wave.
+
 Reload the local game to load the promoted configuration. A running game keeps
 its loaded settings until reload.
 

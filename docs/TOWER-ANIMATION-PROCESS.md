@@ -53,12 +53,15 @@ shift. A large action must not turn the character into a different illustration.
 ## Current status
 
 - Side-only presentation: accepted after battlefield playtest.
-- Squirrel side push/pull study: accepted improvement, still awaiting runtime
-  integration. North/south generated poses and atlas are retired experiments.
+- Squirrel side push/pull study: accepted improvement, now integrated into the
+  runtime side rig. North/south generated poses and atlas are retired experiments.
 - Turtle: v3 two-handed load poses accepted; owner requested subtle body movement.
   Continuous side rig motion study accepted as a keeper. Open-hand artwork and
-  finished net appearance remain follow-up work; runtime integration and
-  battlefield acceptance are still pending.
+  finished painted net appearance remain follow-up work. Accepted body effort,
+  two-handed load/cast and the procedural net now run in the game, synchronized
+  with real shots. Automated battlefield verification is recorded in
+  [runtime motion evidence](../review/2026-09-29-runtime-defender-motion/README.md);
+  no new owner battlefield acceptance is claimed.
 - Beta art work focuses on squirrel and turtle. The process also applies to later
   towers; other characters are not being redesigned in this pass.
 

@@ -28,8 +28,12 @@ export function workbenchApi(file, loadModel) {
       });
     }
     try {
-      const { validateContent, validateWorkingDraft, promoteWorkingWave } =
-        await loadModel();
+      const {
+        validateContent,
+        validateWorkingDraft,
+        promoteWorkingWave,
+        promoteAllWorkingChanges,
+      } = await loadModel();
       const read = async () => {
         const text = await readFile(file, "utf8");
         const content = JSON.parse(text);
@@ -39,7 +43,10 @@ export function workbenchApi(file, loadModel) {
       if (req.method === "GET" && req.url === "/__workbench/config") {
         return reply(200, { content: (await read()).content, token });
       }
-      if (req.method !== "POST" || req.url !== "/__workbench/promote")
+      if (
+        req.method !== "POST" ||
+        !["/__workbench/promote", "/__workbench/promote-all"].includes(req.url)
+      )
         return reply(404, { error: "Unknown workbench operation." });
       if (
         req.headers.origin !== `http://${host}` ||
@@ -58,7 +65,11 @@ export function workbenchApi(file, loadModel) {
       const draft = validateWorkingDraft(JSON.parse(body));
       const apply = async () => {
         const original = await read();
-        const content = promoteWorkingWave(original.content, draft);
+        const content = (
+          req.url === "/__workbench/promote-all"
+            ? promoteAllWorkingChanges
+            : promoteWorkingWave
+        )(original.content, draft);
         const temporary = `${file}.workbench-${randomUUID()}.tmp`;
         try {
           await writeFile(temporary, `${JSON.stringify(content, null, 2)}\n`, {

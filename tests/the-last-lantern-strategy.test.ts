@@ -82,7 +82,7 @@ function play(strategy: "mixed" | "squirrels" | "mistake") {
     upgraded: number;
   }[] = [];
   while (
-    elapsed < 500 &&
+    elapsed < 900 &&
     game.state.phase !== "won" &&
     game.state.phase !== "lost"
   ) {
@@ -185,17 +185,17 @@ describe("The Last Lantern's first-board lessons", () => {
     const bossIndex = finalGroups.findIndex((group) => group.kind === "boss");
     const escortGroups = finalGroups.slice(bossIndex + 1);
     expect(escortGroups.map((group) => [group.kind, group.count])).toEqual([
-      ["runner", 7],
+      ["runner", 8],
+      ["raider", 6],
+      ["runner", 8],
       ["raider", 5],
-      ["runner", 7],
-      ["raider", 5],
-      ["runner", 7],
+      ["runner", 8],
     ]);
     let queuedAt = 0.7;
     const groupStarts = finalGroups.map((group) => {
       queuedAt += group.delayBefore ?? 0;
       const start = queuedAt;
-      queuedAt += group.count * group.gap;
+      queuedAt += Math.ceil(group.count / (group.batchSize ?? 1)) * group.gap;
       return start;
     });
     expect(
@@ -205,7 +205,7 @@ describe("The Last Lantern's first-board lessons", () => {
             (groupStarts[bossIndex + 1 + index] - groupStarts[bossIndex]) * 10,
           ) / 10,
       ),
-    ).toEqual([4.5, 14.5, 24.5, 34.5, 44.5]);
+    ).toEqual([4.5, 20.7, 33.9, 50.1, 61.3]);
     expect(theLastLantern.availableTowers).toEqual(["bolt", "net"]);
     expect(game.place("stone", { x: 1, z: 0 })).toBe(false);
     expect(game.place("net", { x: 2, z: 0 })).toBe(true);
@@ -258,33 +258,33 @@ describe("The Last Lantern's first-board lessons", () => {
     expect(runner!.distance - restoredDistance).toBeCloseTo(1.25 * DT, 5);
   });
 
-  // Balance evidence refreshed for the shared 3s shield / 5s exposed default.
+  // Balance evidence refreshed for the owner-promoted September 29 wave tuning.
   it.each(["mixed", "squirrels"] as const)(
     "records wave-six pressure against the %s opening line",
     (strategy) => {
       const result = play(strategy);
       expect(result.phase).toBe("lost");
       expect(result.waves).toBe(6);
-      expect(result.lives).toBe(strategy === "squirrels" ? 6 : 5);
+      expect(result.lives).toBe(6);
       expect(result.killsByKind.boss).toBe(0);
       expect(result.checkpoints).toHaveLength(6);
       expect(waveProfile(result.checkpoints)).toEqual(
         strategy === "mixed"
           ? [
               [1, 67.5, 12, 0, 55, 85, 5, 1],
-              [2, 57.2, 12, 0, 60, 100, 6, 2],
-              [3, 51.5, 12, 0, 35, 110, 8, 3],
-              [4, 65.9, 11, 1, 37, 162, 12, 3],
-              [5, 72.4, 11, 1, 83, 211, 12, 6],
-              [6, 67.3, 5, 2, 51, 78, 12, 8],
+              [2, 63, 12, 0, 60, 100, 6, 2],
+              [3, 106.5, 12, 0, 67, 142, 8, 3],
+              [4, 97.1, 12, 0, 60, 208, 12, 4],
+              [5, 134.7, 12, 0, 84, 299, 12, 9],
+              [6, 68.2, 6, 1, 40, 66, 12, 11],
             ]
           : [
               [1, 63.9, 12, 0, 50, 85, 4, 2],
-              [2, 52.2, 12, 0, 30, 100, 7, 2],
-              [3, 46, 12, 0, 60, 110, 9, 2],
-              [4, 63.5, 12, 0, 49, 164, 12, 3],
-              [5, 70.7, 12, 0, 40, 211, 12, 7],
-              [6, 63.6, 6, 1, 8, 78, 12, 9],
+              [2, 61, 12, 0, 30, 100, 7, 2],
+              [3, 101, 12, 0, 52, 142, 10, 2],
+              [4, 94.8, 12, 0, 70, 208, 12, 4],
+              [5, 133.3, 12, 0, 39, 299, 12, 10],
+              [6, 66.7, 6, 1, 54, 70, 12, 11],
             ],
       );
     },
@@ -293,16 +293,16 @@ describe("The Last Lantern's first-board lessons", () => {
   it("also pressures a line with one poorly placed opening Squirrel", () => {
     const result = play("mistake");
     expect(result.phase).toBe("lost");
-    expect(result.lives).toBe(5);
+    expect(result.lives).toBe(6);
     expect(result.killsByKind.boss).toBe(0);
     expect(result.checkpoints).toHaveLength(6);
     expect(waveProfile(result.checkpoints)).toEqual([
       [1, 64.6, 12, 0, 50, 85, 4, 2],
-      [2, 51.4, 12, 0, 30, 100, 7, 2],
-      [3, 48.6, 12, 0, 60, 110, 9, 2],
-      [4, 65.8, 11, 1, 47, 162, 12, 3],
-      [5, 71.3, 11, 1, 38, 211, 12, 7],
-      [6, 63.6, 5, 2, 6, 78, 12, 9],
+      [2, 59.7, 12, 0, 30, 100, 7, 2],
+      [3, 101.1, 12, 0, 52, 142, 10, 2],
+      [4, 95.6, 12, 0, 70, 208, 12, 4],
+      [5, 133.5, 12, 0, 39, 299, 12, 10],
+      [6, 66.7, 6, 1, 50, 66, 12, 11],
     ]);
   });
 });

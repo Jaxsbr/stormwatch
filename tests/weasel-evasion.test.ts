@@ -120,28 +120,29 @@ it("authors quiet introductions, alternating pairs, and repeating mixed bursts t
     "runner",
     "runner",
   ]);
-  expect(opening[6].at - opening[5].at).toBeCloseTo(6, 1);
-  const alternating = arrivals(2, 7);
+  expect(opening[6].at - opening[5].at).toBeCloseTo(6.5, 1);
+  const alternating = arrivals(2, 8);
   expect(alternating.map((enemy) => enemy.kind)).toEqual([
     "raider",
     "runner",
     "raider",
     "runner",
   ]);
-  const burst = arrivals(3, 8);
+  const burst = arrivals(3, 10);
   expect(burst.map((enemy) => enemy.kind)).toEqual([
     "raider",
     "raider",
-    "raider",
-    "runner",
     "runner",
     "raider",
+    "raider",
+    "raider",
+    "runner",
   ]);
   expect(burst[1].at - burst[0].at).toBeCloseTo(1, 1);
-  expect(burst[5].at - burst[4].at).toBeCloseTo(3, 1);
+  expect(burst[3].at - burst[2].at).toBeCloseTo(3.75, 1);
 });
 
-it("sends four sets of revised mini cycles with fast Weasels and five-second rests", () => {
+it("sends four sets of revised mini cycles with fast Weasels and promoted spacing", () => {
   const game = new Game({
     ...rainstoneCrossing,
     width: 202,
@@ -152,7 +153,7 @@ it("sends four sets of revised mini cycles with fast Weasels and five-second res
   });
   game.state.wave = 3;
   expect(game.startWave()).toBe(true);
-  step(game, 80);
+  step(game, 110);
   const enemies = game.state.enemies;
   expect(enemies).toHaveLength(88);
   const pattern = [
@@ -175,16 +176,19 @@ it("sends four sets of revised mini cycles with fast Weasels and five-second res
     const group = enemies.slice(offset, offset + expected.length);
     expect(group.map((enemy) => enemy.kind)).toEqual(expected);
     for (let i = 1; i < group.length; i++)
-      expect(group[i].spawnedAt - group[i - 1].spawnedAt).toBeCloseTo(0.2, 1);
+      expect(group[i].spawnedAt - group[i - 1].spawnedAt).toBeCloseTo(
+        group[i - 1].kind === "runner" ? 0.7 : 0.2,
+        1,
+      );
     if (cycle > 0)
       expect(group[0].spawnedAt - enemies[offset - 1].spawnedAt).toBeCloseTo(
-        5,
+        5.5,
         1,
       );
     offset += expected.length;
   }
-  expect(enemies[1].distance).toBeGreaterThan(115);
-  expect(enemies[1].distance).toBeLessThan(119);
+  expect(enemies[1].distance).toBeGreaterThan(158);
+  expect(enemies[1].distance).toBeLessThan(160);
 });
 
 it("uses the shared three-on/five-off Rat shield across opening and finale", () => {

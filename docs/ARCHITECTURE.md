@@ -185,3 +185,20 @@ near-vertical targets retain the previous facing. The release pose is briefly
 locked to keep the muzzle stable. North/south tower resources are no longer
 loaded. Enemy travel rendering remains directional. See [ADR 031](decisions/031-side-only-tower-animation.md)
 and the [tower animation process](TOWER-ANIMATION-PROCESS.md).
+
+
+### Accepted defender motions
+
+`AcceptedDefenderMotion` deforms the original Squirrel and Turtle side bodies
+above their planted feet. `DefenderRig` solves the accepted hand paths, bow/string
+snap and Turtle two-hand cast. `defenderMotionPhase` anchors release to the real
+shot age and preparation to target/cooldown, using the authored interval and
+upgrade scale. Idle defenders settle; pause repeats the same pose.
+`cast-net.ts` shares one hanging-to-open rope shape between held net and real
+projectile; launch stores solved hand positions and facing. Motion owns no damage,
+spawn, targeting or cadence rules. See decision 033.
+
+The workbench offers explicit Promote wave and Promote all changes actions.
+All promotion merges only changed map metadata, individual waves and shared
+abilities, preserving unedited disk content and rejecting conflicts atomically.
+See decision 032.

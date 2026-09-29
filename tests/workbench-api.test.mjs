@@ -13,7 +13,12 @@ import {
   createWorkingDraft,
   validateWorkingDraft,
   promoteWorkingWave,
+  promoteAllWorkingChanges,
+  createWave,
+  createMap,
+  rebaseAfterPromotion,
 } from "../src/workbench/working-draft";
+import { AttemptSession } from "../src/workbench/runs";
 const cleanups = [];
 afterEach(async () => {
   for (const cleanup of cleanups.splice(0)) await cleanup();
@@ -26,6 +31,7 @@ async function fixture() {
     validateContent,
     validateWorkingDraft,
     promoteWorkingWave,
+    promoteAllWorkingChanges,
   }));
   cleanups.push(() => rm(dir, { recursive: true, force: true }));
   const url = "http://127.0.0.1:4180";
@@ -57,15 +63,23 @@ async function fixture() {
     return { status, json: async () => result };
   };
   const { token } = await (await request("GET", "/__workbench/config")).json();
-  const post = (draft, extra = {}) =>
-    request("POST", "/__workbench/promote", draft, {
-      "content-type": "application/json",
-      origin: url,
-      "x-workbench-token": token,
-      ...Object.fromEntries(
-        Object.entries(extra).map(([key, value]) => [key.toLowerCase(), value]),
-      ),
-    });
+  const post = (draft, extra = {}, all = false) =>
+    request(
+      "POST",
+      all ? "/__workbench/promote-all" : "/__workbench/promote",
+      draft,
+      {
+        "content-type": "application/json",
+        origin: url,
+        "x-workbench-token": token,
+        ...Object.fromEntries(
+          Object.entries(extra).map(([key, value]) => [
+            key.toLowerCase(),
+            value,
+          ]),
+        ),
+      },
+    );
   return { dir, file, url, post };
 }
 it("atomically promotes the selected wave, preserves unrelated edits, and rejects stale retry", async () => {
@@ -136,4 +150,107 @@ it("promotion updates runtime JSON without touching the compiled game", async ()
     draft.content.levels[0].waves[0],
   );
   expect(await readFile(bundle, "utf8")).toBe("already-built-game");
+});
+
+it("promotes all edited waves and maps through runtime reload while preserving unrelated disk edits", async () => {
+  const { file, post } = await fixture();
+  const draft = createWorkingDraft(CANONICAL_CONTENT);
+  draft.content.levels[0].waves[0].reward += 7;
+  draft.content.levels[0].waves[1].reward += 9;
+  draft.content.levels[1].startCoins += 11;
+  const current = structuredClone(CANONICAL_CONTENT);
+  current.levels[2].startCoins += 13;
+  await writeFile(file, JSON.stringify(current));
+  const restored = validateWorkingDraft(JSON.parse(JSON.stringify(draft)));
+  const scenario = {
+    id: "round-trip",
+    levelId: restored.levelId,
+    waveId: restored.waveId,
+    mode: "wave",
+    progression: "first-arrival",
+    difficulty: "normal",
+    seed: 42,
+  };
+  const playtest = new AttemptSession(
+    promoteWorkingWave(current, restored),
+    scenario,
+  );
+  expect((await post(restored, {}, true)).status).toBe(200);
+  let loaded;
+  await runtimeContentMiddleware(file)(
+    { method: "GET", url: "/game-content.json" },
+    {
+      writeHead(code) {
+        expect(code).toBe(200);
+      },
+      end(body) {
+        loaded = JSON.parse(body);
+      },
+    },
+    () => {
+      throw new Error("Missing runtime route");
+    },
+  );
+  expect(loaded.levels[0].waves.slice(0, 2)).toEqual(
+    draft.content.levels[0].waves.slice(0, 2),
+  );
+  expect(loaded.levels[1].startCoins).toBe(draft.content.levels[1].startCoins);
+  expect(loaded.levels[2]).toEqual(current.levels[2]);
+  const reloadedGame = new AttemptSession(loaded, scenario);
+  expect(reloadedGame.configurationIdentity).toBe(
+    playtest.configurationIdentity,
+  );
+  expect(reloadedGame.game.level).toEqual(playtest.game.level);
+  const rebased = rebaseAfterPromotion(restored, loaded);
+  expect(rebased.content).toEqual(rebased.base);
+  const disk = await readFile(file, "utf8");
+  expect((await post(draft, {}, true)).status).toBe(409);
+  expect(await readFile(file, "utf8")).toBe(disk);
+});
+it("rejects all promotion atomically when another edited wave conflicts", async () => {
+  const { file, post } = await fixture();
+  const draft = createWorkingDraft(CANONICAL_CONTENT);
+  draft.content.levels[0].waves[0].reward += 7;
+  draft.content.levels[0].waves[1].reward += 9;
+  const current = structuredClone(CANONICAL_CONTENT);
+  current.levels[0].waves[1].reward += 12;
+  await writeFile(file, JSON.stringify(current));
+  const disk = await readFile(file, "utf8");
+  expect((await post(draft, {}, true)).status).toBe(409);
+  expect(await readFile(file, "utf8")).toBe(disk);
+});
+
+it("keeps an empty new wave in the draft instead of partially promoting all changes", async () => {
+  const { file, post } = await fixture();
+  const draft = createWave(
+    createWorkingDraft(CANONICAL_CONTENT),
+    "New wave",
+    "new-empty-wave",
+  );
+  draft.content.levels[0].waves[0].reward += 5;
+  const original = await readFile(file, "utf8");
+  expect((await post(draft, {}, true)).status).toBe(409);
+  expect(await readFile(file, "utf8")).toBe(original);
+});
+
+it("promotes every populated wave of a new map together", async () => {
+  const { file, post } = await fixture();
+  let draft = createMap(
+    createWorkingDraft(CANONICAL_CONTENT),
+    "New crossing",
+    CANONICAL_CONTENT.levels[0].id,
+    "new-crossing",
+    "new-first",
+  );
+  draft.content.levels.at(-1).waves[0].packets = [
+    { id: "rats", groups: [{ id: "rat", kind: "raider", count: 3, gap: 1 }] },
+  ];
+  draft = createWave(draft, "Second wave", "new-second");
+  draft.content.levels.at(-1).waves[1].packets = [
+    { id: "rats", groups: [{ id: "rat", kind: "raider", count: 4, gap: 2 }] },
+  ];
+  expect((await post(draft, {}, true)).status).toBe(200);
+  const disk = JSON.parse(await readFile(file, "utf8"));
+  expect(disk.levels.slice(0, -1)).toEqual(CANONICAL_CONTENT.levels);
+  expect(disk.levels.at(-1)).toEqual(draft.content.levels.at(-1));
 });

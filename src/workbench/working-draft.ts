@@ -222,6 +222,85 @@ export function promoteWorkingWave(
   return result;
 }
 
+/** Merge all changed draft scopes, preserving unrelated changes on disk. */
+export function promoteAllWorkingChanges(
+  current: AuthoringContent,
+  input: WorkingDraft,
+): AuthoringContent {
+  current = normalizeAbilities(current);
+  validateContent(current);
+  const draft = validateWorkingDraft(input);
+  const result = clone(current);
+  const merge = <T>(
+    authored: T,
+    base: T | undefined,
+    live: T | undefined,
+    label: string,
+  ): T | undefined => {
+    if (equal(authored, base)) return live;
+    if (!equal(live, base))
+      throw new Error(
+        `${label} changed in game config. Reload its latest settings before promoting.`,
+      );
+    return clone(authored);
+  };
+  for (const level of draft.content.levels) {
+    const base = draft.base.levels.find((entry) => entry.id === level.id);
+    const live = result.levels.find((entry) => entry.id === level.id);
+    const fields = merge(
+      metadata(level),
+      base && metadata(base),
+      live && metadata(live),
+      level.name,
+    );
+    const waves = clone(live?.waves ?? []);
+    for (const wave of level.waves) {
+      const index = waves.findIndex((entry) => entry.id === wave.id);
+      const merged = merge(
+        wave,
+        base?.waves.find((entry) => entry.id === wave.id),
+        waves[index],
+        `${level.name}: ${wave.title}`,
+      );
+      if (merged) {
+        if (index < 0) waves.push(merged);
+        else waves[index] = merged;
+      }
+    }
+    if (fields) {
+      const next = { ...fields, waves };
+      const index = result.levels.findIndex((entry) => entry.id === level.id);
+      if (index < 0) result.levels.push(next);
+      else result.levels[index] = next;
+    }
+  }
+  result.abilityDefaults = merge(
+    draft.content.abilityDefaults,
+    draft.base.abilityDefaults,
+    current.abilityDefaults,
+    "Shared ability settings",
+  )!;
+  for (const scope of ["towers", "enemies", "rules"] as const) {
+    if (!equal(draft.content[scope], draft.base[scope]))
+      throw new Error(
+        "Catalog and rule changes require the agent promotion workflow.",
+      );
+  }
+  validateContent(result);
+  for (const level of result.levels) {
+    if (
+      level.requiresBossDefeat &&
+      !level.waves.some((wave) =>
+        wave.packets.some((packet) =>
+          packet.groups.some((group) => group.kind === "boss"),
+        ),
+      )
+    )
+      throw new Error(`${level.name} requires a boss wave`);
+  }
+  return result;
+}
+
 /** Keep pending work while accepting fresh game content as the new comparison base. */
 export function rebaseAfterPromotion(
   input: WorkingDraft,
