@@ -1508,7 +1508,10 @@
     },
     "bossRage": {
       "angrySpeedScale": 1.35,
-      "ragingSpeedScale": 1.8
+      "ragingSpeedScale": 1.6,
+      "triggerDamagePercent": 10,
+      "angrySeconds": 3,
+      "ragingSeconds": 4
     }
   }
 }

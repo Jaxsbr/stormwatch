@@ -1,5 +1,9 @@
 # Roadwarden rage playtest
 
+Historical capture of the initial health-threshold version. The repeating-cycle
+follow-up is in `../2026-09-30-boss-rage-cycles`; the live fixture now uses current
+gameplay rules.
+
 `boss-wave.mp4` is a silent, normal-speed 1280×720 capture of the final wave.
 The fixture replays the existing `finale-mixed` policy through the first five
 waves, then records wave six with its legitimately purchased Squirrels and Turtle.

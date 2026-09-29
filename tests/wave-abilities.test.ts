@@ -139,8 +139,11 @@ it("migrates, promotes and reloads boss rage speed settings through the shared a
   delete c.abilityDefaults!.bossRage;
   const draft = createWorkingDraft(c);
   expect(draft.content.abilityDefaults!.bossRage).toEqual({
+    triggerDamagePercent: 10,
+    angrySeconds: 3,
+    ragingSeconds: 4,
     angrySpeedScale: 1.35,
-    ragingSpeedScale: 1.8,
+    ragingSpeedScale: 1.6,
   });
   draft.content.abilityDefaults!.bossRage = {
     angrySpeedScale: 1.5,
@@ -154,8 +157,45 @@ it("migrates, promotes and reloads boss rage speed settings through the shared a
   const game = new Game(snapshot.level, "none", false, 42, {
     configuration: snapshot,
   });
-  expect(game.bossRage).toEqual({ angrySpeedScale: 1.5, ragingSpeedScale: 2 });
+  expect(game.bossRage).toEqual({
+    angrySpeedScale: 1.5,
+    ragingSpeedScale: 2,
+    triggerDamagePercent: 10,
+    angrySeconds: 3,
+    ragingSeconds: 4,
+  });
   expect(promoted.levels).toEqual(c.levels);
   promoted.abilityDefaults!.bossRage!.ragingSpeedScale = 1.1;
   expect(() => validateContent(promoted)).toThrow();
 });
+
+it("migrates speed-only rage drafts without discarding the owner's speed tuning", () => {
+  const c = content();
+  c.abilityDefaults!.bossRage = { angrySpeedScale: 1.2, ragingSpeedScale: 1.7 };
+  const draft = validateWorkingDraft(
+    JSON.parse(JSON.stringify(createWorkingDraft(c))),
+  );
+  expect(draft.content.abilityDefaults!.bossRage).toEqual({
+    angrySpeedScale: 1.2,
+    ragingSpeedScale: 1.7,
+    triggerDamagePercent: 10,
+    angrySeconds: 3,
+    ragingSeconds: 4,
+  });
+});
+it.each([0, -1, 101, NaN])(
+  "rejects invalid rage damage percentage %s",
+  (value) => {
+    const c = content();
+    c.abilityDefaults!.bossRage!.triggerDamagePercent = value;
+    expect(() => validateContent(c)).toThrow();
+  },
+);
+it.each(["angrySeconds", "ragingSeconds"] as const)(
+  "rejects nonpositive %s",
+  (key) => {
+    const c = content();
+    c.abilityDefaults!.bossRage![key] = 0;
+    expect(() => validateContent(c)).toThrow();
+  },
+);

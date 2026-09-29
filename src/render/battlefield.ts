@@ -929,7 +929,7 @@ export class Battlefield {
       }
       const next = pointOnPath(game.level.path, e.distance + 0.02);
       const vertical = Math.abs(next.z - e.z) > Math.abs(next.x - e.x);
-      const rage = e.kind === "boss" ? bossRagePhase(e.hp, e.maxHp) : 0;
+      const rage = e.kind === "boss" ? bossRagePhase(e) : 0;
       let desiredRig = vertical
         ? next.z > e.z
           ? this.directionalRigs[e.kind].front

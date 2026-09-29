@@ -261,6 +261,9 @@ it("round trips rage tuning through saved draft, Playtest, Promote and runtime r
   draft.content.abilityDefaults.bossRage = {
     angrySpeedScale: 1.45,
     ragingSpeedScale: 1.95,
+    triggerDamagePercent: 12,
+    angrySeconds: 2,
+    ragingSeconds: 5,
   };
   const restored = validateWorkingDraft(JSON.parse(JSON.stringify(draft)));
   const scenario = {
@@ -297,6 +300,9 @@ it("round trips rage tuning through saved draft, Playtest, Promote and runtime r
   expect(reloaded.game.bossRage).toEqual({
     angrySpeedScale: 1.45,
     ragingSpeedScale: 1.95,
+    triggerDamagePercent: 12,
+    angrySeconds: 2,
+    ragingSeconds: 5,
   });
   expect(reloaded.configurationIdentity).toBe(playtest.configurationIdentity);
 });

@@ -1,3 +1,4 @@
+import { updateBossRage } from "../src/sim/boss-rage";
 import { describe, expect, it } from "vitest";
 import { Game } from "../src/sim/game";
 import { distance, pathLength, pointOnPath } from "../src/sim/path";
@@ -244,18 +245,64 @@ describe("Roadwarden rally", () => {
   });
 });
 
-describe("Roadwarden rage", () => {
-  it("steps up at both exact health thresholds while preserving the full Turtle slow", () => {
+describe("Roadwarden rage cycles", () => {
+  function setup() {
     const game = new Game(level());
     game.startWave();
     while (!game.state.enemies.length) game.tick(DT);
-    const boss = game.state.enemies[0];
-    for (const [health, multiplier] of [
-      [1, 1],
-      [2 / 3, 1.35],
-      [1 / 3, 1.8],
+    return { game, boss: game.state.enemies[0] };
+  }
+  it("accumulates damage, escalates on time, resets and requires fresh damage", () => {
+    const { game, boss } = setup();
+    const update = (clock: number) =>
+      updateBossRage(boss, clock, game.bossRage);
+    boss.hp = boss.maxHp * 0.95;
+    update(1);
+    expect(boss.rage?.phase).toBe(0);
+    boss.hp = boss.maxHp * 0.9;
+    update(2);
+    expect(boss.rage?.phase).toBe(1);
+    update(4.99);
+    expect(boss.rage?.phase).toBe(1);
+    update(5);
+    expect(boss.rage?.phase).toBe(2);
+    boss.hp = boss.maxHp * 0.65;
+    update(6);
+    expect(boss.rage?.phaseUntil).toBe(9);
+    update(9);
+    expect(boss.rage?.phase).toBe(0);
+    update(10);
+    expect(boss.rage?.phase).toBe(0);
+    boss.hp -= boss.maxHp * 0.1;
+    update(11);
+    expect(boss.rage?.phase).toBe(1);
+    update(14);
+    expect(boss.rage?.phase).toBe(2);
+    update(18);
+    expect(boss.rage?.phase).toBe(0);
+  });
+  it.each([0, 1, 2] as const)(
+    "enters permanent rage at exactly 25%% from phase %i",
+    (phase) => {
+      const { game, boss } = setup();
+      boss.rage!.phase = phase;
+      boss.rage!.phaseUntil = 2;
+      boss.hp = boss.maxHp / 4;
+      updateBossRage(boss, 1, game.bossRage);
+      expect(boss.rage).toMatchObject({ phase: 2, permanent: true });
+      updateBossRage(boss, 100, game.bossRage);
+      expect(boss.rage?.phase).toBe(2);
+    },
+  );
+  it("preserves full Turtle slow in every phase and freezes cycle timers on pause", () => {
+    const { game, boss } = setup();
+    for (const [phase, multiplier] of [
+      [0, 1],
+      [1, 1.35],
+      [2, 1.6],
     ] as const) {
-      boss.hp = health * boss.maxHp;
+      boss.rage!.phase = phase;
+      boss.rage!.phaseUntil = game.state.clock + 10;
       for (const slowed of [false, true]) {
         boss.slowUntil = slowed ? game.state.clock + 5 : 0;
         const before = boss.distance;
@@ -270,21 +317,33 @@ describe("Roadwarden rage", () => {
       }
     }
     game.pause();
-    const before = boss.distance;
-    step(game, 1);
-    expect(boss.distance).toBe(before);
+    const before = structuredClone(boss);
+    const clock = game.state.clock;
+    step(game, 10);
+    expect(boss).toEqual(before);
+    expect(game.state.clock).toBe(clock);
   });
-  it("uses the raging phase immediately when a hit crosses both thresholds", () => {
-    const game = new Game(level());
-    game.startWave();
-    while (!game.state.enemies.length) game.tick(DT);
-    const boss = game.state.enemies[0];
-    boss.hp = boss.maxHp * 0.2;
-    const before = boss.distance;
-    game.tick(DT);
-    expect(boss.distance - before).toBeCloseTo(
-      game.enemies.boss.speed * 1.8 * DT,
-      8,
-    );
+  it("uses actual post-armor damage and escalates in the same hit that triggers it", () => {
+    const { game, boss } = setup();
+    const hit = (damage: number) => {
+      game.state.shots.push({
+        id: 999,
+        x: boss.x,
+        z: boss.z,
+        source: { x: boss.x, z: boss.z },
+        targetId: boss.id,
+        kind: "bolt",
+        damage,
+        life: 1,
+        duration: 1,
+        target: { x: boss.x, z: boss.z },
+      });
+      game.tick(DT);
+    };
+    hit(110);
+    expect(boss.rage?.phase).toBe(0);
+    hit(122);
+    expect(boss.rage?.phase).toBe(1);
+    expect(boss.hp).toBe(boss.maxHp - 220);
   });
 });

@@ -46,6 +46,9 @@ it("loads promoted waves, catalogs, rules and new map save IDs before game impor
     5.7, 19.45, 33.2, 46.95,
   ]);
   expect(new Game(LEVELS[0]).bossRage).toEqual({
+    triggerDamagePercent: 10,
+    angrySeconds: 3,
+    ragingSeconds: 4,
     angrySpeedScale: 1.4,
     ragingSpeedScale: 1.9,
   });

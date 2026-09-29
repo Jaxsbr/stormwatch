@@ -21,6 +21,17 @@ session.replay(plan.trace, {
 while (!session.preparationHeld && session.tickIndex < plan.ticks)
   session.step();
 const game = session.game;
+// Branch the legally purchased campaign line into a second Turtle for a longer
+// visual sample of repeated rage. No health or economy overrides.
+session.branch();
+const sold = game.state.towers.find((t) => t.x === 3 && t.z === 7)!;
+if (
+  !sold ||
+  !session.command({ type: "sell", id: sold.id }) ||
+  !session.command({ type: "place", kind: "net", point: { x: 8, z: 3 } })
+)
+  throw new Error("Review formation is not affordable/legal");
+const reviewStartClock = game.state.clock;
 const field = new Battlefield(document.querySelector<HTMLElement>("#field")!);
 field.load(game.level);
 const capture = document.createElement("canvas");
@@ -32,6 +43,7 @@ let running = false,
   accumulator = 0,
   previous = performance.now(),
   phase = -1;
+let permanent = false;
 let recorder: MediaRecorder | undefined;
 const chunks: Blob[] = [];
 let completed: Blob | undefined;
@@ -54,11 +66,17 @@ function frame(now: number) {
           }),
         );
       const boss = game.state.enemies.find((e) => e.kind === "boss");
-      if (boss && bossRagePhase(boss) !== phase) {
+      if (
+        boss &&
+        (bossRagePhase(boss) !== phase || !!boss.rage?.permanent !== permanent)
+      ) {
         phase = bossRagePhase(boss);
+        permanent = !!boss.rage?.permanent;
         log.push({
           clock: game.state.clock,
           phase,
+          permanent,
+          waveTime: game.state.clock - reviewStartClock,
           hp: boss.hp,
           maxHp: boss.maxHp,
           slow: boss.slowUntil > game.state.clock,
@@ -115,7 +133,7 @@ document.querySelector<HTMLButtonElement>("#start")!.onclick = () => {
     stream.getTracks().forEach((t) => t.stop());
   };
   recorder.start();
-  session.continueReplay();
+  session.command({ type: "start" });
   running = true;
 };
 Object.assign(window, {
@@ -129,7 +147,7 @@ Object.assign(window, {
       return completed;
     },
     get ready() {
-      return !running && session.preparationHeld;
+      return !running && game.state.phase === "preparation";
     },
   },
 });

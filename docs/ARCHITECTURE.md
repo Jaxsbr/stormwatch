@@ -205,9 +205,10 @@ See decision 032.
 
 ### Roadwarden phases
 
-The simulation and renderer share inclusive health thresholds from `boss-rage.ts`.
-Shared ability settings supply angry/raging movement multipliers to immutable
-attempt configurations; Turtle slow still multiplies the result. Successful rally
+The simulation owns damage-triggered rage phase, recovery baseline and deadlines
+through `boss-rage.ts`; the renderer reads that state. At 25% HP full rage becomes
+permanent. Shared ability settings supply trigger percentage, cycle durations and
+movement multipliers to immutable attempts; Turtle slow still multiplies the result. Successful rally
 casts expose simulation timestamps for renderer-only pulses and escort streaks.
 Approved side/front expression resources share the original leg textures. See
 decision 034 and the boss-wave review fixture.
