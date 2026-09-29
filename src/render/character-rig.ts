@@ -112,6 +112,8 @@ export class CharacterRig {
     color: THREE.ColorRepresentation,
     hitAge = Infinity,
     shieldRaised = false,
+    ragePhase = 0,
+    reducedMotion = false,
   ) {
     this.cutout.reset(order, color);
     const phase = (distance / 0.65) % 1;
@@ -124,7 +126,10 @@ export class CharacterRig {
     const body = this.cutout.parts.get("body")!;
     body.position.y = hipHeight;
     body.position.x = -impact * (this.frontal ? 10 : 24);
-    body.material.rotation = impact * 0.045;
+    const swing = reducedMotion ? 0 : Math.sin(phase * Math.PI * 2) * ragePhase;
+    body.position.x += swing * 10;
+    body.position.y += Math.abs(swing) * 3;
+    body.material.rotation = impact * 0.045 + swing * 0.035;
     const guard = this.cutout.parts.get("bodyGuard");
     body.visible = !shieldRaised || !guard;
     if (guard) {

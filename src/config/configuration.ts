@@ -12,6 +12,13 @@ import type {
 } from "../sim/types";
 import { validateLevel } from "../sim/path";
 import { compileSpawnSchedule } from "../sim/spawn-schedule";
+export interface BossRageSettings {
+  angrySpeedScale: number;
+  ragingSpeedScale: number;
+  triggerDamagePercent?: number;
+  angrySeconds?: number;
+  ragingSeconds?: number;
+}
 export type GameplayRules = typeof source.rules;
 export interface PacketRecipe {
   id: string;
@@ -33,7 +40,11 @@ export interface LevelRecipe extends Omit<LevelDef, "waves"> {
 }
 export interface AuthoringContent {
   schemaVersion: 1;
-  abilityDefaults?: { ratShield: ShieldCycle; weaselEvade: EvasionCycle };
+  abilityDefaults?: {
+    ratShield: ShieldCycle;
+    weaselEvade: EvasionCycle;
+    bossRage?: BossRageSettings;
+  };
   levels: LevelRecipe[];
   towers: Record<TowerKind, TowerDef>;
   enemies: Record<EnemyKind, EnemyDef>;
@@ -44,6 +55,7 @@ export interface AttemptConfiguration {
   towers: Record<TowerKind, TowerDef>;
   enemies: Record<EnemyKind, EnemyDef>;
   rules: GameplayRules;
+  bossRage?: BossRageSettings;
   identity: string;
 }
 export let DEFAULT_RULES: GameplayRules = freeze(structuredClone(source.rules));
@@ -64,6 +76,7 @@ export function installRuntimeContent(value: unknown): void {
   DEFAULT_RULES = CANONICAL_CONTENT.rules;
 }
 export const ABILITY_DEFAULTS = {
+  bossRage: structuredClone(source.abilityDefaults.bossRage),
   ratShield: { upSeconds: 3, downSeconds: 5 },
   weaselEvade: { upSeconds: 2, downSeconds: 3 },
 };
@@ -83,6 +96,10 @@ export function normalizeAbilities(
 ): AuthoringContent {
   const next = structuredClone(content);
   next.abilityDefaults ??= structuredClone(ABILITY_DEFAULTS);
+  next.abilityDefaults.bossRage = {
+    ...ABILITY_DEFAULTS.bossRage,
+    ...next.abilityDefaults.bossRage,
+  };
   for (const level of next.levels)
     for (const wave of level.waves) {
       wave.abilities = waveAbilities(wave);
@@ -185,9 +202,41 @@ export function validateContent(content: AuthoringContent): void {
   if (content.abilityDefaults !== undefined) {
     exact(
       content.abilityDefaults,
-      ["ratShield", "weaselEvade"],
+      ["ratShield", "weaselEvade", "bossRage"],
       "abilityDefaults",
     );
+    if (content.abilityDefaults.bossRage !== undefined) {
+      const rage = content.abilityDefaults.bossRage;
+      exact(
+        rage,
+        [
+          "angrySpeedScale",
+          "ragingSpeedScale",
+          "triggerDamagePercent",
+          "angrySeconds",
+          "ragingSeconds",
+        ],
+        "bossRage",
+      );
+      if (rage.triggerDamagePercent !== undefined) {
+        numeric(
+          rage.triggerDamagePercent,
+          "bossRage.triggerDamagePercent",
+          Number.EPSILON,
+        );
+        if (rage.triggerDamagePercent > 100)
+          throw new Error("bossRage.triggerDamagePercent: maximum 100");
+      }
+      for (const key of ["angrySeconds", "ragingSeconds"] as const)
+        if (rage[key] !== undefined)
+          numeric(rage[key], `bossRage.${key}`, Number.EPSILON);
+      numeric(rage.angrySpeedScale, "bossRage.angrySpeedScale", 1);
+      numeric(
+        rage.ragingSpeedScale,
+        "bossRage.ragingSpeedScale",
+        rage.angrySpeedScale,
+      );
+    }
     for (const key of ["ratShield", "weaselEvade"] as const) {
       const cycle = content.abilityDefaults[key];
       exact(cycle, ["upSeconds", "downSeconds"], key);
@@ -380,6 +429,10 @@ export function resolveConfiguration(
     towers: structuredClone(content.towers),
     enemies: structuredClone(content.enemies),
     rules: structuredClone(content.rules),
+    bossRage: structuredClone({
+      ...ABILITY_DEFAULTS.bossRage,
+      ...content.abilityDefaults?.bossRage,
+    }),
   };
   return freeze({ ...value, identity: configurationIdentity(value) });
 }

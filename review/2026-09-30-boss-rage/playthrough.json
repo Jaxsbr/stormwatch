@@ -1,0 +1,55 @@
+{
+  "events": [
+    {
+      "clock": 478.86666666683203,
+      "phase": 0,
+      "hp": 2200,
+      "maxHp": 2200,
+      "slow": false
+    },
+    {
+      "clock": 485.8666666668376,
+      "type": "rally",
+      "recipients": 3
+    },
+    {
+      "clock": 495.86666666684556,
+      "type": "rally",
+      "recipients": 1
+    },
+    {
+      "clock": 505.8666666668535,
+      "type": "rally",
+      "recipients": 0
+    },
+    {
+      "clock": 510.73333333352406,
+      "phase": 1,
+      "hp": 1462,
+      "maxHp": 2200,
+      "slow": false
+    },
+    {
+      "clock": 515.8666666668548,
+      "type": "rally",
+      "recipients": 0
+    },
+    {
+      "clock": 523.5333333335145,
+      "phase": 2,
+      "hp": 725,
+      "maxHp": 2200,
+      "slow": false
+    },
+    {
+      "clock": 525.8666666668457,
+      "type": "rally",
+      "recipients": 0
+    },
+    {
+      "outcome": "lost",
+      "clock": 528.5000000001767
+    }
+  ],
+  "errors": []
+}

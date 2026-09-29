@@ -21,13 +21,16 @@ function shieldShape() {
 
 function rallyShape() {
   const shape = new THREE.Shape();
-  shape.moveTo(-14, -8);
-  shape.lineTo(-6, -8);
-  shape.lineTo(5, -14);
-  shape.lineTo(5, 14);
-  shape.lineTo(-6, 8);
-  shape.lineTo(-14, 8);
-  shape.closePath();
+  // Two forward chevrons: the caster grants movement speed, not a sound status.
+  for (const x of [-15, 1]) {
+    shape.moveTo(x, -12);
+    shape.lineTo(x + 9, 0);
+    shape.lineTo(x, 12);
+    shape.lineTo(x + 7, 12);
+    shape.lineTo(x + 16, 0);
+    shape.lineTo(x + 7, -12);
+    shape.closePath();
+  }
   return shape;
 }
 

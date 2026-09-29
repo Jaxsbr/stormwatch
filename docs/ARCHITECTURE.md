@@ -202,3 +202,13 @@ The workbench offers explicit Promote wave and Promote all changes actions.
 All promotion merges only changed map metadata, individual waves and shared
 abilities, preserving unedited disk content and rejecting conflicts atomically.
 See decision 032.
+
+### Roadwarden phases
+
+The simulation owns damage-triggered rage phase, recovery baseline and deadlines
+through `boss-rage.ts`; the renderer reads that state. At 25% HP full rage becomes
+permanent. Shared ability settings supply trigger percentage, cycle durations and
+movement multipliers to immutable attempts; Turtle slow still multiplies the result. Successful rally
+casts expose simulation timestamps for renderer-only pulses and escort streaks.
+Approved side/front expression resources share the original leg textures. See
+decision 034 and the boss-wave review fixture.

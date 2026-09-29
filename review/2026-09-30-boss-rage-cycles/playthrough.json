@@ -1,0 +1,138 @@
+{
+  "events": [
+    {
+      "clock": 478.86666666683203,
+      "phase": 0,
+      "permanent": false,
+      "waveTime": 10.166666666674757,
+      "hp": 2200,
+      "maxHp": 2200,
+      "slow": false
+    },
+    {
+      "clock": 485.8666666668376,
+      "type": "rally",
+      "recipients": 3
+    },
+    {
+      "clock": 495.86666666684556,
+      "type": "rally",
+      "recipients": 1
+    },
+    {
+      "clock": 501.26666666684986,
+      "phase": 1,
+      "permanent": false,
+      "waveTime": 32.56666666669258,
+      "hp": 1979,
+      "maxHp": 2200,
+      "slow": false
+    },
+    {
+      "clock": 504.26666666685225,
+      "phase": 2,
+      "permanent": false,
+      "waveTime": 35.56666666669497,
+      "hp": 1847,
+      "maxHp": 2200,
+      "slow": false
+    },
+    {
+      "clock": 505.8666666668535,
+      "type": "rally",
+      "recipients": 0
+    },
+    {
+      "clock": 508.26666666685543,
+      "phase": 0,
+      "permanent": false,
+      "waveTime": 39.566666666698154,
+      "hp": 1659,
+      "maxHp": 2200,
+      "slow": true
+    },
+    {
+      "clock": 512.4333333335246,
+      "phase": 1,
+      "permanent": false,
+      "waveTime": 43.73333333336734,
+      "hp": 1436,
+      "maxHp": 2200,
+      "slow": true
+    },
+    {
+      "clock": 515.4666666668552,
+      "phase": 2,
+      "permanent": false,
+      "waveTime": 46.766666666697915,
+      "hp": 1242,
+      "maxHp": 2200,
+      "slow": true
+    },
+    {
+      "clock": 515.8666666668548,
+      "type": "rally",
+      "recipients": 0
+    },
+    {
+      "clock": 519.4666666668516,
+      "phase": 0,
+      "permanent": false,
+      "waveTime": 50.76666666669428,
+      "hp": 1102,
+      "maxHp": 2200,
+      "slow": true
+    },
+    {
+      "clock": 523.700000000181,
+      "phase": 1,
+      "permanent": false,
+      "waveTime": 55.00000000002376,
+      "hp": 874,
+      "maxHp": 2200,
+      "slow": true
+    },
+    {
+      "clock": 525.8666666668457,
+      "type": "rally",
+      "recipients": 0
+    },
+    {
+      "clock": 526.7333333335116,
+      "phase": 2,
+      "permanent": false,
+      "waveTime": 58.033333333354335,
+      "hp": 750,
+      "maxHp": 2200,
+      "slow": true
+    },
+    {
+      "clock": 530.733333333508,
+      "phase": 0,
+      "permanent": false,
+      "waveTime": 62.0333333333507,
+      "hp": 573,
+      "maxHp": 2200,
+      "slow": true
+    },
+    {
+      "clock": 531.1666666668409,
+      "phase": 2,
+      "permanent": true,
+      "waveTime": 62.466666666683636,
+      "hp": 540,
+      "maxHp": 2200,
+      "slow": true
+    },
+    {
+      "clock": 535.8666666668366,
+      "type": "rally",
+      "recipients": 0
+    },
+    {
+      "outcome": "lost",
+      "clock": 542.5333333334972
+    }
+  ],
+  "errors": []
+}

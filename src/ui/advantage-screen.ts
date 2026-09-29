@@ -30,7 +30,7 @@ const enemyTraits: Record<EnemyKind, string> = {
   raider: "Periodic shield · half damage",
   runner: "Runs fast",
   armored: "Blocks damage",
-  boss: "Boss · tough & armored",
+  boss: "Rage · boosts nearby enemies’ speed",
 };
 const enemyArt: Record<EnemyKind, string> = {
   raider: "rat",

@@ -1,6 +1,10 @@
+import { bossRageSpeed, updateBossRage } from "./boss-rage";
 import { ENEMIES, TOWERS } from "../content/catalog";
 import {
   DEFAULT_RULES,
+  CANONICAL_CONTENT,
+  ABILITY_DEFAULTS,
+  type BossRageSettings,
   type AttemptConfiguration,
   type GameplayRules,
 } from "../config/configuration";
@@ -39,6 +43,7 @@ export class Game {
   readonly towers: typeof TOWERS;
   readonly enemies: typeof ENEMIES;
   readonly rules: GameplayRules;
+  readonly bossRage: Required<BossRageSettings>;
   readonly state: GameState;
   readonly events: GameEvent[] = [];
   private serial = 1;
@@ -67,6 +72,10 @@ export class Game {
     this.towers = structuredClone(snapshot?.towers ?? TOWERS);
     this.enemies = structuredClone(snapshot?.enemies ?? ENEMIES);
     this.rules = structuredClone(snapshot?.rules ?? DEFAULT_RULES);
+    this.bossRage = structuredClone({
+      ...ABILITY_DEFAULTS.bossRage,
+      ...(snapshot?.bossRage ?? CANONICAL_CONTENT.abilityDefaults?.bossRage),
+    });
     const freeze = (value: object) => {
       Object.values(value).forEach((v) => {
         if (v && typeof v === "object") freeze(v);
@@ -77,6 +86,7 @@ export class Game {
     freeze(this.towers);
     freeze(this.enemies);
     freeze(this.rules);
+    freeze(this.bossRage);
     level = this.level;
     validateLevel(level);
     for (const wave of level.waves)
@@ -283,9 +293,11 @@ export class Game {
     const len = pathLength(this.level.path);
     for (const e of s.enemies) {
       if (!e.alive) continue;
+      updateBossRage(e, s.clock, this.bossRage);
       e.distance +=
         this.enemies[e.kind].speed *
         (e.movementScale ?? 1) *
+        (e.kind === "boss" ? bossRageSpeed(e, this.bossRage) : 1) *
         Math.max(
           e.kind === "runner" &&
             weaselEvasionState(s.clock - e.spawnedAt, e.evasionCycle).active
@@ -443,6 +455,7 @@ export class Game {
         );
         recipients++;
       }
+      if (recipients > 0) boss.rallyCastAt = s.clock;
       this.emit("rally", recipients);
       boss.nextRallyAt += this.rules.boss.rallyIntervalSeconds;
       boss.rallyWarningEmitted = false;
@@ -475,6 +488,7 @@ export class Game {
     e.hp -=
       Math.max(1, damage - this.enemies[e.kind].armor) *
       (guarded ? this.rules.guardDamageScale : 1);
+    if (e.hp > 0) updateBossRage(e, s.clock, this.bossRage);
     if (guarded) {
       e.shieldHitAt = s.clock;
       this.emit("shield-hit");

@@ -254,3 +254,55 @@ it("promotes every populated wave of a new map together", async () => {
   expect(disk.levels.slice(0, -1)).toEqual(CANONICAL_CONTENT.levels);
   expect(disk.levels.at(-1)).toEqual(draft.content.levels.at(-1));
 });
+
+it("round trips rage tuning through saved draft, Playtest, Promote and runtime reload", async () => {
+  const { file, post } = await fixture();
+  const draft = createWorkingDraft(CANONICAL_CONTENT);
+  draft.content.abilityDefaults.bossRage = {
+    angrySpeedScale: 1.45,
+    ragingSpeedScale: 1.95,
+    triggerDamagePercent: 12,
+    angrySeconds: 2,
+    ragingSeconds: 5,
+  };
+  const restored = validateWorkingDraft(JSON.parse(JSON.stringify(draft)));
+  const scenario = {
+    id: "rage-roundtrip",
+    levelId: restored.levelId,
+    waveId: restored.waveId,
+    mode: "wave",
+    progression: "first-arrival",
+    difficulty: "normal",
+    seed: 42,
+  };
+  const playtest = new AttemptSession(
+    promoteWorkingWave(CANONICAL_CONTENT, restored),
+    scenario,
+  );
+  expect((await post(restored)).status).toBe(200);
+  let loaded;
+  await runtimeContentMiddleware(file)(
+    { method: "GET", url: "/game-content.json" },
+    {
+      writeHead(code) {
+        expect(code).toBe(200);
+      },
+      end(body) {
+        loaded = JSON.parse(body);
+      },
+    },
+    () => {
+      throw new Error("Missing runtime content");
+    },
+  );
+  expect(loaded.levels).toEqual(CANONICAL_CONTENT.levels);
+  const reloaded = new AttemptSession(loaded, scenario);
+  expect(reloaded.game.bossRage).toEqual({
+    angrySpeedScale: 1.45,
+    ragingSpeedScale: 1.95,
+    triggerDamagePercent: 12,
+    angrySeconds: 2,
+    ragingSeconds: 5,
+  });
+  expect(reloaded.configurationIdentity).toBe(playtest.configurationIdentity);
+});

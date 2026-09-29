@@ -23,6 +23,10 @@ it("loads promoted waves, catalogs, rules and new map save IDs before game impor
   content.enemies.raider.hp = 71;
   content.towers.bolt.cost = 43;
   content.rules.normalLives = 16;
+  content.abilityDefaults!.bossRage = {
+    angrySpeedScale: 1.4,
+    ragingSpeedScale: 1.9,
+  };
   const request = vi
     .fn<typeof fetch>()
     .mockResolvedValue(new Response(JSON.stringify(content)));
@@ -41,6 +45,13 @@ it("loads promoted waves, catalogs, rules and new map save IDs before game impor
   expect(schedule.filter((_, i) => i % 5 === 0).map((s) => s.at)).toEqual([
     5.7, 19.45, 33.2, 46.95,
   ]);
+  expect(new Game(LEVELS[0]).bossRage).toEqual({
+    triggerDamagePercent: 10,
+    angrySeconds: 3,
+    ragingSeconds: 4,
+    angrySpeedScale: 1.4,
+    ragingSpeedScale: 1.9,
+  });
   expect(ENEMIES.raider.hp).toBe(71);
   expect(TOWERS.bolt.cost).toBe(43);
   expect(new Game(LEVELS[0], "none", false, 42).state.lives).toBe(16);

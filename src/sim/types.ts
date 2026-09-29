@@ -107,6 +107,14 @@ export interface Enemy extends Point {
   rallyUntil?: number;
   /** Absolute simulation time of the boss's next rally pulse. */
   nextRallyAt?: number;
+  /** Last successful rally, used to present the boost without affecting rules. */
+  rallyCastAt?: number;
+  rage?: {
+    phase: 0 | 1 | 2;
+    damageBaselineHp: number;
+    phaseUntil: number;
+    permanent: boolean;
+  };
   /** Suppresses duplicate rally-warning events for the current pulse. */
   rallyWarningEmitted?: boolean;
 }

@@ -111,3 +111,11 @@ timings together with the current map/wave. Reload the game to use them.
 Old draft arrival patterns are preserved while individual shield/evade timing
 variations are replaced by shared settings. Introductory waves that lacked evade
 keep it off. Concurrent edits to shared settings are checked before promotion.
+
+Boss rage controls appear under **Shared ability settings**: damage to trigger
+(% of max HP), angry/full-rage durations and their speed multipliers. Defaults
+are 10% damage, three seconds angry, four seconds raging, and 1.35× / 1.6× speed.
+Recovery starts a fresh damage window; damage taken during rage is not banked.
+At 25% health, full rage becomes permanent. Both Promote actions save these
+settings. Older drafts keep their speed tuning and gain the cycle defaults.
+Turtle slow remains fully effective in every phase.

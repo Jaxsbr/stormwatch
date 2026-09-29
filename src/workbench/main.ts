@@ -210,7 +210,7 @@ function render() {
   ${playable() ? '<section id="wave-canvas" aria-label="Visual wave editor"></section>' : `<section class="ws-empty"><h3>Add your first enemy group</h3><p>Choose an enemy, then shape the group on the timeline.</p><div class="wg-palette">${palette()}</div></section>`}
   <fieldset class="ws-abilities"><legend>Abilities for this wave</legend><label><input type="checkbox" data-ability="ratShield" ${abilities.ratShield ? "checked" : ""}/> Rat shield <small data-timing-summary="ratShield">${defaults.ratShield.upSeconds}s shielded / ${defaults.ratShield.downSeconds}s exposed</small></label><label><input type="checkbox" data-ability="weaselEvade" ${abilities.weaselEvade ? "checked" : ""}/> Weasel evade <small data-timing-summary="weaselEvade">${defaults.weaselEvade.upSeconds}s evading / ${defaults.weaselEvade.downSeconds}s exposed</small></label></fieldset>
   <p id="play-result" class="ws-play-result"></p>
-  <details id="ability-settings" class="ws-settings" ${globalsOpen ? "open" : ""}><summary>Shared ability settings</summary><p>Applies to every wave with the ability on. Promote saves these changes too.</p><div class="ws-settings-grid">${(["ratShield", "weaselEvade"] as const).map((key) => `<fieldset><legend>${key === "ratShield" ? "Rat shield" : "Weasel evade"}</legend>${(["upSeconds", "downSeconds"] as const).map((phase) => `<label>${phase === "upSeconds" ? "Active" : "Exposed"} (seconds)<input type="number" min="0.05" step="0.05" required data-ability-timing="${key}" data-phase="${phase}" aria-label="${key === "ratShield" ? "Rat shield" : "Weasel evade"} ${phase === "upSeconds" ? "active" : "exposed"} seconds" value="${defaults[key][phase]}"/></label>`).join("")}</fieldset>`).join("")}</div></details>
+  <details id="ability-settings" class="ws-settings" ${globalsOpen ? "open" : ""}><summary>Shared ability settings</summary><p>Applies to every wave with the ability on. Promote saves these changes too.</p><div class="ws-settings-grid">${(["ratShield", "weaselEvade"] as const).map((key) => `<fieldset><legend>${key === "ratShield" ? "Rat shield" : "Weasel evade"}</legend>${(["upSeconds", "downSeconds"] as const).map((phase) => `<label>${phase === "upSeconds" ? "Active" : "Exposed"} (seconds)<input type="number" min="0.05" step="0.05" required data-ability-timing="${key}" data-phase="${phase}" aria-label="${key === "ratShield" ? "Rat shield" : "Weasel evade"} ${phase === "upSeconds" ? "active" : "exposed"} seconds" value="${defaults[key][phase]}"/></label>`).join("")}</fieldset>`).join("")}<fieldset><legend>Boss rage</legend>${(["angrySpeedScale", "ragingSpeedScale"] as const).map((key) => `<label>${key === "angrySpeedScale" ? "Angry" : "Raging"} · speed multiplier<input type="number" min="1" step="0.05" required data-boss-rage="${key}" value="${(defaults.bossRage ?? ABILITY_DEFAULTS.bossRage)[key]}"/></label>`).join("")}${(["triggerDamagePercent", "angrySeconds", "ragingSeconds"] as const).map((key) => `<label>${key === "triggerDamagePercent" ? "Damage to trigger (% max HP)" : key === "angrySeconds" ? "Angry duration (seconds)" : "Full rage duration (seconds)"}<input type="number" min="0.05" ${key === "triggerDamagePercent" ? 'max="100"' : ""} step="0.05" required data-boss-rage="${key}" value="${defaults.bossRage?.[key] ?? ABILITY_DEFAULTS.bossRage[key]}"/></label>`).join("")}<p>Permanent full rage at 25% health.</p></fieldset></div></details>
   <details id="map-settings" class="ws-settings" ${settingsOpen ? "open" : ""}><summary>Map &amp; wave settings</summary><div class="ws-settings-grid"><label>Map name<input data-field="name" value="${esc(map.name)}" required/></label><label>Wave name<input data-field="title" value="${esc(current.title)}" required/></label><label>Map layout<select id="layout-picker">${matchedLayout ? "" : '<option value="">Custom layout</option>'}${draft.base.levels.map((l) => `<option value="${esc(l.id)}" ${l.id === matchedLayout ? "selected" : ""}>${esc(l.name)}</option>`).join("")}</select></label><label>Starting crowns<input data-field="startCoins" type="number" min="0" step="1" value="${map.startCoins}"/></label><label>Wave reward<input data-field="reward" type="number" min="0" step="1" value="${current.reward}"/></label>${mapPreview()}</div></details>
   </section><dialog id="create-dialog"><form id="create-form"><h2 id="create-title"></h2><label>Name<input id="create-name" required maxlength="100" autocomplete="off"/></label><label id="create-layout-label">Starting layout<select id="create-layout">${draft.base.levels.map((l) => `<option value="${esc(l.id)}">${esc(l.name)}</option>`).join("")}</select></label><div class="ws-dialog-actions"><button type="button" data-action="cancel-create">Cancel</button><button class="primary" type="submit">Create</button></div></form></dialog></main>`;
   if (playable())
@@ -250,6 +250,34 @@ function render() {
         const cycle = draft.content.abilityDefaults[key];
         root.querySelector(`[data-timing-summary="${key}"]`)!.textContent =
           `${cycle.upSeconds}s ${key === "ratShield" ? "shielded" : "evading"} / ${cycle.downSeconds}s exposed`;
+        error = "";
+        message = "";
+        persist();
+      };
+    });
+  root
+    .querySelectorAll<HTMLInputElement>("[data-boss-rage]")
+    .forEach((input) => {
+      input.onchange = () => {
+        const key = input.dataset
+          .bossRage as keyof typeof ABILITY_DEFAULTS.bossRage;
+        const rage = {
+          ...ABILITY_DEFAULTS.bossRage,
+          ...draft.content.abilityDefaults?.bossRage,
+          [key]: Number(input.value),
+        };
+        if (
+          !input.validity.valid ||
+          !input.value.trim() ||
+          rage.ragingSpeedScale < rage.angrySpeedScale
+        ) {
+          error =
+            "Use positive timings and damage up to 100%; speeds must be at least 1× with raging no slower than angry.";
+          feedback();
+          return;
+        }
+        draft.content.abilityDefaults ??= clone(ABILITY_DEFAULTS);
+        draft.content.abilityDefaults.bossRage = rage;
         error = "";
         message = "";
         persist();
