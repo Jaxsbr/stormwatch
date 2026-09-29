@@ -32,3 +32,5 @@ Read the accepted records before changing consequential behavior. For a new deci
 - [029: Tile-first placement and defender popups](029-tile-anchored-defender-popups.md)
 
 - [031: Side-only towers and pose-first animation](031-side-only-tower-animation.md)
+- [032: Explicit workbench promotion scope](032-explicit-workbench-promotion-scope.md)
+- [033: Accepted defender motions in the runtime](033-runtime-accepted-defender-motion.md)

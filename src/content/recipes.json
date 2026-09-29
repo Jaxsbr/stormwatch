@@ -121,10 +121,10 @@
               "groups": [
                 {
                   "kind": "raider",
-                  "count": 20,
-                  "gap": 3,
+                  "count": 22,
+                  "gap": 7,
                   "batchSize": 2,
-                  "batchStagger": 0.3,
+                  "batchStagger": 0.5,
                   "movementScale": 0.75,
                   "id": "packet-1"
                 }
@@ -146,9 +146,11 @@
               "groups": [
                 {
                   "kind": "raider",
-                  "count": 23,
-                  "gap": 3,
-                  "id": "packet-1"
+                  "count": 24,
+                  "gap": 10,
+                  "id": "packet-1",
+                  "batchSize": 3,
+                  "batchStagger": 0.75
                 }
               ]
             }
@@ -168,14 +170,16 @@
               "groups": [
                 {
                   "kind": "raider",
-                  "count": 20,
-                  "gap": 2,
-                  "batchSize": 2,
-                  "batchStagger": 0.3,
+                  "count": 6,
+                  "gap": 3.5,
+                  "batchSize": 3,
+                  "batchStagger": 0.5,
                   "movementScale": 0.75,
-                  "id": "packet-1"
+                  "id": "packet-1",
+                  "delayBefore": 7
                 }
-              ]
+              ],
+              "repeat": 4
             }
           ],
           "abilities": {
@@ -277,7 +281,7 @@
                   "kind": "runner",
                   "count": 4,
                   "gap": 0.45,
-                  "delayBefore": 4,
+                  "delayBefore": 4.5,
                   "movementScale": 0.85,
                   "id": "packet-2"
                 },
@@ -285,14 +289,14 @@
                   "kind": "raider",
                   "count": 6,
                   "gap": 2,
-                  "delayBefore": 3,
+                  "delayBefore": 4,
                   "id": "packet-3"
                 },
                 {
                   "kind": "runner",
                   "count": 4,
                   "gap": 0.45,
-                  "delayBefore": 4,
+                  "delayBefore": 4.5,
                   "movementScale": 0.85,
                   "id": "packet-4"
                 },
@@ -300,14 +304,14 @@
                   "kind": "raider",
                   "count": 6,
                   "gap": 2,
-                  "delayBefore": 3,
+                  "delayBefore": 4,
                   "id": "packet-5"
                 },
                 {
                   "kind": "runner",
                   "count": 4,
                   "gap": 0.45,
-                  "delayBefore": 4,
+                  "delayBefore": 4.5,
                   "movementScale": 0.85,
                   "id": "packet-6"
                 },
@@ -315,14 +319,14 @@
                   "kind": "raider",
                   "count": 6,
                   "gap": 2,
-                  "delayBefore": 3,
+                  "delayBefore": 4,
                   "id": "packet-7"
                 },
                 {
                   "kind": "runner",
                   "count": 4,
                   "gap": 0.45,
-                  "delayBefore": 4,
+                  "delayBefore": 4.5,
                   "movementScale": 0.85,
                   "id": "packet-8"
                 },
@@ -330,14 +334,14 @@
                   "kind": "raider",
                   "count": 6,
                   "gap": 2,
-                  "delayBefore": 3,
+                  "delayBefore": 4,
                   "id": "packet-9"
                 },
                 {
                   "kind": "runner",
                   "count": 4,
                   "gap": 0.45,
-                  "delayBefore": 4,
+                  "delayBefore": 4.5,
                   "movementScale": 0.85,
                   "id": "packet-10"
                 }
@@ -360,14 +364,14 @@
                 {
                   "kind": "raider",
                   "count": 1,
-                  "gap": 1.1,
+                  "gap": 1.35,
                   "delayBefore": 0,
                   "id": "packet-1"
                 },
                 {
                   "kind": "runner",
                   "count": 1,
-                  "gap": 2.2,
+                  "gap": 2.7,
                   "delayBefore": 0,
                   "movementScale": 0.85,
                   "id": "packet-2"
@@ -375,14 +379,14 @@
                 {
                   "kind": "raider",
                   "count": 1,
-                  "gap": 1.1,
+                  "gap": 1.35,
                   "delayBefore": 0,
                   "id": "packet-3"
                 },
                 {
                   "kind": "runner",
                   "count": 1,
-                  "gap": 2.2,
+                  "gap": 2.7,
                   "delayBefore": 0,
                   "movementScale": 0.85,
                   "id": "packet-4"
@@ -390,14 +394,14 @@
                 {
                   "kind": "raider",
                   "count": 1,
-                  "gap": 1.1,
+                  "gap": 1.35,
                   "delayBefore": 0,
                   "id": "packet-5"
                 },
                 {
                   "kind": "runner",
                   "count": 1,
-                  "gap": 2.2,
+                  "gap": 2.7,
                   "delayBefore": 0,
                   "movementScale": 0.85,
                   "id": "packet-6"
@@ -405,14 +409,14 @@
                 {
                   "kind": "raider",
                   "count": 1,
-                  "gap": 1.1,
+                  "gap": 1.35,
                   "delayBefore": 0,
                   "id": "packet-7"
                 },
                 {
                   "kind": "runner",
                   "count": 1,
-                  "gap": 2.2,
+                  "gap": 2.7,
                   "delayBefore": 0,
                   "movementScale": 0.85,
                   "id": "packet-8"
@@ -420,14 +424,14 @@
                 {
                   "kind": "raider",
                   "count": 1,
-                  "gap": 1.1,
+                  "gap": 1.35,
                   "delayBefore": 0,
                   "id": "packet-9"
                 },
                 {
                   "kind": "runner",
                   "count": 1,
-                  "gap": 2.2,
+                  "gap": 2.7,
                   "delayBefore": 0,
                   "movementScale": 0.85,
                   "id": "packet-10"
@@ -435,14 +439,14 @@
                 {
                   "kind": "raider",
                   "count": 1,
-                  "gap": 1.1,
+                  "gap": 1.35,
                   "delayBefore": 0,
                   "id": "packet-11"
                 },
                 {
                   "kind": "runner",
                   "count": 1,
-                  "gap": 2.2,
+                  "gap": 2.7,
                   "delayBefore": 0,
                   "movementScale": 0.85,
                   "id": "packet-12"
@@ -450,14 +454,14 @@
                 {
                   "kind": "raider",
                   "count": 1,
-                  "gap": 1.1,
+                  "gap": 1.35,
                   "delayBefore": 0,
                   "id": "packet-13"
                 },
                 {
                   "kind": "runner",
                   "count": 1,
-                  "gap": 2.2,
+                  "gap": 2.7,
                   "delayBefore": 0,
                   "movementScale": 0.85,
                   "id": "packet-14"
@@ -465,14 +469,14 @@
                 {
                   "kind": "raider",
                   "count": 1,
-                  "gap": 1.1,
+                  "gap": 1.35,
                   "delayBefore": 0,
                   "id": "packet-15"
                 },
                 {
                   "kind": "runner",
                   "count": 1,
-                  "gap": 2.2,
+                  "gap": 2.7,
                   "delayBefore": 0,
                   "movementScale": 0.85,
                   "id": "packet-16"
@@ -480,14 +484,14 @@
                 {
                   "kind": "raider",
                   "count": 1,
-                  "gap": 1.1,
+                  "gap": 1.35,
                   "delayBefore": 0,
                   "id": "packet-17"
                 },
                 {
                   "kind": "runner",
                   "count": 1,
-                  "gap": 2.2,
+                  "gap": 2.7,
                   "delayBefore": 0,
                   "movementScale": 0.85,
                   "id": "packet-18"
@@ -495,14 +499,14 @@
                 {
                   "kind": "raider",
                   "count": 1,
-                  "gap": 1.1,
+                  "gap": 1.35,
                   "delayBefore": 0,
                   "id": "packet-19"
                 },
                 {
                   "kind": "runner",
                   "count": 1,
-                  "gap": 2.2,
+                  "gap": 2.7,
                   "delayBefore": 0,
                   "movementScale": 0.85,
                   "id": "packet-20"
@@ -510,14 +514,14 @@
                 {
                   "kind": "raider",
                   "count": 1,
-                  "gap": 1.1,
+                  "gap": 1.35,
                   "delayBefore": 0,
                   "id": "packet-21"
                 },
                 {
                   "kind": "runner",
                   "count": 1,
-                  "gap": 2.2,
+                  "gap": 2.7,
                   "delayBefore": 0,
                   "movementScale": 0.85,
                   "id": "packet-22"
@@ -525,14 +529,14 @@
                 {
                   "kind": "raider",
                   "count": 1,
-                  "gap": 1.1,
+                  "gap": 1.35,
                   "delayBefore": 0,
                   "id": "packet-23"
                 },
                 {
                   "kind": "runner",
                   "count": 1,
-                  "gap": 2.2,
+                  "gap": 2.7,
                   "delayBefore": 0,
                   "movementScale": 0.85,
                   "id": "packet-24"
@@ -540,14 +544,14 @@
                 {
                   "kind": "raider",
                   "count": 1,
-                  "gap": 1.1,
+                  "gap": 1.35,
                   "delayBefore": 0,
                   "id": "packet-25"
                 },
                 {
                   "kind": "runner",
                   "count": 1,
-                  "gap": 2.2,
+                  "gap": 2.7,
                   "delayBefore": 0,
                   "movementScale": 0.85,
                   "id": "packet-26"
@@ -555,14 +559,14 @@
                 {
                   "kind": "raider",
                   "count": 1,
-                  "gap": 1.1,
+                  "gap": 1.35,
                   "delayBefore": 0,
                   "id": "packet-27"
                 },
                 {
                   "kind": "runner",
                   "count": 1,
-                  "gap": 2.2,
+                  "gap": 2.7,
                   "delayBefore": 0,
                   "movementScale": 0.85,
                   "id": "packet-28"
@@ -570,14 +574,14 @@
                 {
                   "kind": "raider",
                   "count": 1,
-                  "gap": 1.1,
+                  "gap": 1.35,
                   "delayBefore": 0,
                   "id": "packet-29"
                 },
                 {
                   "kind": "runner",
                   "count": 1,
-                  "gap": 2.2,
+                  "gap": 2.7,
                   "delayBefore": 0,
                   "movementScale": 0.85,
                   "id": "packet-30"
@@ -585,14 +589,14 @@
                 {
                   "kind": "raider",
                   "count": 1,
-                  "gap": 1.1,
+                  "gap": 1.35,
                   "delayBefore": 0,
                   "id": "packet-31"
                 },
                 {
                   "kind": "runner",
                   "count": 1,
-                  "gap": 2.2,
+                  "gap": 2.7,
                   "delayBefore": 0,
                   "movementScale": 0.85,
                   "id": "packet-32"
@@ -600,14 +604,14 @@
                 {
                   "kind": "raider",
                   "count": 1,
-                  "gap": 1.1,
+                  "gap": 1.35,
                   "delayBefore": 0,
                   "id": "packet-33"
                 },
                 {
                   "kind": "runner",
                   "count": 1,
-                  "gap": 2.2,
+                  "gap": 2.7,
                   "delayBefore": 0,
                   "movementScale": 0.85,
                   "id": "packet-34"
@@ -615,19 +619,22 @@
                 {
                   "kind": "raider",
                   "count": 1,
-                  "gap": 1.1,
+                  "gap": 1.35,
                   "delayBefore": 0,
-                  "id": "packet-35"
+                  "id": "packet-35",
+                  "batchSize": 1
                 },
                 {
                   "kind": "runner",
                   "count": 1,
-                  "gap": 2.2,
+                  "gap": 2.7,
                   "delayBefore": 0,
                   "movementScale": 0.85,
                   "id": "packet-36"
                 }
-              ]
+              ],
+              "repeat": 1,
+              "repeatDelayBefore": 0
             }
           ],
           "abilities": {
@@ -645,15 +652,15 @@
               "groups": [
                 {
                   "kind": "raider",
-                  "count": 3,
+                  "count": 2,
                   "gap": 1,
                   "delayBefore": 0,
                   "id": "packet-1"
                 },
                 {
                   "kind": "runner",
-                  "count": 2,
-                  "gap": 0.45,
+                  "count": 1,
+                  "gap": 1.2,
                   "delayBefore": 0,
                   "movementScale": 0.85,
                   "id": "packet-2"
@@ -668,22 +675,22 @@
                 {
                   "kind": "runner",
                   "count": 2,
-                  "gap": 0.45,
+                  "gap": 1.2,
                   "delayBefore": 0,
                   "movementScale": 0.85,
                   "id": "packet-4"
                 },
                 {
                   "kind": "raider",
-                  "count": 3,
+                  "count": 2,
                   "gap": 1,
                   "delayBefore": 2.55,
                   "id": "packet-5"
                 },
                 {
                   "kind": "runner",
-                  "count": 2,
-                  "gap": 0.45,
+                  "count": 1,
+                  "gap": 1.2,
                   "delayBefore": 0,
                   "movementScale": 0.85,
                   "id": "packet-6"
@@ -698,22 +705,22 @@
                 {
                   "kind": "runner",
                   "count": 2,
-                  "gap": 0.45,
+                  "gap": 1.2,
                   "delayBefore": 0,
                   "movementScale": 0.85,
                   "id": "packet-8"
                 },
                 {
                   "kind": "raider",
-                  "count": 3,
+                  "count": 2,
                   "gap": 1,
                   "delayBefore": 2.55,
                   "id": "packet-9"
                 },
                 {
                   "kind": "runner",
-                  "count": 2,
-                  "gap": 0.45,
+                  "count": 1,
+                  "gap": 1.2,
                   "delayBefore": 0,
                   "movementScale": 0.85,
                   "id": "packet-10"
@@ -728,22 +735,22 @@
                 {
                   "kind": "runner",
                   "count": 2,
-                  "gap": 0.45,
+                  "gap": 1.2,
                   "delayBefore": 0,
                   "movementScale": 0.85,
                   "id": "packet-12"
                 },
                 {
                   "kind": "raider",
-                  "count": 3,
+                  "count": 2,
                   "gap": 1,
                   "delayBefore": 2.55,
                   "id": "packet-13"
                 },
                 {
                   "kind": "runner",
-                  "count": 2,
-                  "gap": 0.45,
+                  "count": 1,
+                  "gap": 1.2,
                   "delayBefore": 0,
                   "movementScale": 0.85,
                   "id": "packet-14"
@@ -758,22 +765,22 @@
                 {
                   "kind": "runner",
                   "count": 2,
-                  "gap": 0.45,
+                  "gap": 1.2,
                   "delayBefore": 0,
                   "movementScale": 0.85,
                   "id": "packet-16"
                 },
                 {
                   "kind": "raider",
-                  "count": 3,
+                  "count": 2,
                   "gap": 1,
                   "delayBefore": 2.55,
                   "id": "packet-17"
                 },
                 {
                   "kind": "runner",
-                  "count": 2,
-                  "gap": 0.45,
+                  "count": 1,
+                  "gap": 1.2,
                   "delayBefore": 0,
                   "movementScale": 0.85,
                   "id": "packet-18"
@@ -788,22 +795,22 @@
                 {
                   "kind": "runner",
                   "count": 2,
-                  "gap": 0.45,
+                  "gap": 1.2,
                   "delayBefore": 0,
                   "movementScale": 0.85,
                   "id": "packet-20"
                 },
                 {
                   "kind": "raider",
-                  "count": 3,
+                  "count": 2,
                   "gap": 1,
                   "delayBefore": 2.55,
                   "id": "packet-21"
                 },
                 {
                   "kind": "runner",
-                  "count": 2,
-                  "gap": 0.45,
+                  "count": 1,
+                  "gap": 1.2,
                   "delayBefore": 0,
                   "movementScale": 0.85,
                   "id": "packet-22"
@@ -818,7 +825,7 @@
                 {
                   "kind": "runner",
                   "count": 2,
-                  "gap": 0.45,
+                  "gap": 1.2,
                   "delayBefore": 0,
                   "movementScale": 0.85,
                   "id": "packet-24"
@@ -849,7 +856,7 @@
                 {
                   "kind": "runner",
                   "count": 6,
-                  "gap": 0.2,
+                  "gap": 0.6999999999999998,
                   "delayBefore": 0,
                   "movementScale": 1.1,
                   "id": "packet-2"
@@ -864,7 +871,7 @@
                 {
                   "kind": "runner",
                   "count": 5,
-                  "gap": 0.2,
+                  "gap": 0.7,
                   "delayBefore": 0,
                   "movementScale": 1.1,
                   "id": "packet-4"
@@ -879,7 +886,7 @@
                 {
                   "kind": "runner",
                   "count": 4,
-                  "gap": 0.2,
+                  "gap": 0.7,
                   "delayBefore": 0,
                   "movementScale": 1.1,
                   "id": "packet-6"
@@ -894,7 +901,7 @@
                 {
                   "kind": "runner",
                   "count": 6,
-                  "gap": 0.2,
+                  "gap": 0.6999999999999998,
                   "delayBefore": 0,
                   "movementScale": 1.1,
                   "id": "packet-8"
@@ -909,7 +916,7 @@
                 {
                   "kind": "runner",
                   "count": 5,
-                  "gap": 0.2,
+                  "gap": 0.7,
                   "delayBefore": 0,
                   "movementScale": 1.1,
                   "id": "packet-10"
@@ -924,7 +931,7 @@
                 {
                   "kind": "runner",
                   "count": 4,
-                  "gap": 0.2,
+                  "gap": 0.7,
                   "delayBefore": 0,
                   "movementScale": 1.1,
                   "id": "packet-12"
@@ -939,7 +946,7 @@
                 {
                   "kind": "runner",
                   "count": 6,
-                  "gap": 0.2,
+                  "gap": 0.6999999999999998,
                   "delayBefore": 0,
                   "movementScale": 1.1,
                   "id": "packet-14"
@@ -954,7 +961,7 @@
                 {
                   "kind": "runner",
                   "count": 5,
-                  "gap": 0.2,
+                  "gap": 0.7,
                   "delayBefore": 0,
                   "movementScale": 1.1,
                   "id": "packet-16"
@@ -969,7 +976,7 @@
                 {
                   "kind": "runner",
                   "count": 4,
-                  "gap": 0.2,
+                  "gap": 0.7,
                   "delayBefore": 0,
                   "movementScale": 1.1,
                   "id": "packet-18"
@@ -984,7 +991,7 @@
                 {
                   "kind": "runner",
                   "count": 6,
-                  "gap": 0.2,
+                  "gap": 0.6999999999999998,
                   "delayBefore": 0,
                   "movementScale": 1.1,
                   "id": "packet-20"
@@ -999,7 +1006,7 @@
                 {
                   "kind": "runner",
                   "count": 5,
-                  "gap": 0.2,
+                  "gap": 0.7,
                   "delayBefore": 0,
                   "movementScale": 1.1,
                   "id": "packet-22"
@@ -1014,7 +1021,7 @@
                 {
                   "kind": "runner",
                   "count": 4,
-                  "gap": 0.2,
+                  "gap": 0.7,
                   "delayBefore": 0,
                   "movementScale": 1.1,
                   "id": "packet-24"
@@ -1149,13 +1156,13 @@
                 {
                   "kind": "raider",
                   "count": 1,
-                  "gap": 0.9,
+                  "gap": 1.15,
                   "id": "group-1"
                 },
                 {
                   "kind": "runner",
                   "count": 1,
-                  "gap": 1.6,
+                  "gap": 1.85,
                   "movementScale": 1,
                   "id": "group-2"
                 }
@@ -1174,13 +1181,13 @@
           "packets": [
             {
               "id": "sequence",
-              "repeat": 5,
-              "repeatDelayBefore": 4.8,
+              "repeat": 7,
+              "repeatDelayBefore": 6.3,
               "groups": [
                 {
                   "kind": "raider",
                   "count": 5,
-                  "gap": 0.2,
+                  "gap": 0.7,
                   "delayBefore": 0,
                   "movementScale": 0.75,
                   "id": "group-1"
@@ -1188,7 +1195,7 @@
                 {
                   "kind": "runner",
                   "count": 3,
-                  "gap": 0.2,
+                  "gap": 1.45,
                   "movementScale": 1,
                   "id": "group-2"
                 }
@@ -1207,13 +1214,13 @@
           "packets": [
             {
               "id": "sequence",
-              "repeat": 3,
-              "repeatDelayBefore": 4.8,
+              "repeat": 4,
+              "repeatDelayBefore": 8.3,
               "groups": [
                 {
                   "kind": "raider",
                   "count": 1,
-                  "gap": 0.2,
+                  "gap": 0.7,
                   "delayBefore": 0,
                   "id": "group-1"
                 },
@@ -1267,22 +1274,23 @@
           "packets": [
             {
               "id": "sequence",
-              "repeat": 4,
-              "repeatDelayBefore": 3.8,
+              "repeat": 6,
+              "repeatDelayBefore": 7.8,
               "groups": [
                 {
                   "kind": "raider",
                   "count": 1,
-                  "gap": 0.2,
+                  "gap": 0.45,
                   "delayBefore": 0,
                   "id": "group-1"
                 },
                 {
                   "kind": "runner",
                   "count": 6,
-                  "gap": 0.2,
+                  "gap": 0.45,
                   "movementScale": 1.1,
-                  "id": "group-2"
+                  "id": "group-2",
+                  "batchSize": 1
                 },
                 {
                   "kind": "raider",
@@ -1330,8 +1338,8 @@
               "groups": [
                 {
                   "kind": "raider",
-                  "count": 8,
-                  "gap": 0.8,
+                  "count": 9,
+                  "gap": 1.05,
                   "id": "packet-1"
                 },
                 {
@@ -1342,23 +1350,23 @@
                 },
                 {
                   "kind": "runner",
-                  "count": 7,
-                  "gap": 0.2,
+                  "count": 8,
+                  "gap": 0.95,
                   "delayBefore": 2.5,
                   "movementScale": 1.1,
                   "id": "packet-3"
                 },
                 {
                   "kind": "raider",
-                  "count": 5,
-                  "gap": 0.15,
+                  "count": 6,
+                  "gap": 0.65,
                   "delayBefore": 8.6,
                   "id": "packet-4"
                 },
                 {
                   "kind": "runner",
-                  "count": 7,
-                  "gap": 0.2,
+                  "count": 8,
+                  "gap": 0.95,
                   "delayBefore": 9.25,
                   "movementScale": 1.1,
                   "id": "packet-5"
@@ -1366,14 +1374,15 @@
                 {
                   "kind": "raider",
                   "count": 5,
-                  "gap": 0.15,
+                  "gap": 0.65,
                   "delayBefore": 8.6,
-                  "id": "packet-6"
+                  "id": "packet-6",
+                  "batchSize": 2
                 },
                 {
                   "kind": "runner",
-                  "count": 7,
-                  "gap": 0.2,
+                  "count": 8,
+                  "gap": 0.95,
                   "delayBefore": 9.25,
                   "movementScale": 1.1,
                   "id": "packet-7"

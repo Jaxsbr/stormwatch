@@ -17,7 +17,7 @@ import {
   type StatusGlyphView,
 } from "./status-glyph";
 import { ratShieldState } from "../sim/rat-shield";
-import { netGeometry } from "./combat-shapes";
+import { updateCastNet } from "./cast-net";
 import { onPath, pointOnPath } from "../sim/path";
 import type { Game } from "../sim/game";
 import type { EnemyKind, LevelDef, Point, TowerKind } from "../sim/types";
@@ -800,6 +800,9 @@ export class Battlefield {
             s.clock - fired.at,
             t.cooldown,
             f.sprite.renderOrder,
+            !!target,
+            game.towers[t.kind].interval *
+              (t.level === 2 ? game.rules.upgradeIntervalScale : 1),
           );
           continue;
         }
@@ -1027,7 +1030,7 @@ export class Battlefield {
                 ]),
               )
             : p.kind === "net"
-              ? netGeometry()
+              ? new THREE.BufferGeometry()
               : new THREE.CircleGeometry(7, 12),
           material(
             p.kind === "net"
@@ -1037,7 +1040,13 @@ export class Battlefield {
                 : 0xffd989,
           ),
         );
+        if (p.kind === "net") {
+          const rope = m.material as THREE.MeshBasicMaterial;
+          rope.side = THREE.DoubleSide;
+          rope.forceSinglePass = true;
+        }
         m.renderOrder = 2500;
+        m.frustumCulled = false;
         this.shots.set(p.id, m);
         this.scene.add(m);
       }
@@ -1063,9 +1072,35 @@ export class Battlefield {
         target.x - origin.x,
       );
       if (p.kind === "net") {
-        const spread = THREE.MathUtils.smoothstep(k, 0, 0.8);
-        m.scale.set(0.4 + spread * 1.2, 0.2 + spread * 1.4, 1);
-        m.rotation.z += Math.PI / 4;
+        if (!m.userData.launch) {
+          const launch = sourceTower
+            ? this.figures.get(sourceTower.id)?.defender?.netLaunch()
+            : undefined;
+          m.userData.launch = launch
+            ? {
+                ...launch,
+                hands: launch.hands.map((hand) => hand.sub(origin)),
+              }
+            : {
+                hands: [
+                  new THREE.Vector3(-20, 0, 0),
+                  new THREE.Vector3(20, 0, 0),
+                ],
+                size: 0.18,
+                mirrored: false,
+              };
+        }
+        const launch = m.userData.launch;
+        updateCastNet(
+          m.geometry,
+          launch.hands[0],
+          launch.hands[1],
+          THREE.MathUtils.smoothstep(k, 0, 0.8),
+          launch.size,
+          launch.mirrored,
+        );
+        m.rotation.z = 0;
+        m.scale.setScalar(1);
       }
       m.position.y += Math.sin(k * Math.PI) * (p.kind === "stone" ? 95 : 6);
     }

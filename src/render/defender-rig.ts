@@ -1,4 +1,8 @@
 import * as THREE from "three";
+import {
+  AcceptedDefenderMotion,
+  defenderMotionPhase,
+} from "./accepted-defender-motion";
 import { DefenderArm } from "./defender-arm";
 import { CutoutInstance, CutoutResource } from "./cutout";
 
@@ -11,6 +15,7 @@ export class DefenderRig {
   private mirroredTextures: THREE.Texture[] = [];
   private arms = new Map<string, DefenderArm>();
   private order = 1000;
+  private motion?: AcceptedDefenderMotion;
   private localMuzzle = new THREE.Vector3();
   constructor(
     resource: CutoutResource,
@@ -48,6 +53,12 @@ export class DefenderRig {
     this.string = line(0xe9d9aa, 3);
     this.arrow = line(0xf1d7a2, 5);
     this.group.add(this.string, this.arrow);
+    if (
+      ["squirrel-side-defender-v1", "turtle-side-defender-v1"].includes(
+        resource.definition!.id,
+      )
+    )
+      this.motion = new AcceptedDefenderMotion(this.cutout, this.arms);
   }
   private point(id: string, name: string) {
     const def = this.cutout.resource.definition!.parts.find(
@@ -70,9 +81,31 @@ export class DefenderRig {
       .get(id)!
       .reach(this.cutout.parts.get(id)!.position, hand, this.order);
   }
-  update(age: number, cooldown: number, order = 1000) {
+  update(
+    age: number,
+    cooldown: number,
+    order = 1000,
+    hasTarget = true,
+    interval = Math.max(0.1, age + cooldown),
+  ) {
     this.order = order;
     this.cutout.reset(order);
+    if (this.motion) {
+      const phase = defenderMotionPhase(
+        age,
+        cooldown,
+        interval,
+        this.motion.turtle ? 0.7 : 0.79,
+        hasTarget,
+      );
+      if (this.motion.turtle) {
+        this.string.visible = false;
+        this.arrow.visible = false;
+        this.localMuzzle.copy(this.motion.turtlePose(phase, order));
+        this.reflect([]);
+      } else this.squirrelPose(phase, order);
+      return;
+    }
     if (!this.cutout.parts.has("bow")) {
       this.string.visible = false;
       this.arrow.visible = false;
@@ -170,8 +203,89 @@ export class DefenderRig {
     this.localMuzzle.copy(brace);
     this.reflect([positions, arrows]);
   }
+  private squirrelPose(t: number, order: number) {
+    const smooth = THREE.MathUtils.smoothstep;
+    const load = smooth(t, 0.12, 0.6),
+      snap = smooth(t, 0.74, 0.79),
+      settle = smooth(t, 0.82, 1);
+    const tension = load * (1 - snap),
+      follow = snap * (1 - settle);
+    const lean = -4 * load * (1 - settle);
+    this.motion!.updateBody(lean, 0, order);
+    const shoulder = (id: string) =>
+      this.cutout.rests
+        .get(id)!
+        .clone()
+        .add(new THREE.Vector3(lean, 0, 0));
+    const bow = this.cutout.parts.get("bow")!;
+    bow.position.set(190 + 50 * load * (1 - settle), 370, 0);
+    bow.position.copy(
+      this.arms.get("holdArm")!.reach(shoulder("holdArm"), bow.position, order),
+    );
+    bow.scale.y *= 1 - 0.045 * tension;
+    bow.scale.x *= 1 + 0.1 * tension;
+    const brace = this.point("bow", "braceCenter");
+    const stringHand = brace
+      .clone()
+      .lerp(new THREE.Vector3(35, 370, 0), tension);
+    const target = new THREE.Vector3(
+      THREE.MathUtils.lerp(94.1, 35, load * (1 - settle)) - 10 * follow,
+      370,
+      0,
+    );
+    const hand = this.arms
+      .get("drawArm")!
+      .reach(shoulder("drawArm"), target, order);
+    if (t < 0.74) stringHand.copy(hand);
+    if (t >= 0.79)
+      stringHand.x +=
+        Math.sin((t - 0.79) * 180) * 7 * Math.exp(-(t - 0.79) * 35);
+    const positions = this.string.geometry.getAttribute(
+      "position",
+    ) as THREE.BufferAttribute;
+    [
+      this.point("bow", "tipNear"),
+      stringHand,
+      this.point("bow", "tipFar"),
+    ].forEach((p, i) => positions.setXYZ(i, p.x, p.y, 0));
+    positions.needsUpdate = true;
+    this.string.visible = true;
+    this.string.frustumCulled = false;
+    this.string.renderOrder = order + 0.05;
+    // Hold the arrow until the simulation releases its real projectile.
+    const tip = hand.clone().add(new THREE.Vector3(235, 0, 0));
+    const arrows = this.arrow.geometry.getAttribute(
+      "position",
+    ) as THREE.BufferAttribute;
+    [
+      hand,
+      tip,
+      tip.clone().add(new THREE.Vector3(-22, 8, 0)),
+      tip,
+      tip.clone().add(new THREE.Vector3(-22, -8, 0)),
+    ].forEach((p, i) => arrows.setXYZ(i, p.x, p.y, 0));
+    arrows.needsUpdate = true;
+    this.arrow.visible = t >= 0.12 && t < 0.79;
+    this.arrow.frustumCulled = false;
+    this.arrow.renderOrder = order + 0.06;
+    this.localMuzzle.copy(brace);
+    this.reflect([positions, arrows]);
+  }
+  /** Solved two-hand launch shape in world space for the real net projectile. */
+  netLaunch() {
+    if (!this.motion?.turtle) return undefined;
+    this.group.updateWorldMatrix(true, false);
+    return {
+      hands: this.motion.hands.map((hand) =>
+        this.group.localToWorld(hand.clone()),
+      ),
+      size: this.group.scale.x,
+      mirrored: this.mirrored,
+    };
+  }
   private reflect(attributes: THREE.BufferAttribute[]) {
     if (this.mirrored) {
+      this.motion?.reflect();
       for (const arm of this.arms.values()) arm.reflect();
       for (const def of this.cutout.resource.definition!.parts) {
         const sprite = this.cutout.parts.get(def.id)!;
@@ -194,6 +308,7 @@ export class DefenderRig {
     return this.group.localToWorld(this.localMuzzle.clone());
   }
   dispose() {
+    this.motion?.dispose();
     for (const line of [this.string, this.arrow]) {
       line.geometry.dispose();
       (line.material as THREE.Material).dispose();

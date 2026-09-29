@@ -26,6 +26,7 @@ import {
   setMapLayout,
   rebaseAfterPromotion,
   promoteWorkingWave,
+  promoteAllWorkingChanges,
   type WorkingDraft,
 } from "./working-draft";
 
@@ -77,11 +78,15 @@ const identity = () =>
     rules: gameContent.rules,
     abilityDefaults: draft.content.abilityDefaults,
   });
-function pendingPromotion() {
+function pendingPromotion(all = false) {
   try {
     return (
-      configurationIdentity(promoteWorkingWave(draft.base, draft)) !==
-      configurationIdentity(draft.base)
+      configurationIdentity(
+        (all ? promoteAllWorkingChanges : promoteWorkingWave)(
+          draft.base,
+          draft,
+        ),
+      ) !== configurationIdentity(draft.base)
     );
   } catch {
     return true;
@@ -118,8 +123,14 @@ function feedback() {
       !playable() ||
       !pendingPromotion() ||
       !validSettings();
-    promote.textContent = saving ? "Promoting…" : "Promote";
+    promote.textContent = saving ? "Promoting…" : "Promote wave";
   }
+  const promoteAll = root.querySelector<HTMLButtonElement>(
+    '[data-action="promote-all"]',
+  );
+  if (promoteAll)
+    promoteAll.disabled =
+      saving || !connected || !pendingPromotion(true) || !validSettings();
   const play = root.querySelector<HTMLButtonElement>('[data-action="play"]');
   if (play) play.disabled = saving || !playable() || !validSettings();
   const refresh = root.querySelector<HTMLButtonElement>(
@@ -129,8 +140,10 @@ function feedback() {
   const state = root.querySelector("#promotion-state");
   if (state)
     state.textContent = pendingPromotion()
-      ? "Draft changes"
-      : "Matches game config";
+      ? "Selected wave has draft changes"
+      : pendingPromotion(true)
+        ? "Other draft changes remain"
+        : "All changes promoted";
   const result = root.querySelector("#play-result");
   if (result)
     result.textContent = lastPlay
@@ -191,8 +204,8 @@ function render() {
     )?.id ?? "";
   root.innerHTML = `<main class="wb-shell ws-shell"><header class="wb-header"><div><p class="wb-eyebrow">STORMWATCH</p><h1>Designer workbench</h1></div><span id="draft-status" role="status"></span></header>
   <section class="ws-workspace"><div class="ws-picker-bar"><label>Map<select id="map-picker">${draft.content.levels.map((l) => `<option value="${esc(l.id)}" ${l.id === map.id ? "selected" : ""}>${esc(l.name)}</option>`).join("")}</select></label><button data-action="new-map">+ Map</button><label>Wave<select id="wave-picker">${map.waves.map((w, i) => `<option value="${esc(w.id)}" ${w.id === current.id ? "selected" : ""}>${i + 1}. ${esc(w.title)}</option>`).join("")}</select></label><button data-action="new-wave">+ Wave</button></div>
-  <div class="ws-heading"><div><h2>Shape the arrivals.</h2><p>Move enemy groups, shape their rhythm, then try the wave.</p></div><div class="ws-actions"><button data-action="play">Playtest</button><button data-action="promote" class="primary">Promote</button></div></div>
-  <div class="ws-save-line"><span id="promotion-state"></span><span>Promote saves this wave, map settings and shared ability changes.</span></div>
+  <div class="ws-heading"><div><h2>Shape the arrivals.</h2><p>Move enemy groups, shape their rhythm, then try the wave.</p></div><div class="ws-actions"><button data-action="play">Playtest</button><button data-action="promote">Promote wave</button><button data-action="promote-all" class="primary">Promote all changes</button></div></div>
+  <div class="ws-save-line"><span id="promotion-state"></span><span>Promote wave saves only this wave, its map settings and shared abilities. Promote all changes saves edits across every map and wave.</span></div>
   <div id="workspace-message" class="wb-feedback" role="status"></div><button data-action="refresh-config" hidden>Keep draft with latest game config</button>
   ${playable() ? '<section id="wave-canvas" aria-label="Visual wave editor"></section>' : `<section class="ws-empty"><h3>Add your first enemy group</h3><p>Choose an enemy, then shape the group on the timeline.</p><div class="wg-palette">${palette()}</div></section>`}
   <fieldset class="ws-abilities"><legend>Abilities for this wave</legend><label><input type="checkbox" data-ability="ratShield" ${abilities.ratShield ? "checked" : ""}/> Rat shield <small data-timing-summary="ratShield">${defaults.ratShield.upSeconds}s shielded / ${defaults.ratShield.downSeconds}s exposed</small></label><label><input type="checkbox" data-ability="weaselEvade" ${abilities.weaselEvade ? "checked" : ""}/> Weasel evade <small data-timing-summary="weaselEvade">${defaults.weaselEvade.upSeconds}s evading / ${defaults.weaselEvade.downSeconds}s exposed</small></label></fieldset>
@@ -389,8 +402,9 @@ function play() {
     },
   });
 }
-async function promote() {
-  if (saving || !connected || !playable() || !validSettings(true)) return;
+async function promote(all = false) {
+  if (saving || !connected || (!all && !playable()) || !validSettings(true))
+    return;
   persist();
   if (!durable)
     throw new Error("Save the draft successfully before promoting.");
@@ -401,21 +415,26 @@ async function promote() {
   feedback();
   root.querySelector<HTMLElement>(".ws-workspace")!.inert = true;
   try {
-    const response = await fetch("/__workbench/promote", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "X-Workbench-Token": token,
+    const response = await fetch(
+      all ? "/__workbench/promote-all" : "/__workbench/promote",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "X-Workbench-Token": token,
+        },
+        body: JSON.stringify(submitted),
       },
-      body: JSON.stringify(submitted),
-    });
+    );
     const result = await response.json();
     if (!response.ok) throw new Error(result.error ?? "Promotion failed.");
     validateContent(result.content);
     gameContent = clone(result.content);
     draft = rebaseAfterPromotion(submitted, result.content);
     error = "";
-    message = `Promoted ${wave().title}. Reload the game to play your changes.`;
+    message = all
+      ? "Promoted all map, wave and shared ability changes. Reload the game to play your changes."
+      : `Promoted ${wave().title} only, plus map settings and shared abilities.${pendingPromotion(true) ? " Other draft changes remain." : ""} Reload the game to play your changes.`;
     persist();
   } finally {
     saving = false;
@@ -434,6 +453,7 @@ root.addEventListener("click", (event) => {
         error = "";
         play();
       } else if (action === "promote") await promote();
+      else if (action === "promote-all") await promote(true);
       else if (action === "refresh-config") {
         const response = await fetch("/__workbench/config", {
           cache: "no-store",
