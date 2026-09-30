@@ -1,0 +1,398 @@
+{
+  "simulation": {
+    "cpuSlowdown": 4,
+    "latencyMs": 100,
+    "downloadBytesPerSecond": 2500000,
+    "runs": 5
+  },
+  "levels": {
+    "lantern-pass": {
+      "cold": {
+        "candidate": {
+          "medianMs": 3888.7000000476837,
+          "p95Ms": 3951.5,
+          "imageRequestsMedian": 21,
+          "samples": [
+            {
+              "level": "lantern-pass",
+              "artReadyMs": 3487.199999809265,
+              "firstRenderedMs": 3951.5,
+              "missingArt": 0,
+              "imageRequests": 21,
+              "cold": true
+            },
+            {
+              "level": "lantern-pass",
+              "artReadyMs": 3447.0999999046326,
+              "firstRenderedMs": 3857.9000000953674,
+              "missingArt": 0,
+              "imageRequests": 21,
+              "cold": true
+            },
+            {
+              "level": "lantern-pass",
+              "artReadyMs": 3453.7000000476837,
+              "firstRenderedMs": 3890.7000000476837,
+              "missingArt": 0,
+              "imageRequests": 21,
+              "cold": true
+            },
+            {
+              "level": "lantern-pass",
+              "artReadyMs": 3461.7999999523163,
+              "firstRenderedMs": 3877.7999999523163,
+              "missingArt": 0,
+              "imageRequests": 21,
+              "cold": true
+            },
+            {
+              "level": "lantern-pass",
+              "artReadyMs": 3453.5,
+              "firstRenderedMs": 3888.7000000476837,
+              "missingArt": 0,
+              "imageRequests": 21,
+              "cold": true
+            }
+          ]
+        },
+        "baseline": {
+          "medianMs": 5111.700000047684,
+          "p95Ms": 6430.299999952316,
+          "imageRequestsMedian": 60,
+          "samples": [
+            {
+              "level": "lantern-pass",
+              "artReadyMs": 5930.400000095367,
+              "firstRenderedMs": 6430.299999952316,
+              "missingArt": 0,
+              "imageRequests": 60,
+              "cold": true
+            },
+            {
+              "level": "lantern-pass",
+              "artReadyMs": 4678.799999952316,
+              "firstRenderedMs": 5131.299999952316,
+              "missingArt": 0,
+              "imageRequests": 60,
+              "cold": true
+            },
+            {
+              "level": "lantern-pass",
+              "artReadyMs": 4648.800000190735,
+              "firstRenderedMs": 5107.100000143051,
+              "missingArt": 0,
+              "imageRequests": 60,
+              "cold": true
+            },
+            {
+              "level": "lantern-pass",
+              "artReadyMs": 4646.600000143051,
+              "firstRenderedMs": 5100,
+              "missingArt": 0,
+              "imageRequests": 60,
+              "cold": true
+            },
+            {
+              "level": "lantern-pass",
+              "artReadyMs": 4656,
+              "firstRenderedMs": 5111.700000047684,
+              "missingArt": 0,
+              "imageRequests": 60,
+              "cold": true
+            }
+          ]
+        }
+      },
+      "warm": {
+        "candidate": {
+          "medianMs": 847.6000001430511,
+          "p95Ms": 994.4000000953674,
+          "imageRequestsMedian": 21,
+          "samples": [
+            {
+              "level": "lantern-pass",
+              "artReadyMs": 472.59999990463257,
+              "firstRenderedMs": 940.5999999046326,
+              "missingArt": 0,
+              "imageRequests": 21,
+              "cold": false
+            },
+            {
+              "level": "lantern-pass",
+              "artReadyMs": 38.90000009536743,
+              "firstRenderedMs": 626.4000000953674,
+              "missingArt": 0,
+              "imageRequests": 21,
+              "cold": false
+            },
+            {
+              "level": "lantern-pass",
+              "artReadyMs": 392.90000009536743,
+              "firstRenderedMs": 847.6000001430511,
+              "missingArt": 0,
+              "imageRequests": 21,
+              "cold": false
+            },
+            {
+              "level": "lantern-pass",
+              "artReadyMs": 43.5,
+              "firstRenderedMs": 612.3999998569489,
+              "missingArt": 0,
+              "imageRequests": 21,
+              "cold": false
+            },
+            {
+              "level": "lantern-pass",
+              "artReadyMs": 508.60000014305115,
+              "firstRenderedMs": 994.4000000953674,
+              "missingArt": 0,
+              "imageRequests": 21,
+              "cold": false
+            }
+          ]
+        },
+        "baseline": {
+          "medianMs": 627.4000000953674,
+          "p95Ms": 970.6000001430511,
+          "imageRequestsMedian": 60,
+          "samples": [
+            {
+              "level": "lantern-pass",
+              "artReadyMs": 489.90000009536743,
+              "firstRenderedMs": 970.6000001430511,
+              "missingArt": 0,
+              "imageRequests": 60,
+              "cold": false
+            },
+            {
+              "level": "lantern-pass",
+              "artReadyMs": 464.19999980926514,
+              "firstRenderedMs": 946.6999998092651,
+              "missingArt": 0,
+              "imageRequests": 60,
+              "cold": false
+            },
+            {
+              "level": "lantern-pass",
+              "artReadyMs": 55,
+              "firstRenderedMs": 616,
+              "missingArt": 0,
+              "imageRequests": 60,
+              "cold": false
+            },
+            {
+              "level": "lantern-pass",
+              "artReadyMs": 138.40000009536743,
+              "firstRenderedMs": 606.1000001430511,
+              "missingArt": 0,
+              "imageRequests": 60,
+              "cold": false
+            },
+            {
+              "level": "lantern-pass",
+              "artReadyMs": 65.90000009536743,
+              "firstRenderedMs": 627.4000000953674,
+              "missingArt": 0,
+              "imageRequests": 60,
+              "cold": false
+            }
+          ]
+        }
+      }
+    },
+    "the-last-lantern": {
+      "cold": {
+        "candidate": {
+          "medianMs": 5004.099999904633,
+          "p95Ms": 5070.200000047684,
+          "imageRequestsMedian": 47,
+          "samples": [
+            {
+              "level": "the-last-lantern",
+              "artReadyMs": 4406.799999952316,
+              "firstRenderedMs": 4985.900000095367,
+              "missingArt": 0,
+              "imageRequests": 47,
+              "cold": true
+            },
+            {
+              "level": "the-last-lantern",
+              "artReadyMs": 4424.5,
+              "firstRenderedMs": 5004.799999952316,
+              "missingArt": 0,
+              "imageRequests": 47,
+              "cold": true
+            },
+            {
+              "level": "the-last-lantern",
+              "artReadyMs": 4422.899999856949,
+              "firstRenderedMs": 5004.099999904633,
+              "missingArt": 0,
+              "imageRequests": 47,
+              "cold": true
+            },
+            {
+              "level": "the-last-lantern",
+              "artReadyMs": 4403.900000095367,
+              "firstRenderedMs": 4996,
+              "missingArt": 0,
+              "imageRequests": 47,
+              "cold": true
+            },
+            {
+              "level": "the-last-lantern",
+              "artReadyMs": 4435.600000143051,
+              "firstRenderedMs": 5070.200000047684,
+              "missingArt": 0,
+              "imageRequests": 47,
+              "cold": true
+            }
+          ]
+        },
+        "baseline": {
+          "medianMs": 5472.599999904633,
+          "p95Ms": 5486.5,
+          "imageRequestsMedian": 60,
+          "samples": [
+            {
+              "level": "the-last-lantern",
+              "artReadyMs": 4885.5,
+              "firstRenderedMs": 5473.799999952316,
+              "missingArt": 0,
+              "imageRequests": 60,
+              "cold": true
+            },
+            {
+              "level": "the-last-lantern",
+              "artReadyMs": 4855.100000143051,
+              "firstRenderedMs": 5446.100000143051,
+              "missingArt": 0,
+              "imageRequests": 60,
+              "cold": true
+            },
+            {
+              "level": "the-last-lantern",
+              "artReadyMs": 4889.200000047684,
+              "firstRenderedMs": 5486.5,
+              "missingArt": 0,
+              "imageRequests": 60,
+              "cold": true
+            },
+            {
+              "level": "the-last-lantern",
+              "artReadyMs": 4877.699999809265,
+              "firstRenderedMs": 5472.599999904633,
+              "missingArt": 0,
+              "imageRequests": 60,
+              "cold": true
+            },
+            {
+              "level": "the-last-lantern",
+              "artReadyMs": 4865.799999952316,
+              "firstRenderedMs": 5463.299999952316,
+              "missingArt": 0,
+              "imageRequests": 60,
+              "cold": true
+            }
+          ]
+        }
+      },
+      "warm": {
+        "candidate": {
+          "medianMs": 742.7000000476837,
+          "p95Ms": 1312.3000001907349,
+          "imageRequestsMedian": 47,
+          "samples": [
+            {
+              "level": "the-last-lantern",
+              "artReadyMs": 689.9000000953674,
+              "firstRenderedMs": 1312.3000001907349,
+              "missingArt": 0,
+              "imageRequests": 47,
+              "cold": false
+            },
+            {
+              "level": "the-last-lantern",
+              "artReadyMs": 53.10000014305115,
+              "firstRenderedMs": 742.7000000476837,
+              "missingArt": 0,
+              "imageRequests": 47,
+              "cold": false
+            },
+            {
+              "level": "the-last-lantern",
+              "artReadyMs": 46.40000009536743,
+              "firstRenderedMs": 709.5999999046326,
+              "missingArt": 0,
+              "imageRequests": 47,
+              "cold": false
+            },
+            {
+              "level": "the-last-lantern",
+              "artReadyMs": 48.200000047683716,
+              "firstRenderedMs": 665.5,
+              "missingArt": 0,
+              "imageRequests": 47,
+              "cold": false
+            },
+            {
+              "level": "the-last-lantern",
+              "artReadyMs": 177.59999990463257,
+              "firstRenderedMs": 793.0999999046326,
+              "missingArt": 0,
+              "imageRequests": 47,
+              "cold": false
+            }
+          ]
+        },
+        "baseline": {
+          "medianMs": 1217,
+          "p95Ms": 1225.5,
+          "imageRequestsMedian": 60,
+          "samples": [
+            {
+              "level": "the-last-lantern",
+              "artReadyMs": 587.4000000953674,
+              "firstRenderedMs": 1219.7000000476837,
+              "missingArt": 0,
+              "imageRequests": 60,
+              "cold": false
+            },
+            {
+              "level": "the-last-lantern",
+              "artReadyMs": 590.2000000476837,
+              "firstRenderedMs": 1217,
+              "missingArt": 0,
+              "imageRequests": 60,
+              "cold": false
+            },
+            {
+              "level": "the-last-lantern",
+              "artReadyMs": 54.299999952316284,
+              "firstRenderedMs": 751.3999998569489,
+              "missingArt": 0,
+              "imageRequests": 60,
+              "cold": false
+            },
+            {
+              "level": "the-last-lantern",
+              "artReadyMs": 623.0999999046326,
+              "firstRenderedMs": 1225.5,
+              "missingArt": 0,
+              "imageRequests": 60,
+              "cold": false
+            },
+            {
+              "level": "the-last-lantern",
+              "artReadyMs": 53.89999985694885,
+              "firstRenderedMs": 750.3999998569489,
+              "missingArt": 0,
+              "imageRequests": 60,
+              "cold": false
+            }
+          ]
+        }
+      }
+    }
+  }
+}

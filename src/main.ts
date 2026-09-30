@@ -105,6 +105,7 @@ let lastDefeatLevelId: string | null = null;
 let frameHandle = 0;
 let battleMenu: BattleMenu | null = null;
 let popups: DefenderPopups | null = null;
+let battleArtState: "loading" | "ready" | "failed" = "loading";
 let disposeRecording: (() => void) | undefined;
 const frames: number[] = [];
 const stars = (n: number) => "★".repeat(n) + "☆".repeat(3 - n);
@@ -214,12 +215,33 @@ function render() {
 }
 function renderBattle() {
   const l = game!.level;
+  battleArtState = "loading";
   selection = new BattleSelection(game!);
-  app.innerHTML = `<main class="battle-screen popup-battle"><header class="battle-header"><div class="battle-brand"><div><strong>${escapeHtml(l.name)}</strong></div></div>${battleStats(l.waves.length)}<div class="battle-tools">${button("speed", "1×", "icon-button", 'aria-label="Game speed" id="speed"')}${button("menu", "Menu", "icon-button", 'aria-label="Menu" id="battle-menu"')}</div></header><div class="battle-middle"><section class="battlefield"><div id="canvas-host"></div><div class="defender-popup-root" id="defender-popups"></div><div class="battle-placement-hint">Tap clear ground to place a defender</div><div id="wave-countdown" class="wave-countdown" role="status" aria-live="polite" hidden><span>Next wave in</span> <strong id="countdown-number">10</strong></div><section class="boss-health-panel" id="boss-health-panel" aria-label="Boss health" hidden><div><strong>The Roadwarden</strong><span id="boss-health-value"></span></div><div class="boss-health-track" id="boss-health-track" role="progressbar" aria-label="The Roadwarden's health" aria-valuemin="0" aria-valuemax="100" aria-valuenow="100"><span id="boss-health-fill"></span></div></section></section><aside class="battle-aside"><div class="wave-controls">${button("start", "Start first wave", "primary", 'id="start-wave"')}</div></aside></div></main>`;
+  app.innerHTML = `<main class="battle-screen popup-battle"><header class="battle-header"><div class="battle-brand"><div><strong>${escapeHtml(l.name)}</strong></div></div>${battleStats(l.waves.length)}<div class="battle-tools">${button("speed", "1×", "icon-button", 'aria-label="Game speed" id="speed"')}${button("menu", "Menu", "icon-button", 'aria-label="Menu" id="battle-menu"')}</div></header><div class="battle-middle"><section class="battlefield"><div id="canvas-host"></div><div class="defender-popup-root" id="defender-popups"></div><div class="battle-placement-hint">Tap clear ground to place a defender</div><div id="battle-art-status" class="battle-art-status" role="status">Preparing battle art…</div><div id="wave-countdown" class="wave-countdown" role="status" aria-live="polite" hidden><span>Next wave in</span> <strong id="countdown-number">10</strong></div><section class="boss-health-panel" id="boss-health-panel" aria-label="Boss health" hidden><div><strong>The Roadwarden</strong><span id="boss-health-value"></span></div><div class="boss-health-track" id="boss-health-track" role="progressbar" aria-label="The Roadwarden's health" aria-valuemin="0" aria-valuemax="100" aria-valuenow="100"><span id="boss-health-fill"></span></div></section></section><aside class="battle-aside"><div class="wave-controls">${button("start", "Preparing art…", "primary", 'id="start-wave" disabled')}</div></aside></div></main>`;
   try {
     field = new Battlefield(document.querySelector("#canvas-host")!);
     field.load(l);
     field.setGridVisible(save.showGrid);
+    const loadingField = field;
+    void field.artReady(l).then(
+      async () => {
+        await new Promise<void>((resolve) =>
+          requestAnimationFrame(() => resolve()),
+        );
+        if (field !== loadingField || screen !== "battle") return;
+        battleArtState = "ready";
+        document.getElementById("battle-art-status")!.hidden = true;
+        updateHud();
+      },
+      (error) => {
+        if (field !== loadingField || screen !== "battle") return;
+        battleArtState = "failed";
+        document.getElementById("battle-art-status")!.textContent =
+          "Battle art could not load. Retry to continue.";
+        console.error(error);
+        updateHud();
+      },
+    );
     if (
       import.meta.env.DEV &&
       new URLSearchParams(location.search).has("record")
@@ -253,7 +275,7 @@ function renderBattle() {
   updateHud();
 }
 function pick(p: Point) {
-  if (!game?.canAct()) return;
+  if (battleArtState !== "ready" || !game?.canAct()) return;
   popups?.pick(p);
   updateHud();
 }
@@ -263,6 +285,7 @@ function clearBattleSelection() {
   field?.highlight(null);
 }
 function beginWave() {
+  if (battleArtState !== "ready") return;
   game?.startWave();
   clearBattleSelection();
 }
@@ -332,17 +355,22 @@ function updateHud() {
   const start = document.querySelector<HTMLButtonElement>("#start-wave")!;
   const activeWave =
     s.phase === "wave" || (s.phase === "paused" && s.resumePhase === "wave");
-  start.disabled = s.phase !== "preparation";
+  start.disabled = s.phase !== "preparation" || battleArtState === "loading";
+  start.dataset.action = battleArtState === "failed" ? "retry-art" : "start";
   start.innerHTML =
-    s.phase === "won"
-      ? "Victory"
-      : s.phase === "lost"
-        ? "Defeat"
-        : activeWave
-          ? `${s.enemies.length} on the trail`
-          : s.wave > 0
-            ? `Start wave ${s.wave + 1} early`
-            : "Start first wave";
+    battleArtState === "failed"
+      ? "Retry art loading"
+      : battleArtState === "loading"
+        ? "Preparing art…"
+        : s.phase === "won"
+          ? "Victory"
+          : s.phase === "lost"
+            ? "Defeat"
+            : activeWave
+              ? `${s.enemies.length} on the trail`
+              : s.wave > 0
+                ? `Start wave ${s.wave + 1} early`
+                : "Start first wave";
   const countdown = document.getElementById("wave-countdown")!;
   const showCountdown =
     s.phase === "preparation" && s.nextWaveCountdown !== null;
@@ -648,6 +676,10 @@ app.addEventListener("click", (e) => {
     return;
   }
   if (!game) return;
+  if (action === "retry-art") {
+    render();
+    return;
+  }
   if (action === "start") {
     beginWave();
     sound.unlock();
