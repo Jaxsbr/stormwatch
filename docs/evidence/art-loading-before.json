@@ -1,0 +1,210 @@
+{
+  "simulation": {
+    "cpuSlowdown": 4,
+    "latencyMs": 100,
+    "downloadBytesPerSecond": 2500000,
+    "runs": 5
+  },
+  "levels": {
+    "lantern-pass": {
+      "cold": {
+        "candidate": {
+          "medianMs": 4785.5,
+          "p95Ms": 6026.5,
+          "imageRequestsMedian": 60,
+          "samples": [
+            {
+              "level": "lantern-pass",
+              "artReadyMs": 5905.599999904633,
+              "firstRenderedMs": 6026.5,
+              "missingArt": 0,
+              "imageRequests": 60,
+              "cold": true
+            },
+            {
+              "level": "lantern-pass",
+              "artReadyMs": 4663.299999952316,
+              "firstRenderedMs": 4770.799999952316,
+              "missingArt": 0,
+              "imageRequests": 60,
+              "cold": true
+            },
+            {
+              "level": "lantern-pass",
+              "artReadyMs": 4644.099999904633,
+              "firstRenderedMs": 4754,
+              "missingArt": 0,
+              "imageRequests": 60,
+              "cold": true
+            },
+            {
+              "level": "lantern-pass",
+              "artReadyMs": 4689.799999952316,
+              "firstRenderedMs": 4803.599999904633,
+              "missingArt": 0,
+              "imageRequests": 60,
+              "cold": true
+            },
+            {
+              "level": "lantern-pass",
+              "artReadyMs": 4674.099999904633,
+              "firstRenderedMs": 4785.5,
+              "missingArt": 0,
+              "imageRequests": 60,
+              "cold": true
+            }
+          ]
+        }
+      },
+      "warm": {
+        "candidate": {
+          "medianMs": 264.10000014305115,
+          "p95Ms": 366.39999985694885,
+          "imageRequestsMedian": 60,
+          "samples": [
+            {
+              "level": "lantern-pass",
+              "artReadyMs": 75.10000014305115,
+              "firstRenderedMs": 229.20000004768372,
+              "missingArt": 0,
+              "imageRequests": 60,
+              "cold": false
+            },
+            {
+              "level": "lantern-pass",
+              "artReadyMs": 164.5,
+              "firstRenderedMs": 264.10000014305115,
+              "missingArt": 0,
+              "imageRequests": 60,
+              "cold": false
+            },
+            {
+              "level": "lantern-pass",
+              "artReadyMs": 234.79999995231628,
+              "firstRenderedMs": 366.39999985694885,
+              "missingArt": 0,
+              "imageRequests": 60,
+              "cold": false
+            },
+            {
+              "level": "lantern-pass",
+              "artReadyMs": 159.70000004768372,
+              "firstRenderedMs": 272.7000000476837,
+              "missingArt": 0,
+              "imageRequests": 60,
+              "cold": false
+            },
+            {
+              "level": "lantern-pass",
+              "artReadyMs": 77.59999990463257,
+              "firstRenderedMs": 233.39999985694885,
+              "missingArt": 0,
+              "imageRequests": 60,
+              "cold": false
+            }
+          ]
+        }
+      }
+    },
+    "the-last-lantern": {
+      "cold": {
+        "candidate": {
+          "medianMs": 4994.299999952316,
+          "p95Ms": 5024.5,
+          "imageRequestsMedian": 60,
+          "samples": [
+            {
+              "level": "the-last-lantern",
+              "artReadyMs": 4905.899999856949,
+              "firstRenderedMs": 5010.799999952316,
+              "missingArt": 0,
+              "imageRequests": 60,
+              "cold": true
+            },
+            {
+              "level": "the-last-lantern",
+              "artReadyMs": 4890,
+              "firstRenderedMs": 4994.299999952316,
+              "missingArt": 0,
+              "imageRequests": 60,
+              "cold": true
+            },
+            {
+              "level": "the-last-lantern",
+              "artReadyMs": 4884.099999904633,
+              "firstRenderedMs": 4983.199999809265,
+              "missingArt": 0,
+              "imageRequests": 60,
+              "cold": true
+            },
+            {
+              "level": "the-last-lantern",
+              "artReadyMs": 4921.400000095367,
+              "firstRenderedMs": 5024.5,
+              "missingArt": 0,
+              "imageRequests": 60,
+              "cold": true
+            },
+            {
+              "level": "the-last-lantern",
+              "artReadyMs": 4883.400000095367,
+              "firstRenderedMs": 4984,
+              "missingArt": 0,
+              "imageRequests": 60,
+              "cold": true
+            }
+          ]
+        }
+      },
+      "warm": {
+        "candidate": {
+          "medianMs": 252.39999985694885,
+          "p95Ms": 268.2999999523163,
+          "imageRequestsMedian": 60,
+          "samples": [
+            {
+              "level": "the-last-lantern",
+              "artReadyMs": 72.19999980926514,
+              "firstRenderedMs": 238.39999985694885,
+              "missingArt": 0,
+              "imageRequests": 60,
+              "cold": false
+            },
+            {
+              "level": "the-last-lantern",
+              "artReadyMs": 167.59999990463257,
+              "firstRenderedMs": 268.2999999523163,
+              "missingArt": 0,
+              "imageRequests": 60,
+              "cold": false
+            },
+            {
+              "level": "the-last-lantern",
+              "artReadyMs": 145.39999985694885,
+              "firstRenderedMs": 252.39999985694885,
+              "missingArt": 0,
+              "imageRequests": 60,
+              "cold": false
+            },
+            {
+              "level": "the-last-lantern",
+              "artReadyMs": 78.69999980926514,
+              "firstRenderedMs": 235.69999980926514,
+              "missingArt": 0,
+              "imageRequests": 60,
+              "cold": false
+            },
+            {
+              "level": "the-last-lantern",
+              "artReadyMs": 158.89999985694885,
+              "firstRenderedMs": 262.7000000476837,
+              "missingArt": 0,
+              "imageRequests": 60,
+              "cold": false
+            }
+          ]
+        }
+      }
+    }
+  }
+}
