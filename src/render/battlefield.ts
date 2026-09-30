@@ -101,6 +101,8 @@ export class Battlefield {
   private textures: THREE.Texture[] = [];
   private owned: THREE.Texture[] = [];
   private sceneTextures: THREE.Texture[] = [];
+  private artTasks: Promise<void>[] = [];
+  private coreArtTaskCount = 0;
   private range: THREE.Mesh;
   private selectionClock = 0;
   private baseGlow: THREE.Mesh;
@@ -308,6 +310,7 @@ export class Battlefield {
     });
     this.observer.observe(host);
     this.resize();
+    this.coreArtTaskCount = this.artTasks.length;
     this.renderer.domElement.addEventListener("pointerup", (e) => {
       if (e.button === 0) {
         const p = this.pick(e.clientX, e.clientY);
@@ -323,13 +326,51 @@ export class Battlefield {
     );
   }
   private texture(path: string, ready?: () => void) {
+    let completed!: () => void;
+    let failed!: (reason: Error) => void;
+    const task = new Promise<void>((resolve, reject) => {
+      completed = resolve;
+      failed = reject;
+    });
+    void task.catch(() => {});
+    this.artTasks.push(task);
     const t = new THREE.TextureLoader().load(
       `${import.meta.env.BASE_URL}${path}`,
-      ready,
+      () => {
+        ready?.();
+        completed();
+      },
+      undefined,
+      () => failed(new Error(`Texture unavailable: ${path}`)),
     );
     t.colorSpace = THREE.SRGBColorSpace;
     this.owned.push(t);
     return t;
+  }
+  /** Resolve when the encounter's required cutouts and scenery have loaded. */
+  artReady(level: LevelDef): Promise<void> {
+    const kinds = new Set(
+      level.waves.flatMap((wave) => wave.groups.map((group) => group.kind)),
+    );
+    const resources: CutoutResource[] = [];
+    for (const kind of kinds) {
+      resources.push(this.characterRigs[kind]);
+      resources.push(
+        this.directionalRigs[kind].front,
+        this.directionalRigs[kind].rear,
+      );
+      if (kind === "boss")
+        resources.push(
+          ...this.bossExpressionRigs.front,
+          ...this.bossExpressionRigs.side,
+        );
+    }
+    for (const kind of level.availableTowers ?? ["bolt", "stone", "net"])
+      resources.push(this.defenderRigs[kind].side);
+    return Promise.all([
+      ...this.artTasks,
+      ...resources.map((resource) => resource.ready),
+    ]).then(() => {});
   }
   private updateRank(level: number) {
     const label = rankLabel(level);
@@ -389,6 +430,7 @@ export class Battlefield {
     const retainScenery = this.sceneryKey === sceneryKey;
     this.clearWorld(retainScenery);
     if (retainScenery) return;
+    this.artTasks.length = this.coreArtTaskCount;
     this.sceneryKey = sceneryKey;
     this.gaitSampler = projectedPathSampler(level.path, position);
     this.width = level.width;
@@ -464,6 +506,16 @@ export class Battlefield {
     this.sceneTextures.push(pathTexture);
     const generation = this.generation;
     const surface = new Image();
+    const surfaceTask = new Promise<void>((resolve, reject) => {
+      surface.addEventListener("load", () => resolve(), { once: true });
+      surface.addEventListener(
+        "error",
+        () => reject(new Error("Trail texture unavailable")),
+        { once: true },
+      );
+    });
+    void surfaceTask.catch(() => {});
+    this.artTasks.push(surfaceTask);
     surface.onload = () => {
       if (generation !== this.generation) return;
       const pattern = ctx.createPattern(surface, "repeat");

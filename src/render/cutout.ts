@@ -26,11 +26,11 @@ export interface CutoutDefinition {
 export class CutoutResource {
   definition: CutoutDefinition | null = null;
   textures = new Map<string, THREE.Texture>();
+  readonly ready: Promise<void>;
   private disposed = false;
   constructor(id: string, namespace = "v2") {
-    void this.load(id, namespace).catch((e) =>
-      console.warn(`Cutout ${id} unavailable`, e),
-    );
+    this.ready = this.load(id, namespace);
+    void this.ready.catch((e) => console.warn(`Cutout ${id} unavailable`, e));
   }
   private async load(id: string, namespace: string) {
     const response = await fetch(

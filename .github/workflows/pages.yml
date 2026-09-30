@@ -11,6 +11,35 @@ concurrency:
   group: pages-${{ github.event.pull_request.number || github.ref }}
   cancel-in-progress: true
 jobs:
+  art-benchmark:
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: main
+          path: baseline
+          persist-credentials: false
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci
+      - run: npm run build:qa
+      - name: Compare simulated art readiness with main
+        run: |
+          if test -f baseline/src/qa/art-load.ts; then
+            (cd baseline && npm ci && npm run build:qa)
+            node tools/art-benchmark.mjs --baseline baseline/dist-qa --candidate dist-qa --output art-benchmark.json
+          else
+            # This first PR establishes the fixture on main.
+            node tools/art-benchmark.mjs --candidate dist-qa --runs 2 --output art-benchmark.json
+          fi
+          node -e 'const r=require("./art-benchmark.json"); for(const [level,modes] of Object.entries(r.levels)) for(const [mode,series] of Object.entries(modes)) console.log(`${level} ${mode}: ${series.candidate.p95Ms.toFixed(0)} ms p95`)' >> "$GITHUB_STEP_SUMMARY"
   build:
     runs-on: ubuntu-latest
     steps:
