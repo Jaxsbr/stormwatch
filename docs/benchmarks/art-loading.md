@@ -1,6 +1,8 @@
 # Simulated battle art loading benchmark
 
-The QA fixture creates a real `Battlefield` for Lantern Pass and The Last Lantern.
+The QA fixture creates a real `Battlefield` for Lantern Pass and The Last Lantern,
+with one defender of every available kind and one enemy of every encountered kind.
+It verifies that their rigs are created and the frame draws with uploaded textures.
 It measures from battlefield construction until required encounter cutouts and
 scenery are loaded, followed by the first rendered frame. The browser run uses a
 960 × 540 battlefield, Chrome at 4× CPU slowdown, 100 ms network latency and
