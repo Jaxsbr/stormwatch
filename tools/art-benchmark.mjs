@@ -3,6 +3,7 @@ import { createServer } from "node:http";
 import { mkdtemp, readFile, rm } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { extname, join, resolve, sep } from "node:path";
+import { artRegressions } from "./art-benchmark-gate.mjs";
 
 const args = process.argv.slice(2);
 const option = (name, fallback) => {
@@ -265,17 +266,7 @@ try {
     );
   process.stdout.write(JSON.stringify(report, null, 2) + "\n");
   if (baseline) {
-    const regressions = [];
-    for (const [level, modes] of Object.entries(report.levels))
-      for (const [mode, { candidate: next, baseline: prior }] of Object.entries(
-        modes,
-      )) {
-        const allowance = Math.max(300, prior.p95Ms * 0.25);
-        if (next.p95Ms > prior.p95Ms + allowance)
-          regressions.push(
-            `${level} ${mode}: p95 ${next.p95Ms.toFixed(0)}ms > ${(prior.p95Ms + allowance).toFixed(0)}ms`,
-          );
-      }
+    const regressions = artRegressions(report);
     if (regressions.length)
       throw new Error(`Art readiness regression:\n${regressions.join("\n")}`);
   }
