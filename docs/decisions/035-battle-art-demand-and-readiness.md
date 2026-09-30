@@ -38,10 +38,12 @@ with the battlefield, preserving its existing renderer lifetime behavior.
 
 The [simulated benchmark](../benchmarks/art-loading.md) uses 4× CPU slowdown,
 20 Mbps network throughput and 100 ms latency in headless Chrome. In a paired
-five-run comparison, Lantern Pass cold p95 fell from 6.08 s to 3.61 s and its
+five-run comparison with representative actors rendered, Lantern Pass cold p95
+fell from 6.43 s to 3.95 s and its
 distinct WebP requests fell from 60 to 21. The Last Lantern cold p95 fell from
-5.00 s to 4.57 s, with requests falling from 60 to 47. Warm timing stayed
-roughly level. These are simulated desktop measurements, not physical mobile
+5.49 s to 5.07 s, with requests falling from 60 to 47. Warm p95 was 0.97 s
+to 0.99 s and 1.23 s to 1.31 s respectively, within the CI tolerance.
+These are simulated desktop measurements, not physical mobile
 performance. See [paired raw samples](../evidence/art-loading-after.json).
 
 Focused demand and disposal tests, the full test suite, type checking, the
