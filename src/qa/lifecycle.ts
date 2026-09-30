@@ -77,10 +77,10 @@ async function run(fullChapter = false) {
         }
         const context = field.renderer.getContext();
         try {
-          // Let asynchronous assets arrive; keep rendering actual actors.
-          const start = performance.now();
-          let previous = start;
-          while (performance.now() - start < 1500) {
+          // Compare settled art and the same number of simulation frames on retries.
+          await field.artReady(game.level);
+          let previous = performance.now();
+          for (let n = 0; n < 45; n++) {
             if (!session) game.advance(1 / 30);
             field.update(game, null, 1 / 30);
             await frame();

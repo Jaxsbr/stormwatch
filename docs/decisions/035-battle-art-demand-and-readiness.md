@@ -45,5 +45,8 @@ roughly level. These are simulated desktop measurements, not physical mobile
 performance. See [paired raw samples](../evidence/art-loading-after.json).
 
 Focused demand and disposal tests, the full test suite, type checking, the
-production build, and visual battle verification cover behavior. The PR gate
-compares future changes against main using the same simulation.
+production build, and visual battle verification cover behavior. The browser
+retry and full chapter/boss replay audits passed after waiting for settled art:
+both released all eight WebGL contexts, kept resource counts level across the
+two cycles, and recorded no redundant resize calls. The PR gate compares future
+changes against main using the same simulation.
