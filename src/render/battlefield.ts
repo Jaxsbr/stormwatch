@@ -3,7 +3,8 @@ import { bossRagePhase } from "../sim/boss-rage";
 import * as THREE from "three";
 import { RANK_BADGE, rankFontSize, rankLabel } from "../ui/rank-badge";
 import { selectionMaterial } from "./selection-material";
-import { CutoutResource, type CutoutInstance } from "./cutout";
+import type { CutoutInstance } from "./cutout";
+import { BattleArt, battleArtDemand } from "./battle-art";
 import { projectedPathSampler } from "./path-sampler";
 import { OverlayBatch, enemyHeight } from "./overlay-batch";
 import { ResourcePool } from "./resource-pool";
@@ -118,60 +119,7 @@ export class Battlefield {
   private bufferWidth = 0;
   private bufferHeight = 0;
   private disposed = false;
-  private characterRigs: Record<EnemyKind, CutoutResource> = {
-    raider: new CutoutResource("rat-rig-v3"),
-    runner: new CutoutResource("weasel-rig-v1"),
-    armored: new CutoutResource("boar-rig-v1"),
-    boss: new CutoutResource("badger-rig-v1"),
-  };
-  private directionalRigs: Record<
-    EnemyKind,
-    { front: CutoutResource; rear: CutoutResource }
-  > = {
-    raider: {
-      front: new CutoutResource("rat-front-rig-v3"),
-      rear: new CutoutResource("rat-rear-rig-v3"),
-    },
-    runner: {
-      front: new CutoutResource("weasel-front-rig-v1"),
-      rear: new CutoutResource("weasel-rear-rig-v1"),
-    },
-    armored: {
-      front: new CutoutResource("boar-front-rig-v1"),
-      rear: new CutoutResource("boar-rear-rig-v1"),
-    },
-    boss: {
-      front: new CutoutResource("badger-front-rig-v1"),
-      rear: new CutoutResource("badger-rear-rig-v1"),
-    },
-  };
-  private bossExpressionRigs = {
-    front: [
-      new CutoutResource("badger-front-angry-v1"),
-      new CutoutResource("badger-front-raging-v1"),
-    ],
-    side: [
-      new CutoutResource("badger-side-angry-v1"),
-      new CutoutResource("badger-side-raging-v1"),
-    ],
-  };
-  private defenderRigs = Object.fromEntries(
-    Object.entries({
-      bolt: "squirrel",
-      stone: "skunk",
-      net: "turtle",
-    }).map(([kind, animal]) => [
-      kind,
-      {
-        side: new CutoutResource(`${animal}-side-defender-v1`),
-      },
-    ]),
-  ) as Record<
-    TowerKind,
-    {
-      side: CutoutResource;
-    }
-  >;
+  private art: BattleArt | null = null;
   private placementTile: THREE.Texture;
   private fired = new Map<number, { shots: number; at: number }>();
   private aim = new Map<number, number>();
@@ -349,28 +297,9 @@ export class Battlefield {
   }
   /** Resolve when the encounter's required cutouts and scenery have loaded. */
   artReady(level: LevelDef): Promise<void> {
-    const kinds = new Set(
-      level.waves.flatMap((wave) => wave.groups.map((group) => group.kind)),
-    );
-    const resources: CutoutResource[] = [];
-    for (const kind of kinds) {
-      resources.push(this.characterRigs[kind]);
-      resources.push(
-        this.directionalRigs[kind].front,
-        this.directionalRigs[kind].rear,
-      );
-      if (kind === "boss")
-        resources.push(
-          ...this.bossExpressionRigs.front,
-          ...this.bossExpressionRigs.side,
-        );
-    }
-    for (const kind of level.availableTowers ?? ["bolt", "stone", "net"])
-      resources.push(this.defenderRigs[kind].side);
-    return Promise.all([
-      ...this.artTasks,
-      ...resources.map((resource) => resource.ready),
-    ]).then(() => {});
+    if (!this.art || this.art.key !== battleArtDemand(level).key)
+      return Promise.reject(new Error("Encounter art was not loaded"));
+    return Promise.all([...this.artTasks, this.art.ready]).then(() => {});
   }
   private updateRank(level: number) {
     const label = rankLabel(level);
@@ -429,7 +358,16 @@ export class Battlefield {
     ]);
     const retainScenery = this.sceneryKey === sceneryKey;
     this.clearWorld(retainScenery);
-    if (retainScenery) return;
+    if (this.art?.key !== battleArtDemand(level).key) {
+      this.characterPool.dispose();
+      this.defenderPool.dispose();
+      this.art?.dispose();
+      this.art = null;
+    }
+    if (retainScenery) {
+      this.art ??= new BattleArt(level);
+      return;
+    }
     this.artTasks.length = this.coreArtTaskCount;
     this.sceneryKey = sceneryKey;
     this.gaitSampler = projectedPathSampler(level.path, position);
@@ -592,6 +530,7 @@ export class Battlefield {
     this.placementGrid.renderOrder = 11;
     this.placementGrid.visible = this.gridVisible;
     this.world.add(this.placementGrid);
+    this.art ??= new BattleArt(level);
   }
 
   setGridVisible(visible: boolean) {
@@ -804,8 +743,8 @@ export class Battlefield {
           fired = { shots: t.shots, at: t.shots ? s.clock : -100 };
           this.fired.set(t.id, fired);
         }
-        const defenderResources = this.defenderRigs[t.kind];
-        if (defenderResources.side.definition) {
+        const defenderResource = this.art!.defender(t.kind);
+        if (defenderResource.definition) {
           const target = s.enemies
             .filter((e) => Math.hypot(e.x - t.x, e.z - t.z) <= game.range(t))
             .sort((a, b) => b.distance - a.distance)[0];
@@ -814,7 +753,7 @@ export class Battlefield {
           const dx = target ? (target.x - t.x) * X : 0;
           let mirrored =
             Math.abs(dx) > 2 ? dx < 0 : (f.defender?.mirrored ?? false);
-          let resource = defenderResources.side;
+          let resource = defenderResource;
           // Preserve the release pose so the visual muzzle cannot jump views
           // during the first frames of a shot.
           if (f.defender && s.clock - fired.at < 0.16) {
@@ -982,18 +921,14 @@ export class Battlefield {
       const next = pointOnPath(game.level.path, e.distance + 0.02);
       const vertical = Math.abs(next.z - e.z) > Math.abs(next.x - e.x);
       const rage = e.kind === "boss" ? bossRagePhase(e) : 0;
-      let desiredRig = vertical
-        ? next.z > e.z
-          ? this.directionalRigs[e.kind].front
-          : this.directionalRigs[e.kind].rear
-        : this.characterRigs[e.kind];
-      if (rage && !vertical)
-        desiredRig = this.bossExpressionRigs.side[rage - 1];
-      if (rage && vertical && next.z > e.z)
-        desiredRig = this.bossExpressionRigs.front[rage - 1];
+      const desiredRig = this.art!.enemy(
+        e.kind,
+        vertical ? (next.z > e.z ? "front" : "rear") : "side",
+        rage,
+      );
       const characterResource = desiredRig.definition
         ? desiredRig
-        : this.characterRigs[e.kind];
+        : this.art!.enemy(e.kind, "side");
       if (characterResource.definition) {
         if (f.character && f.character.cutout.resource !== characterResource) {
           this.scene.remove(f.character.group);
@@ -1247,17 +1182,8 @@ export class Battlefield {
     this.characterPool.dispose();
     this.defenderPool.dispose();
     this.owned.forEach((t) => t.dispose());
-    Object.values(this.characterRigs).forEach((r) => r.dispose());
-    Object.values(this.bossExpressionRigs)
-      .flat()
-      .forEach((r) => r.dispose());
-    Object.values(this.directionalRigs).forEach(({ front, rear }) => {
-      front.dispose();
-      rear.dispose();
-    });
-    Object.values(this.defenderRigs).forEach((views) =>
-      Object.values(views).forEach((r) => r?.dispose()),
-    );
+    this.art?.dispose();
+    this.art = null;
     [
       this.range,
       this.baseGlow,

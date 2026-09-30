@@ -28,16 +28,22 @@ export class CutoutResource {
   textures = new Map<string, THREE.Texture>();
   readonly ready: Promise<void>;
   private disposed = false;
+  private abort = new AbortController();
   constructor(id: string, namespace = "v2") {
     this.ready = this.load(id, namespace);
-    void this.ready.catch((e) => console.warn(`Cutout ${id} unavailable`, e));
+    void this.ready.catch((e) => {
+      if (!this.disposed) console.warn(`Cutout ${id} unavailable`, e);
+    });
   }
   private async load(id: string, namespace: string) {
     const response = await fetch(
       `${import.meta.env.BASE_URL}art/${namespace}/${id}/rig.json`,
+      { signal: this.abort.signal },
     );
     if (!response.ok) throw new Error(`Rig HTTP ${response.status}`);
-    const def = validateCutoutDefinition(await response.json(), { namespace });
+    const source = await response.json();
+    if (this.disposed) return;
+    const def = validateCutoutDefinition(source, { namespace });
     const loaded = await Promise.allSettled(
       def.parts.map(async (p) => ({
         id: p.id,
@@ -68,6 +74,7 @@ export class CutoutResource {
   }
   dispose() {
     this.disposed = true;
+    this.abort.abort();
     this.textures.forEach((t) => t.dispose());
     this.textures.clear();
     this.definition = null;

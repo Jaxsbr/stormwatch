@@ -59,7 +59,21 @@ function fixture() {
     {
       ...lanternPass,
       availableTowers: ["bolt", "stone", "net"],
-      waves: [{ title: "Stress", reward: 30, groups: [] }],
+      waves: [
+        {
+          title: "Stress",
+          reward: 30,
+          // Declare every synthetic actor so encounter art demand matches the fixture.
+          groups: (["raider", "runner", "armored", "boss"] as EnemyKind[]).map(
+            (kind) => ({
+              kind,
+              count: 1,
+              gap: 1,
+              delayBefore: 3600,
+            }),
+          ),
+        },
+      ],
     },
     "nets",
     false,

@@ -35,3 +35,4 @@ Read the accepted records before changing consequential behavior. For a new deci
 - [032: Explicit workbench promotion scope](032-explicit-workbench-promotion-scope.md)
 - [033: Accepted defender motions in the runtime](033-runtime-accepted-defender-motion.md)
 - [034: Roadwarden rage and readable rally](034-roadwarden-rage-and-rally.md)
+- [035: Battle art demand and readiness](035-battle-art-demand-and-readiness.md)

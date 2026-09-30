@@ -38,6 +38,13 @@ and side views for current rightward segments. Gait, reload and idle motion read
 simulation time/distance, so pause freezes them. A defender hit is tested before ground picking, including during placement previews.
 Ground taps select a pending cell; an explicit confirmation issues the placement command.
 
+`src/render/battle-art.ts` selects cutout resources from the immutable attempt's
+enemy and available-defender roster. The battlefield joins those resources with
+scenery readiness before enabling battle input, and owns the WebGL context and
+painted texture disposal. The module disposes selected cutouts on replacement or
+attempt retirement. See [decision 035](decisions/035-battle-art-demand-and-readiness.md)
+and the [simulated loading benchmark](benchmarks/art-loading.md).
+
 ## Add an encounter
 
 Follow the [agent content authoring contract](agents/content-authoring.md) for schema, editor and runtime consistency.

@@ -35,4 +35,6 @@ This is a desktop browser simulation. It does not reproduce phone GPU, memory
 bandwidth, storage or thermal limits. The first post-ready frame is a repeatable
 proxy for battle art availability; it is not a claim about physical-device
 performance. [Pre-change raw samples](../evidence/art-loading-before.json) are
-kept for the architecture review; CI compares against main at the time of each PR.
+kept for the architecture review. The [paired after samples](../evidence/art-loading-after.json)
+include both revisions on the same run. CI compares against main at the time of
+each PR.
