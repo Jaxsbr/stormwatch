@@ -10,6 +10,8 @@ Record consequential choices in docs/decisions with context, decision, consequen
 
 For every architecture job, follow [the architecture change procedure](docs/adr-0001.md): establish evidence and a baseline, choose and record the seam, verify behavior and measurable benefit, then check deployment.
 
+Before adding or changing an enemy behavior, follow [the mechanic lifecycle contract](docs/agents/mechanic-lifecycle.md).
+
 ## Map and wave authoring
 
 Before adding or changing maps, waves, shared abilities, content schemas, or workbench promotion/loading, follow [the content authoring contract](docs/agents/content-authoring.md). Keep canonical data, workbench controls and runtime game loading aligned; verify the edit → Promote → game-reload round trip.

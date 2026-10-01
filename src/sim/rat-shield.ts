@@ -1,4 +1,4 @@
-import type { ShieldCycle } from "./types";
+import type { Enemy, ShieldCycle } from "./types";
 
 const DEFAULT_FIRST_GUARD_SECONDS = 1.1;
 const DEFAULT_CYCLE: ShieldCycle = { upSeconds: 2, downSeconds: 3 };
@@ -35,4 +35,28 @@ export function ratShieldState(
   );
   const strength = Math.min(1, phase / fade, (cycle.upSeconds - phase) / fade);
   return { raised, strength };
+}
+
+/** Advance the guard once per Game tick, before movement and projectile impacts. */
+export function advanceRatShield(enemy: Enemy, clock: number): void {
+  if (enemy.kind !== "raider" || !enemy.alive) return;
+  const state = ratShieldState(
+    clock - enemy.spawnedAt,
+    enemy.shieldCycle,
+    enemy.shieldEnabled,
+  );
+  enemy.shieldRaised = state.raised;
+  enemy.shieldStrength = state.strength;
+}
+
+/** Apply the guard decision at impact; the caller owns damage and feedback. */
+export function ratShieldImpact(
+  enemy: Enemy,
+  clock: number,
+  projectile: boolean,
+  guardDamageScale: number,
+): { guarded: boolean; damageScale: number } {
+  const guarded = projectile && enemy.kind === "raider" && enemy.shieldRaised;
+  if (guarded) enemy.shieldHitAt = clock;
+  return { guarded, damageScale: guarded ? guardDamageScale : 1 };
 }

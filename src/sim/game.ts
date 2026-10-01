@@ -17,8 +17,8 @@ import {
   validateLevel,
 } from "./path";
 import { refundFor, waveReward } from "./economy";
-import { weaselEvasionState } from "./weasel-evasion";
-import { ratShieldState } from "./rat-shield";
+import { advanceWeaselEvasion, weaselEvasionImpact } from "./weasel-evasion";
+import { advanceRatShield, ratShieldImpact } from "./rat-shield";
 import type {
   CardId,
   Enemy,
@@ -271,6 +271,7 @@ export class Game {
         hitAt: -1,
         spawnedAt: s.clock,
         shieldRaised: false,
+        shieldStrength: 0,
         shieldHitAt: -1,
         evadeAt: -1,
         ...(q.kind === "boss"
@@ -293,16 +294,19 @@ export class Game {
     const len = pathLength(this.level.path);
     for (const e of s.enemies) {
       if (!e.alive) continue;
+      advanceRatShield(e, s.clock);
+      const evadeSpeed = advanceWeaselEvasion(
+        e,
+        s.clock,
+        this.rules.evasionSpeedScale,
+      );
       updateBossRage(e, s.clock, this.bossRage);
       e.distance +=
         this.enemies[e.kind].speed *
         (e.movementScale ?? 1) *
         (e.kind === "boss" ? bossRageSpeed(e, this.bossRage) : 1) *
         Math.max(
-          e.kind === "runner" &&
-            weaselEvasionState(s.clock - e.spawnedAt, e.evasionCycle).active
-            ? this.rules.evasionSpeedScale
-            : 1,
+          evadeSpeed,
           e.rallyUntil !== undefined && e.rallyUntil > s.clock
             ? this.rules.boss.speedScale
             : 1,
@@ -333,14 +337,6 @@ export class Game {
       return;
     }
     this.updateBossRallies();
-    for (const e of s.enemies) {
-      if (e.kind !== "raider") continue;
-      const age = s.clock - e.spawnedAt;
-      const raised = ratShieldState(age, e.shieldCycle, e.shieldEnabled).raised;
-      if (raised !== e.shieldRaised) {
-        e.shieldRaised = raised;
-      }
-    }
     for (const t of s.towers) {
       t.cooldown -= dt;
       if (t.cooldown > 0) continue;
@@ -464,14 +460,9 @@ export class Game {
   private hurt(e: Enemy, damage: number, projectile = false) {
     if (!e.alive) return false;
     const s = this.state;
-    if (
-      projectile &&
-      e.kind === "runner" &&
-      weaselEvasionState(s.clock - e.spawnedAt, e.evasionCycle).active
-    ) {
-      // Coalesce simultaneous misses so a volley produces one readable cue.
-      if (e.evadeAt === undefined || s.clock - e.evadeAt >= 0.18) {
-        e.evadeAt = s.clock;
+    const evasion = weaselEvasionImpact(e, s.clock, projectile);
+    if (evasion.evaded) {
+      if (evasion.cue) {
         s.effects.push({
           x: e.x,
           z: e.z,
@@ -484,13 +475,16 @@ export class Game {
       }
       return false;
     }
-    const guarded = projectile && e.kind === "raider" && e.shieldRaised;
+    const guard = ratShieldImpact(
+      e,
+      s.clock,
+      projectile,
+      this.rules.guardDamageScale,
+    );
     e.hp -=
-      Math.max(1, damage - this.enemies[e.kind].armor) *
-      (guarded ? this.rules.guardDamageScale : 1);
+      Math.max(1, damage - this.enemies[e.kind].armor) * guard.damageScale;
     if (e.hp > 0) updateBossRage(e, s.clock, this.bossRage);
-    if (guarded) {
-      e.shieldHitAt = s.clock;
+    if (guard.guarded) {
       this.emit("shield-hit");
     } else {
       e.hitAt = s.clock;

@@ -9,7 +9,6 @@ import { projectedPathSampler } from "./path-sampler";
 import { OverlayBatch, enemyHeight } from "./overlay-batch";
 import { ResourcePool } from "./resource-pool";
 import { CombatText } from "./combat-text";
-import { weaselEvasionState } from "../sim/weasel-evasion";
 import { EffectBatch } from "./effect-batch";
 import { DefenderRig } from "./defender-rig";
 import { CharacterRig } from "./character-rig";
@@ -19,7 +18,6 @@ import {
   type StatusGlyphKind,
   type StatusGlyphView,
 } from "./status-glyph";
-import { ratShieldState } from "../sim/rat-shield";
 import { updateCastNet } from "./cast-net";
 import { onPath, pointOnPath } from "../sim/path";
 import type { Game } from "../sim/game";
@@ -836,15 +834,9 @@ export class Battlefield {
               ? 0xffd28e
               : 0xffffff,
       );
-      const guard = ratShieldState(
-        s.clock - e.spawnedAt,
-        e.shieldCycle,
-        e.shieldEnabled,
-      );
       const flashAge =
         e.shieldHitAt === undefined ? Infinity : s.clock - e.shieldHitAt;
       const flash = flashAge >= 0 && flashAge < 0.24 ? 1 - flashAge / 0.24 : 0;
-      const evasion = weaselEvasionState(s.clock - e.spawnedAt, e.evasionCycle);
       const evadeAge =
         e.evadeAt === undefined || e.evadeAt < 0
           ? Infinity
@@ -875,11 +867,15 @@ export class Battlefield {
         );
       const statuses: StatusGlyphView[] = [];
       if (e.kind === "raider")
-        statuses.push({ kind: "shield", opacity: guard.strength, flash });
+        statuses.push({
+          kind: "shield",
+          opacity: e.shieldStrength ?? 0,
+          flash,
+        });
       if (e.kind === "runner")
         statuses.push({
           kind: "evade",
-          opacity: evasion.active ? 1 : evasion.warning ? 0.35 : 0,
+          opacity: e.evasion?.active ? 1 : e.evasion?.warning ? 0.35 : 0,
           flash: evadeFlash,
         });
       const boosted = e.rallyUntil !== undefined && e.rallyUntil > s.clock;
