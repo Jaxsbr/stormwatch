@@ -76,6 +76,8 @@ export interface LevelDef {
   requiresBossDefeat?: boolean;
   waves: WaveDef[];
   accent: string;
+  /** Presentation data; simulation rules never read this field. */
+  visual?: { backdrop: string };
 }
 export interface Tower extends Point {
   id: number;

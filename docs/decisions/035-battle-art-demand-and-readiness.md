@@ -31,8 +31,9 @@ art demand matches its actors.
 An encounter requests fewer distinct images when it uses a subset of the full
 roster. The first playable battle frame has its required art; failed loading is
 visible and recoverable. A new enemy or defender view must be added to the
-cutout naming map and covered by a demand test. Scene texture disposal remains
-with the battlefield, preserving its existing renderer lifetime behavior.
+visual catalog from decision 036 and covered by a demand test. Scene texture
+disposal remains with the battlefield, preserving its existing renderer lifetime
+behavior.
 
 ## Verification
 
