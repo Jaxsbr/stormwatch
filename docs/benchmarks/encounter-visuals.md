@@ -58,3 +58,25 @@ to woodland: draft autosave → browser reload retained the choice → Playtest
 showed woodland → Promote wave succeeded → the game server served woodland in
 `game-content.json` without rebuilding JavaScript. The reloaded campaign listed
 Mossbank as its fourth map. The trial content is not part of this change.
+
+## Scenery reuse check
+
+Environment: Vitest with a mocked WebGL renderer and texture loader on the
+local development machine. Reload the same `Battlefield` with Lantern Pass,
+then with an otherwise identical level whose approved backdrop changes from
+woodland to rainstone. Count new backdrop texture loads and old-texture
+disposals. The deterministic counts are the relevant measure; browser loading
+latency and physical device performance are outside this check.
+
+| Reload | Before: new backdrop loads | After: new backdrop loads | Expected old texture disposal |
+| --- | ---: | ---: | ---: |
+| Unchanged level | 0 | 0 | 0 |
+| Backdrop-only edit | 0 (stale woodland) | 1 (rainstone) | 1 |
+
+The fixture ran ten times after the fix. Every run had the integer counts shown,
+so their median and p95 equal the table values; there is no timing claim.
+Before the fix, the focused test failed at the rainstone-load
+assertion (expected 1, received 0). After the fix it passes, including a second
+unchanged reload of rainstone, which makes no additional texture load. The test
+is the stable CI regression gate. The existing workbench promotion and game
+reload use new battlefield instances; this change does not alter that path.

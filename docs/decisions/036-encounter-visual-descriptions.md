@@ -52,3 +52,18 @@ mixed wave using the intended visual ID and no extra art mapping. The actual
 workbench UI round trip in that checkout passed through draft reload, Playtest,
 Promote and game reload. See the benchmark for limits and evidence. Complete
 the deployment check after merge.
+
+## Follow-up: scenery reuse after a backdrop edit
+
+`Battlefield.load` can retain scenery when reloading the same encounter in one
+renderer instance. Its original reuse key covered layout but omitted the new
+`visual.backdrop` choice, so a backdrop-only edit kept the old image. The game
+and workbench currently create a fresh battlefield for each attempt, which kept
+their promoted-content reload path correct. The renderer contract still needs
+to honor all authored scenery inputs.
+
+Include the resolved approved backdrop path in the scenery reuse key. This
+preserves the existing fast path for unchanged scenery and rebuilds/disposes the
+old texture when only the backdrop changes. A focused renderer lifecycle test
+proves both cases. This changes presentation resource lifetime only; simulation,
+promotion and schema stay the same. See the [reuse check](../benchmarks/encounter-visuals.md#scenery-reuse-check).

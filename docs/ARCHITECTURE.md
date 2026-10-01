@@ -103,7 +103,8 @@ changes simulation state or effect timing.
 
 Reloading the same encounter clears actors and interaction overlays while
 retaining its scenery and path textures. The reuse key includes the level id,
-dimensions and route; a changed layout rebuilds the scenery. QA-only phase timing
+dimensions, route, blocked cells and selected backdrop; a changed layout or
+backdrop rebuilds the scenery. QA-only phase timing
 separates figure updates, effect updates and synchronous WebGL submission, and
 retains long-frame context. These timings do not measure GPU completion.
 
