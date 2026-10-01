@@ -19,6 +19,7 @@ import {
   rebaseAfterPromotion,
 } from "../src/workbench/working-draft";
 import { AttemptSession } from "../src/workbench/runs";
+import { describeEncounter } from "../src/content/encounter-visuals";
 const cleanups = [];
 afterEach(async () => {
   for (const cleanup of cleanups.splice(0)) await cleanup();
@@ -253,6 +254,71 @@ it("promotes every populated wave of a new map together", async () => {
   const disk = JSON.parse(await readFile(file, "utf8"));
   expect(disk.levels.slice(0, -1)).toEqual(CANONICAL_CONTENT.levels);
   expect(disk.levels.at(-1)).toEqual(draft.content.levels.at(-1));
+});
+
+it("round trips a new map's visual choice through draft reload, Playtest, Promote and game reload", async () => {
+  const { file, post } = await fixture();
+  const draft = createMap(
+    createWorkingDraft(CANONICAL_CONTENT),
+    "New crossing",
+    "lantern-pass",
+    "new-crossing",
+    "new-first",
+  );
+  const authored = draft.content.levels.at(-1);
+  authored.visual = { backdrop: "rainstone" };
+  authored.waves[0].packets = [
+    { id: "rats", groups: [{ id: "rat", kind: "raider", count: 3, gap: 1 }] },
+  ];
+  const restored = validateWorkingDraft(JSON.parse(JSON.stringify(draft)));
+  const scenario = {
+    id: "visual-roundtrip",
+    levelId: "new-crossing",
+    waveId: "new-first",
+    mode: "wave",
+    progression: "first-arrival",
+    difficulty: "normal",
+    seed: 42,
+  };
+  const playtest = new AttemptSession(
+    promoteAllWorkingChanges(CANONICAL_CONTENT, restored),
+    scenario,
+  );
+  expect(describeEncounter(playtest.game.level).backdrop).toBe(
+    "art/v2/rainstone-riverbank-v2/atlas.webp",
+  );
+  expect((await post(restored, {}, true)).status).toBe(200);
+  let loaded;
+  await runtimeContentMiddleware(file)(
+    { method: "GET", url: "/game-content.json" },
+    {
+      writeHead(code) {
+        expect(code).toBe(200);
+      },
+      end(body) {
+        loaded = JSON.parse(body);
+      },
+    },
+    () => {
+      throw new Error("Missing runtime content");
+    },
+  );
+  const reloaded = new AttemptSession(loaded, scenario);
+  expect(describeEncounter(reloaded.game.level).backdrop).toBe(
+    "art/v2/rainstone-riverbank-v2/atlas.webp",
+  );
+  expect(reloaded.configurationIdentity).toBe(playtest.configurationIdentity);
+});
+
+it("refuses to promote a map with an unapproved backdrop", async () => {
+  const { file, post } = await fixture();
+  const draft = createWorkingDraft(CANONICAL_CONTENT);
+  draft.content.levels[0].visual = { backdrop: "missing" };
+  const original = await readFile(file, "utf8");
+  const response = await post(draft);
+  expect(response.status).toBe(409);
+  expect((await response.json()).error).toContain("lantern-pass");
+  expect(await readFile(file, "utf8")).toBe(original);
 });
 
 it("round trips rage tuning through saved draft, Playtest, Promote and runtime reload", async () => {

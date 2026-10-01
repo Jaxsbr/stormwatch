@@ -5,6 +5,7 @@ import { RANK_BADGE, rankFontSize, rankLabel } from "../ui/rank-badge";
 import { selectionMaterial } from "./selection-material";
 import type { CutoutInstance } from "./cutout";
 import { BattleArt, battleArtDemand } from "./battle-art";
+import { describeEncounter } from "../content/encounter-visuals";
 import { projectedPathSampler } from "./path-sampler";
 import { OverlayBatch, enemyHeight } from "./overlay-batch";
 import { ResourcePool } from "./resource-pool";
@@ -372,12 +373,9 @@ export class Battlefield {
     this.width = level.width;
     this.depth = level.depth;
     let scenery: THREE.Sprite;
-    const backdrop = this.texture(
-      `art/v2/${level.id === "rainstone-crossing" ? "rainstone-riverbank-v2" : "woodland-clearing-v3"}/atlas.webp`,
-      () => {
-        if (scenery) scenery.visible = true;
-      },
-    );
+    const backdrop = this.texture(describeEncounter(level).backdrop, () => {
+      if (scenery) scenery.visible = true;
+    });
     this.sceneTextures.push(backdrop);
     scenery = new THREE.Sprite(
       new THREE.SpriteMaterial({

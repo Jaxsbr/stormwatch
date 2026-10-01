@@ -57,3 +57,22 @@ Completion means the accepted configuration is represented by the workbench,
 validated and played through the shared model, and loaded by the reloaded game.
 Report verification gaps explicitly. Local promotion, committing, and publishing
 are distinct actions; a published site receives content through its deployment.
+
+## Encounter visuals
+
+1. Set each map's `visual.backdrop` in `src/content/recipes.json` to an approved
+   scenery ID from `src/content/encounter-visuals.ts`. A new map created in the
+   workbench copies its starting layout's scenery; review the Painted backdrop
+   control before Playtest and Promote. Adding a new scenery asset requires its
+   reviewed runtime files, provenance, and an approved catalog entry.
+2. Define each reusable enemy or defender's rigs and UI images once in
+   `src/content/encounter-visuals.ts`. `describeEncounter` derives required
+   enemies from every populated wave and defenders from the map roster. Follow
+   its output to inspect the complete visual set for a map. Keep image identity
+   out of the battlefield, briefing, results and workbench adapters.
+3. Run `tests/encounter-visuals.test.ts` and
+   `tests/encounter-visual-assets.test.mjs`. The runtime loader and workbench
+   promotion reject missing descriptions or unapproved scenery IDs; the asset
+   test checks that referenced files are committed. Then inspect every affected
+   map's briefing and battle art in the browser. A new wave using an existing
+   animal should need no new art mapping.

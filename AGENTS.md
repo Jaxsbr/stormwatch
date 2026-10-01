@@ -16,6 +16,8 @@ Before adding or changing an enemy behavior, follow [the mechanic lifecycle cont
 
 Before adding or changing maps, waves, shared abilities, content schemas, or workbench promotion/loading, follow [the content authoring contract](docs/agents/content-authoring.md). Keep canonical data, workbench controls and runtime game loading aligned; verify the edit → Promote → game-reload round trip.
 
+For map scenery or enemy/defender visuals, follow the [encounter visual authoring steps](docs/agents/content-authoring.md#encounter-visuals). Check every wave's derived art demand and the approved asset catalog before promoting.
+
 ## Agent skills
 
 ### Issue tracker

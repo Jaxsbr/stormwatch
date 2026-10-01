@@ -12,6 +12,7 @@ import type {
 } from "../sim/types";
 import { validateLevel } from "../sim/path";
 import { compileSpawnSchedule } from "../sim/spawn-schedule";
+import { validateAuthoredVisuals } from "../content/encounter-visuals";
 export interface BossRageSettings {
   angrySpeedScale: number;
   ragingSpeedScale: number;
@@ -72,6 +73,7 @@ export let CANONICAL_CONTENT: AuthoringContent = freeze(
 /** Bootstrap only: install validated data before importing game adapters. */
 export function installRuntimeContent(value: unknown): void {
   validateContent(value as AuthoringContent);
+  validateAuthoredVisuals(value as AuthoringContent);
   CANONICAL_CONTENT = freeze(structuredClone(value as AuthoringContent));
   DEFAULT_RULES = CANONICAL_CONTENT.rules;
 }
@@ -264,6 +266,7 @@ export function validateContent(content: AuthoringContent): void {
         "requiresBossDefeat",
         "waves",
         "accent",
+        "visual",
       ],
       "level",
     );
@@ -276,6 +279,11 @@ export function validateContent(content: AuthoringContent): void {
     ] as const)
       if (typeof level[key] !== "string" || !level[key].trim())
         throw new Error(`${key}: required text`);
+    if (level.visual !== undefined) {
+      exact(level.visual, ["backdrop"], `${level.id}.visual`);
+      if (typeof level.visual.backdrop !== "string")
+        throw new Error(`${level.id}.visual.backdrop: required text`);
+    }
     numeric(level.width, "width", 1, true);
     numeric(level.depth, "depth", 1, true);
     numeric(level.startCoins, "startCoins", 0, true);

@@ -23,6 +23,7 @@ const fill = (working: ReturnType<typeof draft>) => {
 describe("single working draft", () => {
   it("migrates legacy content into an independent working copy", () => {
     const old = baseline();
+    delete old.levels[0].visual;
     old.levels[0].waves[0].packets[0].groups[0].count = 7;
     const working = createWorkingDraft(baseline(), old);
     expect(working.content.levels[0].waves[0].packets[0].groups[0].count).toBe(
@@ -30,6 +31,7 @@ describe("single working draft", () => {
     );
     old.levels[0].name = "Changed";
     expect(working.content.levels[0].name).not.toBe("Changed");
+    expect(working.content.levels[0].visual).toEqual({ backdrop: "woodland" });
     expect(working.base).toEqual(CANONICAL_CONTENT);
   });
   it("persists blank new maps and waves but refuses their promotion", () => {
