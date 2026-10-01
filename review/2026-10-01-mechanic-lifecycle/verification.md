@@ -2,7 +2,7 @@
 
 ## Baseline and seam
 
-Baseline: `59c88e9`. Candidate: the branch containing ADR 036. This is a
+Baseline: `59c88e9`. Candidate: the branch containing ADR 037. This is a
 structural improvement, so the primary measure is the number of production
 modules that independently evaluate each ability window.
 

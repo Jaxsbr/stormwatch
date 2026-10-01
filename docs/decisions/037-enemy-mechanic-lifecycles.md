@@ -1,4 +1,4 @@
-# 036 — Enemy mechanic lifecycles inside the simulation
+# 037 — Enemy mechanic lifecycles inside the simulation
 
 ## Context
 
