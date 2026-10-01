@@ -70,12 +70,21 @@ export function describeEncounter(
     for (const group of wave.groups)
       if (
         group.count > 0 &&
-        (!enemyVisuals[group.kind]?.views?.every(Boolean) ||
+        (enemyVisuals[group.kind]?.views?.length !== 3 ||
+          !enemyVisuals[group.kind]?.views?.every(Boolean) ||
           !enemyVisuals[group.kind]?.briefing)
       )
         throw new Error(
           `Encounter ${level.id}, wave ${wave.id}: missing ${group.kind} enemy views or briefing art`,
         );
+  if (
+    level.waves.some((wave) =>
+      wave.groups.some((group) => group.count > 0 && group.kind === "boss"),
+    ) &&
+    (!enemyVisuals.boss.expressions?.front?.length ||
+      !enemyVisuals.boss.expressions?.side?.length)
+  )
+    throw new Error(`Encounter ${level.id}: missing boss expression art`);
   for (const kind of level.availableTowers ?? ["bolt", "stone", "net"])
     if (!defenderVisuals[kind]?.sideRig || !defenderVisuals[kind]?.portrait)
       throw new Error(`Encounter ${level.id}: missing ${kind} defender art`);

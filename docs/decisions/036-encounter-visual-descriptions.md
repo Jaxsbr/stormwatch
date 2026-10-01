@@ -1,6 +1,6 @@
 # 036 — Describe encounter visuals beside authored maps
 
-**Status:** proposed pending verification and deployment.
+**Status:** accepted; deployment verification follows merge.
 
 ## Context
 
@@ -45,7 +45,10 @@ Compare the same art-change scenario before and after using
 [the authoring benchmark](../benchmarks/encounter-visuals.md). Check all three
 maps and all fifteen waves, the explicit missing-art failures, and the complete
 draft reload → Playtest → Promote → game reload path in a disposable copy.
-Run type checking, tests, production and workbench builds. Review the briefing
-and battlefield in a browser. A fresh agent trial in a disposable checkout must
-add a map and wave using only repository guidance, with the resulting diff and
-visual selection reviewed. Complete the deployment check after merge.
+Type checking, 316 tests, formatting, production and workbench builds passed.
+Browser review covered all three backdrops, a Rat briefing image, the Squirrel
+portrait and active enemy art. A fresh agent added a disposable fourth map and
+mixed wave using the intended visual ID and no extra art mapping. The actual
+workbench UI round trip in that checkout passed through draft reload, Playtest,
+Promote and game reload. See the benchmark for limits and evidence. Complete
+the deployment check after merge.

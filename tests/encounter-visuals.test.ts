@@ -7,10 +7,10 @@ import {
 import type { LevelDef } from "../src/sim/types";
 
 describe("encounter visual descriptions", () => {
-  it("covers all three accepted maps and their fifteen waves", () => {
-    expect(CANONICAL_CONTENT.levels.map((level) => level.waves.length)).toEqual(
-      [5, 4, 6],
-    );
+  it("covers all authored maps and preserves the original fifteen waves", () => {
+    expect(
+      CANONICAL_CONTENT.levels.slice(0, 3).map((level) => level.waves.length),
+    ).toEqual([5, 4, 6]);
     validateAuthoredVisuals(CANONICAL_CONTENT);
     for (const recipe of CANONICAL_CONTENT.levels) {
       const visual = describeEncounter(compileLevel(recipe));
