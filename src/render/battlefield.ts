@@ -347,13 +347,15 @@ export class Battlefield {
   }
   load(level: LevelDef) {
     // Retrying an encounter resets actors, not its unchanged painted terrain.
-    // Include the route itself so edited layouts never reuse a stale path.
+    // Include every authored scenery input so edits never reuse stale terrain.
+    const backdropPath = describeEncounter(level).backdrop;
     const sceneryKey = JSON.stringify([
       level.id,
       level.width,
       level.depth,
       level.path,
       level.blocked,
+      backdropPath,
     ]);
     const retainScenery = this.sceneryKey === sceneryKey;
     this.clearWorld(retainScenery);
@@ -373,7 +375,7 @@ export class Battlefield {
     this.width = level.width;
     this.depth = level.depth;
     let scenery: THREE.Sprite;
-    const backdrop = this.texture(describeEncounter(level).backdrop, () => {
+    const backdrop = this.texture(backdropPath, () => {
       if (scenery) scenery.visible = true;
     });
     this.sceneTextures.push(backdrop);
