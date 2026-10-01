@@ -1,6 +1,12 @@
 // Pure persistence adapter for Stormwatch saves.
 // No DOM access — the caller owns localStorage.
 import { CANONICAL_CONTENT } from "../config/configuration";
+import {
+  DISCOVERY_IDS,
+  deriveUnlocked,
+  victoryProgress,
+  type ResultReward,
+} from "../content/progression";
 
 export const SAVE_KEY = "stormwatch.save.v1";
 
@@ -18,13 +24,6 @@ export interface SaveData {
 const LEVEL_IDS: readonly string[] = CANONICAL_CONTENT.levels.map(
   (level) => level.id,
 );
-const UNLOCK_IDS: readonly string[] = [
-  "squirrel-upgrade",
-  "turtle",
-  "reach",
-  "nets",
-];
-
 const DEFAULT_MUSIC = 0.5;
 const DEFAULT_EFFECTS = 0.5;
 const LEGACY_DEFAULT_MUSIC = 0.45;
@@ -76,7 +75,7 @@ function toUnlockedList(value: unknown): string[] {
   for (const entry of value) {
     if (
       typeof entry === "string" &&
-      UNLOCK_IDS.includes(entry) &&
+      DISCOVERY_IDS.includes(entry) &&
       !seen.has(entry)
     ) {
       seen.add(entry);
@@ -106,19 +105,6 @@ function toStarsRecord(value: unknown): Record<string, number> {
     }
   }
   return out;
-}
-
-function deriveUnlocked(
-  stars: Record<string, number>,
-  storedUnlocked: string[],
-): string[] {
-  const out = new Set(storedUnlocked);
-  // Lantern Pass teaches the base Squirrel, then awards its upgrade.
-  if ((stars["lantern-pass"] ?? 0) > 0) {
-    out.add("squirrel-upgrade");
-  }
-  if ((stars["rainstone-crossing"] ?? 0) > 0) out.add("turtle");
-  return Array.from(out);
 }
 
 export function freshSave(): SaveData {
@@ -202,55 +188,40 @@ export function recordVictory(
   levelId: string,
   stars: number,
 ): SaveData {
+  return recordVictoryOutcome(save, levelId, stars).save;
+}
+
+export function recordVictoryOutcome(
+  save: SaveData,
+  levelId: string,
+  stars: number,
+): {
+  save: SaveData;
+  rewards: ResultReward[];
+  firstBoardComplete: boolean;
+} {
   // Unknown (or non-string) level id: no change at all.
   if (
     typeof levelId !== "string" ||
     hasDangerousKey(levelId) ||
     !LEVEL_IDS.includes(levelId)
   ) {
-    return save;
+    return { save, rewards: [], firstBoardComplete: false };
   }
 
   const earned = toStarCount(stars);
   if (earned === null) {
-    return save;
+    return { save, rewards: [], firstBoardComplete: false };
   }
 
-  const previous = save.stars[levelId] ?? 0;
-  const nextStars: Record<string, number> = { ...save.stars };
-  // Keep the best star count.
-  if (earned > previous) {
-    nextStars[levelId] = earned;
-  }
-
-  const nextUnlocked = [...save.unlocked];
-  if (
-    levelId === "rainstone-crossing" &&
-    nextStars[levelId] > 0 &&
-    !nextUnlocked.includes("turtle")
-  )
-    nextUnlocked.push("turtle");
-  // First Lantern Pass win unlocks Squirrel upgrades.
-  if (
-    levelId === "lantern-pass" &&
-    nextStars["lantern-pass"] > 0 &&
-    !nextUnlocked.includes("squirrel-upgrade")
-  ) {
-    nextUnlocked.push("squirrel-upgrade");
-  }
-  if (levelId === "the-last-lantern" && nextStars[levelId] > 0) {
-    if (!nextUnlocked.includes("reach")) nextUnlocked.push("reach");
-    if (!nextUnlocked.includes("nets")) nextUnlocked.push("nets");
-  }
-
+  const outcome = victoryProgress(save, levelId, earned);
   return {
-    version: 2,
-    stars: nextStars,
-    unlocked: nextUnlocked,
-    music: save.music,
-    effects: save.effects,
-    muted: save.muted,
-    showGrid: save.showGrid,
-    tutorialSeen: save.tutorialSeen,
+    save: {
+      ...save,
+      stars: outcome.stars,
+      unlocked: outcome.unlocked,
+    },
+    rewards: outcome.rewards,
+    firstBoardComplete: outcome.firstBoardComplete,
   };
 }

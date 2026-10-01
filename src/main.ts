@@ -12,7 +12,7 @@ import { BattleSelection } from "./ui/battle-selection";
 import { DefenderPopups } from "./ui/defender-popups";
 import { BattleMenu } from "./ui/battle-menu";
 import { battleStats, displayedWave } from "./ui/battle-ui";
-import { button, resultCard, type ResultReward } from "./ui/game-chrome";
+import { button, resultCard } from "./ui/game-chrome";
 import { fitVisibleViewport } from "./ui/visible-viewport";
 import { advanceBattleFrame } from "./ui/battle-clock";
 import { advantageScreen } from "./ui/advantage-screen";
@@ -24,11 +24,12 @@ import {
   initialCard,
   levelUnlocked,
   levelForAttempt,
+  type ResultReward,
 } from "./content/progression";
 import { Battlefield } from "./render/battlefield";
 import { paintTowerPortraits } from "./render/portraits";
 import { Sound } from "./audio/sound";
-import { freshSave, recordVictory, SAVE_KEY } from "./persistence/save";
+import { freshSave, recordVictoryOutcome, SAVE_KEY } from "./persistence/save";
 import {
   loadProfiles,
   PROFILES_KEY,
@@ -390,28 +391,10 @@ function showResult() {
   const s = game.state,
     won = s.phase === "won";
   if (won && !resultSaved) {
-    resultFirstBoardComplete =
-      game.level.id === "the-last-lantern" &&
-      !(save.stars["the-last-lantern"] > 0);
-    if (
-      game.level.id === "lantern-pass" &&
-      !save.unlocked.includes("squirrel-upgrade")
-    ) {
-      resultRewards = [{ kind: "tower-upgrade", tower: "bolt" }];
-    } else if (
-      game.level.id === "rainstone-crossing" &&
-      !save.unlocked.includes("turtle")
-    ) {
-      resultRewards = [{ kind: "tower-unlock", tower: "net" }];
-    } else if (resultFirstBoardComplete) {
-      resultRewards = [
-        { kind: "advantage-unlock", card: "reach" },
-        { kind: "advantage-unlock", card: "nets" },
-      ];
-    } else {
-      resultRewards = [];
-    }
-    save = recordVictory(save, game.level.id, s.stars);
+    const outcome = recordVictoryOutcome(save, game.level.id, s.stars);
+    resultFirstBoardComplete = outcome.firstBoardComplete;
+    resultRewards = outcome.rewards;
+    save = outcome.save;
     persist();
     resultSaved = true;
   }
