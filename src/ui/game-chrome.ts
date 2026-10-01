@@ -1,6 +1,7 @@
 import { ENEMIES, TOWERS } from "../content/catalog";
 import { towerPortrait } from "../render/portraits";
 import type { CardId, EnemyKind, GameState, TowerKind } from "../sim/types";
+import { artPath, enemyVisuals } from "../content/encounter-visuals";
 
 /** Shared illustrated action; semantic variant classes also preserve layout hooks. */
 export const button = (action: string, label: string, cls = "", extra = "") =>
@@ -22,13 +23,6 @@ const advantageRewards: Record<
   },
 };
 
-const enemyArt: Record<EnemyKind, string> = {
-  raider: "rat-rig-v3",
-  runner: "weasel-rig-v1",
-  armored: "boar-rig-v1",
-  boss: "badger-rig-v1",
-};
-
 export function resultCard(
   state: Pick<
     GameState,
@@ -44,7 +38,7 @@ export function resultCard(
       (
         kind,
       ) => `<li aria-label="${ENEMIES[kind].name}: ${state.killsByKind[kind]}">
-        <img src="${import.meta.env.BASE_URL}art/v2/${enemyArt[kind]}/body.webp" alt="" aria-hidden="true">
+        <img src="${import.meta.env.BASE_URL}${artPath(enemyVisuals[kind].briefing)}" alt="" aria-hidden="true">
         <strong>×${state.killsByKind[kind]}</strong>
       </li>`,
     )

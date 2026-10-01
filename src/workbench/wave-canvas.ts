@@ -1,5 +1,6 @@
 import type { LevelRecipe, WaveRecipe } from "../config/configuration";
 import type { EnemyKind } from "../sim/types";
+import { artPath, enemyVisuals } from "../content/encounter-visuals";
 import { snapTime as snap, timelineGrid } from "./timeline-grid";
 import {
   editWave,
@@ -37,10 +38,10 @@ const names: Record<EnemyKind, string> = {
   boss: "Roadwarden",
 };
 const images: Record<EnemyKind, string> = {
-  raider: "/art/v2/rat-rig-v3/body.webp",
-  runner: "/art/v2/weasel-rig-v1/body.webp",
-  armored: "/art/v2/boar-rig-v1/body.webp",
-  boss: "/art/v2/badger-rig-v1/body.webp",
+  raider: `/${artPath(enemyVisuals.raider.briefing)}`,
+  runner: `/${artPath(enemyVisuals.runner.briefing)}`,
+  armored: `/${artPath(enemyVisuals.armored.briefing)}`,
+  boss: `/${artPath(enemyVisuals.boss.briefing)}`,
 };
 const clone = (wave: WaveRecipe) => structuredClone(wave);
 const same = (a: WaveRecipe, b: WaveRecipe) =>

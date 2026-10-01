@@ -3,6 +3,7 @@
   "levels": [
     {
       "id": "lantern-pass",
+      "visual": { "backdrop": "woodland" },
       "name": "Lantern Pass",
       "subtitle": "01 / THE FIRST WATCH",
       "description": "The last wagons are crossing the forest. Keep the lantern line burning until they reach home.",
@@ -191,6 +192,7 @@
     },
     {
       "id": "rainstone-crossing",
+      "visual": { "backdrop": "rainstone" },
       "name": "Rainstone Crossing",
       "subtitle": "02 / THE RIVER WATCH",
       "description": "The river bends around the old stone crossing where the village keeps its river watch. Hold the causeway through the storm — the fields on both banks are the last shelter before the deep water.",
@@ -1038,6 +1040,7 @@
     },
     {
       "id": "the-last-lantern",
+      "visual": { "backdrop": "woodland" },
       "name": "The Last Lantern",
       "subtitle": "03 / THE LAST WATCH",
       "description": "The road climbs through the last lantern grove. Hold both bends until the Roadwarden and its column are turned back.",

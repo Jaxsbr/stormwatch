@@ -1,11 +1,13 @@
 import {
   configurationIdentity,
+  CANONICAL_CONTENT,
   normalizeAbilities,
   validateContent,
   type AuthoringContent,
   type LevelRecipe,
   type WaveRecipe,
 } from "../config/configuration";
+import { validateAuthoredVisuals } from "../content/encounter-visuals";
 
 export const WORKING_DRAFT_KEY = "stormwatch.working-draft.v1";
 export interface WorkingDraft {
@@ -52,6 +54,16 @@ export function validateWorkingDraft(input: unknown): WorkingDraft {
   const draft = clone(input as WorkingDraft);
   draft.base = normalizeAbilities(draft.base);
   draft.content = normalizeAbilities(draft.content);
+  // Older saved drafts did not carry scenery. Restore reviewed choices for
+  // known maps; a new map still needs an explicit selection before promotion.
+  for (const level of draft.base.levels)
+    level.visual ??= clone(
+      CANONICAL_CONTENT.levels.find((entry) => entry.id === level.id)?.visual,
+    );
+  for (const level of draft.content.levels)
+    level.visual ??= clone(
+      draft.base.levels.find((entry) => entry.id === level.id)?.visual,
+    );
   validateContent(draft.base);
   const check = clone(draft.content);
   for (const level of check.levels) {
@@ -209,6 +221,7 @@ export function promoteWorkingWave(
     result.levels[index] = { ...clone(metadata(level)), waves };
   }
   validateContent(result);
+  validateAuthoredVisuals(result);
   const promoted = result.levels.find((entry) => entry.id === level.id)!;
   if (
     promoted.requiresBossDefeat &&
@@ -287,6 +300,7 @@ export function promoteAllWorkingChanges(
       );
   }
   validateContent(result);
+  validateAuthoredVisuals(result);
   for (const level of result.levels) {
     if (
       level.requiresBossDefeat &&

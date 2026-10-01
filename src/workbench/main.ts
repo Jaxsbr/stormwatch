@@ -5,6 +5,11 @@ import "../ui/battle-ui.css";
 import "./style.css";
 import "./workspace.css";
 import {
+  artPath,
+  backdropVisuals,
+  enemyVisuals,
+} from "../content/encounter-visuals";
+import {
   CANONICAL_CONTENT,
   configurationIdentity,
   waveAbilities,
@@ -61,12 +66,12 @@ const names = {
   armored: "Shield boar",
   boss: "Roadwarden",
 };
-const images = {
-  raider: "/art/v2/rat-rig-v3/body.webp",
-  runner: "/art/v2/weasel-rig-v1/body.webp",
-  armored: "/art/v2/boar-rig-v1/body.webp",
-  boss: "/art/v2/badger-rig-v1/body.webp",
-};
+const images = Object.fromEntries(
+  Object.entries(enemyVisuals).map(([kind, visual]) => [
+    kind,
+    `/${artPath(visual.briefing)}`,
+  ]),
+);
 const level = () => draft.content.levels.find((l) => l.id === draft.levelId)!;
 const wave = () => level().waves.find((w) => w.id === draft.waveId)!;
 const playable = () => wave().packets.some((p) => p.groups.length);
@@ -177,6 +182,16 @@ function mapPreview() {
   const points = map.path.map((p) => `${p.x + 0.5},${p.z + 0.5}`).join(" ");
   return `<svg class="ws-map-preview" viewBox="0 0 ${map.width} ${map.depth}" role="img" aria-label="Selected map route"><rect width="100%" height="100%" fill="#193b34"/><polyline points="${points}" fill="none" stroke="#dcc89d" stroke-width="0.45" stroke-linejoin="round"/>${map.blocked.map((p) => `<rect x="${p.x}" y="${p.z}" width="1" height="1" fill="#617859"/>`).join("")}</svg>`;
 }
+function backdropPicker(map: LevelRecipe) {
+  return `<label>Painted backdrop<select id="backdrop-picker">${map.visual?.backdrop ? "" : '<option value="" selected disabled>Choose a backdrop</option>'}${Object.keys(
+    backdropVisuals,
+  )
+    .map(
+      (id) =>
+        `<option value="${esc(id)}" ${id === map.visual?.backdrop ? "selected" : ""}>${esc(id)}</option>`,
+    )
+    .join("")}</select></label>`;
+}
 function palette() {
   return Object.entries(names)
     .map(
@@ -213,6 +228,9 @@ function render() {
   <details id="ability-settings" class="ws-settings" ${globalsOpen ? "open" : ""}><summary>Shared ability settings</summary><p>Applies to every wave with the ability on. Promote saves these changes too.</p><div class="ws-settings-grid">${(["ratShield", "weaselEvade"] as const).map((key) => `<fieldset><legend>${key === "ratShield" ? "Rat shield" : "Weasel evade"}</legend>${(["upSeconds", "downSeconds"] as const).map((phase) => `<label>${phase === "upSeconds" ? "Active" : "Exposed"} (seconds)<input type="number" min="0.05" step="0.05" required data-ability-timing="${key}" data-phase="${phase}" aria-label="${key === "ratShield" ? "Rat shield" : "Weasel evade"} ${phase === "upSeconds" ? "active" : "exposed"} seconds" value="${defaults[key][phase]}"/></label>`).join("")}</fieldset>`).join("")}<fieldset><legend>Boss rage</legend>${(["angrySpeedScale", "ragingSpeedScale"] as const).map((key) => `<label>${key === "angrySpeedScale" ? "Angry" : "Raging"} · speed multiplier<input type="number" min="1" step="0.05" required data-boss-rage="${key}" value="${(defaults.bossRage ?? ABILITY_DEFAULTS.bossRage)[key]}"/></label>`).join("")}${(["triggerDamagePercent", "angrySeconds", "ragingSeconds"] as const).map((key) => `<label>${key === "triggerDamagePercent" ? "Damage to trigger (% max HP)" : key === "angrySeconds" ? "Angry duration (seconds)" : "Full rage duration (seconds)"}<input type="number" min="0.05" ${key === "triggerDamagePercent" ? 'max="100"' : ""} step="0.05" required data-boss-rage="${key}" value="${defaults.bossRage?.[key] ?? ABILITY_DEFAULTS.bossRage[key]}"/></label>`).join("")}<p>Permanent full rage at 25% health.</p></fieldset></div></details>
   <details id="map-settings" class="ws-settings" ${settingsOpen ? "open" : ""}><summary>Map &amp; wave settings</summary><div class="ws-settings-grid"><label>Map name<input data-field="name" value="${esc(map.name)}" required/></label><label>Wave name<input data-field="title" value="${esc(current.title)}" required/></label><label>Map layout<select id="layout-picker">${matchedLayout ? "" : '<option value="">Custom layout</option>'}${draft.base.levels.map((l) => `<option value="${esc(l.id)}" ${l.id === matchedLayout ? "selected" : ""}>${esc(l.name)}</option>`).join("")}</select></label><label>Starting crowns<input data-field="startCoins" type="number" min="0" step="1" value="${map.startCoins}"/></label><label>Wave reward<input data-field="reward" type="number" min="0" step="1" value="${current.reward}"/></label>${mapPreview()}</div></details>
   </section><dialog id="create-dialog"><form id="create-form"><h2 id="create-title"></h2><label>Name<input id="create-name" required maxlength="100" autocomplete="off"/></label><label id="create-layout-label">Starting layout<select id="create-layout">${draft.base.levels.map((l) => `<option value="${esc(l.id)}">${esc(l.name)}</option>`).join("")}</select></label><div class="ws-dialog-actions"><button type="button" data-action="cancel-create">Cancel</button><button class="primary" type="submit">Create</button></div></form></dialog></main>`;
+  root
+    .querySelector("#map-settings .ws-settings-grid")
+    ?.insertAdjacentHTML("beforeend", backdropPicker(map));
   if (playable())
     canvas = mountWaveCanvas(root.querySelector<HTMLElement>("#wave-canvas")!, {
       level: map,
@@ -317,6 +335,22 @@ function render() {
       message = "Layout updated. Playtest to try the new route.";
       persist();
       render();
+    } catch (cause) {
+      fail(cause);
+    }
+  };
+  root.querySelector<HTMLSelectElement>("#backdrop-picker")!.onchange = (
+    event,
+  ) => {
+    try {
+      const next = clone(draft);
+      next.content.levels.find((entry) => entry.id === next.levelId)!.visual = {
+        backdrop: (event.target as HTMLSelectElement).value,
+      };
+      draft = validateWorkingDraft(next);
+      error = "";
+      message = "Backdrop updated. Playtest to review it.";
+      persist();
     } catch (cause) {
       fail(cause);
     }

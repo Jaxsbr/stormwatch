@@ -1,27 +1,21 @@
 import { CutoutResource } from "./cutout";
 import type { EnemyKind, LevelDef, TowerKind } from "../sim/types";
-
-const enemyRigNames: Record<EnemyKind, [string, string, string]> = {
-  raider: ["rat-rig-v3", "rat-front-rig-v3", "rat-rear-rig-v3"],
-  runner: ["weasel-rig-v1", "weasel-front-rig-v1", "weasel-rear-rig-v1"],
-  armored: ["boar-rig-v1", "boar-front-rig-v1", "boar-rear-rig-v1"],
-  boss: ["badger-rig-v1", "badger-front-rig-v1", "badger-rear-rig-v1"],
-};
-const defenderRigNames: Record<TowerKind, string> = {
-  bolt: "squirrel-side-defender-v1",
-  stone: "skunk-side-defender-v1",
-  net: "turtle-side-defender-v1",
-};
-const bossExpressionNames = {
-  front: ["badger-front-angry-v1", "badger-front-raging-v1"],
-  side: ["badger-side-angry-v1", "badger-side-raging-v1"],
-} as const;
+import {
+  describeEncounter,
+  defenderVisuals,
+  enemyVisuals,
+} from "../content/encounter-visuals";
 
 /** The encounter roster is the complete demand; wave timing changes no art identity. */
 export function battleArtDemand(level: LevelDef) {
+  describeEncounter(level);
   const enemies: EnemyKind[] = [
     ...new Set(
-      level.waves.flatMap((wave) => wave.groups.map((group) => group.kind)),
+      level.waves.flatMap((wave) =>
+        wave.groups
+          .filter((group) => group.count > 0)
+          .map((group) => group.kind),
+      ),
     ),
   ].sort();
   const defenders: TowerKind[] = [
@@ -65,12 +59,12 @@ export class BattleArt {
     };
     // Initiate the views used during preparation and early combat first.
     for (const kind of demand.defenders)
-      this.defenders.set(kind, load(defenderRigNames[kind]));
+      this.defenders.set(kind, load(defenderVisuals[kind].sideRig));
     const sideViews = new Map<EnemyKind, CutoutResource>();
     for (const kind of demand.enemies)
-      sideViews.set(kind, load(enemyRigNames[kind][0]));
+      sideViews.set(kind, load(enemyVisuals[kind].views[0]));
     for (const kind of demand.enemies) {
-      const [, front, rear] = enemyRigNames[kind];
+      const [, front, rear] = enemyVisuals[kind].views;
       this.enemies.set(kind, {
         side: sideViews.get(kind)!,
         front: load(front),
@@ -79,8 +73,8 @@ export class BattleArt {
     }
     if (demand.enemies.includes("boss"))
       this.expressions = {
-        front: bossExpressionNames.front.map(load),
-        side: bossExpressionNames.side.map(load),
+        front: enemyVisuals.boss.expressions!.front.map(load),
+        side: enemyVisuals.boss.expressions!.side.map(load),
       };
     this.ready = Promise.all(this.resourceReadiness).then(() => {
       if (this.disposed)

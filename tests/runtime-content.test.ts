@@ -76,4 +76,17 @@ it("rejects unavailable or invalid content instead of silently playing a bundled
       vi.fn<typeof fetch>().mockResolvedValue(new Response("{}")),
     ),
   ).rejects.toThrow();
+  const { CANONICAL_CONTENT } = await import("../src/config/configuration");
+  const missingVisual = structuredClone(CANONICAL_CONTENT);
+  missingVisual.levels[1].visual = { backdrop: "unknown" };
+  await expect(
+    loadRuntimeContent(
+      "./game-content.json",
+      vi
+        .fn<typeof fetch>()
+        .mockResolvedValue(new Response(JSON.stringify(missingVisual))),
+    ),
+  ).rejects.toThrow(
+    "Encounter rainstone-crossing: missing or unapproved backdrop",
+  );
 });

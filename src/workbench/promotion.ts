@@ -5,6 +5,7 @@ import {
   type AuthoringContent,
 } from "../config/configuration";
 import { contentIdentity, type DraftRevision } from "./drafts";
+import { validateAuthoredVisuals } from "../content/encounter-visuals";
 
 export interface PromotionSelection {
   levels?: string[];
@@ -85,6 +86,7 @@ export function previewPromotion(
     }
   }
   validateContent(content);
+  validateAuthoredVisuals(content);
   return {
     baseIdentity,
     candidateIdentity: contentIdentity(content),

@@ -45,11 +45,21 @@ painted texture disposal. The module disposes selected cutouts on replacement or
 attempt retirement. See [decision 035](decisions/035-battle-art-demand-and-readiness.md)
 and the [simulated loading benchmark](benchmarks/art-loading.md).
 
+`src/content/encounter-visuals.ts` is the pure visual-description seam. Reusable
+enemy and defender images and approved scenery IDs live there; each map's
+`visual.backdrop` lives beside its waves in the authored recipe. The description
+derives its full enemy art demand across all waves. Battle art, battlefield,
+briefing, results and workbench previews consume those choices. Runtime loading
+and promotion reject incomplete or unapproved selections; an asset inventory test
+checks referenced files. See [decision 036](decisions/036-encounter-visual-descriptions.md).
+
 ## Add an encounter
 
 Follow the [agent content authoring contract](agents/content-authoring.md) for schema, editor and runtime consistency.
 
 1. Add an encounter recipe to `src/content/recipes.json`. Supply its unique stable id, dimensions, orthogonal path, blocked cells, starting crowns, roster and wave recipes. Each wave and repeated packet needs a stable identity; preserve those identities when reordering content.
+   Choose its `visual.backdrop` from the approved scenery catalog and inspect the
+   derived enemy and defender art for every wave.
 2. Place the recipe in campaign order in the canonical `levels` array. `compileLevel` derives runtime groups from readable repeated packets; the small encounter TypeScript exports are compatibility modules, not authoring sources.
 3. Canonical recipe order automatically registers encounters and their save whitelist. Extend discovery rules only if the new encounter awards tools.
 4. Validate the complete content with the shared configuration interface and run legal strategies through the actual `Game`. Add focused coverage for new behavior and inspect nominal versus fixed-tick spawn timing in the local workbench.

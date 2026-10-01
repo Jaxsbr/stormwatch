@@ -1,6 +1,11 @@
 import { escapeHtml } from "./html";
 import { ENEMIES, TOWERS } from "../content/catalog";
 import type { CardId, EnemyKind, LevelDef } from "../sim/types";
+import {
+  artPath,
+  describeEncounter,
+  enemyVisuals,
+} from "../content/encounter-visuals";
 
 const advantages: Record<
   Exclude<CardId, "none">,
@@ -32,12 +37,6 @@ const enemyTraits: Record<EnemyKind, string> = {
   armored: "Blocks damage",
   boss: "Rage · boosts nearby enemies’ speed",
 };
-const enemyArt: Record<EnemyKind, string> = {
-  raider: "rat",
-  runner: "weasel",
-  armored: "boar",
-  boss: "badger",
-};
 
 /** First encounter order, excluding unused/empty wave groups. */
 export function encounterEnemies(level: LevelDef): EnemyKind[] {
@@ -58,6 +57,7 @@ export function advantageScreen(
   selected: CardId,
   assistAvailable = false,
 ) {
+  describeEncounter(level);
   const defenders = (level.availableTowers ?? ["bolt", "stone", "net"])
     .map((kind) => TOWERS[kind].name)
     .join(", ");
@@ -71,7 +71,7 @@ export function advantageScreen(
       <ul>${encounterEnemies(level)
         .map(
           (kind) => `<li>
-        <img src="${import.meta.env.BASE_URL}art/v2/${enemyArt[kind]}-rig-v1/body.webp" alt="" draggable="false">
+        <img src="${import.meta.env.BASE_URL}${artPath(enemyVisuals[kind].briefing)}" alt="" draggable="false">
         <div><strong>${ENEMIES[kind].name}</strong><span>${kind === "raider" && !level.waves.some((w) => w.groups.some((g) => g.kind === "raider" && g.shieldEnabled !== false)) ? "Shield off" : kind === "runner" && level.waves.some((w) => w.groups.some((g) => g.kind === "runner" && g.evasionCycle)) ? "Runs fast · periodic evade" : enemyTraits[kind]}</span></div>
       </li>`,
         )
