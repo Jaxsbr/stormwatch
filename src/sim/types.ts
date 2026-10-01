@@ -98,8 +98,12 @@ export interface Enemy extends Point {
   hitAt: number;
   spawnedAt: number;
   shieldRaised: boolean;
+  /** Guard cue strength from the same tick's simulation decision. */
+  shieldStrength?: number;
   shieldHitAt?: number;
   evasionCycle?: EvasionCycle;
+  /** Evasion and warning state computed by the simulation, not the renderer. */
+  evasion?: { active: boolean; warning: boolean };
   evadeAt?: number;
   movementScale?: number;
   shieldCycle?: ShieldCycle;

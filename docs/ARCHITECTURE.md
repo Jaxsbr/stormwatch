@@ -28,6 +28,8 @@ flowchart LR
 
 Simulation commands return success/failure and emit lightweight events. The UI translates commands into feedback; rendering reads state. `advance` accumulates fixed 1/30-second steps and limits long-frame catch-up. `tick` is available to deterministic tests. Randomness uses a seeded generator; current encounter rules have no random targeting or damage. Fixed seeds alone do not make browser frame timings deterministic.
 
+Enemy behavior lifecycles live in focused `src/sim` modules. `Game.tick` advances each behavior before movement and projectile impacts; those modules own timing and impact decisions. The battlefield reads simulation state and events for tells. Follow the [mechanic lifecycle contract](agents/mechanic-lifecycle.md) when extending a behavior, including its authoring and workbench path.
+
 Coordinates use integer `x,z` grid positions. Paths are axis-aligned polylines;
 rendered corner rounding is cosmetic. Occupancy excludes path tiles and blocked
 tiles. Towers cannot reroute enemies. The presentation maps simulation coordinates
