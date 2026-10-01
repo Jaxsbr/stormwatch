@@ -142,7 +142,9 @@ nonmonotonic batch/group edits are rejected.
 The local `workbench.html` entry owns `src/workbench` editor, scenario, replay,
 policy, search and experiment-storage adapters. Its attempt view reads the same
 `Game`, `Battlefield`, sound and semantic battle components as the campaign, with
-no campaign result/profile lifecycle. Difficulty candidates resolve before
+no campaign result/profile lifecycle. The Playtest adapter waits for the shared
+battle-art readiness promise before accepting commands or stepping a replay.
+Difficulty candidates resolve before
 progression capabilities; declared scenario overrides apply last. Isolated waves
 and overridden starting setups are synthetic evidence, never proof of campaign
 affordability.

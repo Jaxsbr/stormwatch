@@ -7,6 +7,7 @@ import { DefenderPopups } from "../ui/defender-popups";
 import type { Game } from "../sim/game";
 import type { GameEvent } from "../sim/types";
 import type { LegalCommand } from "./commands";
+import { AttemptArtReadiness } from "./attempt-art-readiness";
 
 const escape = (value: string) =>
   value.replace(
@@ -43,19 +44,33 @@ export function mountAttempt(
   let finished = false;
   let last = performance.now();
   let accumulator = 0;
+  const artReadiness = new AttemptArtReadiness();
   const sound = new Sound();
   sound.setMuted(true);
   sound.unlock();
 
   host.innerHTML = `<main class="battle-screen popup-battle workbench-attempt"><header class="battle-header"><div class="battle-brand"><strong>${escape(game.level.name)}</strong><small>${escape(options.label)}</small></div>${battleStats(game.level.waves.length)}<div class="battle-tools">${button("speed", "1×", "icon-button")}${button("pause", "Pause", "quiet")}${button("restart", "Restart", "quiet")}${button("exit", "Workbench", "quiet")}</div></header><div class="battle-middle"><section class="battlefield"><div id="canvas-host"></div><div class="defender-popup-root"></div><div id="wave-countdown" class="wave-countdown" hidden></div><div class="wb-attempt-notice" role="status"></div><div class="wb-boss" hidden></div></section><aside class="battle-aside"><div class="wave-controls">${button("start", "Start first wave", "primary")}${options.onBranch ? button("branch", "Take manual control at preparation", "quiet") : ""}${options.onContinueReplay ? button("continue-replay", "Continue replay", "quiet") : ""}</div></aside></div></main>`;
-  let field: Battlefield;
+  const startButton = host.querySelector<HTMLButtonElement>(
+    '[data-action="start"]',
+  )!;
+  startButton.disabled = true;
+  startButton.textContent = "Preparing art…";
+  host
+    .querySelector(".wave-controls")!
+    .insertAdjacentHTML(
+      "beforeend",
+      button("retry-art", "Retry art loading", "quiet", "hidden"),
+    );
+  let field: Battlefield | undefined;
+  const canvasHost = host.querySelector<HTMLElement>("#canvas-host")!;
   try {
-    field = new Battlefield(host.querySelector<HTMLElement>("#canvas-host")!);
+    field = new Battlefield(canvasHost);
     field.load(game.level);
   } catch (error) {
     sound.pause(true);
-    host.querySelector("#canvas-host")!.textContent =
-      `Unable to draw battlefield: ${String(error)}`;
+    field?.dispose();
+    field = undefined;
+    canvasHost.textContent = `Unable to draw battlefield: ${String(error)}`;
     host
       .querySelector('[data-action="exit"]')!
       .addEventListener("click", options.onExit);
@@ -78,21 +93,76 @@ export function mountAttempt(
   const popups = new DefenderPopups(
     host.querySelector<HTMLElement>(".defender-popup-root")!,
     selection,
-    (point) => field.project(point),
+    (point) => field!.project(point),
     (_action, accepted) => {
       if (!accepted)
         notice("Command rejected: check gold, placement and available tools.");
       update();
     },
-    () => options.isReplayLocked?.() ?? false,
+    () => !artReadiness.ready || (options.isReplayLocked?.() ?? false),
   );
-  field.onMiss = () => {
-    selection.close();
-    popups.update();
+  const bindField = (current: Battlefield) => {
+    current.onMiss = () => {
+      selection.close();
+      popups.update();
+    };
+    current.onPick = (point) => {
+      if (!artReadiness.ready || options.isReplayLocked?.()) return;
+      popups.pick(point);
+      update();
+    };
   };
-  field.onPick = (point) => {
-    if (options.isReplayLocked?.()) return;
-    popups.pick(point);
+  bindField(field);
+  const watchArt = (current: Battlefield, request: number) => {
+    void (async () => {
+      try {
+        await current.artReady(game.level);
+        await new Promise<void>((resolve) =>
+          requestAnimationFrame(() => resolve()),
+        );
+        if (
+          disposed ||
+          field !== current ||
+          !artReadiness.settle(request, "ready")
+        )
+          return;
+        notice("");
+        update();
+      } catch {
+        if (
+          disposed ||
+          field !== current ||
+          !artReadiness.settle(request, "failed")
+        )
+          return;
+        notice("Battle art could not load. Retry to continue.");
+        update();
+      }
+    })();
+  };
+  const retryArt = () => {
+    if (artReadiness.status !== "failed") return;
+    selection.close();
+    field?.dispose();
+    field = undefined;
+    canvasHost.replaceChildren();
+    const request = artReadiness.begin();
+    notice("Preparing battle art…");
+    try {
+      const next = new Battlefield(canvasHost);
+      next.load(game.level);
+      field = next;
+      bindField(next);
+      watchArt(next, request);
+    } catch (error) {
+      field?.dispose();
+      field = undefined;
+      canvasHost.replaceChildren();
+      notice(
+        `Unable to draw battlefield: ${String(error)}. Retry art loading.`,
+      );
+      artReadiness.settle(request, "failed");
+    }
     update();
   };
   function update() {
@@ -119,9 +189,14 @@ export function mountAttempt(
       '[data-action="start"]',
     )!;
     const replayLocked = options.isReplayLocked?.() ?? false;
-    start.disabled = replayLocked || state.phase !== "preparation";
-    start.textContent =
-      state.phase === "won"
+    const artStatus = artReadiness.status;
+    start.disabled =
+      !artReadiness.ready || replayLocked || state.phase !== "preparation";
+    start.textContent = !artReadiness.ready
+      ? artStatus === "failed"
+        ? "Battle art unavailable"
+        : "Preparing art…"
+      : state.phase === "won"
         ? "Victory"
         : state.phase === "lost"
           ? "Defeat"
@@ -132,6 +207,8 @@ export function mountAttempt(
               : state.wave
                 ? "Start next wave early"
                 : "Start first wave";
+    host.querySelector<HTMLButtonElement>('[data-action="retry-art"]')!.hidden =
+      artStatus !== "failed";
     const boss = state.enemies.find((enemy) => enemy.kind === "boss");
     const bossPanel = host.querySelector<HTMLElement>(".wb-boss")!;
     bossPanel.hidden = !boss;
@@ -144,23 +221,40 @@ export function mountAttempt(
     );
     const held = options.isPreparationHeld?.() ?? false;
     host.querySelector<HTMLButtonElement>('[data-action="pause"]')!.disabled =
-      held;
+      !artReadiness.ready || held;
     const continueButton = host.querySelector<HTMLButtonElement>(
       '[data-action="continue-replay"]',
     );
-    if (continueButton) continueButton.disabled = !held;
-    if (held)
+    if (continueButton) continueButton.disabled = !artReadiness.ready || !held;
+    if (held && artReadiness.ready)
       notice(
         "Replay held at the selected wave preparation. Continue replay or take manual control; the preparation countdown is frozen.",
       );
     if (branch)
-      branch.disabled = !replayLocked || state.phase !== "preparation";
+      branch.disabled =
+        !artReadiness.ready || !replayLocked || state.phase !== "preparation";
   }
+  watchArt(field, artReadiness.begin());
   host.onclick = (event) => {
     const action = (event.target as HTMLElement).closest<HTMLButtonElement>(
       "[data-action]",
     )?.dataset.action;
     if (!action) return;
+    if (action === "retry-art") {
+      retryArt();
+      return;
+    }
+    if (
+      !artReadiness.ready &&
+      ["start", "pause", "branch", "continue-replay"].includes(action)
+    ) {
+      notice(
+        artReadiness.status === "failed"
+          ? "Battle art could not load. Retry to continue."
+          : "Preparing battle art…",
+      );
+      return;
+    }
     if ((options.isReplayLocked?.() ?? false) && action === "start") {
       notice(
         "Replay controls are locked. Take manual control at preparation to change the defense.",
@@ -193,7 +287,8 @@ export function mountAttempt(
     if (disposed) return;
     const elapsed = Math.min(0.1, (now - last) / 1000);
     last = now;
-    if (options.isPreparationHeld?.()) accumulator = 0;
+    if (!artReadiness.canAdvance || options.isPreparationHeld?.())
+      accumulator = 0;
     else if (game.state.phase !== "paused") {
       accumulator += elapsed;
       while (accumulator >= 1 / 30) {
@@ -213,7 +308,7 @@ export function mountAttempt(
     if (game.state.phase === "wave" && lastPhase === "preparation")
       selection.close();
     lastPhase = game.state.phase;
-    field.update(
+    field?.update(
       game,
       selection.selected,
       elapsed,
@@ -239,9 +334,10 @@ export function mountAttempt(
   requestAnimationFrame(frame);
   return () => {
     disposed = true;
+    artReadiness.invalidate();
     host.onclick = null;
     popups.destroy();
-    field.dispose();
+    field?.dispose();
     sound.pause(true);
   };
 }
