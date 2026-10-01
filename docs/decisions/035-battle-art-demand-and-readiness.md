@@ -22,6 +22,11 @@ method joins scenery and cutout readiness. Battle controls remain unavailable
 until required art loads. A failed load offers a fresh retry. Retired attempts
 abort pending rig-manifest requests and dispose loaded cutout textures.
 
+The designer workbench Playtest uses the same readiness promise. It locks
+placement, wave commands and replay stepping until art and one frame are ready.
+On load failure, retry reconstructs the battlefield while preserving the current
+Game and attempt evidence; stale load completions cannot unlock a replaced view.
+
 The simulation, content recipe, approved art and gameplay rules are unchanged.
 The synthetic QA stress fixture declares all the enemy types it injects so its
 art demand matches its actors.
@@ -53,3 +58,12 @@ retry and full chapter/boss replay audits passed after waiting for settled art:
 both released all eight WebGL contexts, kept resource counts level across the
 two cycles, and recorded no redundant resize calls. The PR gate compares future
 changes against main using the same simulation.
+
+The workbench Playtest was exercised against the current-main baseline and the
+fixed view with rig-manifest responses delayed by 3.5 seconds. Before the fix,
+Start was enabled and clicking it changed the control to `0 on the trail` before
+the manifests returned. After the fix, Start and Pause stayed disabled during
+loading; a manifest failure showed an explicit retry. Restoring requests and
+retrying enabled the same attempt after art settled. Headless `AttemptSession`
+replay remains renderer-independent; the view gate also prevents replay stepping
+until its current art load succeeds.

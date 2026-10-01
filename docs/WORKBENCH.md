@@ -22,7 +22,10 @@ session; Escape cancels a drag.
 
 **Playtest** launches the selected wave using the candidate that would be promoted,
 normal difficulty and legitimate first-arrival tools. Its progress stays separate
-from family profiles. Return with Workbench to continue editing.
+from family profiles. It waits for the encounter's scenery and required cutout art
+before enabling placement or wave commands. If art fails to load, use **Retry art
+loading** to rebuild the battlefield and continue the same attempt. Return with
+Workbench to continue editing.
 
 **Promote wave** writes the selected wave and its map settings into
 `src/content/recipes.json`. Changed shared ability timings are saved with it. Other waves, maps and global catalogs stay unchanged;
