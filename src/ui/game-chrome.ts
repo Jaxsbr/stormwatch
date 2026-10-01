@@ -1,15 +1,12 @@
 import { ENEMIES, TOWERS } from "../content/catalog";
 import { towerPortrait } from "../render/portraits";
-import type { CardId, EnemyKind, GameState, TowerKind } from "../sim/types";
+import type { CardId, EnemyKind, GameState } from "../sim/types";
 import { artPath, enemyVisuals } from "../content/encounter-visuals";
+import type { ResultReward } from "../content/progression";
 
 /** Shared illustrated action; semantic variant classes also preserve layout hooks. */
 export const button = (action: string, label: string, cls = "", extra = "") =>
   `<button data-action="${action}" class="game-art-button ${cls.includes("primary") ? "game-art-button--primary" : ""} ${cls}" ${extra}>${label}</button>`;
-
-export type ResultReward =
-  | { kind: "tower-upgrade" | "tower-unlock"; tower: TowerKind }
-  | { kind: "advantage-unlock"; card: "reach" | "nets" };
 
 const advantageRewards: Record<
   Exclude<CardId, "none" | "thrift">,
