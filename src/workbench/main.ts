@@ -78,8 +78,20 @@ const playable = () => wave().packets.some((p) => p.groups.length);
 const identity = () =>
   configurationIdentity({
     level: { ...level(), waves: [wave()] },
-    towers: gameContent.towers,
-    enemies: gameContent.enemies,
+    towers: {
+      ...gameContent.towers,
+      stone: {
+        ...gameContent.towers.stone,
+        poisonDamage: draft.content.towers.stone.poisonDamage,
+      },
+    },
+    enemies: {
+      ...gameContent.enemies,
+      armored: {
+        ...gameContent.enemies.armored,
+        poisonImmune: draft.content.enemies.armored.poisonImmune,
+      },
+    },
     rules: gameContent.rules,
     abilityDefaults: draft.content.abilityDefaults,
   });
@@ -158,9 +170,13 @@ function feedback() {
 function validSettings(focus = false) {
   const invalid = [
     ...root.querySelectorAll<HTMLInputElement>(
-      "[data-field], [data-ability-timing]",
+      "[data-field], [data-ability-timing], [data-poison-setting], [data-poison-damage]",
     ),
-  ].find((input) => !input.validity.valid || !input.value.trim());
+  ].find(
+    (input) =>
+      !input.validity.valid ||
+      (!input.hasAttribute("data-poison-damage") && !input.value.trim()),
+  );
   if (invalid && focus) {
     invalid.closest<HTMLDetailsElement>("details")!.open = true;
     invalid.focus();
@@ -220,12 +236,12 @@ function render() {
   root.innerHTML = `<main class="wb-shell ws-shell"><header class="wb-header"><div><p class="wb-eyebrow">STORMWATCH</p><h1>Designer workbench</h1></div><span id="draft-status" role="status"></span></header>
   <section class="ws-workspace"><div class="ws-picker-bar"><label>Map<select id="map-picker">${draft.content.levels.map((l) => `<option value="${esc(l.id)}" ${l.id === map.id ? "selected" : ""}>${esc(l.name)}</option>`).join("")}</select></label><button data-action="new-map">+ Map</button><label>Wave<select id="wave-picker">${map.waves.map((w, i) => `<option value="${esc(w.id)}" ${w.id === current.id ? "selected" : ""}>${i + 1}. ${esc(w.title)}</option>`).join("")}</select></label><button data-action="new-wave">+ Wave</button></div>
   <div class="ws-heading"><div><h2>Shape the arrivals.</h2><p>Move enemy groups, shape their rhythm, then try the wave.</p></div><div class="ws-actions"><button data-action="play">Playtest</button><button data-action="promote">Promote wave</button><button data-action="promote-all" class="primary">Promote all changes</button></div></div>
-  <div class="ws-save-line"><span id="promotion-state"></span><span>Promote wave saves only this wave, its map settings and shared abilities. Promote all changes saves edits across every map and wave.</span></div>
+  <div class="ws-save-line"><span id="promotion-state"></span><span>Promote wave saves only this wave, its map settings, shared abilities and poison settings. Promote all changes saves edits across every map and wave.</span></div>
   <div id="workspace-message" class="wb-feedback" role="status"></div><button data-action="refresh-config" hidden>Keep draft with latest game config</button>
   ${playable() ? '<section id="wave-canvas" aria-label="Visual wave editor"></section>' : `<section class="ws-empty"><h3>Add your first enemy group</h3><p>Choose an enemy, then shape the group on the timeline.</p><div class="wg-palette">${palette()}</div></section>`}
   <fieldset class="ws-abilities"><legend>Abilities for this wave</legend><label><input type="checkbox" data-ability="ratShield" ${abilities.ratShield ? "checked" : ""}/> Rat shield <small data-timing-summary="ratShield">${defaults.ratShield.upSeconds}s shielded / ${defaults.ratShield.downSeconds}s exposed</small></label><label><input type="checkbox" data-ability="weaselEvade" ${abilities.weaselEvade ? "checked" : ""}/> Weasel evade <small data-timing-summary="weaselEvade">${defaults.weaselEvade.upSeconds}s evading / ${defaults.weaselEvade.downSeconds}s exposed</small></label></fieldset>
   <p id="play-result" class="ws-play-result"></p>
-  <details id="ability-settings" class="ws-settings" ${globalsOpen ? "open" : ""}><summary>Shared ability settings</summary><p>Applies to every wave with the ability on. Promote saves these changes too.</p><div class="ws-settings-grid">${(["ratShield", "weaselEvade"] as const).map((key) => `<fieldset><legend>${key === "ratShield" ? "Rat shield" : "Weasel evade"}</legend>${(["upSeconds", "downSeconds"] as const).map((phase) => `<label>${phase === "upSeconds" ? "Active" : "Exposed"} (seconds)<input type="number" min="0.05" step="0.05" required data-ability-timing="${key}" data-phase="${phase}" aria-label="${key === "ratShield" ? "Rat shield" : "Weasel evade"} ${phase === "upSeconds" ? "active" : "exposed"} seconds" value="${defaults[key][phase]}"/></label>`).join("")}</fieldset>`).join("")}<fieldset><legend>Boss rage</legend>${(["angrySpeedScale", "ragingSpeedScale"] as const).map((key) => `<label>${key === "angrySpeedScale" ? "Angry" : "Raging"} · speed multiplier<input type="number" min="1" step="0.05" required data-boss-rage="${key}" value="${(defaults.bossRage ?? ABILITY_DEFAULTS.bossRage)[key]}"/></label>`).join("")}${(["triggerDamagePercent", "angrySeconds", "ragingSeconds"] as const).map((key) => `<label>${key === "triggerDamagePercent" ? "Damage to trigger (% max HP)" : key === "angrySeconds" ? "Angry duration (seconds)" : "Full rage duration (seconds)"}<input type="number" min="0.05" ${key === "triggerDamagePercent" ? 'max="100"' : ""} step="0.05" required data-boss-rage="${key}" value="${defaults.bossRage?.[key] ?? ABILITY_DEFAULTS.bossRage[key]}"/></label>`).join("")}<p>Permanent full rage at 25% health.</p></fieldset></div></details>
+  <details id="ability-settings" class="ws-settings" ${globalsOpen ? "open" : ""}><summary>Shared ability settings</summary><p>Applies to every wave with the ability on. Promote saves these changes too.</p><div class="ws-settings-grid">${(["ratShield", "weaselEvade"] as const).map((key) => `<fieldset><legend>${key === "ratShield" ? "Rat shield" : "Weasel evade"}</legend>${(["upSeconds", "downSeconds"] as const).map((phase) => `<label>${phase === "upSeconds" ? "Active" : "Exposed"} (seconds)<input type="number" min="0.05" step="0.05" required data-ability-timing="${key}" data-phase="${phase}" aria-label="${key === "ratShield" ? "Rat shield" : "Weasel evade"} ${phase === "upSeconds" ? "active" : "exposed"} seconds" value="${defaults[key][phase]}"/></label>`).join("")}</fieldset>`).join("")}<fieldset><legend>Boss rage</legend>${(["angrySpeedScale", "ragingSpeedScale"] as const).map((key) => `<label>${key === "angrySpeedScale" ? "Angry" : "Raging"} · speed multiplier<input type="number" min="1" step="0.05" required data-boss-rage="${key}" value="${(defaults.bossRage ?? ABILITY_DEFAULTS.bossRage)[key]}"/></label>`).join("")}${(["triggerDamagePercent", "angrySeconds", "ragingSeconds"] as const).map((key) => `<label>${key === "triggerDamagePercent" ? "Damage to trigger (% max HP)" : key === "angrySeconds" ? "Angry duration (seconds)" : "Full rage duration (seconds)"}<input type="number" min="0.05" ${key === "triggerDamagePercent" ? 'max="100"' : ""} step="0.05" required data-boss-rage="${key}" value="${defaults.bossRage?.[key] ?? ABILITY_DEFAULTS.bossRage[key]}"/></label>`).join("")}<p>Permanent full rage at 25% health.</p></fieldset><fieldset><legend>Skunk poison and Boar tough skin</legend>${(["durationSeconds", "tickSeconds"] as const).map((key) => `<label>${key === "durationSeconds" ? "Poison duration" : "Tick cadence"} (seconds)<input type="number" min="0.05" step="0.05" data-poison-setting="${key}" value="${(defaults.skunkPoison ?? ABILITY_DEFAULTS.skunkPoison)[key]}"/></label>`).join("")}<label>Poison damage per tick (blank: off)<input type="number" min="0.1" step="0.1" data-poison-damage value="${draft.content.towers.stone.poisonDamage ?? ""}"/></label><label><input type="checkbox" data-poison-immune ${draft.content.enemies.armored.poisonImmune ? "checked" : ""}/> Boar: permanent poison immunity</label><p>Blast follows armor and shields. Poison bypasses both. Impact evasion avoids blast and attachment; later evasion cannot avoid ticks. Refresh keeps the stronger poison.</p></fieldset></div></details>
   <details id="map-settings" class="ws-settings" ${settingsOpen ? "open" : ""}><summary>Map &amp; wave settings</summary><div class="ws-settings-grid"><label>Map name<input data-field="name" value="${esc(map.name)}" required/></label><label>Wave name<input data-field="title" value="${esc(current.title)}" required/></label><label>Map layout<select id="layout-picker">${matchedLayout ? "" : '<option value="">Custom layout</option>'}${draft.base.levels.map((l) => `<option value="${esc(l.id)}" ${l.id === matchedLayout ? "selected" : ""}>${esc(l.name)}</option>`).join("")}</select></label><label>Starting crowns<input data-field="startCoins" type="number" min="0" step="1" value="${map.startCoins}"/></label><label>Wave reward<input data-field="reward" type="number" min="0" step="1" value="${current.reward}"/></label>${mapPreview()}</div></details>
   </section><dialog id="create-dialog"><form id="create-form"><h2 id="create-title"></h2><label>Name<input id="create-name" required maxlength="100" autocomplete="off"/></label><label id="create-layout-label">Starting layout<select id="create-layout">${draft.base.levels.map((l) => `<option value="${esc(l.id)}">${esc(l.name)}</option>`).join("")}</select></label><div class="ws-dialog-actions"><button type="button" data-action="cancel-create">Cancel</button><button class="primary" type="submit">Create</button></div></form></dialog></main>`;
   root
@@ -299,6 +315,44 @@ function render() {
         error = "";
         message = "";
         persist();
+      };
+    });
+  root
+    .querySelectorAll<HTMLInputElement>(
+      "[data-poison-setting], [data-poison-damage], [data-poison-immune]",
+    )
+    .forEach((input) => {
+      input.oninput = () => {
+        const previous = clone(draft.content);
+        draft.content.abilityDefaults ??= clone(ABILITY_DEFAULTS);
+        const settings = (draft.content.abilityDefaults.skunkPoison ??= clone(
+          ABILITY_DEFAULTS.skunkPoison,
+        ));
+        if (input.dataset.poisonSetting)
+          settings[input.dataset.poisonSetting as keyof typeof settings] =
+            Number(input.value);
+        else if (input.hasAttribute("data-poison-damage"))
+          draft.content.towers.stone.poisonDamage = input.value.trim()
+            ? Number(input.value)
+            : undefined;
+        else draft.content.enemies.armored.poisonImmune = input.checked;
+        try {
+          if (
+            !input.validity.valid ||
+            (!input.hasAttribute("data-poison-immune") &&
+              !input.hasAttribute("data-poison-damage") &&
+              !input.value.trim())
+          )
+            throw new Error("Enter valid positive poison settings.");
+          validateWorkingDraft(draft);
+          error = "";
+          message = "";
+          persist();
+        } catch (failure) {
+          draft.content = previous;
+          error = String(failure);
+          feedback();
+        }
       };
     });
   root.querySelectorAll<HTMLInputElement>("[data-ability]").forEach((input) => {
@@ -496,7 +550,7 @@ async function promote(all = false) {
     error = "";
     message = all
       ? "Promoted all map, wave and shared ability changes. Reload the game to play your changes."
-      : `Promoted ${wave().title} only, plus map settings and shared abilities.${pendingPromotion(true) ? " Other draft changes remain." : ""} Reload the game to play your changes.`;
+      : `Promoted ${wave().title} only, plus map settings, shared abilities and poison settings.${pendingPromotion(true) ? " Other draft changes remain." : ""} Reload the game to play your changes.`;
     persist();
   } finally {
     saving = false;

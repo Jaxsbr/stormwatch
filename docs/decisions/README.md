@@ -36,3 +36,5 @@ Read the accepted records before changing consequential behavior. For a new deci
 - [033: Accepted defender motions in the runtime](033-runtime-accepted-defender-motion.md)
 - [034: Roadwarden rage and readable rally](034-roadwarden-rage-and-rally.md)
 - [035: Battle art demand and readiness](035-battle-art-demand-and-readiness.md)
+
+- [Attached poison and combat outcomes](poison-combat-lifecycle.md) — descriptive filename reserved to avoid parallel ADR-number collisions.

@@ -1141,7 +1141,9 @@ export class Battlefield {
     }
     this.trimMeshes(this.shots, shotIds);
     this.effects.update(
-      s.effects.filter((effect) => effect.kind !== "evade"),
+      s.effects.filter(
+        (effect) => !["evade", "immune", "shield"].includes(effect.kind),
+      ),
       position,
     );
     this.combatText.update(s.effects, position);
