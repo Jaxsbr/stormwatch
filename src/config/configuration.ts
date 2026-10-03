@@ -9,7 +9,9 @@ import type {
   EnemyDef,
   ShieldCycle,
   EvasionCycle,
+  RouteLayout,
 } from "../sim/types";
+import { resolveRouteLayout } from "../sim/routes";
 import { validateLevel } from "../sim/path";
 import { compileSpawnSchedule } from "../sim/spawn-schedule";
 import { validateAuthoredVisuals } from "../content/encounter-visuals";
@@ -37,10 +39,12 @@ export interface WaveRecipe {
   abilities?: { ratShield: boolean; weaselEvade: boolean };
 }
 export interface LevelRecipe extends Omit<LevelDef, "waves"> {
+  routeLayoutId?: string;
   waves: WaveRecipe[];
 }
 export interface AuthoringContent {
   schemaVersion: 1;
+  routeLayouts?: RouteLayout[];
   abilityDefaults?: {
     ratShield: ShieldCycle;
     weaselEvade: EvasionCycle;
@@ -132,9 +136,13 @@ export function configurationIdentity(value: unknown): string {
 export function compileLevel(
   recipe: LevelRecipe,
   abilityDefaults = CANONICAL_CONTENT.abilityDefaults ?? ABILITY_DEFAULTS,
+  routeLayouts = CANONICAL_CONTENT.routeLayouts ?? [],
 ): LevelDef {
+  const { routeLayoutId: _layout, ...fields } = recipe;
+  const geometry = resolveRouteLayout(recipe, routeLayouts);
   return {
-    ...structuredClone(recipe),
+    ...structuredClone(fields),
+    ...structuredClone(geometry),
     waves: recipe.waves.map((w) => ({
       id: w.id,
       title: w.title,
@@ -143,6 +151,9 @@ export function compileLevel(
         Array.from({ length: p.repeat ?? 1 }, (_, r) =>
           p.groups.map((g, i) => ({
             ...structuredClone(g),
+            ...(geometry.routes
+              ? { routeId: g.routeId ?? geometry.routes[0].id }
+              : {}),
             shieldEnabled:
               g.kind === "raider" ? waveAbilities(w).ratShield : undefined,
             shieldCycle:
@@ -186,7 +197,25 @@ function ids(values: { id: string }[], label: string) {
     seen.add(v.id);
   }
 }
-export function validateContent(content: AuthoringContent): void {
+function validatePoint(p: { x: number; z: number }) {
+  exact(p, ["x", "z"], "point");
+  numeric(p.x, "point.x", -Number.MAX_VALUE, true);
+  numeric(p.z, "point.z", -Number.MAX_VALUE, true);
+}
+function validateRoutes(routes: RouteLayout["routes"]) {
+  if (!Array.isArray(routes) || routes.length < 1 || routes.length > 2)
+    throw new Error("Use one or two routes");
+  ids(routes, "routes");
+  for (const route of routes) {
+    exact(route, ["id", "path"], "route");
+    if (!Array.isArray(route.path)) throw new Error("Route path required");
+    route.path.forEach(validatePoint);
+  }
+}
+export function validateContent(
+  content: AuthoringContent,
+  options: { allowIncompleteFinale?: boolean } = {},
+): void {
   if (!content || content.schemaVersion !== 1)
     throw new Error("Unsupported content schema version");
   exact(
@@ -198,9 +227,32 @@ export function validateContent(content: AuthoringContent): void {
       "enemies",
       "rules",
       "abilityDefaults",
+      "routeLayouts",
     ],
     "content",
   );
+  if (content.routeLayouts !== undefined) {
+    if (!Array.isArray(content.routeLayouts))
+      throw new Error("routeLayouts: expected array");
+    ids(content.routeLayouts, "routeLayouts");
+    for (const layout of content.routeLayouts) {
+      exact(
+        layout,
+        ["id", "width", "depth", "routes", "blocked"],
+        "routeLayout",
+      );
+      numeric(layout.width, "layout.width", 1, true);
+      numeric(layout.depth, "layout.depth", 1, true);
+      validateRoutes(layout.routes);
+      for (const p of layout.blocked) validatePoint(p);
+      validateLevel({
+        ...content.levels[0],
+        ...layout,
+        path: [],
+        waves: [{ title: "Layout validation", reward: 0, groups: [] }],
+      });
+    }
+  }
   if (content.abilityDefaults !== undefined) {
     exact(
       content.abilityDefaults,
@@ -258,6 +310,8 @@ export function validateContent(content: AuthoringContent): void {
         "width",
         "depth",
         "path",
+        "routes",
+        "routeLayoutId",
         "blocked",
         "startCoins",
         "availableTowers",
@@ -287,6 +341,37 @@ export function validateContent(content: AuthoringContent): void {
     numeric(level.width, "width", 1, true);
     numeric(level.depth, "depth", 1, true);
     numeric(level.startCoins, "startCoins", 0, true);
+    if (
+      level.requiresBossDefeat !== undefined &&
+      typeof level.requiresBossDefeat !== "boolean"
+    )
+      throw new Error("requiresBossDefeat must be on or off");
+    if (level.routeLayoutId !== undefined) {
+      if (
+        typeof level.routeLayoutId !== "string" ||
+        level.routes !== undefined ||
+        level.path.length ||
+        level.blocked.length
+      )
+        throw new Error(
+          "Referenced layout owns routes and blocked cells; local path and blocked must be empty",
+        );
+      const layout = content.routeLayouts?.find(
+        (l) => l.id === level.routeLayoutId,
+      );
+      if (
+        !layout ||
+        layout.width !== level.width ||
+        layout.depth !== level.depth
+      )
+        throw new Error("Unknown layout or mismatched layout dimensions");
+    } else if (level.routes !== undefined) {
+      validateRoutes(level.routes);
+      if (level.path.length)
+        throw new Error(
+          "Explicit routes own geometry; legacy path must be empty",
+        );
+    }
     for (const p of [...level.path, ...level.blocked]) {
       numeric(p.x, "point.x", -Number.MAX_VALUE, true);
       numeric(p.z, "point.z", -Number.MAX_VALUE, true);
@@ -347,12 +432,19 @@ export function validateContent(content: AuthoringContent): void {
               "movementScale",
               "shieldCycle",
               "evasionCycle",
+              "routeId",
+              "startTogether",
             ],
             g.id,
           );
           if (!["raider", "runner", "armored", "boss"].includes(g.kind))
             throw new Error(`${g.id}.kind: unsupported ability`);
           numeric(g.delayBefore ?? 0, `${g.id}.delayBefore`);
+          if (
+            g.startTogether !== undefined &&
+            typeof g.startTogether !== "boolean"
+          )
+            throw new Error("startTogether must be on or off");
           if (g.evasionCycle) {
             exact(g.evasionCycle, ["upSeconds", "downSeconds"], g.id);
             if (g.kind !== "runner")
@@ -373,8 +465,15 @@ export function validateContent(content: AuthoringContent): void {
     const compiled = compileLevel(
       level,
       content.abilityDefaults ?? ABILITY_DEFAULTS,
+      content.routeLayouts ?? [],
     );
     validateLevel(compiled);
+    if (
+      !options.allowIncompleteFinale &&
+      compiled.requiresBossDefeat &&
+      !compiled.waves.at(-1)!.groups.some((g) => g.kind === "boss")
+    )
+      throw new Error(`${level.name} requires a boss wave in its finale`);
     for (const w of compiled.waves)
       compileSpawnSchedule(w, content.rules.initialSpawnDelay);
   }
@@ -429,6 +528,7 @@ export function resolveConfiguration(
   const level = compileLevel(
     recipe,
     content.abilityDefaults ?? ABILITY_DEFAULTS,
+    content.routeLayouts ?? [],
   );
   if (options.availableTowers)
     level.availableTowers = [...options.availableTowers];

@@ -1,4 +1,10 @@
 import { bossRageSpeed, updateBossRage } from "./boss-rage";
+import {
+  DEFAULT_ROUTE_ID,
+  createRoutePlan,
+  remainingTravelTime,
+  type TravelRoute,
+} from "./routes";
 import { ENEMIES, TOWERS } from "../content/catalog";
 import {
   DEFAULT_RULES,
@@ -9,13 +15,7 @@ import {
   type GameplayRules,
 } from "../config/configuration";
 import { compileSpawnSchedule } from "./spawn-schedule";
-import {
-  distance,
-  onPath,
-  pathLength,
-  pointOnPath,
-  validateLevel,
-} from "./path";
+import { distance, onPath, pointOnPath, validateLevel } from "./path";
 import { refundFor, waveReward } from "./economy";
 import { advanceWeaselEvasion, weaselEvasionImpact } from "./weasel-evasion";
 import { advanceRatShield, ratShieldImpact } from "./rat-shield";
@@ -49,6 +49,7 @@ export class Game {
   private serial = 1;
   private queue: {
     at: number;
+    routeId?: string;
     kind: EnemyKind;
     movementScale?: number;
     shieldCycle?: WaveGroupDef["shieldCycle"];
@@ -58,6 +59,9 @@ export class Game {
   private waveClock = 0;
   private accumulator = 0;
   private bossKillsAtWaveStart = 0;
+  private requiredBossCount = 0;
+  private readonly routePlan: ReadonlyMap<string, TravelRoute>;
+  private readonly firstRoute: TravelRoute;
   private seed: number;
   private readonly unlockedUpgrades: ReadonlySet<TowerKind> | null;
   constructor(
@@ -89,6 +93,8 @@ export class Game {
     freeze(this.bossRage);
     level = this.level;
     validateLevel(level);
+    this.routePlan = createRoutePlan(level);
+    this.firstRoute = this.routePlan.values().next().value!;
     for (const wave of level.waves)
       compileSpawnSchedule(wave, this.rules.initialSpawnDelay);
     this.seed = seed >>> 0;
@@ -218,6 +224,9 @@ export class Game {
     this.queue = compileSpawnSchedule(def, this.rules.initialSpawnDelay);
     this.waveClock = 0;
     this.bossKillsAtWaveStart = s.killsByKind.boss;
+    this.requiredBossCount = def.groups
+      .filter((g) => g.kind === "boss")
+      .reduce((n, g) => n + g.count, 0);
     s.wave++;
     s.phase = "wave";
     s.lastPayout = null;
@@ -260,7 +269,8 @@ export class Game {
         def = this.enemies[q.kind],
         hp = def.hp * (this.level.healthScale ?? 1);
       s.enemies.push({
-        ...this.level.path[0],
+        ...this.travelRoute(q.routeId).path[0],
+        routeId: this.travelRoute(q.routeId).id,
         id: this.serial++,
         kind: q.kind,
         hp,
@@ -289,32 +299,20 @@ export class Game {
           ? {}
           : { shieldCycle: { ...q.shieldCycle } }),
       });
-      if (q.kind === "boss") this.emit("boss-arrival");
+      if (q.kind === "boss") {
+        this.emit("boss-arrival");
+        this.addressBossEvent(s.enemies[s.enemies.length - 1]);
+      }
     }
-    const len = pathLength(this.level.path);
     for (const e of s.enemies) {
       if (!e.alive) continue;
       advanceRatShield(e, s.clock);
-      const evadeSpeed = advanceWeaselEvasion(
-        e,
-        s.clock,
-        this.rules.evasionSpeedScale,
-      );
+      advanceWeaselEvasion(e, s.clock, this.rules.evasionSpeedScale);
       updateBossRage(e, s.clock, this.bossRage);
-      e.distance +=
-        this.enemies[e.kind].speed *
-        (e.movementScale ?? 1) *
-        (e.kind === "boss" ? bossRageSpeed(e, this.bossRage) : 1) *
-        Math.max(
-          evadeSpeed,
-          e.rallyUntil !== undefined && e.rallyUntil > s.clock
-            ? this.rules.boss.speedScale
-            : 1,
-        ) *
-        (e.slowUntil > s.clock ? this.rules.slowScale : 1) *
-        dt;
-      Object.assign(e, pointOnPath(this.level.path, e.distance));
-      if (e.distance >= len) {
+      const route = this.travelRoute(e.routeId);
+      e.distance += this.effectiveSpeed(e) * dt;
+      Object.assign(e, pointOnPath(route.path, e.distance));
+      if (e.distance >= route.length) {
         e.alive = false;
         s.lives = Math.max(0, s.lives - this.enemies[e.kind].leak);
         s.leaks++;
@@ -323,6 +321,7 @@ export class Game {
           enemyId: e.id,
           enemyKind: e.kind,
           wave: s.wave,
+          routeId: e.routeId,
         });
         if (this.level.requiresBossDefeat && e.kind === "boss") {
           s.phase = "lost";
@@ -342,7 +341,12 @@ export class Game {
       if (t.cooldown > 0) continue;
       const target = s.enemies
         .filter((e) => e.alive && distance(e, t) <= this.range(t))
-        .sort((a, b) => b.distance - a.distance || a.id - b.id)[0];
+        .sort(
+          (a, b) =>
+            (this.level.routes
+              ? this.threatTime(a) - this.threatTime(b)
+              : b.distance - a.distance) || a.id - b.id,
+        )[0];
       if (!target) continue;
       const def = this.towers[t.kind];
       t.cooldown =
@@ -408,7 +412,9 @@ export class Game {
       if (s.wave === this.level.waves.length) {
         if (
           this.level.requiresBossDefeat &&
-          s.killsByKind.boss === this.bossKillsAtWaveStart
+          (this.requiredBossCount === 0 ||
+            s.killsByKind.boss - this.bossKillsAtWaveStart !==
+              this.requiredBossCount)
         ) {
           s.phase = "lost";
           this.emit("loss");
@@ -424,6 +430,44 @@ export class Game {
       }
     }
   }
+  /** Current-state estimate only; future phases are deliberately not predicted. */
+  private effectiveSpeed(e: Enemy): number {
+    return (
+      this.enemies[e.kind].speed *
+      (e.movementScale ?? 1) *
+      (e.kind === "boss" ? bossRageSpeed(e, this.bossRage) : 1) *
+      Math.max(
+        e.kind === "runner" && e.evasion?.active
+          ? this.rules.evasionSpeedScale
+          : 1,
+        (e.rallyUntil ?? 0) > this.state.clock ? this.rules.boss.speedScale : 1,
+      ) *
+      (e.slowUntil > this.state.clock ? this.rules.slowScale : 1)
+    );
+  }
+  private threatTime(e: Enemy): number {
+    return remainingTravelTime(
+      this.travelRoute(e.routeId),
+      e.distance,
+      this.effectiveSpeed(e),
+    );
+  }
+  private travelRoute(id?: string): TravelRoute {
+    const route =
+      id === undefined || id === this.firstRoute.id
+        ? this.firstRoute
+        : this.routePlan.get(id);
+    if (!route) throw new Error(`Unknown route ${id}`);
+    return route;
+  }
+  private addressBossEvent(boss: Enemy): void {
+    Object.assign(this.events[this.events.length - 1], {
+      enemyId: boss.id,
+      enemyKind: boss.kind,
+      routeId: boss.routeId,
+      wave: this.state.wave,
+    });
+  }
   private updateBossRallies() {
     const s = this.state;
     for (const boss of s.enemies) {
@@ -435,6 +479,7 @@ export class Game {
       ) {
         boss.rallyWarningEmitted = true;
         this.emit("rally-warning");
+        this.addressBossEvent(boss);
       }
       if (s.clock < boss.nextRallyAt) continue;
       let recipients = 0;
@@ -442,6 +487,8 @@ export class Game {
         if (
           !escort.alive ||
           escort.kind === "boss" ||
+          (escort.routeId ?? DEFAULT_ROUTE_ID) !==
+            (boss.routeId ?? DEFAULT_ROUTE_ID) ||
           Math.abs(escort.distance - boss.distance) > this.rules.boss.radius
         )
           continue;
@@ -453,6 +500,7 @@ export class Game {
       }
       if (recipients > 0) boss.rallyCastAt = s.clock;
       this.emit("rally", recipients);
+      this.addressBossEvent(boss);
       boss.nextRallyAt += this.rules.boss.rallyIntervalSeconds;
       boss.rallyWarningEmitted = false;
     }

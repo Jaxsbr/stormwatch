@@ -9,6 +9,7 @@ import {
   type ScheduledSpawn,
 } from "../sim/spawn-schedule";
 import type { EnemyKind } from "../sim/types";
+import { levelRoutes } from "../sim/routes";
 
 export interface VisualSelection {
   packetIndex: number;
@@ -47,6 +48,8 @@ export interface WaveLayout {
 }
 
 export type WaveEdit =
+  | { type: "route"; id: string }
+  | { type: "together"; enabled: boolean }
   | { type: "move"; delta: number }
   | { type: "duration"; seconds: number }
   | { type: "count"; count: number }
@@ -127,23 +130,26 @@ export function layoutWave(
   const nodes: VisualGroup[] = [];
   const sequences: VisualSequence[] = [];
   let cursor = initialDelay;
-  let spawnIndex = 0;
+  const spawnsByGroup = new Map<string, ScheduledSpawn[]>();
+  for (const spawn of schedule) {
+    const group = spawnsByGroup.get(spawn.groupId) ?? [];
+    group.push(spawn);
+    spawnsByGroup.set(spawn.groupId, group);
+  }
   for (const [packetIndex, packet] of wave.packets.entries()) {
     const repeat = packet.repeat ?? 1;
     const firstNode = nodes.length;
     let count = 0;
     for (let repeatIndex = 0; repeatIndex < repeat; repeatIndex++) {
       for (const [groupIndex, group] of packet.groups.entries()) {
-        cursor +=
-          (group.delayBefore ?? 0) +
-          (repeatIndex > 0 && groupIndex === 0
-            ? (packet.repeatDelayBefore ?? 0)
-            : 0);
         const batchSize = group.batchSize ?? 1;
-        const spawns = schedule.slice(spawnIndex, spawnIndex + group.count);
-        spawnIndex += group.count;
+        const spawns = spawnsByGroup.get(
+          `${packet.id}/${repeatIndex + 1}/${group.id}`,
+        )!;
+        let start = spawns[0].at;
         // Use repeated addition just as the scheduler does, retaining precision.
-        for (let n = 0; n < group.count; n += batchSize) cursor += group.gap;
+        for (let n = 0; n < group.count; n += batchSize) start += group.gap;
+        cursor = Math.max(cursor, start);
         nodes.push({
           packetIndex,
           groupIndex,
@@ -156,7 +162,7 @@ export function layoutWave(
           stagger: group.batchStagger ?? 0,
           start: spawns[0].at,
           lastSpawn: spawns[spawns.length - 1].at,
-          handoff: cursor,
+          handoff: start,
           spawns,
         });
         count += group.count;
@@ -190,6 +196,12 @@ export function editWave(
   const group = packet?.groups[selection.groupIndex];
   if (!packet || !group) throw new Error("Select an existing enemy group.");
   switch (change.type) {
+    case "together":
+      group.startTogether = change.enabled;
+      break;
+    case "route":
+      group.routeId = change.id;
+      break;
     case "move": {
       if (!Number.isFinite(change.delta))
         throw new Error("Move distance must be finite.");
@@ -252,12 +264,25 @@ export function editWave(
         kind: change.kind,
         count: 3,
         gap: 1,
+        ...(level.routes || level.routeLayoutId
+          ? { routeId: levelRoutes(compileLevel(level))[0].id }
+          : {}),
       });
       break;
     case "add-sequence":
       next.packets.splice(selection.packetIndex + 1, 0, {
         id: change.id,
-        groups: [{ id: change.groupId, kind: change.kind, count: 3, gap: 1 }],
+        groups: [
+          {
+            id: change.groupId,
+            kind: change.kind,
+            count: 3,
+            gap: 1,
+            ...(level.routes || level.routeLayoutId
+              ? { routeId: levelRoutes(compileLevel(level))[0].id }
+              : {}),
+          },
+        ],
       });
       break;
     case "sequence-reorder": {

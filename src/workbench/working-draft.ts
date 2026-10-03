@@ -8,6 +8,8 @@ import {
   type WaveRecipe,
 } from "../config/configuration";
 import { validateAuthoredVisuals } from "../content/encounter-visuals";
+import { assignMissingRoutes, mergeRouteLayouts } from "./route-authoring";
+import { levelRoutes, resolveRouteLayout } from "../sim/routes";
 
 export const WORKING_DRAFT_KEY = "stormwatch.working-draft.v1";
 export interface WorkingDraft {
@@ -54,6 +56,16 @@ export function validateWorkingDraft(input: unknown): WorkingDraft {
   const draft = clone(input as WorkingDraft);
   draft.base = normalizeAbilities(draft.base);
   draft.content = normalizeAbilities(draft.content);
+  // Version-one drafts predating route authoring acquire the approved library;
+  // legacy paths and group schedules stay untouched and resolve at attempt time.
+  draft.base.routeLayouts ??= clone(CANONICAL_CONTENT.routeLayouts ?? []);
+  draft.content.routeLayouts ??= clone(draft.base.routeLayouts);
+  if (
+    draft.base.routeLayouts.some(
+      (l) => !draft.content.routeLayouts?.some((a) => a.id === l.id),
+    )
+  )
+    throw new Error("Keep existing shared route layout identities");
   // Older saved drafts did not carry scenery. Restore reviewed choices for
   // known maps; a new map still needs an explicit selection before promotion.
   for (const level of draft.base.levels)
@@ -81,14 +93,22 @@ export function validateWorkingDraft(input: unknown): WorkingDraft {
           {
             id: "draft-validation",
             groups: [
-              { id: "draft-validation", kind: "raider", count: 1, gap: 1 },
+              {
+                id: "draft-validation",
+                kind: "raider",
+                count: 1,
+                gap: 1,
+                routeId: levelRoutes(
+                  resolveRouteLayout(level, check.routeLayouts),
+                )[0].id,
+              },
             ],
           },
         ];
       }
     }
   }
-  validateContent(check);
+  validateContent(check, { allowIncompleteFinale: true });
   selected(draft);
   return draft;
 }
@@ -168,6 +188,16 @@ export function setMapLayout(
   const { level } = selected(next);
   for (const key of ["width", "depth", "path", "blocked", "accent"] as const)
     Object.assign(level, { [key]: clone(template[key]) });
+  if (template.routeLayoutId) level.routeLayoutId = template.routeLayoutId;
+  else delete level.routeLayoutId;
+  if (template.routes) level.routes = clone(template.routes);
+  else delete level.routes;
+  assignMissingRoutes(
+    level,
+    levelRoutes(resolveRouteLayout(level, next.content.routeLayouts)).map(
+      (r) => r.id,
+    ),
+  );
   return validateWorkingDraft(next);
 }
 
@@ -177,6 +207,7 @@ export function promoteWorkingWave(
   input: WorkingDraft,
 ): AuthoringContent {
   current = normalizeAbilities(current);
+  current.routeLayouts ??= clone(CANONICAL_CONTENT.routeLayouts ?? []);
   validateContent(current);
   const draft = validateWorkingDraft(input);
   const { level, wave } = selected(draft);
@@ -208,6 +239,12 @@ export function promoteWorkingWave(
       "Shared ability settings changed in game config. Reload their latest settings before promoting.",
     );
   const result = clone(current);
+  result.routeLayouts = mergeRouteLayouts(
+    current,
+    draft.base,
+    draft.content,
+    level.routeLayoutId ? [level.routeLayoutId] : [],
+  );
   if (defaultsChanged)
     result.abilityDefaults = clone(draft.content.abilityDefaults);
   const index = result.levels.findIndex((entry) => entry.id === level.id);
@@ -222,16 +259,6 @@ export function promoteWorkingWave(
   }
   validateContent(result);
   validateAuthoredVisuals(result);
-  const promoted = result.levels.find((entry) => entry.id === level.id)!;
-  if (
-    promoted.requiresBossDefeat &&
-    !promoted.waves.some((entry) =>
-      entry.packets.some((packet) =>
-        packet.groups.some((group) => group.kind === "boss"),
-      ),
-    )
-  )
-    throw new Error("This map requires a boss wave");
   return result;
 }
 
@@ -241,9 +268,11 @@ export function promoteAllWorkingChanges(
   input: WorkingDraft,
 ): AuthoringContent {
   current = normalizeAbilities(current);
+  current.routeLayouts ??= clone(CANONICAL_CONTENT.routeLayouts ?? []);
   validateContent(current);
   const draft = validateWorkingDraft(input);
   const result = clone(current);
+  result.routeLayouts = mergeRouteLayouts(current, draft.base, draft.content);
   const merge = <T>(
     authored: T,
     base: T | undefined,
@@ -301,17 +330,6 @@ export function promoteAllWorkingChanges(
   }
   validateContent(result);
   validateAuthoredVisuals(result);
-  for (const level of result.levels) {
-    if (
-      level.requiresBossDefeat &&
-      !level.waves.some((wave) =>
-        wave.packets.some((packet) =>
-          packet.groups.some((group) => group.kind === "boss"),
-        ),
-      )
-    )
-      throw new Error(`${level.name} requires a boss wave`);
-  }
   return result;
 }
 
@@ -322,9 +340,26 @@ export function rebaseAfterPromotion(
 ): WorkingDraft {
   const draft = validateWorkingDraft(input);
   newBaseline = normalizeAbilities(newBaseline);
+  newBaseline.routeLayouts ??= clone(CANONICAL_CONTENT.routeLayouts ?? []);
   validateContent(newBaseline);
   const content = clone(newBaseline);
   const comparisonBase = clone(newBaseline);
+  // Retain pending shared layouts, and retain the old comparison on conflicts.
+  for (const layout of draft.content.routeLayouts ?? []) {
+    const old = draft.base.routeLayouts?.find((l) => l.id === layout.id);
+    if (equal(layout, old)) continue;
+    content.routeLayouts ??= [];
+    const index = content.routeLayouts.findIndex((l) => l.id === layout.id);
+    const live = content.routeLayouts[index];
+    if (!equal(live, old) && !equal(live, layout)) {
+      comparisonBase.routeLayouts = (comparisonBase.routeLayouts ?? []).filter(
+        (l) => l.id !== layout.id,
+      );
+      if (old) comparisonBase.routeLayouts.push(clone(old));
+    }
+    if (index < 0) content.routeLayouts.push(clone(layout));
+    else content.routeLayouts[index] = clone(layout);
+  }
   const conflicts = (authored: unknown, old: unknown, current: unknown) =>
     !equal(authored, old) && !equal(current, old) && !equal(current, authored);
   for (const authored of draft.content.levels) {
