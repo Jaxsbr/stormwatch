@@ -3,6 +3,9 @@
 | Term                             | Meaning in Stormwatch                                                                                                                                              |
 | -------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | Attempt                          | One fresh playthrough of an encounter; its wallet and towers reset on retry.                                                                                       |
+| Board | An illustrated region of ordered encounters. Victory on every encounter opens onward travel; extra stars are optional. |
+| Player profile | One player's identity, earned progress, preferences and remembered place in the expedition, independent of other players. |
+| Viewed board | The board a player last chose to visit; winning does not change it automatically. |
 | Encounter / level                | A map, fixed trail and sequence of waves.                                                                                                                          |
 | Wave                             | A manually started group of raiders, ending when no queued or living enemy remains.                                                                                |
 | Wave lesson                      | A readable introduction to an enemy behavior, followed by a chance to practice it and later meet it alongside familiar threats; exact pacing is a design decision. |
@@ -10,7 +13,7 @@
 | Preparation                      | Planning before wave 1; after a wave clears, a short countdown begins and can be skipped. Pause freezes the countdown.                                             |
 | Crowns                           | Attempt currency used for structures and upgrades.                                                                                                                 |
 | Wave reward                      | Fixed crowns granted once when a wave is cleared; it is independent of savings and elapsed time.                                                                   |
-| Discovery unlock                 | A persistent capability earned by victory or a later boss, such as the ability to upgrade Squirrels.                                                               |
+| Discovery unlock                 | A persistent capability earned by encounter victory or completing a board, such as the ability to upgrade Squirrels.                                                               |
 | Leak                             | An enemy reaches the end of the trail and removes village hearts.                                                                                                  |
 | Splash                           | Damage to enemies within a radius of a stone impact.                                                                                                               |
 | Evasion                          | A visible, temporary Weasel state in which arriving projectiles miss; an existing slow remains in effect.                                                          |

@@ -1,3 +1,7 @@
+import {
+  progressionContext,
+  type ProgressionContext,
+} from "../content/progression";
 import { freshSave, parseSave, type SaveData } from "./save";
 
 // Keep the existing storage key so slot saves migrate in place.
@@ -28,25 +32,27 @@ export function createProfile(
   id: string,
   nickname: string,
   avatar: Avatar,
+  context: ProgressionContext = progressionContext(),
 ): PlayerProfile {
   const name = nickname.trim();
   if (!name || name.length > 24)
     throw new Error("Choose a nickname of 1–24 characters.");
   if (!AVATARS.includes(avatar)) throw new Error("Choose an animal avatar.");
-  return { id, nickname: name, avatar, progress: freshSave() };
+  return { id, nickname: name, avatar, progress: freshSave(context) };
 }
 export function loadProfiles(
   rawProfiles: string | null,
   rawLegacySave: string | null,
+  context: ProgressionContext = progressionContext(),
 ): PlayerProfiles {
   const empty = (): PlayerProfiles => ({ version: 2, active: null, users: [] });
   const migrate = (slots: unknown[], active: unknown): PlayerProfiles => {
     const users = slots.flatMap((slot, index) => {
-      const progress = parseSave(JSON.stringify(slot));
+      const progress = parseSave(JSON.stringify(slot), context);
       // Empty automatic slots are not real people. Preserve any played slot.
       if (
         !Object.keys(progress.stars).length &&
-        JSON.stringify(progress) === JSON.stringify(freshSave())
+        JSON.stringify(progress) === JSON.stringify(freshSave(context))
       )
         return [];
       return [
@@ -93,8 +99,9 @@ export function loadProfiles(
           user.id,
           user.nickname,
           AVATARS.includes(user.avatar) ? user.avatar : "squirrel",
+          context,
         );
-        profile.progress = parseSave(JSON.stringify(user.progress));
+        profile.progress = parseSave(JSON.stringify(user.progress), context);
         users.push(profile);
         ids.add(profile.id);
       } catch {

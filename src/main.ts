@@ -1,3 +1,4 @@
+import { expeditionScreen } from "./ui/expedition-screen";
 import "./style.css";
 import { escapeHtml } from "./ui/html";
 import "./ui/advantage-screen.css";
@@ -21,6 +22,9 @@ import type { CardId, Point } from "./sim/types";
 import { LEVELS } from "./content/levels";
 import {
   availableCards,
+  progressionContext,
+  boardNavigation,
+  earnedUpgrades,
   initialCard,
   levelUnlocked,
   levelForAttempt,
@@ -29,7 +33,12 @@ import {
 import { Battlefield } from "./render/battlefield";
 import { paintTowerPortraits } from "./render/portraits";
 import { Sound } from "./audio/sound";
-import { freshSave, recordVictoryOutcome, SAVE_KEY } from "./persistence/save";
+import {
+  freshSave,
+  recordVictoryOutcome,
+  recordViewedBoard,
+  SAVE_KEY,
+} from "./persistence/save";
 import {
   loadProfiles,
   PROFILES_KEY,
@@ -79,7 +88,9 @@ let chosenAvatar: Avatar = "squirrel";
 let profileName = "";
 let deletingProfile: string | null = null;
 function initialCardForLevel(index: number): CardId {
-  return initialCard(availableCards(LEVELS[index], save));
+  return initialCard(
+    availableCards(levelForAttempt(LEVELS[index], save), save),
+  );
 }
 const sound = new Sound();
 sound.musicVolume = save.music;
@@ -96,6 +107,7 @@ let screen: Screen = "title",
   settingsPaused = false,
   resultSaved = false,
   resultFirstBoardComplete = false,
+  resultCompletedBoard: string | undefined,
   resultRewards: ResultReward[] = [],
   speed = 1;
 let lastTime = 0,
@@ -163,19 +175,11 @@ function render() {
   if (screen === "title")
     app.innerHTML = `<main class="title-screen"><div class="title-shade"></div><div class="title-top"><span></span>${button("settings", "Settings", "quiet")}</div><section class="title-copy"><h1>STORM<span>WATCH</span></h1>${activeProfile() ? `${button("map", "Play", "primary large title-play")}<button class="title-profile" data-action="profiles" aria-label="Swap profile">${avatarImage(activeProfile()!.avatar)}<span class="title-profile-copy"><strong>${escapeHtml(activeProfile()!.nickname)}</strong><small>Swap profile</small></span><span class="title-profile-chevron" aria-hidden="true">›</span></button>` : `<p class="profile-guidance">Choose your nickname and avatar to begin.</p>${button("new-profile", "Create your profile", "primary large")}`}</section></main>`;
   if (screen === "map")
-    app.innerHTML = `<main class="menu-screen expedition"><section class="map-heading"><h1>Choose your crossing</h1></section><div class="expedition-map ${LEVELS.length > 3 ? "expanded-campaign" : ""}"><div class="map-land"></div>${LEVELS.map(
-      (l, i) => {
-        const unlocked = levelUnlocked(LEVELS, i, save);
-        const completed = (save.stars[l.id] ?? 0) > 0;
-        return `<button class="map-node node-${i} ${unlocked ? (completed ? "completed" : "current") : "locked"}" aria-label="${escapeHtml(l.name)}${completed ? ", " + (save.stars[l.id] ?? 0) + " stars earned" : unlocked ? ", next crossing" : ""}${unlocked ? "" : ": complete " + escapeHtml(LEVELS[i - 1].name) + " to unlock"}" title="${escapeHtml(l.name)}" data-action="level:${i}" ${unlocked ? "" : "disabled"}><span class="node-medallion">${unlocked ? "♜" : "⌑"}</span><span class="node-number">${String(i + 1).padStart(2, "0")}</span><strong>${escapeHtml(l.name)}</strong><span class="map-stars">${stars(save.stars[l.id] ?? 0)}</span><small>${unlocked ? "" : `Complete ${escapeHtml(LEVELS[i - 1].name)}`}</small></button>`;
-      },
-    ).join(
-      "",
-    )}</div><footer class="menu-footer">${button("title", "Back", "quiet")}</footer></main>`;
+    app.innerHTML = expeditionScreen(LEVELS, save, progressionContext());
   if (screen === "briefing") {
     app.innerHTML = advantageScreen(
       levelForAttempt(LEVELS[levelIndex], save),
-      availableCards(LEVELS[levelIndex], save),
+      availableCards(levelForAttempt(LEVELS[levelIndex], save), save),
       card,
       lastDefeatLevelId === LEVELS[levelIndex].id,
     );
@@ -183,7 +187,21 @@ function render() {
   if (screen === "profiles") app.innerHTML = profilesScreen();
   if (screen === "battle") renderBattle();
   if (screen === "result" && game)
-    app.innerHTML = `<main class="result-screen">${resultCard(game.state, resultRewards, resultFirstBoardComplete)}</main>`;
+    app.innerHTML = `<main class="result-screen">${resultCard(
+      game.state,
+      resultRewards,
+      resultFirstBoardComplete,
+      resultCompletedBoard
+        ? {
+            name: progressionContext().boards.find(
+              ({ id }) => id === resultCompletedBoard,
+            )!.name,
+            expeditionComplete:
+              resultCompletedBoard === progressionContext().boards.at(-1)!.id,
+            next: boardNavigation(progressionContext(), save).next,
+          }
+        : undefined,
+    )}</main>`;
   if (screen !== "title" && activeProfile()) {
     const user = activeProfile()!;
     const badge = `<span class="profile-badge" role="img" aria-label="Playing as ${escapeHtml(user.nickname)}" title="${escapeHtml(user.nickname)}">${avatarImage(user.avatar)}</span>`;
@@ -302,19 +320,20 @@ function begin(assist = false) {
   }
   if (
     card !== "none" &&
-    !availableCards(LEVELS[levelIndex], save).includes(card)
+    !availableCards(levelForAttempt(LEVELS[levelIndex], save), save).includes(
+      card,
+    )
   )
     card = "none";
   sound.pause(false);
   sound.unlock();
   game = new Game(levelForAttempt(LEVELS[levelIndex], save), card, assist, 42, {
-    unlockedUpgrades: save.unlocked.includes("squirrel-upgrade")
-      ? ["bolt"]
-      : [],
+    unlockedUpgrades: earnedUpgrades(save),
   });
   selection = null;
   resultSaved = false;
   resultFirstBoardComplete = false;
+  resultCompletedBoard = undefined;
   resultRewards = [];
   speed = 1;
   screen = "battle";
@@ -393,6 +412,7 @@ function showResult() {
   if (won && !resultSaved) {
     const outcome = recordVictoryOutcome(save, game.level.id, s.stars);
     resultFirstBoardComplete = outcome.firstBoardComplete;
+    resultCompletedBoard = outcome.completedBoard;
     resultRewards = outcome.rewards;
     save = outcome.save;
     persist();
@@ -610,6 +630,16 @@ app.addEventListener("click", (e) => {
     render();
     return;
   }
+  if (action === "board" && (screen === "map" || screen === "result")) {
+    const navigation = boardNavigation(progressionContext(), save);
+    if (![navigation.previous?.id, navigation.next?.id].includes(value)) return;
+    save = recordViewedBoard(save, value);
+    persist();
+    screen = "map";
+    game = null;
+    render();
+    return;
+  }
   if (action === "level") {
     const nextLevel = Number(value);
     if (!levelUnlocked(LEVELS, nextLevel, save)) return;
@@ -632,7 +662,9 @@ app.addEventListener("click", (e) => {
   if (action === "card") {
     if (
       value !== "none" &&
-      !availableCards(LEVELS[levelIndex], save).includes(value as CardId)
+      !availableCards(levelForAttempt(LEVELS[levelIndex], save), save).includes(
+        value as CardId,
+      )
     )
       return;
     card = value as CardId;
