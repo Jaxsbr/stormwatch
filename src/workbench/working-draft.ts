@@ -1,5 +1,9 @@
 import { resolveBoards } from "../content/boards";
-import { mergeBoardScopes, rebaseBoardScopes } from "./board-scopes";
+import {
+  boardRebaseDependencies,
+  mergeBoardScopes,
+  rebaseBoardScopes,
+} from "./board-scopes";
 import {
   configurationIdentity,
   CANONICAL_CONTENT,
@@ -502,6 +506,20 @@ export function rebaseAfterPromotion(
       if (index < 0) target.waves.push(clone(wave));
       else target.waves[index] = clone(wave);
     }
+  }
+  // Keep recipes only in draft snapshots when pending board intent depends on
+  // a deleted live board/encounter. Promotion still checks the historical scope.
+  for (const id of boardRebaseDependencies(
+    draft.base,
+    draft.content,
+    newBaseline,
+  )) {
+    const old = draft.base.levels.find((level) => level.id === id)!;
+    const authored = draft.content.levels.find((level) => level.id === id);
+    if (!comparisonBase.levels.some((level) => level.id === id))
+      comparisonBase.levels.push(clone(old));
+    if (authored && !content.levels.some((level) => level.id === id))
+      content.levels.push(clone(authored));
   }
   const boards = rebaseBoardScopes(
     draft.base,
