@@ -70,7 +70,10 @@ assigned a Rat group to route B, reloaded the saved draft and confirmed the
 assignment. Playtest rendered both trails and route-B traffic, pause froze the
 scene, and Promote all changes completed. A separate game server loaded the
 promoted content, showed both entrances/exits in its briefing and retained that
-preview after a page reload. Both tabs reported no warning/error console entries.
+preview after a page reload. The final tab log snapshots reported no warning/error
+entries, but server shutdown exposed earlier Vite ResizeObserver notifications and
+public-asset URL warnings. Browser verification therefore does not establish a
+warning-free development session.
 The waypoint editor also saved a diagnostic route edit through draft reload,
 Playtest and selected promotion; an uncached game reload displayed those exact
 edited coordinates. That edit stayed in the disposable copy.
