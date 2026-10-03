@@ -590,7 +590,7 @@ window.STORMWATCH_IDEAS = [
   {
     "id": "boar-brace-a-20261003",
     "title": "Iron Boar — Light tuck brace — selected",
-    "description": "Owner-selected resistance torso. Motion and battlefield approval pending.",
+    "description": "Owner-selected resistance torso and approved motion. Battlefield and directional approval pending.",
     "kind": "concept",
     "categories": [
       "character"

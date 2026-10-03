@@ -65,7 +65,7 @@ Acceptance review found that omitting explicit routes on 03/04 accidentally sele
 
 ## Remaining gates
 
-Mosswater complete battlefield clearance/HUD/crowds, board marker/navigation appearance, Skunk real-battlefield effects and Boar motion/directional variants/battlefield appearance await owner approval. All-map briefing/crowd review, full profile journey, phone/tablet touch review and final balance feel remain release acceptance work. Original Boar art is a functional fixture resource. No deployment/main merge occurred; physical mobile performance is unverified.
+Mosswater complete battlefield clearance/HUD/crowds, board marker/navigation appearance, Skunk real-battlefield effects and Boar directional variants/battlefield appearance await owner approval. Boar side pose and motion are approved and integrated. All-map briefing/crowd review, full profile journey, phone/tablet touch review and final balance feel remain release acceptance work. The original Boar neutral/legs and the approved side resistance torso are functional fixture resources. No deployment/main merge occurred; physical mobile performance is unverified.
 
 Parent integrates this contribution with remaining capability/art fixes and owns canonical activation. Copy the accepted candidate into canonical recipes only after its art, progression and owner gates agree; rerun the complete checks and release journey then.
 
