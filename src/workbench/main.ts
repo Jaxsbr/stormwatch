@@ -63,7 +63,7 @@ let lastPlay: { identity: string; text: string } | undefined;
 const names = {
   raider: "Rat raider",
   runner: "Fleet weasel",
-  armored: "Shield boar",
+  armored: "Iron boar",
   boss: "Roadwarden",
 };
 const images = Object.fromEntries(
