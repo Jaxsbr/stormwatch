@@ -3,7 +3,18 @@ export type TowerKind = "bolt" | "stone" | "net";
 export type EnemyKind = "raider" | "runner" | "armored" | "boss";
 export type CardId = "none" | "reach" | "nets" | "thrift";
 export type Phase = "preparation" | "wave" | "paused" | "won" | "lost";
+export interface PoisonSettings {
+  durationSeconds: number;
+  tickSeconds: number;
+}
+export interface PoisonState {
+  damage: number;
+  expiresAt: number;
+  nextTickAt: number;
+  tickSeconds: number;
+}
 export interface TowerDef {
+  poisonDamage?: number;
   name: string;
   role: string;
   cost: number;
@@ -15,6 +26,7 @@ export interface TowerDef {
   color: string;
 }
 export interface EnemyDef {
+  poisonImmune?: boolean;
   name: string;
   hp: number;
   speed: number;
@@ -88,6 +100,10 @@ export interface Tower extends Point {
   shots: number;
 }
 export interface Enemy extends Point {
+  poison?: PoisonState;
+  poisonImmune?: boolean;
+  immuneAt?: number;
+  shieldCueAt?: number;
   id: number;
   kind: EnemyKind;
   hp: number;
@@ -125,6 +141,7 @@ export interface Enemy extends Point {
   rallyWarningEmitted?: boolean;
 }
 export interface Shot extends Point {
+  poisonDamage?: number;
   id: number;
   source: Point;
   targetId: number;
@@ -136,7 +153,7 @@ export interface Shot extends Point {
 }
 export interface Effect extends Point {
   id: number;
-  kind: "hit" | "splash" | "slow" | "coin" | "evade";
+  kind: "hit" | "splash" | "slow" | "coin" | "evade" | "immune" | "shield";
   age: number;
   ttl: number;
 }
@@ -150,6 +167,11 @@ export interface GameEvent {
     | "sell"
     | "shot"
     | "hit"
+    | "poison-applied"
+    | "poison-refreshed"
+    | "poison-tick"
+    | "poison-expired"
+    | "immune"
     | "shield-hit"
     | "evade"
     | "kill"

@@ -34,7 +34,7 @@ const kinds: EnemyKind[] = ["raider", "runner", "armored", "boss"];
 const names: Record<EnemyKind, string> = {
   raider: "Rat raider",
   runner: "Fleet weasel",
-  armored: "Shield boar",
+  armored: "Iron boar",
   boss: "Roadwarden",
 };
 const images: Record<EnemyKind, string> = {

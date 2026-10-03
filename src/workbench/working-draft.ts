@@ -171,6 +171,32 @@ export function setMapLayout(
   return validateWorkingDraft(next);
 }
 
+/** Only the explicitly exposed combat catalog fields join shared ability promotion. */
+function promoteCombatFields(
+  current: AuthoringContent,
+  draft: WorkingDraft,
+  result: AuthoringContent,
+) {
+  for (const [scope, kind, field] of [
+    ["towers", "stone", "poisonDamage"],
+    ["enemies", "armored", "poisonImmune"],
+  ] as const) {
+    const record = (content: AuthoringContent) =>
+      (content[scope] as unknown as Record<string, Record<string, unknown>>)[
+        kind
+      ];
+    const authored = record(draft.content)[field],
+      base = record(draft.base)[field];
+    if (equal(authored, base)) continue;
+    if (!equal(record(current)[field], base))
+      throw new Error(
+        `${kind}.${field} changed in game config. Reload before promoting.`,
+      );
+    if (authored === undefined) delete record(result)[field];
+    else record(result)[field] = clone(authored);
+  }
+}
+
 /** Promote only the selected wave and its map settings, against fresh disk content. */
 export function promoteWorkingWave(
   current: AuthoringContent,
@@ -220,6 +246,7 @@ export function promoteWorkingWave(
     else waves[waveIndex] = clone(wave);
     result.levels[index] = { ...clone(metadata(level)), waves };
   }
+  promoteCombatFields(current, draft, result);
   validateContent(result);
   validateAuthoredVisuals(result);
   const promoted = result.levels.find((entry) => entry.id === level.id)!;
@@ -294,11 +321,22 @@ export function promoteAllWorkingChanges(
     "Shared ability settings",
   )!;
   for (const scope of ["towers", "enemies", "rules"] as const) {
-    if (!equal(draft.content[scope], draft.base[scope]))
+    const authored = clone(draft.content[scope]);
+    const base = clone(draft.base[scope]);
+    if (scope === "towers") {
+      delete (authored as AuthoringContent["towers"]).stone.poisonDamage;
+      delete (base as AuthoringContent["towers"]).stone.poisonDamage;
+    }
+    if (scope === "enemies") {
+      delete (authored as AuthoringContent["enemies"]).armored.poisonImmune;
+      delete (base as AuthoringContent["enemies"]).armored.poisonImmune;
+    }
+    if (!equal(authored, base))
       throw new Error(
         "Catalog and rule changes require the agent promotion workflow.",
       );
   }
+  promoteCombatFields(current, draft, result);
   validateContent(result);
   validateAuthoredVisuals(result);
   for (const level of result.levels) {
@@ -417,16 +455,50 @@ export function rebaseAfterPromotion(
     )
       comparisonBase.abilityDefaults = clone(draft.base.abilityDefaults);
   }
-  for (const scope of ["towers", "enemies", "rules"] as const) {
-    for (const key of Object.keys(draft.content[scope])) {
-      const authored = draft.content[scope] as unknown as Record<
-        string,
-        unknown
-      >;
-      const old = draft.base[scope] as unknown as Record<string, unknown>;
-      const target = content[scope] as unknown as Record<string, unknown>;
-      if (!equal(authored[key], old[key])) target[key] = clone(authored[key]);
+  for (const [scope, kind, field] of [
+    ["towers", "stone", "poisonDamage"],
+    ["enemies", "armored", "poisonImmune"],
+  ] as const) {
+    const record = (value: AuthoringContent) =>
+      (value[scope] as unknown as Record<string, Record<string, unknown>>)[
+        kind
+      ];
+    if (
+      conflicts(
+        record(draft.content)[field],
+        record(draft.base)[field],
+        record(newBaseline)[field],
+      )
+    ) {
+      const old = record(draft.base)[field];
+      if (old === undefined) delete record(comparisonBase)[field];
+      else record(comparisonBase)[field] = clone(old);
     }
+  }
+  // Catalog records can contain both a pending combat edit and unrelated live
+  // tuning. Overlay only fields changed by the draft, including optional removals.
+  for (const scope of ["towers", "enemies"] as const) {
+    const records = (value: AuthoringContent) =>
+      value[scope] as unknown as Record<string, Record<string, unknown>>;
+    for (const kind of Object.keys(records(draft.content))) {
+      const authored = records(draft.content)[kind];
+      const old = records(draft.base)[kind];
+      const target = records(content)[kind];
+      for (const field of new Set([
+        ...Object.keys(old),
+        ...Object.keys(authored),
+      ])) {
+        if (equal(authored[field], old[field])) continue;
+        if (authored[field] === undefined) delete target[field];
+        else target[field] = clone(authored[field]);
+      }
+    }
+  }
+  for (const key of Object.keys(draft.content.rules)) {
+    const authored = draft.content.rules as unknown as Record<string, unknown>;
+    const old = draft.base.rules as unknown as Record<string, unknown>;
+    const target = content.rules as unknown as Record<string, unknown>;
+    if (!equal(authored[key], old[key])) target[key] = clone(authored[key]);
   }
   return validateWorkingDraft({ ...draft, base: comparisonBase, content });
 }
