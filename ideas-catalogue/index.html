@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Stormwatch · Ideas catalogue</title>
+    <link rel="stylesheet" href="style.css" />
+    <script src="catalogue.js" defer></script>
+    <script src="viewer.js" defer></script>
+  </head>
+  <body>
+    <header>
+      <a class="brand" href="index.html"
+        >STORMWATCH <span>Ideas catalogue</span></a
+      >
+      <span id="kind" class="badge"></span>
+    </header>
+    <nav id="categories" class="categories" aria-label="Art categories"></nav>
+    <main aria-label="Art ideas carousel" aria-roledescription="carousel">
+      <figure>
+        <div class="stage">
+          <a
+            id="original"
+            target="_blank"
+            rel="noopener"
+            aria-label="Open full-size image"
+          >
+            <img id="art" alt="" />
+          </a>
+          <p id="image-error" hidden>
+            Image unavailable. Check this idea’s local asset.
+          </p>
+        </div>
+        <figcaption aria-live="polite" aria-atomic="true">
+          <div class="caption">
+            <h1 id="title"></h1>
+            <p id="description"></p>
+            <p id="source"></p>
+          </div>
+          <nav aria-label="Browse ideas">
+            <button id="previous" type="button" aria-label="Previous idea">
+              ← <span>Previous</span>
+            </button>
+            <span id="counter" aria-label="Idea position"></span>
+            <button id="next" type="button" aria-label="Next idea">
+              <span>Next</span> →
+            </button>
+          </nav>
+        </figcaption>
+        <section class="previews" aria-label="Category previews">
+          <div class="preview-heading">
+            <span id="preview-range"></span>
+            <div class="preview-paging">
+              <button
+                id="preview-previous"
+                type="button"
+                aria-label="Previous previews"
+              >
+                ←
+              </button>
+              <button
+                id="preview-next"
+                type="button"
+                aria-label="More previews"
+              >
+                →
+              </button>
+            </div>
+          </div>
+          <div id="thumbnails" class="thumbnails"></div>
+        </section>
+      </figure>
+    </main>
+    <noscript>Enable JavaScript to browse the ideas catalogue.</noscript>
+  </body>
+</html>

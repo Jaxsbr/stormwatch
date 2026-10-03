@@ -42,3 +42,15 @@ merge. Skunk gas/bomb adapter and Boar motion/directional/battlefield approvals 
 pending in their visual chats; no discovery or second-board activation is added.
 Owner play-experience balance acceptance remains pending. Physical mobile and
 post-merge deployment are unverified. No generated assets are introduced here.
+
+## Main integration
+
+Integrated remotely verified main `98cfea9538f1006b822421578e6d49731684bd46`
+(PR 16). The only overlap was the decision index; both records are preserved.
+Updated root and catalogue instructions were read before committing. No generated
+art is introduced by this capability; diagnostic captures remain outside the repo.
+
+After integration: check, all 345 tests across 61 files, production build and
+workbench build passed. Production boundary remains verified across 241 files.
+Catalogue verification passed for 16 entries; staged capture gate recognized all
+three PNGs inherited from main as captured. No capture exclusions were needed.
