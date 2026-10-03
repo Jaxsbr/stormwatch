@@ -100,6 +100,16 @@
       "path": "review/mosswater-encounters/route-promoted-game.jpg",
       "sha256": "66d70fe24a2a60639dae36d10e8c137909a1eb71dac055c7de5875bf7fd3a597",
       "reason": "Diagnostic explicit single-route promotion and reload verification; no new generated art."
+    },
+    {
+      "path": "review/2026-10-03-skunk-study/facing/first.jpg",
+      "sha256": "d31e5cff5fe081a15762a8da96717319f5fcc1ef9d85183b6fb35f86d60302be",
+      "reason": "Diagnostic legal replay capture of corrected first-shot facing; no new generated art."
+    },
+    {
+      "path": "review/2026-10-03-skunk-study/facing/routes.jpg",
+      "sha256": "0aa59744985b226844f6e948f169dd95fdeb760837e82e3aa5b7a772a603c507",
+      "reason": "Diagnostic legal replay capture of corrected cross-route release; no new generated art."
     }
   ]
 }

@@ -759,6 +759,9 @@ export class Battlefield {
       this.updateStatusGlyphs(f, t, 98, []);
       {
         let fired = this.fired.get(t.id);
+        const newSkunkShot =
+          t.kind === "stone" && t.shots > 0 && fired?.shots !== t.shots;
+        let releaseTarget: Point | undefined;
         if (!fired || fired.shots !== t.shots) {
           const latest =
             t.kind === "stone"
@@ -771,6 +774,7 @@ export class Battlefield {
                   )
                   .sort((a, b) => a.life - b.life)[0]
               : undefined;
+          if (newSkunkShot) releaseTarget = latest?.target;
           // When a render skips the whole flight, cooldown still locates the
           // release within the current cadence; do not invent a fresh throw.
           const age =
@@ -791,21 +795,18 @@ export class Battlefield {
         }
         const defenderResource = this.art!.defender(t.kind);
         if (defenderResource.definition) {
-          const target = s.enemies
-            .filter(
-              (e) =>
-                e.alive && Math.hypot(e.x - t.x, e.z - t.z) <= game.range(t),
-            )
-            .sort((a, b) => b.distance - a.distance)[0];
+          const target = game.targetFor(t);
+          // A real release overrides preparation, even on the first/late frame.
+          const facingTarget = releaseTarget ?? target;
           // Towers use one side illustration, reflected toward the target.
           // Retain facing close to vertical to avoid flickering left/right.
-          const dx = target ? (target.x - t.x) * X : 0;
+          const dx = facingTarget ? (facingTarget.x - t.x) * X : 0;
           let mirrored =
             Math.abs(dx) > 2 ? dx < 0 : (f.defender?.mirrored ?? false);
           let resource = defenderResource;
           // Preserve the release pose so the visual muzzle cannot jump views
           // during the first frames of a shot.
-          if (f.defender && s.clock - fired.at < 0.16) {
+          if (f.defender && !newSkunkShot && s.clock - fired.at < 0.16) {
             resource = f.defender.cutout.resource;
             mirrored = f.defender.mirrored;
           }

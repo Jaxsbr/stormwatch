@@ -57,3 +57,20 @@ cadence scaling, pooled idle reset, reduced motion, actual Game poison outcomes,
 expiry and buffer reuse. The real Battlefield fixture covers both facings,
 vertical targets, a crowd, sale while a bomb is in flight and fresh-attempt cleanup.
 See [runtime verification](../../review/2026-10-03-skunk-study/battlefield/README.md).
+
+## Target authority correction — 4 October 2026
+
+Combined explicit-route acceptance exposed two renderer defects: raw-distance
+preparation disagreed with remaining-travel-time firing, and the release lock
+retained idle facing on the first Skunk shot. The existing firing policy is now
+exposed by the read-only `Game.targetFor` query and shared with preparation. A new
+Skunk projectile establishes release facing before the existing lock. This keeps
+combat policy in the simulation while preserving accepted motion and projectile
+handoff, at the cost of a small public query on Game. No authored fields change.
+
+The actual Game/Battlefield legal replay changed from 80 opposite-side releases
+among 504 Skunk shots to zero among the same 504. Focused cases protect first/late
+release, cross-route priority, pause, immutable query and sale during flight.
+410 tests, type checking and game/workbench builds pass. Browser inspection agrees
+at 0.7s, 6.7s and 6.8s. [Evidence and replay](../../review/2026-10-03-skunk-study/facing/README.md).
+Final owner acceptance and post-merge deployment checks belong to parent integration.
