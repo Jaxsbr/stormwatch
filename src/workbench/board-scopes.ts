@@ -6,12 +6,26 @@ const equal = (a: unknown, b: unknown) =>
   a === undefined || b === undefined
     ? a === b
     : configurationIdentity(a) === configurationIdentity(b);
+/** Keep only board members whose recipes belong to this candidate. */
+function boardInCandidate(
+  board: BoardDef,
+  levelIds: readonly string[],
+): BoardDef {
+  const result = structuredClone(board);
+  result.levelIds = result.levelIds.filter((id) => levelIds.includes(id));
+  if (result.visual.markers) {
+    for (const id of Object.keys(result.visual.markers))
+      if (!result.levelIds.includes(id)) delete result.visual.markers[id];
+  }
+  return result;
+}
 /** Board membership, presentation and ordering are one conflict scope per board. */
 export function mergeBoardScopes(
   current: AuthoringContent,
   base: AuthoringContent,
   authored: AuthoringContent,
   selected?: readonly string[],
+  candidateLevelIds?: readonly string[],
 ): AuthoringContent {
   const result = structuredClone(current);
   if (authored.boards === undefined) return result;
@@ -22,8 +36,10 @@ export function mergeBoardScopes(
     ...new Set([...old, ...next].map(({ id }) => id)),
   ];
   for (const id of changes) {
-    const before = old.find((b) => b.id === id),
-      after = next.find((b) => b.id === id);
+    const before = old.find((b) => b.id === id);
+    let after = next.find((b) => b.id === id);
+    if (after && selected && candidateLevelIds)
+      after = boardInCandidate(after, candidateLevelIds);
     if (selected && !before && !after) throw new Error(`Unknown board ${id}`);
     if (equal(before, after)) continue;
     const index = live.findIndex((b) => b.id === id);
@@ -72,7 +88,19 @@ export function rebaseBoardScopes(
       if (value)
         list.splice(index < 0 ? list.length : index, 0, structuredClone(value));
     };
-    if (!equal(live, before) && !equal(live, after))
+    // A selected-wave promotion may accept board metadata while new-map
+    // membership remains pending. Accept that projected scope as the new base.
+    const acceptedAfter =
+      after &&
+      boardInCandidate(after, [
+        ...base.levels.map(({ id }) => id),
+        ...current.levels.map(({ id }) => id),
+      ]);
+    if (
+      !equal(live, before) &&
+      !equal(live, after) &&
+      !equal(live, acceptedAfter)
+    )
       replace(comparison, before);
     replace(content, after);
   }

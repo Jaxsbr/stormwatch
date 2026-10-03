@@ -6,11 +6,13 @@ import {
 import { resolveBoards } from "../src/content/boards";
 import {
   createWorkingDraft,
+  createMap,
   promoteWorkingWave,
   promoteAllWorkingChanges,
   rebaseAfterPromotion,
   validateWorkingDraft,
 } from "../src/workbench/working-draft";
+import { AttemptSession } from "../src/workbench/runs";
 import { forkDraft } from "../src/workbench/drafts";
 import {
   previewPromotion,
@@ -100,4 +102,103 @@ it("makes board scopes explicit in agent previews and includes metadata in the a
   expect(preview.candidateIdentity).not.toBe(configurationIdentity(base));
   expect(verifyPromotionScenarios(preview, revision)).toHaveLength(2);
   expect(preview.content.levels).toEqual(base.levels);
+});
+
+it("keeps pending map membership and anchors out of an existing wave candidate and preserves them after promotion", () => {
+  const base = baseline();
+  base.boards![0].visual.markers = Object.fromEntries(
+    base.boards![0].levelIds.map((id, i) => [id, { x: 20 + i * 30, y: 50 }]),
+  );
+  let draft = createMap(
+    createWorkingDraft(base),
+    "Pending map",
+    base.levels[0].id,
+    "pending-map",
+    "pending-wave",
+  );
+  draft = validateWorkingDraft(JSON.parse(JSON.stringify(draft)));
+  draft.levelId = base.levels[0].id;
+  draft.waveId = base.levels[0].waves[0].id;
+  draft.content.levels[0].waves[0].reward += 5;
+  draft.content.boards![0].name = "Intentional board edit";
+  const pendingMap = structuredClone(draft.content.levels.at(-1)!);
+  const pendingAnchor = structuredClone(
+    draft.content.boards![0].visual.markers!["pending-map"],
+  );
+  const promoted = promoteWorkingWave(base, draft);
+  expect(promoted.levels.map(({ id }) => id)).toEqual(
+    base.levels.map(({ id }) => id),
+  );
+  expect(promoted.boards![0]).toEqual({
+    ...base.boards![0],
+    name: "Intentional board edit",
+  });
+  expect(promoted.levels[0].waves[0].reward).toBe(
+    base.levels[0].waves[0].reward + 5,
+  );
+  const session = new AttemptSession(promoted, {
+    id: "pending-map-playtest",
+    levelId: draft.levelId,
+    waveId: draft.waveId,
+    mode: "wave",
+    progression: "first-arrival",
+    difficulty: "normal",
+    seed: 42,
+  });
+  expect(session.game.level.waves[0].reward).toBe(
+    promoted.levels[0].waves[0].reward,
+  );
+  const rebased = rebaseAfterPromotion(draft, promoted);
+  expect(rebased.content.levels.at(-1)).toEqual(pendingMap);
+  expect(rebased.content.boards![0].levelIds).toContain("pending-map");
+  expect(rebased.content.boards![0].visual.markers!["pending-map"]).toEqual(
+    pendingAnchor,
+  );
+  expect(() => promoteWorkingWave(promoted, rebased)).not.toThrow();
+  expect(draft.content.levels.at(-1)).toEqual(pendingMap);
+});
+
+it("includes a selected new map while leaving another new map and its anchor pending", () => {
+  const base = baseline();
+  base.boards![0].visual.markers = Object.fromEntries(
+    base.boards![0].levelIds.map((id, i) => [id, { x: 20 + i * 30, y: 50 }]),
+  );
+  let draft = createMap(
+    createWorkingDraft(base),
+    "Selected new map",
+    base.levels[0].id,
+    "selected-new-map",
+    "selected-wave",
+  );
+  draft.content.levels.at(-1)!.waves[0].packets = structuredClone(
+    base.levels[0].waves[0].packets,
+  );
+  draft = createMap(
+    draft,
+    "Pending new map",
+    base.levels[0].id,
+    "pending-new-map",
+    "pending-wave",
+  );
+  draft.levelId = "selected-new-map";
+  draft.waveId = "selected-wave";
+  const promoted = promoteWorkingWave(base, draft);
+  expect(promoted.levels.map(({ id }) => id)).toEqual([
+    ...base.levels.map(({ id }) => id),
+    "selected-new-map",
+  ]);
+  expect(promoted.boards![0].levelIds).toEqual([
+    ...base.boards![0].levelIds,
+    "selected-new-map",
+  ]);
+  expect(promoted.boards![0].visual.markers).toHaveProperty("selected-new-map");
+  expect(promoted.boards![0].visual.markers).not.toHaveProperty(
+    "pending-new-map",
+  );
+  const rebased = rebaseAfterPromotion(draft, promoted);
+  expect(rebased.content.boards![0].levelIds).toContain("pending-new-map");
+  expect(rebased.content.boards![0].visual.markers).toHaveProperty(
+    "pending-new-map",
+  );
+  expect(() => promoteWorkingWave(promoted, rebased)).not.toThrow();
 });
