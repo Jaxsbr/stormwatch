@@ -161,3 +161,31 @@ promotion, and refusals for conflicting board metadata or membership edits.
 Validation passes: `npm run check`, `npm test` (394 tests across 65 files),
 `npm run build`, `npm run build:workbench`, and `npm run format:check`.
 The production boundary still verifies 241 files. Existing bundle warnings remain.
+
+## Live and historical topology separation
+
+Acceptance reproduced a valid live board created by moving another board's member
+into it. A pending name edit and unpublished map on the original board then caused
+rebase to materialize the new live board without any members. The public-seam
+regression failed with `board.levelIds: encounters required` before correction.
+
+Authored content now separates presentation edits from actual membership edits:
+pending names and marker coordinates overlay the live ownership topology, while
+pending membership changes retain their authored scope. Historical comparison
+ownership remains available for genuine stale-board checks. Comparison topology
+is materialized from those owners, so a newly introduced live board is absent
+when its member belongs to an older board in that comparison. Restoring ownership
+also completes any affected existing board that would otherwise lose its last
+member; independent live moves remain intact. Content validation is unchanged.
+This supersedes the earlier description that all presentation edits protect
+historical ownership in authored content.
+
+Regressions preserve a new live board's sole member and markers, pending name and
+anchor edits, serialized draft reload, and conflict refusal after a second
+unrelated promotion/rebase. A chained move checks historical topology completion.
+All 64 assignments of three recipes across existing and new board identities
+preserve live ownership for metadata-only drafts and produce valid snapshots.
+
+Validation passes: type check, 397 tests across 65 files, formatting, game build
+and workbench build. Production boundary verification still covers 241 files;
+existing bundle-size warnings remain.
