@@ -30,6 +30,11 @@
       "path": "review/boards-profiles/invalid-destination-recovered.png",
       "sha256": "20e5fbba0973f4a9a028ece9a7b8cdc7f3ec8419e0bc7ce33b9a35bfd1b6a752",
       "reason": "Diagnostic board/profile browser verification using existing approved art; no new art idea or generated variation"
+    },
+    {
+      "path": "review/mosswater-art/phone-clearance.png",
+      "sha256": "c474097012fac9f1ad9b83ce4f769c7a06f67b097135c0097cf0044289483be2",
+      "reason": "Diagnostic real-renderer phone-sized clearance screenshot; no new art concept"
     }
   ]
 }

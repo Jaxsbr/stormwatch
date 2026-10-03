@@ -273,7 +273,7 @@ window.STORMWATCH_IDEAS = [
   },
   {
     "id": "badger-angry",
-    "title": "Roadwarden \u00b7 angry",
+    "title": "Roadwarden · angry",
     "description": "Current character cutouts, assembled in a neutral pose.",
     "kind": "existing",
     "asset": "assets/badger-angry.webp",
@@ -296,7 +296,7 @@ window.STORMWATCH_IDEAS = [
   },
   {
     "id": "badger-raging",
-    "title": "Roadwarden \u00b7 raging",
+    "title": "Roadwarden · raging",
     "description": "Current character cutouts, assembled in a neutral pose.",
     "kind": "existing",
     "asset": "assets/badger-raging.webp",
@@ -316,5 +316,113 @@ window.STORMWATCH_IDEAS = [
     "categories": [
       "character"
     ]
+  },
+  {
+    "id": "mosswater-rectangular-clearing-study",
+    "title": "Mosswater rectangular clearing study",
+    "description": "Woodland expedition study. Concept selection does not constitute runtime approval.",
+    "kind": "concept",
+    "categories": [
+      "background"
+    ],
+    "asset": "assets/mosswater-rectangular-clearing-study.png",
+    "source": {
+      "label": "Board and scenery identity",
+      "file": "exec-0e9e56fa-b2f9-4617-8f4f-aaa495a164aa.png",
+      "session": "01a0fef2-7077-75d2-b43e-1e8c30d3c15f"
+    },
+    "width": 1672,
+    "height": 941,
+    "sha256": "40fb90d59db18f15b6d94a0d9228e57d766223802334e523e00f4bb7c5b763f3"
+  },
+  {
+    "id": "mossy-poolbanks-selected-direction",
+    "title": "Mossy Poolbanks selected direction",
+    "description": "Woodland expedition study. Concept selection does not constitute runtime approval.",
+    "kind": "concept",
+    "categories": [
+      "background"
+    ],
+    "asset": "assets/mossy-poolbanks-selected-direction.png",
+    "source": {
+      "label": "Board and scenery identity",
+      "file": "exec-3a1e5013-6eee-4028-8196-663722bc66ad.png",
+      "session": "01a0fef2-7077-75d2-b43e-1e8c30d3c15f"
+    },
+    "width": 1672,
+    "height": 941,
+    "sha256": "a741ebd5220bc9fef96fc6a34998c0d9f5b8992ed917d89b72bacdfa54bb711f"
+  },
+  {
+    "id": "mosswater-reach-clean-board-candidate",
+    "title": "Mosswater Reach clean board candidate",
+    "description": "Woodland expedition study. Concept selection does not constitute runtime approval.",
+    "kind": "concept",
+    "categories": [
+      "map"
+    ],
+    "asset": "assets/mosswater-reach-clean-board-candidate.png",
+    "source": {
+      "label": "Board and scenery identity",
+      "file": "exec-647fc16b-123d-4e5b-b2ee-522b274c7700.png",
+      "session": "01a0fef2-7077-75d2-b43e-1e8c30d3c15f"
+    },
+    "width": 1672,
+    "height": 940,
+    "sha256": "68cdd0353f729d08e89b136566f7608899e474530dc953f5cc9d1cfee1bcf03c"
+  },
+  {
+    "id": "mossy-poolbanks-clearance-candidate",
+    "title": "Mossy Poolbanks clearance candidate",
+    "description": "Woodland expedition study. Concept selection does not constitute runtime approval.",
+    "kind": "concept",
+    "categories": [
+      "background"
+    ],
+    "asset": "assets/mossy-poolbanks-clearance-candidate.png",
+    "source": {
+      "label": "Board and scenery identity",
+      "file": "exec-74a8cce1-f088-4086-be63-f8040f9c7931.png",
+      "session": "01a0fef2-7077-75d2-b43e-1e8c30d3c15f"
+    },
+    "width": 1672,
+    "height": 941,
+    "sha256": "01d8c616fdc1a2af4012b740cf475a98b0383b1e6cec43b5d187c88469d23665"
+  },
+  {
+    "id": "timber-shallows-battlefield-alternative",
+    "title": "Timber Shallows battlefield alternative",
+    "description": "Woodland expedition study. Concept selection does not constitute runtime approval.",
+    "kind": "concept",
+    "categories": [
+      "background"
+    ],
+    "asset": "assets/timber-shallows-battlefield-alternative.png",
+    "source": {
+      "label": "Board and scenery identity",
+      "file": "exec-ba801da2-9049-4613-9506-85f1b5b8bcaa.png",
+      "session": "01a0fef2-7077-75d2-b43e-1e8c30d3c15f"
+    },
+    "width": 1672,
+    "height": 941,
+    "sha256": "da8c583f3c79ef9501a78a62c86aa070ff534056061c8e0fdc9e21101873f0c0"
+  },
+  {
+    "id": "slate-runoff-battlefield-alternative",
+    "title": "Slate Runoff battlefield alternative",
+    "description": "Woodland expedition study. Concept selection does not constitute runtime approval.",
+    "kind": "concept",
+    "categories": [
+      "background"
+    ],
+    "asset": "assets/slate-runoff-battlefield-alternative.png",
+    "source": {
+      "label": "Board and scenery identity",
+      "file": "exec-f51455c5-37db-42a4-9e50-cf6cff96eb9f.png",
+      "session": "01a0fef2-7077-75d2-b43e-1e8c30d3c15f"
+    },
+    "width": 1672,
+    "height": 941,
+    "sha256": "2722812772f5a0e051a0108d9701cd9cd7d0c62a15e335b473592c9daaf55fe1"
   }
 ];
