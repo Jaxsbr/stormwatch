@@ -125,3 +125,18 @@ Regressions cover existing-wave Playtest/promotion, selection of one new map wit
 another pending, unchanged pending drafts and repeat promotion after rebase. The
 disposable API round trip now includes a pending map during draft reload, real
 Playtest, promotion and uncached game reload; no unpublished map reaches disk.
+
+## Concurrent recipe rebase correction
+
+Acceptance at the combined integration head reproduced successful selected-wave
+promotion followed by failed draft rebase when live content added or removed a
+recipe on the same board. Both public-seam regressions failed before the fix.
+Board snapshots now reconcile recipe membership after recipe scopes have rebased:
+concurrent additions retain their live ordering and anchors, deletions lose their
+references, and unpublished draft maps retain their membership and anchors.
+Comparison snapshots stay valid while preserving genuine stale board conflicts.
+
+The focused regressions include serialized draft reload, repeated selected-wave
+promotion and subsequent all-change promotion for both additions and removals,
+plus refusal of a concurrent board-name conflict. Full validation passes: type
+check, 390 tests across 65 files, game and workbench builds, and formatting.

@@ -422,9 +422,6 @@ export function rebaseAfterPromotion(
     if (index < 0) content.routeLayouts.push(clone(layout));
     else content.routeLayouts[index] = clone(layout);
   }
-  const boards = rebaseBoardScopes(draft.base, draft.content, newBaseline);
-  if (boards.content) content.boards = boards.content;
-  if (boards.comparison) comparisonBase.boards = boards.comparison;
   const conflicts = (authored: unknown, old: unknown, current: unknown) =>
     !equal(authored, old) && !equal(current, old) && !equal(current, authored);
   for (const authored of draft.content.levels) {
@@ -506,6 +503,15 @@ export function rebaseAfterPromotion(
       else target.waves[index] = clone(wave);
     }
   }
+  const boards = rebaseBoardScopes(
+    draft.base,
+    draft.content,
+    newBaseline,
+    content.levels.map(({ id }) => id),
+    comparisonBase.levels.map(({ id }) => id),
+  );
+  if (boards.content) content.boards = boards.content;
+  if (boards.comparison) comparisonBase.boards = boards.comparison;
   if (!equal(draft.content.abilityDefaults, draft.base.abilityDefaults)) {
     content.abilityDefaults = clone(draft.content.abilityDefaults);
     if (
