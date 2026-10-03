@@ -304,3 +304,111 @@ it("preserves a stale board comparison alongside concurrent recipe additions", (
     "Board first-board changed",
   );
 });
+
+it.each(["pending only", "metadata conflict", "membership conflict"] as const)(
+  "rebases a live cross-board move with %s and pending map anchors",
+  (change) => {
+    const base = baseline();
+    for (const board of base.boards!)
+      board.visual.markers = Object.fromEntries(
+        board.levelIds.map((id, i) => [id, { x: 20 + i * 30, y: 50 }]),
+      );
+    const draft = createMap(
+      createWorkingDraft(base),
+      "Pending D",
+      base.levels[0].id,
+      "pending-d",
+      "wave-d",
+    );
+    draft.levelId = base.levels[0].id;
+    draft.waveId = base.levels[0].waves[0].id;
+    const anchor = structuredClone(
+      draft.content.boards![0].visual.markers!["pending-d"],
+    );
+    const live = structuredClone(base);
+    const moved = live.boards![0].levelIds.pop()!;
+    live.boards![1].levelIds.unshift(moved);
+    live.boards![1].visual.markers![moved] = { x: 75, y: 60 };
+    delete live.boards![0].visual.markers![moved];
+    if (change === "metadata conflict")
+      draft.content.boards![0].name = "Pending board name";
+    if (change === "membership conflict") {
+      const other = draft.content.boards![0].levelIds.shift()!;
+      draft.content.boards![1].levelIds.push(other);
+      draft.content.boards![1].visual.markers![other] = { x: 60, y: 60 };
+      delete draft.content.boards![0].visual.markers![other];
+    }
+    const promoted =
+      change === "pending only" ? promoteWorkingWave(live, draft) : live;
+    expect(promoted.boards).toEqual(live.boards);
+    const rebased = validateWorkingDraft(
+      JSON.parse(JSON.stringify(rebaseAfterPromotion(draft, promoted))),
+    );
+    expect(rebased.content.boards![0].visual.markers!["pending-d"]).toEqual(
+      anchor,
+    );
+    if (change === "pending only") {
+      expect(rebased.base.boards).toEqual(live.boards);
+      expect(rebased.content.boards![0].levelIds).toEqual([
+        ...live.boards![0].levelIds,
+        "pending-d",
+      ]);
+      expect(rebased.content.boards![1]).toEqual(live.boards![1]);
+      expect(() => promoteWorkingWave(promoted, rebased)).not.toThrow();
+      rebased.content.levels.find(
+        ({ id }) => id === "pending-d",
+      )!.waves[0].packets = structuredClone(base.levels[0].waves[0].packets);
+      expect(promoteAllWorkingChanges(promoted, rebased).boards).toEqual(
+        rebased.content.boards,
+      );
+    } else {
+      expect(() => promoteWorkingWave(promoted, rebased)).toThrow(
+        /Board .* changed/,
+      );
+      expect(() => promoteAllWorkingChanges(promoted, rebased)).toThrow(
+        /Board .* changed/,
+      );
+    }
+  },
+);
+
+it("preserves independent live moves while retaining a conflicting board scope", () => {
+  const base = baseline();
+  base.levels.push(
+    { ...structuredClone(base.levels[0]), id: "independent-map" },
+    { ...structuredClone(base.levels[0]), id: "third-map" },
+  );
+  base.boards![1].levelIds.push("independent-map");
+  base.boards!.push({
+    ...structuredClone(base.boards![1]),
+    id: "third-board",
+    levelIds: ["third-map"],
+  });
+  const draft = createMap(
+    createWorkingDraft(base),
+    "Pending map",
+    base.levels[0].id,
+    "pending-map",
+    "pending-wave",
+  );
+  draft.content.boards![0].name = "Pending name";
+  const live = structuredClone(base);
+  const moved = live.boards![0].levelIds.pop()!;
+  live.boards![1].levelIds.unshift(moved);
+  live.boards![1].levelIds = live.boards![1].levelIds.filter(
+    (id) => id !== "independent-map",
+  );
+  live.boards![2].levelIds.push("independent-map");
+  const rebased = rebaseAfterPromotion(draft, live);
+  for (const snapshot of [rebased.content, rebased.base]) {
+    expect(snapshot.boards![2]).toEqual(live.boards![2]);
+    expect(snapshot.boards![1].levelIds).not.toContain("independent-map");
+  }
+  expect(rebased.base.boards![0]).toEqual(base.boards![0]);
+  rebased.content.levels.find(
+    ({ id }) => id === "pending-map",
+  )!.waves[0].packets = structuredClone(base.levels[0].waves[0].packets);
+  expect(() => promoteAllWorkingChanges(live, rebased)).toThrow(
+    "Board first-board changed",
+  );
+});

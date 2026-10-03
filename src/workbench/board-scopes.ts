@@ -19,38 +19,80 @@ function boardInCandidate(
   }
   return result;
 }
-/** Carry recipe additions/removals through snapshots without accepting board edits. */
-function reconcileRecipes(
-  board: BoardDef,
-  live: BoardDef | undefined,
+/** Reconcile ownership for the entire collection, then materialize each board.
+ * Protected scopes retain authored (or comparison) ownership for their recipes;
+ * other recipes retain live ownership. Every recipe gets exactly one owner.
+ */
+function reconcileMemberships(
+  snapshot: BoardDef[],
+  preferred: BoardDef[],
+  live: BoardDef[],
   baseIds: readonly string[],
   candidateIds: readonly string[],
-): BoardDef {
-  const result = boardInCandidate(board, candidateIds);
-  for (const id of live?.levelIds ?? []) {
-    if (
-      baseIds.includes(id) ||
-      !candidateIds.includes(id) ||
-      result.levelIds.includes(id)
-    )
-      continue;
-    const following = live!.levelIds
-      .slice(live!.levelIds.indexOf(id) + 1)
-      .find((member) => result.levelIds.includes(member));
-    const preceding = live!.levelIds
-      .slice(0, live!.levelIds.indexOf(id))
-      .reverse()
-      .find((member) => result.levelIds.includes(member));
-    const index = following
-      ? result.levelIds.indexOf(following)
-      : preceding
-        ? result.levelIds.indexOf(preceding) + 1
-        : result.levelIds.length;
-    result.levelIds.splice(index, 0, id);
-    if (result.visual.markers && live?.visual.markers?.[id])
-      result.visual.markers[id] = structuredClone(live.visual.markers[id]);
-  }
-  return result;
+  protectedBoards: ReadonlySet<string>,
+): BoardDef[] {
+  const protectedIds = new Set(
+    [...preferred, ...live].flatMap((board) =>
+      protectedBoards.has(board.id)
+        ? board.levelIds.filter((id) => baseIds.includes(id))
+        : [],
+    ),
+  );
+  const owner = (boards: BoardDef[], id: string) =>
+    boards.find((board) => board.levelIds.includes(id));
+  const sources = new Map(
+    candidateIds.map((id) => {
+      const current = owner(live, id),
+        pending = owner(preferred, id);
+      return [
+        id,
+        protectedIds.has(id) ? (pending ?? current) : (current ?? pending),
+      ] as const;
+    }),
+  );
+  return snapshot.map((board) => {
+    const first = protectedBoards.has(board.id)
+      ? preferred.find((entry) => entry.id === board.id)
+      : live.find((entry) => entry.id === board.id);
+    const pending = preferred.find((entry) => entry.id === board.id);
+    const current = live.find((entry) => entry.id === board.id);
+    const belongs = (id: string) => sources.get(id)?.id === board.id;
+    const ids = (first?.levelIds ?? []).filter(belongs);
+    // Place concurrent live additions among their live neighbours before
+    // appending unpublished recipes from the draft.
+    for (const id of current?.levelIds ?? []) {
+      if (!belongs(id) || ids.includes(id)) continue;
+      const following = current!.levelIds
+        .slice(current!.levelIds.indexOf(id) + 1)
+        .find((member) => ids.includes(member));
+      const preceding = current!.levelIds
+        .slice(0, current!.levelIds.indexOf(id))
+        .reverse()
+        .find((member) => ids.includes(member));
+      ids.splice(
+        following
+          ? ids.indexOf(following)
+          : preceding
+            ? ids.indexOf(preceding) + 1
+            : ids.length,
+        0,
+        id,
+      );
+    }
+    for (const id of [...(pending?.levelIds ?? []), ...candidateIds])
+      if (belongs(id) && !ids.includes(id)) ids.push(id);
+    const result = boardInCandidate(board, ids);
+    result.levelIds = ids;
+    if (result.visual.markers) {
+      result.visual.markers = Object.fromEntries(
+        ids.flatMap((id) => {
+          const marker = sources.get(id)?.visual.markers?.[id];
+          return marker ? [[id, structuredClone(marker)]] : [];
+        }),
+      );
+    }
+    return result;
+  });
 }
 /** Board membership, presentation and ordering are one conflict scope per board. */
 export function mergeBoardScopes(
@@ -110,12 +152,31 @@ export function rebaseBoardScopes(
   if (!base.boards && !authored.boards && !current.boards) return {};
   const old = resolveBoards(base),
     next = resolveBoards(authored);
-  const content = resolveBoards(current),
+  let content = resolveBoards(current),
     comparison = resolveBoards(current);
+  const changed = new Set<string>(),
+    conflicted = new Set<string>();
+  const baseIds = base.levels.map(({ id }) => id);
+  const projectedOld = old.map((board) =>
+    boardInCandidate(board, comparisonIds),
+  );
+  const projectedNext = next.map((board) =>
+    boardInCandidate(board, comparisonIds),
+  );
+  // Adding a pending recipe alone does not edit an existing board scope.
+  // Compare presentation, order and ownership only for already-known recipes.
+
   for (const id of new Set([...old, ...next].map(({ id }) => id))) {
     const before = old.find((b) => b.id === id),
       after = next.find((b) => b.id === id);
-    if (equal(before, after)) continue;
+    if (
+      equal(
+        before && boardInCandidate(before, baseIds),
+        after && boardInCandidate(after, baseIds),
+      )
+    )
+      continue;
+    changed.add(id);
     const live = content.find((b) => b.id === id);
     const replace = (list: BoardDef[], value?: BoardDef) => {
       const index = list.findIndex((b) => b.id === id);
@@ -125,19 +186,45 @@ export function rebaseBoardScopes(
     };
     // A selected-wave promotion may accept board metadata while new-map
     // membership remains pending. Accept that projected scope as the new base.
-    const baseIds = base.levels.map(({ id }) => id);
-    const pending = after && reconcileRecipes(after, live, baseIds, contentIds);
-    const previous =
-      before && reconcileRecipes(before, live, baseIds, comparisonIds);
-    const acceptedAfter = pending && boardInCandidate(pending, comparisonIds);
-    if (
-      !equal(live, previous) &&
-      !equal(live, pending) &&
-      !equal(live, acceptedAfter)
-    )
-      replace(comparison, previous);
-    replace(content, pending);
+    const expectedBefore = reconcileMemberships(
+      projectedOld,
+      old,
+      resolveBoards(current),
+      baseIds,
+      comparisonIds,
+      new Set([id]),
+    ).find((board) => board.id === id);
+    const acceptedAfter = reconcileMemberships(
+      projectedNext,
+      next,
+      resolveBoards(current),
+      baseIds,
+      comparisonIds,
+      new Set([id]),
+    ).find((board) => board.id === id);
+    if (!equal(live, expectedBefore) && !equal(live, acceptedAfter)) {
+      conflicted.add(id);
+      replace(comparison, before);
+    }
+    replace(content, after);
   }
+  const live = resolveBoards(current);
+  content = reconcileMemberships(
+    content,
+    next,
+    live,
+    baseIds,
+    contentIds,
+    changed,
+  );
+  comparison = reconcileMemberships(
+    comparison,
+    old,
+    live,
+    baseIds,
+    comparisonIds,
+    conflicted,
+  );
   const oldOrder = old.map(({ id }) => id),
     newOrder = next.map(({ id }) => id);
   if (!equal(oldOrder, newOrder)) {

@@ -140,3 +140,24 @@ The focused regressions include serialized draft reload, repeated selected-wave
 promotion and subsequent all-change promotion for both additions and removals,
 plus refusal of a concurrent board-name conflict. Full validation passes: type
 check, 390 tests across 65 files, game and workbench builds, and formatting.
+
+## Cross-board ownership rebase correction
+
+Final acceptance found that a live move of an existing recipe between boards,
+combined with a pending draft map, mixed authored and live memberships during
+rebase. The resulting comparison or content snapshot registered a recipe twice.
+The supplied public-seam reproduction and two related valid regressions fail
+against the previous implementation and pass with this correction.
+
+Rebase now chooses recipe ownership across the whole board collection before
+materializing memberships and anchors. Unchanged existing scopes use live
+ownership; genuine draft scope edits preserve authored ownership, and conflicting
+comparison scopes retain their previous ownership. This makes both snapshots
+valid while retaining stale promotion guards. Independent live moves stay intact,
+concurrent live additions retain their order/anchors, and pending maps retain their
+anchors. Tests cover draft reload, repeat selected-wave promotion, all-change
+promotion, and refusals for conflicting board metadata or membership edits.
+
+Validation passes: `npm run check`, `npm test` (394 tests across 65 files),
+`npm run build`, `npm run build:workbench`, and `npm run format:check`.
+The production boundary still verifies 241 files. Existing bundle warnings remain.
