@@ -65,6 +65,11 @@
       "path": "review/2026-10-03-skunk-study/motion/small-scale.jpg",
       "sha256": "db08d3d13d3ed8a9b323841bc7123c276f9deccec879dba58cf326b10a802d0c",
       "reason": "Diagnostic game-scale rig screenshot; generated source flask already archived."
+    },
+    {
+      "path": "review/mosswater-art/phone-clearance.png",
+      "sha256": "c474097012fac9f1ad9b83ce4f769c7a06f67b097135c0097cf0044289483be2",
+      "reason": "Diagnostic real-renderer phone-sized clearance screenshot; no new art concept"
     }
   ]
 }
