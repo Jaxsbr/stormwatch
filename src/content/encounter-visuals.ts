@@ -52,7 +52,7 @@ export const defenderVisuals: Record<
 
 /** Approved scenery can be reused by new authored maps without changing JavaScript. */
 export const backdropVisuals: Record<string, string> = {
-  // Held art-review candidate; not selected by canonical campaign content.
+  // Owner-approved Poolbanks painting; held campaign integration, stable candidate ID.
   "mossy-poolbanks-candidate-v1": "mossy-poolbanks-candidate-v1/atlas.webp",
   woodland: "woodland-clearing-v3/atlas.webp",
   rainstone: "rainstone-riverbank-v2/atlas.webp",
