@@ -32,7 +32,15 @@ Simulation commands return success/failure and emit lightweight events. The UI t
 Enemy behavior lifecycles live in focused `src/sim` modules. `Game.tick` advances each behavior before movement and projectile impacts; those modules own timing and impact decisions. The battlefield reads simulation state and events for tells. Follow the [mechanic lifecycle contract](agents/mechanic-lifecycle.md) when extending a behavior, including its authoring and workbench path.
 
 Coordinates use integer `x,z` grid positions. Paths are axis-aligned polylines;
-rendered corner rounding is cosmetic. Occupancy excludes path tiles and blocked
+rendered corner rounding is cosmetic. `src/sim/routes.ts` interprets stable route
+identities and reusable authored `routeLayouts`. Legacy `path` content resolves
+to `default-route`. Explicit routes feed per-enemy movement/projection and
+remaining-time targeting; legacy encounters retain their recorded distance
+priority. Shared layout references compile before the immutable attempt snapshot,
+so several encounters use one geometry definition. See the
+[route decision](decisions/routes-and-required-boss-defeats.md).
+
+Occupancy excludes the union of every route and blocked
 tiles. Towers cannot reroute enemies. The presentation maps simulation coordinates
 onto a flat orthographic stage with separate horizontal/vertical spacing, a painted
 biome plate, and a textured continuous trail. Approved tower footprints remain
@@ -233,5 +241,8 @@ through `boss-rage.ts`; the renderer reads that state. At 25% HP full rage becom
 permanent. Shared ability settings supply trigger percentage, cycle durations and
 movement multipliers to immutable attempts; Turtle slow still multiplies the result. Successful rally
 casts expose simulation timestamps for renderer-only pulses and escort streaks.
+Rallies affect escorts on the boss's assigned route, retaining along-route
+proximity. Every authored finale boss must die when boss defeat is required;
+either twin escaping loses before that tick's projectile impacts.
 Approved side/front expression resources share the original leg textures. See
 decision 034 and the boss-wave review fixture.

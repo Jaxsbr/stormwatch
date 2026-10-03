@@ -1,4 +1,6 @@
 import { escapeHtml } from "./html";
+import { levelRoutes } from "../sim/routes";
+import { routePreview } from "./route-preview";
 import { ENEMIES, TOWERS } from "../content/catalog";
 import type { CardId, EnemyKind, LevelDef } from "../sim/types";
 import {
@@ -66,6 +68,7 @@ export function advantageScreen(
   return `<main class="advantage-screen" aria-labelledby="encounter-title">
     <header class="encounter-heading"><h1 id="encounter-title">${escapeHtml(level.name)}</h1></header>
     <div class="briefing-content">
+    ${levelRoutes(level).length > 1 ? `<section class="encounter-routes"><h2>Guard both exits</h2>${routePreview(level)}<p>Enemies stay on their route. Both exits share village hearts. Circles mark entrances; squares mark exits.</p></section>` : ""}
     <section class="encounter-roster" aria-labelledby="roster-title">
       <h2 id="roster-title">On the trail</h2>
       <ul>${encounterEnemies(level)

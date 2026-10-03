@@ -20,6 +20,7 @@ import {
 } from "../src/workbench/working-draft";
 import { AttemptSession } from "../src/workbench/runs";
 import { describeEncounter } from "../src/content/encounter-visuals";
+import { useRouteLayout } from "../src/workbench/route-authoring";
 const cleanups = [];
 afterEach(async () => {
   for (const cleanup of cleanups.splice(0)) await cleanup();
@@ -371,4 +372,95 @@ it("round trips rage tuning through saved draft, Playtest, Promote and runtime r
     ragingSeconds: 5,
   });
   expect(reloaded.configurationIdentity).toBe(playtest.configurationIdentity);
+});
+
+it("round trips shared routes and simultaneous twin bosses through draft, Playtest, promotion and uncached reload", async () => {
+  const { file, post } = await fixture();
+  const draft = createWorkingDraft(CANONICAL_CONTENT);
+  const map = draft.content.levels[0];
+  useRouteLayout(draft.content, map, "twin-switchbacks");
+  map.requiresBossDefeat = true;
+  draft.waveId = map.waves.at(-1).id;
+  map.waves = [
+    {
+      id: draft.waveId,
+      title: "Twin route acceptance",
+      reward: 25,
+      abilities: { ratShield: false, weaselEvade: false },
+      packets: [
+        {
+          id: "twins",
+          groups: [
+            { id: "a", kind: "boss", count: 1, gap: 1, routeId: "route-a" },
+            {
+              id: "b",
+              kind: "boss",
+              count: 1,
+              gap: 1,
+              routeId: "route-b",
+              startTogether: true,
+            },
+          ],
+        },
+      ],
+    },
+  ];
+  const restored = validateWorkingDraft(JSON.parse(JSON.stringify(draft)));
+  const scenario = {
+    id: "route-roundtrip",
+    levelId: restored.levelId,
+    waveId: restored.waveId,
+    mode: "wave",
+    progression: "first-arrival",
+    difficulty: "normal",
+    seed: 42,
+  };
+  const playtest = new AttemptSession(
+    promoteAllWorkingChanges(CANONICAL_CONTENT, restored),
+    scenario,
+  );
+  playtest.game.startWave();
+  for (let n = 0; n < 30; n++) playtest.step();
+  expect(playtest.game.state.enemies.map((e) => e.routeId)).toEqual([
+    "route-a",
+    "route-b",
+  ]);
+  expect(playtest.game.state.enemies[0].spawnedAt).toBe(
+    playtest.game.state.enemies[1].spawnedAt,
+  );
+  expect((await post(restored, {}, true)).status).toBe(200);
+  const oldRoutes = structuredClone(playtest.game.level.routes);
+  let loaded, cache;
+  await runtimeContentMiddleware(file)(
+    { method: "GET", url: "/game-content.json?reload=route" },
+    {
+      writeHead(code, headers) {
+        expect(code).toBe(200);
+        cache = headers["Cache-Control"];
+      },
+      end(body) {
+        loaded = JSON.parse(body);
+      },
+    },
+    () => {
+      throw new Error("Missing runtime content");
+    },
+  );
+  expect(cache).toBe("no-store");
+  const reloaded = new AttemptSession(loaded, scenario);
+  expect(reloaded.configurationIdentity).toBe(playtest.configurationIdentity);
+  expect(reloaded.game.level.routes).toEqual(oldRoutes);
+  expect(loaded.levels.slice(1)).toEqual(CANONICAL_CONTENT.levels.slice(1));
+  const rebased = rebaseAfterPromotion(restored, loaded);
+  rebased.content.routeLayouts[0].routes[0].path[2].z = 6;
+  rebased.content.routeLayouts[0].routes[0].path[3].z = 6;
+  expect((await post(rebased)).status).toBe(200);
+  const changed = JSON.parse(await readFile(file, "utf8"));
+  expect(new AttemptSession(changed, scenario).game.level.routes).not.toEqual(
+    oldRoutes,
+  );
+  expect(playtest.game.level.routes).toEqual(oldRoutes);
+  const stale = await post(rebased);
+  expect(stale.status).toBe(409);
+  expect(JSON.parse(await readFile(file, "utf8"))).toEqual(changed);
 });

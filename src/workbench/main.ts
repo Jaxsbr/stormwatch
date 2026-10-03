@@ -18,6 +18,12 @@ import {
   type AuthoringContent,
   type LevelRecipe,
 } from "../config/configuration";
+import {
+  authoredGeometry,
+  useRouteLayout,
+  routesForEditor,
+} from "./route-authoring";
+import { routePreview } from "../ui/route-preview";
 import { WORKBENCH_STORAGE_KEY } from "./drafts";
 import { mountAttempt } from "./attempt-view";
 import { mountWaveCanvas, clearWaveCanvasHistory } from "./wave-canvas";
@@ -82,6 +88,7 @@ const identity = () =>
     enemies: gameContent.enemies,
     rules: gameContent.rules,
     abilityDefaults: draft.content.abilityDefaults,
+    geometry: authoredGeometry(draft.content, level()),
   });
 function pendingPromotion(all = false) {
   try {
@@ -177,10 +184,19 @@ function layoutShape(map: LevelRecipe) {
     accent: map.accent,
   };
 }
+function editorLevel(): LevelRecipe {
+  const { routeLayoutId: _reference, ...map } = level();
+  return { ...map, ...authoredGeometry(draft.content, level()) };
+}
 function mapPreview() {
-  const map = level();
-  const points = map.path.map((p) => `${p.x + 0.5},${p.z + 0.5}`).join(" ");
-  return `<svg class="ws-map-preview" viewBox="0 0 ${map.width} ${map.depth}" role="img" aria-label="Selected map route"><rect width="100%" height="100%" fill="#193b34"/><polyline points="${points}" fill="none" stroke="#dcc89d" stroke-width="0.45" stroke-linejoin="round"/>${map.blocked.map((p) => `<rect x="${p.x}" y="${p.z}" width="1" height="1" fill="#617859"/>`).join("")}</svg>`;
+  return routePreview(authoredGeometry(draft.content, level()));
+}
+function routeControls(map: LevelRecipe) {
+  const layout = draft.content.routeLayouts?.find(
+    (l) => l.id === map.routeLayoutId,
+  );
+  const routes = routesForEditor(draft.content, map);
+  return `<label>Shared route layout<select id="route-layout-picker"><option value="" ${layout ? "" : "selected"}>Map's own layout</option>${(draft.content.routeLayouts ?? []).map((l) => `<option value="${esc(l.id)}" ${layout?.id === l.id ? "selected" : ""}>${esc(l.id)}</option>`).join("")}</select></label><fieldset><legend>${layout ? `Edit shared ${esc(layout.id)}` : "Edit map routes"}</legend><p>${layout ? "Changes affect every map using this layout." : "Changes affect this map only."} Each line is an x,z waypoint. All routes remain fixed.</p>${routes.map((r) => `<label>${esc(r.id)} waypoints<textarea data-route-path="${esc(r.id)}" rows="10">${r.path.map((p) => `${p.x},${p.z}`).join("\n")}</textarea></label>`).join("")}<button type="button" data-action="apply-route-paths">Apply ${layout ? "shared" : "map"} routes</button></fieldset>`;
 }
 function backdropPicker(map: LevelRecipe) {
   return `<label>Painted backdrop<select id="backdrop-picker">${map.visual?.backdrop ? "" : '<option value="" selected disabled>Choose a backdrop</option>'}${Object.keys(
@@ -226,14 +242,14 @@ function render() {
   <fieldset class="ws-abilities"><legend>Abilities for this wave</legend><label><input type="checkbox" data-ability="ratShield" ${abilities.ratShield ? "checked" : ""}/> Rat shield <small data-timing-summary="ratShield">${defaults.ratShield.upSeconds}s shielded / ${defaults.ratShield.downSeconds}s exposed</small></label><label><input type="checkbox" data-ability="weaselEvade" ${abilities.weaselEvade ? "checked" : ""}/> Weasel evade <small data-timing-summary="weaselEvade">${defaults.weaselEvade.upSeconds}s evading / ${defaults.weaselEvade.downSeconds}s exposed</small></label></fieldset>
   <p id="play-result" class="ws-play-result"></p>
   <details id="ability-settings" class="ws-settings" ${globalsOpen ? "open" : ""}><summary>Shared ability settings</summary><p>Applies to every wave with the ability on. Promote saves these changes too.</p><div class="ws-settings-grid">${(["ratShield", "weaselEvade"] as const).map((key) => `<fieldset><legend>${key === "ratShield" ? "Rat shield" : "Weasel evade"}</legend>${(["upSeconds", "downSeconds"] as const).map((phase) => `<label>${phase === "upSeconds" ? "Active" : "Exposed"} (seconds)<input type="number" min="0.05" step="0.05" required data-ability-timing="${key}" data-phase="${phase}" aria-label="${key === "ratShield" ? "Rat shield" : "Weasel evade"} ${phase === "upSeconds" ? "active" : "exposed"} seconds" value="${defaults[key][phase]}"/></label>`).join("")}</fieldset>`).join("")}<fieldset><legend>Boss rage</legend>${(["angrySpeedScale", "ragingSpeedScale"] as const).map((key) => `<label>${key === "angrySpeedScale" ? "Angry" : "Raging"} · speed multiplier<input type="number" min="1" step="0.05" required data-boss-rage="${key}" value="${(defaults.bossRage ?? ABILITY_DEFAULTS.bossRage)[key]}"/></label>`).join("")}${(["triggerDamagePercent", "angrySeconds", "ragingSeconds"] as const).map((key) => `<label>${key === "triggerDamagePercent" ? "Damage to trigger (% max HP)" : key === "angrySeconds" ? "Angry duration (seconds)" : "Full rage duration (seconds)"}<input type="number" min="0.05" ${key === "triggerDamagePercent" ? 'max="100"' : ""} step="0.05" required data-boss-rage="${key}" value="${defaults.bossRage?.[key] ?? ABILITY_DEFAULTS.bossRage[key]}"/></label>`).join("")}<p>Permanent full rage at 25% health.</p></fieldset></div></details>
-  <details id="map-settings" class="ws-settings" ${settingsOpen ? "open" : ""}><summary>Map &amp; wave settings</summary><div class="ws-settings-grid"><label>Map name<input data-field="name" value="${esc(map.name)}" required/></label><label>Wave name<input data-field="title" value="${esc(current.title)}" required/></label><label>Map layout<select id="layout-picker">${matchedLayout ? "" : '<option value="">Custom layout</option>'}${draft.base.levels.map((l) => `<option value="${esc(l.id)}" ${l.id === matchedLayout ? "selected" : ""}>${esc(l.name)}</option>`).join("")}</select></label><label>Starting crowns<input data-field="startCoins" type="number" min="0" step="1" value="${map.startCoins}"/></label><label>Wave reward<input data-field="reward" type="number" min="0" step="1" value="${current.reward}"/></label>${mapPreview()}</div></details>
+  <details id="map-settings" class="ws-settings" ${settingsOpen ? "open" : ""}><summary>Map &amp; wave settings</summary><div class="ws-settings-grid"><label>Map name<input data-field="name" value="${esc(map.name)}" required/></label><label>Wave name<input data-field="title" value="${esc(current.title)}" required/></label><label>Map layout<select id="layout-picker">${matchedLayout ? "" : '<option value="">Custom layout</option>'}${draft.base.levels.map((l) => `<option value="${esc(l.id)}" ${l.id === matchedLayout ? "selected" : ""}>${esc(l.name)}</option>`).join("")}</select></label><label>Starting crowns<input data-field="startCoins" type="number" min="0" step="1" value="${map.startCoins}"/></label><label>Wave reward<input data-field="reward" type="number" min="0" step="1" value="${current.reward}"/></label><label><input type="checkbox" id="required-bosses" ${map.requiresBossDefeat ? "checked" : ""}/> Require every finale boss defeated</label>${routesForEditor(draft.content, map).length === 1 ? `<label><input type="checkbox" id="travel-time-targeting" ${map.routes || map.routeLayoutId ? "checked" : ""}/> Prioritize remaining travel time</label>` : ""}${routeControls(map)}${mapPreview()}</div></details>
   </section><dialog id="create-dialog"><form id="create-form"><h2 id="create-title"></h2><label>Name<input id="create-name" required maxlength="100" autocomplete="off"/></label><label id="create-layout-label">Starting layout<select id="create-layout">${draft.base.levels.map((l) => `<option value="${esc(l.id)}">${esc(l.name)}</option>`).join("")}</select></label><div class="ws-dialog-actions"><button type="button" data-action="cancel-create">Cancel</button><button class="primary" type="submit">Create</button></div></form></dialog></main>`;
   root
     .querySelector("#map-settings .ws-settings-grid")
     ?.insertAdjacentHTML("beforeend", backdropPicker(map));
   if (playable())
     canvas = mountWaveCanvas(root.querySelector<HTMLElement>("#wave-canvas")!, {
-      level: map,
+      level: editorLevel(),
       wave: current,
       initialDelay: draft.content.rules.initialSpawnDelay,
       onChange(next) {
@@ -307,7 +323,7 @@ function render() {
       wave().abilities = { ...waveAbilities(wave()), [key]: input.checked };
       error = "";
       message = "";
-      canvas?.refresh(wave(), level());
+      canvas?.refresh(wave(), editorLevel());
       persist();
     };
   });
@@ -325,6 +341,72 @@ function render() {
     message = "";
     persist();
     render();
+  };
+  const targeting = root.querySelector<HTMLInputElement>(
+    "#travel-time-targeting",
+  );
+  if (targeting)
+    targeting.onchange = () => {
+      try {
+        const next = clone(draft),
+          map = next.content.levels.find((l) => l.id === next.levelId)!;
+        const routes = routesForEditor(next.content, map);
+        if (targeting.checked) {
+          map.routes = clone(routes);
+          map.path = [];
+          delete map.routeLayoutId;
+        } else {
+          map.path = clone(routes[0].path);
+          delete map.routes;
+          delete map.routeLayoutId;
+          for (const wave of map.waves)
+            for (const packet of wave.packets)
+              for (const group of packet.groups) delete group.routeId;
+        }
+        draft = validateWorkingDraft(next);
+        error = "";
+        message = "";
+        persist();
+        render();
+      } catch (cause) {
+        fail(cause);
+      }
+    };
+  root.querySelector<HTMLInputElement>("#required-bosses")!.onchange = (
+    event,
+  ) => {
+    try {
+      const next = clone(draft);
+      next.content.levels.find(
+        (l) => l.id === next.levelId,
+      )!.requiresBossDefeat = (event.target as HTMLInputElement).checked;
+      draft = validateWorkingDraft(next);
+      error = "";
+      message = "";
+      persist();
+    } catch (cause) {
+      fail(cause);
+    }
+  };
+  root.querySelector<HTMLSelectElement>("#route-layout-picker")!.onchange = (
+    event,
+  ) => {
+    try {
+      const id = (event.target as HTMLSelectElement).value;
+      const next = clone(draft),
+        map = next.content.levels.find((l) => l.id === next.levelId)!;
+      if (id) useRouteLayout(next.content, map, id);
+      else {
+        Object.assign(map, authoredGeometry(next.content, map));
+        delete map.routeLayoutId;
+        if (map.routes) map.path = [];
+      }
+      draft = validateWorkingDraft(next);
+      persist();
+      render();
+    } catch (cause) {
+      fail(cause);
+    }
   };
   root.querySelector<HTMLSelectElement>("#layout-picker")!.onchange = (
     event,
@@ -382,7 +464,7 @@ function render() {
           `#wave-picker option:checked`,
         )!.textContent =
           `${level().waves.findIndex((w) => w.id === draft.waveId) + 1}. ${wave().title}`;
-        canvas?.refresh(wave(), level());
+        canvas?.refresh(wave(), editorLevel());
       } catch (cause) {
         fail(cause);
       }
@@ -511,7 +593,36 @@ root.addEventListener("click", (event) => {
   const action = button.dataset.action;
   void (async () => {
     try {
-      if (action === "play") {
+      if (action === "apply-route-paths") {
+        const next = clone(draft);
+        const map = next.content.levels.find((l) => l.id === next.levelId)!;
+        const layout = next.content.routeLayouts?.find(
+          (l) => l.id === map.routeLayoutId,
+        );
+        const routes = routesForEditor(next.content, map);
+        for (const input of root.querySelectorAll<HTMLTextAreaElement>(
+          "[data-route-path]",
+        )) {
+          const route = routes.find((r) => r.id === input.dataset.routePath)!;
+          route.path = input.value
+            .trim()
+            .split(/\n/)
+            .map((line) => {
+              const parts = line.split(",").map((p) => p.trim());
+              if (parts.length !== 2 || parts.some((p) => !p))
+                throw new Error("Use one x,z waypoint per line.");
+              return { x: Number(parts[0]), z: Number(parts[1]) };
+            });
+        }
+        if (layout) layout.routes = routes;
+        else if (map.routes) map.routes = routes;
+        else map.path = routes[0].path;
+        draft = validateWorkingDraft(next);
+        error = "";
+        message = "Routes updated. Playtest before promoting.";
+        persist();
+        render();
+      } else if (action === "play") {
         error = "";
         play();
       } else if (action === "promote") await promote();

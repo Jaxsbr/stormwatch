@@ -1,4 +1,15 @@
 export type Point = { x: number; z: number };
+export interface RouteDef {
+  id: string;
+  path: Point[];
+}
+export interface RouteLayout {
+  id: string;
+  width: number;
+  depth: number;
+  routes: RouteDef[];
+  blocked: Point[];
+}
 export type TowerKind = "bolt" | "stone" | "net";
 export type EnemyKind = "raider" | "runner" | "armored" | "boss";
 export type CardId = "none" | "reach" | "nets" | "thrift";
@@ -32,6 +43,9 @@ export interface EvasionCycle {
   upSeconds: number;
 }
 export interface WaveGroupDef {
+  routeId?: string;
+  /** Start alongside the preceding authored group; following groups wait for both cadences. */
+  startTogether?: boolean;
   id?: string;
   /** Additional silence before this group, after the preceding group cadence. */
   delayBefore?: number;
@@ -67,6 +81,8 @@ export interface LevelDef {
   width: number;
   depth: number;
   path: Point[];
+  /** Explicit routes are authoritative; path is the legacy/first-route adapter. */
+  routes?: RouteDef[];
   blocked: Point[];
   startCoins: number;
   availableTowers?: TowerKind[];
@@ -88,6 +104,7 @@ export interface Tower extends Point {
   shots: number;
 }
 export interface Enemy extends Point {
+  routeId?: string;
   id: number;
   kind: EnemyKind;
   hp: number;
@@ -141,6 +158,7 @@ export interface Effect extends Point {
   ttl: number;
 }
 export interface GameEvent {
+  routeId?: string;
   enemyId?: number;
   enemyKind?: EnemyKind;
   wave?: number;

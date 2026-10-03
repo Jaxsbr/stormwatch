@@ -12,6 +12,9 @@
 | Wave reward                      | Fixed crowns granted once when a wave is cleared; it is independent of savings and elapsed time.                                                                   |
 | Discovery unlock                 | A persistent capability earned by victory or a later boss, such as the ability to upgrade Squirrels.                                                               |
 | Leak                             | An enemy reaches the end of the trail and removes village hearts.                                                                                                  |
+| Route | One fixed entrance-to-exit trail. An enemy keeps its assigned route even where trails cross. |
+| Shared route layout | One authored geometry reused by encounters, including routes and blocked ground. |
+| Remaining travel time | A threat estimate using distance left on the assigned route and current movement speed; future ability changes are not predicted. |
 | Splash                           | Damage to enemies within a radius of a stone impact.                                                                                                               |
 | Evasion                          | A visible, temporary Weasel state in which arriving projectiles miss; an existing slow remains in effect.                                                          |
 | Rage | The Roadwarden’s damage-triggered cycle of anger, full rage and recovery; full rage becomes permanent at one-quarter health. Nets remain effective. |
