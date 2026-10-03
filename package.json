@@ -24,13 +24,16 @@
     "preview:workbench": "vite preview --mode workbench --host 127.0.0.1 --outDir dist-workbench",
     "prototype:animations": "vite --host 127.0.0.1 --open /review/2026-09-28-animation-prototype/index.html",
     "prototype:squirrel": "vite --host 127.0.0.1 --open /review/2026-09-28-animation-prototype/squirrel-study/index.html",
-    "prototype:squirrel-poses": "vite --host 127.0.0.1 --open /review/2026-09-28-animation-prototype/squirrel-study/pose-motion/index.html"
+    "prototype:squirrel-poses": "vite --host 127.0.0.1 --open /review/2026-09-28-animation-prototype/squirrel-study/pose-motion/index.html",
+    "prepare": "husky",
+    "ideas:check-staged": "node ideas-catalogue/check-staged.mjs"
   },
   "dependencies": {
     "three": "0.186.0"
   },
   "devDependencies": {
     "@types/three": "0.186.0",
+    "husky": "^9.1.7",
     "prettier": "3.9.8",
     "sharp": "0.35.4",
     "typescript": "7.0.2",

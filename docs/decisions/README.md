@@ -36,3 +36,4 @@ Read the accepted records before changing consequential behavior. For a new deci
 - [033: Accepted defender motions in the runtime](033-runtime-accepted-defender-motion.md)
 - [034: Roadwarden rage and readable rally](034-roadwarden-rage-and-rally.md)
 - [035: Battle art demand and readiness](035-battle-art-demand-and-readiness.md)
+- [039: Commit-time ideas capture](039-commit-time-ideas-capture.md)
