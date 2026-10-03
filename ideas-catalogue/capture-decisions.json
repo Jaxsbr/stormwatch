@@ -95,6 +95,11 @@
       "path": "review/mosswater-encounters/workbench-promotion.jpg",
       "sha256": "30a2e39e054f686f9e5f915ac6c4894f36f0f732b2fd966ced8b547ae843daab",
       "reason": "Diagnostic workbench promotion verification screenshot; no new generated art."
+    },
+    {
+      "path": "review/mosswater-encounters/route-promoted-game.jpg",
+      "sha256": "66d70fe24a2a60639dae36d10e8c137909a1eb71dac055c7de5875bf7fd3a597",
+      "reason": "Diagnostic explicit single-route promotion and reload verification; no new generated art."
     }
   ]
 }
