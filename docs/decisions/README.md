@@ -41,3 +41,5 @@ Read the accepted records before changing consequential behavior. For a new deci
 - [Attached poison and combat outcomes](poison-combat-lifecycle.md) — descriptive filename reserved to avoid parallel ADR-number collisions.
 - [Stable routes and required boss defeats — implementation candidate](routes-and-required-boss-defeats.md)
 - [Authored boards and profile continuation](boards-profile-progression.md) — descriptive candidate filename for coordinated expansion review; numbering is reserved during synthesis.
+
+- [Twin switchbacks crossing battlefield — approved geometry](twin-switchbacks-layout.md) — one shared layout for woodland encounters 1, 2 and 5.
