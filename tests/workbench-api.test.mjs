@@ -673,3 +673,112 @@ it("promotes board, route and poison changes together without losing unrelated l
   expect((await post(restored)).status).toBe(409);
   expect(JSON.parse(await readFile(file, "utf8"))).toEqual(loaded);
 });
+
+it.each(["moved marker", "removed ordered board"])(
+  "retains %s intent across scoped promotion, draft reload and uncached game loading",
+  async (change) => {
+    const { file, post } = await fixture();
+    const { resolveBoards } = await import("../src/content/boards");
+    const base = structuredClone(CANONICAL_CONTENT);
+    const first = resolveBoards(base)[0];
+    base.boards = [
+      { ...structuredClone(first), levelIds: first.levelIds.slice(0, 2) },
+      {
+        ...structuredClone(first),
+        id: "second-board",
+        levelIds: first.levelIds.slice(2),
+      },
+    ];
+    for (const board of base.boards)
+      board.visual.markers = Object.fromEntries(
+        board.levelIds.map((id, i) => [id, { x: 20 + i * 30, y: 50 }]),
+      );
+    const draft = createMap(
+      createWorkingDraft(base),
+      "Pending D",
+      base.levels[0].id,
+      "pending-d",
+      "wave-d",
+    );
+    const live = structuredClone(base);
+    if (change === "moved marker") {
+      const moved = base.levels[1].id;
+      draft.content.boards[0].visual.markers[moved] = { x: 31, y: 41 };
+      draft.levelId = base.levels[2].id;
+      draft.waveId = base.levels[2].waves[0].id;
+      live.boards[0].levelIds.pop();
+      delete live.boards[0].visual.markers[moved];
+      live.boards.push({
+        ...structuredClone(first),
+        id: "third-board",
+        levelIds: [moved],
+        visual: {
+          illustration: "expedition-map-v1",
+          markers: { [moved]: { x: 80, y: 60 } },
+        },
+      });
+    } else {
+      draft.content.boards.reverse();
+      draft.levelId = base.levels[0].id;
+      draft.waveId = base.levels[0].waves[0].id;
+      const removed = live.boards.pop().levelIds[0];
+      live.levels = live.levels.filter(({ id }) => id !== removed);
+    }
+    draft.content.levels.find(
+      ({ id }) => id === draft.levelId,
+    ).waves[0].reward += 1;
+    await writeFile(file, JSON.stringify(live));
+    let reloaded = validateWorkingDraft(JSON.parse(JSON.stringify(draft)));
+    const attempt = new AttemptSession(promoteWorkingWave(live, reloaded), {
+      id: "board-intent-roundtrip",
+      levelId: reloaded.levelId,
+      waveId: reloaded.waveId,
+      mode: "wave",
+      progression: "first-arrival",
+      difficulty: "normal",
+      seed: 42,
+    });
+    expect((await post(reloaded)).status).toBe(200);
+    const disk = JSON.parse(await readFile(file, "utf8"));
+    reloaded = validateWorkingDraft(
+      JSON.parse(JSON.stringify(rebaseAfterPromotion(reloaded, disk))),
+    );
+    expect((await post(reloaded)).status).toBe(200);
+    reloaded = validateWorkingDraft(
+      JSON.parse(
+        JSON.stringify(
+          rebaseAfterPromotion(
+            reloaded,
+            JSON.parse(await readFile(file, "utf8")),
+          ),
+        ),
+      ),
+    );
+    reloaded.content.levels.find(
+      ({ id }) => id === "pending-d",
+    ).waves[0].packets = structuredClone(base.levels[0].waves[0].packets);
+    expect((await post(reloaded, {}, true)).status).toBe(409);
+    expect(JSON.parse(await readFile(file, "utf8"))).toEqual(disk);
+    let loaded;
+    await runtimeContentMiddleware(file)(
+      { method: "GET", url: "/game-content.json?reload=board-intent" },
+      {
+        writeHead(status, headers) {
+          expect(status).toBe(200);
+          expect(headers["Cache-Control"]).toBe("no-store");
+        },
+        end(body) {
+          loaded = JSON.parse(body);
+        },
+      },
+      () => {
+        throw new Error("Missing runtime content");
+      },
+    );
+    expect(loaded.boards).toEqual(live.boards);
+    expect(loaded.levels.some(({ id }) => id === "pending-d")).toBe(false);
+    expect(
+      new AttemptSession(loaded, attempt.scenario).configurationIdentity,
+    ).toBe(attempt.configurationIdentity);
+  },
+);

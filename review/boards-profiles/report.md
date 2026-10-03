@@ -189,3 +189,32 @@ preserve live ownership for metadata-only drafts and produce valid snapshots.
 Validation passes: type check, 397 tests across 65 files, formatting, game build
 and workbench build. Production boundary verification still covers 241 files;
 existing bundle-size warnings remain.
+
+## Board intent dependency retention
+
+Final candidate review reproduced loss of an authored marker when live content
+moved its encounter to another board. Repeating unrelated promotion/rebase then
+lost the stale-board refusal as well. Review also reproduced pending travel-order
+reversal combined with deletion of a board's sole recipe, which inserted an
+undefined entry into the reordered collection. The order/deletion case was an
+older unmerged-candidate limitation, not a regression against accepted main.
+Both public-seam regressions failed before this correction.
+
+The existing working-draft snapshots now retain the dependencies required to
+express pending intent. A moved marker edit retains ownership on its authored
+board, preserving coordinates without copying them to another illustration.
+An order edit retains a deleted board's recipe in authored and comparison draft
+snapshots. Live disk data remains authoritative for unrelated promotions, and
+historical scope checks refuse stale all-change promotion after repeated reloads
+and rebases. Content validation and draft schema are unchanged. The tradeoff and
+scope are recorded in the board/profile decision.
+
+Disposable API regressions exercise serialized draft reload, real Playtest,
+unrelated promotion, repeated rebase, all-change refusal without disk replacement,
+and uncached runtime loading. The canonical game retains the moved marker's live
+coordinates and excludes pending recipes; historical dependencies stay in drafts.
+
+Validation passes: `npm run check`, 401 tests across 65 files, game and workbench
+builds, formatting and diff whitespace checks. Production verification covers
+241 files; existing bundle-size warnings remain. Main merge and deployment remain
+with parent integration.

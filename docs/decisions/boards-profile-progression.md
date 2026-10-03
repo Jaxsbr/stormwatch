@@ -42,6 +42,28 @@ stale-scope checks; rebase retains pending edits and their conflicting compariso
 base. Catalog/rule edits retain their existing separate promotion workflow. Board
 metadata does not change a running combat snapshot or combat configuration identity.
 
+### Pending board intent and dependency snapshots
+
+A live projection cannot express every historical edit: an edited marker belongs
+on its authored illustration even if live content moved its encounter elsewhere,
+and a pending travel-order edit can still reference a board deleted in live
+content. Repeatedly projecting those edits loses the authored values and can erase
+stale-scope refusal.
+
+Keep valid dependency snapshots in the existing working draft instead of adding
+a separate unchecked intent store. A marker edit that cannot be represented on
+its authored board retains that board's encounter ownership. A pending order edit
+retains removed board recipes in both authored and comparison snapshots. These
+recipes remain draft data; selected promotion of an unrelated scope preserves
+live disk content, and historical board/order checks still refuse stale all-change
+promotion. Coordinates are never copied onto a different board illustration.
+
+The tradeoff is that a conflicting draft can display its historical board or
+encounter rather than the current live arrangement. The author must reload the
+latest scope to reconcile it before promotion. Existing version-one drafts and
+content validation stay unchanged. Board rebase policy owns these dependencies;
+the working-draft adapter retains the recipes that policy requires.
+
 ## Consequences
 
 Existing three-encounter gameplay and artwork remain active. Generic navigation,
@@ -66,4 +88,8 @@ agreement. Board promotion tests and a disposable API/browser round trip verify
 migration, scoped conflicts, unrelated edits and uncached loading. Matched captures
 preserve first-board marker geometry. A repeatable save benchmark records the small
 parsing overhead; correctness rather than faster parsing is the intended benefit.
-Deployment verification follows parent review, safe merge order and release.
+Dependency regressions cover moved marker edits, removed boards with pending
+travel order, serialized reload and repeated unrelated promotions. Disposable API
+round trips verify real Playtest, stale all-change refusal without disk writes,
+and uncached game reload. Deployment verification follows parent review, safe
+merge order and release.

@@ -177,6 +177,44 @@ export function mergeBoardScopes(
   } else result.boards = live;
   return result;
 }
+/** Recipes needed to represent pending board intent as valid draft snapshots. */
+export function boardRebaseDependencies(
+  base: AuthoringContent,
+  authored: AuthoringContent,
+  current: AuthoringContent,
+): string[] {
+  const old = resolveBoards(base),
+    next = resolveBoards(authored),
+    live = resolveBoards(current);
+  const ids = new Set<string>();
+  if (
+    !equal(
+      old.map(({ id }) => id),
+      next.map(({ id }) => id),
+    )
+  ) {
+    for (const board of old)
+      if (
+        next.some((entry) => entry.id === board.id) &&
+        !live.some((entry) => entry.id === board.id)
+      )
+        for (const id of board.levelIds) ids.add(id);
+  }
+  for (const board of next) {
+    const before = old.find((entry) => entry.id === board.id);
+    for (const id of board.levelIds)
+      if (
+        board.visual.markers?.[id] &&
+        !equal(board.visual.markers[id], before?.visual.markers?.[id])
+      )
+        ids.add(id);
+  }
+  return [...ids].filter(
+    (id) =>
+      base.levels.some((level) => level.id === id) &&
+      !current.levels.some((level) => level.id === id),
+  );
+}
 /** Rebase without accepting conflicting board edits as a fresh baseline. */
 export function rebaseBoardScopes(
   base: AuthoringContent,
@@ -219,6 +257,24 @@ export function rebaseBoardScopes(
       )
     )
       membershipChanged.add(id);
+    // Coordinates belong to their authored illustration. If live ownership
+    // moved an edited anchor elsewhere, retain its board dependency instead
+    // of transferring coordinates or dropping the edit in a live projection.
+    if (
+      after?.levelIds.some((levelId) => {
+        const marker = after.visual.markers?.[levelId];
+        return (
+          baseIds.includes(levelId) &&
+          marker &&
+          !equal(marker, before?.visual.markers?.[levelId]) &&
+          resolveBoards(current).find((board) =>
+            board.levelIds.includes(levelId),
+          )?.id !== id
+        );
+      })
+    )
+      membershipChanged.add(id);
+
     const live = content.find((b) => b.id === id);
     const replace = (list: BoardDef[], value?: BoardDef) => {
       const index = list.findIndex((b) => b.id === id);
@@ -283,8 +339,8 @@ export function rebaseBoardScopes(
     newOrder = next.map(({ id }) => id);
   if (!equal(oldOrder, newOrder)) {
     const currentOrder = resolveBoards(current).map(({ id }) => id);
-    const ordered = newOrder.map((id) =>
-      content.find((board) => board.id === id)!,
+    const ordered = newOrder.flatMap(
+      (id) => content.find((board) => board.id === id) ?? [],
     );
     const extras = content.filter((board) => !newOrder.includes(board.id));
     if (!equal(currentOrder, oldOrder) && !equal(currentOrder, newOrder)) {

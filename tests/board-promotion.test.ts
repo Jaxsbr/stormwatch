@@ -594,3 +594,98 @@ it("rebases metadata conflicts over every three-recipe ownership assignment to e
     );
   }
 });
+
+it("retains a moved encounter's authored marker in its original board dependency snapshot", () => {
+  const base = baseline();
+  for (const board of base.boards!)
+    board.visual.markers = Object.fromEntries(
+      board.levelIds.map((id, i) => [id, { x: 20 + i * 30, y: 50 }]),
+    );
+  const draft = createMap(
+    createWorkingDraft(base),
+    "Pending D",
+    base.levels[0].id,
+    "pending-d",
+    "wave-d",
+  );
+  const moved = base.boards![0].levelIds[1];
+  draft.content.boards![0].visual.markers![moved] = { x: 31, y: 41 };
+  draft.levelId = base.levels[2].id;
+  draft.waveId = base.levels[2].waves[0].id;
+  const live = structuredClone(base);
+  live.boards![0].levelIds.pop();
+  delete live.boards![0].visual.markers![moved];
+  live.boards!.push({
+    ...structuredClone(base.boards![0]),
+    id: "new-third",
+    levelIds: [moved],
+    visual: {
+      illustration: "expedition-map-v1",
+      markers: { [moved]: { x: 80, y: 60 } },
+    },
+  });
+  const promoted = promoteWorkingWave(live, draft);
+  const rebased = validateWorkingDraft(
+    JSON.parse(JSON.stringify(rebaseAfterPromotion(draft, promoted))),
+  );
+  const owner = rebased.content.boards!.find((board) =>
+    board.levelIds.includes(moved),
+  )!;
+  expect(owner.id).toBe(base.boards![0].id);
+  expect(owner.visual.markers![moved]).toEqual({ x: 31, y: 41 });
+  expect(promoted.boards!.at(-1)!.visual.markers![moved]).toEqual({
+    x: 80,
+    y: 60,
+  });
+  const repeated = validateWorkingDraft(
+    JSON.parse(
+      JSON.stringify(
+        rebaseAfterPromotion(rebased, promoteWorkingWave(promoted, rebased)),
+      ),
+    ),
+  );
+  expect(repeated.content.boards).toEqual(rebased.content.boards);
+  repeated.content.levels.find(
+    ({ id }) => id === "pending-d",
+  )!.waves[0].packets = structuredClone(base.levels[0].waves[0].packets);
+  expect(() => promoteAllWorkingChanges(promoted, repeated)).toThrow(
+    /Board .* changed/,
+  );
+});
+
+it("retains a removed board's recipe dependency for a pending travel-order edit", () => {
+  const base = baseline();
+  const draft = createMap(
+    createWorkingDraft(base),
+    "Pending D",
+    base.levels[0].id,
+    "pending-d",
+    "wave-d",
+  );
+  draft.levelId = base.levels[0].id;
+  draft.waveId = base.levels[0].waves[0].id;
+  draft.content.boards!.reverse();
+  const live = structuredClone(base);
+  const removed = live.boards!.pop()!.levelIds[0];
+  live.levels = live.levels.filter(({ id }) => id !== removed);
+  const rebased = validateWorkingDraft(
+    JSON.parse(JSON.stringify(rebaseAfterPromotion(draft, live))),
+  );
+  expect(rebased.content.boards!.map(({ id }) => id)).toEqual(
+    draft.content.boards!.map(({ id }) => id),
+  );
+  expect(rebased.content.levels.find(({ id }) => id === removed)).toEqual(
+    base.levels.find(({ id }) => id === removed),
+  );
+  const repeated = rebaseAfterPromotion(
+    rebased,
+    promoteWorkingWave(live, rebased),
+  );
+  repeated.content.levels.find(
+    ({ id }) => id === "pending-d",
+  )!.waves[0].packets = structuredClone(base.levels[0].waves[0].packets);
+  expect(() => promoteAllWorkingChanges(live, repeated)).toThrow(
+    "Board order changed",
+  );
+  expect(live.levels.some(({ id }) => id === removed)).toBe(false);
+});
