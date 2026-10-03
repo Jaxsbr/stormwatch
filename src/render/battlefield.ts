@@ -1012,6 +1012,7 @@ export class Battlefield {
           e.shieldRaised,
           rage,
           reducedMotion,
+          e.immuneAt === undefined ? Infinity : s.clock - e.immuneAt,
         );
       }
     }

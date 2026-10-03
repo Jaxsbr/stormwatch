@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Boar runtime · crowd review</title>
+    <style>
+      body {
+        margin: 0;
+        background: #15221e;
+        color: #fff0cd;
+        font: 15px system-ui;
+      }
+      header {
+        padding: 12px;
+        display: flex;
+        gap: 12px;
+        align-items: center;
+        flex-wrap: wrap;
+      }
+      button,
+      select {
+        min-height: 44px;
+        font: inherit;
+        padding: 8px;
+        background: #263d32;
+        color: #fff0cd;
+        border: 1px solid #aaa080;
+        border-radius: 8px;
+      }
+      a {
+        color: #efd49b;
+      }
+      p {
+        margin: 0 12px 10px;
+        line-height: 1.5;
+      }
+      #field {
+        height: calc(100vh - 220px);
+        min-height: 300px;
+      }
+      #status {
+        font: 14px monospace;
+        white-space: pre-wrap;
+      }
+      h1 {
+        font-size: 19px;
+        margin: 0;
+      }
+      #error {
+        color: #ffad93;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <h1>Boar resistance · real encounter playback</h1>
+      <button id="pause">Play</button><button id="step">Step</button
+      ><button id="side">Next side brace</button
+      ><button id="next">Next immunity cue</button
+      ><button id="retry">Restart</button
+      ><label
+        >Speed
+        <select id="speed">
+          <option value="1">1×</option>
+          <option value="4">4×</option>
+          <option value="16">16×</option>
+        </select></label
+      ><a href="?map=mosswater-04">Mixed</a
+      ><a href="?map=mosswater-05&finale=1">Twin-boss finale</a>
+    </header>
+    <p>
+      Approved side brace · front/rear and equipment mirroring pending · gas
+      unchanged · battlefield approval pending.
+    </p>
+    <p>
+      Recorded legal purchases and earned progression. “Next immunity cue”
+      fast-forwards real ticks and pauses at an authoritative event.
+    </p>
+    <p id="status">Replaying progression…</p>
+    <p id="error"></p>
+    <div id="field"></div>
+    <script type="module" src="./playtest.ts"></script>
+  </body>
+</html>
