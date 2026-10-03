@@ -30,6 +30,8 @@ Focused entry replays preceding normal-mode **won Game attempts** at fixed ticks
 
 No first-board map, shared enemy HP, boss rage, tower cost or combat constant changed. Enemy rewards remain scaled to 0.4 on new maps. New recipes have stable map/wave/packet/group IDs and authored lessons. The second board is `mosswater-reach`, with the scenery chat's candidate illustration and percentage marker proposal.
 
+Maps 03/04 share the explicit `rainstone-single` layout and stable `rainstone-route` assignment. Path, dimensions and blocked cells are exactly the original Rainstone geometry. Every new map therefore uses remaining-travel-time targeting, including effective net slow; only the original three maps retain legacy distance priority.
+
 The larger final wallet/payouts pay for coverage across distant exits and upgrades before the bosses. A smaller 350-coin opening and 80–95 payouts did not support the recorded mixed line: one boss escaped. Preserving the 2200-HP Roadwardens and boss rules makes spending/coverage the tuning levers. The final policy also needs late coverage near the right exit; resources alone did not fix the first formation. These are reproducible candidate values, not owner-approved final balance.
 
 Discovery definitions activate only with the complete five-ID Mosswater destination: all first-board victories earn Skunk, including legacy completed profiles; victory on 02 earns its upgrade. The existing progression/save interfaces own result rewards, replay roster, board travel and profile validation. Base rosters carry Squirrel/Turtle; earned Skunk is resolved for every new encounter and earlier completed replays. Fresh first-board teaching stays intact.
@@ -45,15 +47,18 @@ Run `npm run balance:mosswater -- --write` to reproduce `balance-evidence.json` 
 | 01 | 12 | 114.2 | One-lane line loses; direct-only wins with 1 heart |
 | 02 | 6 | 95.3 | Direct-only loses; base Skunk-heavy line wins |
 | 03 | 12 | 169.9 | Direct upgrades win; Skunk-only loses |
-| 04 | 7 | 269.8 | Upgrades-first wins with 12; direct-only loses |
+| 04 | 6 | 271.5 | Upgrades-first wins with 12; direct-only wins with 4 |
 | 05 | 12 | 182.1 | Mixed/upgrades-first kill both; direct-only and Skunk-only lose |
 
-Combat seconds exclude preparation time and feedback discussion. These few policies demonstrate legal reachability and pressure, not universal difficulty or optimal play. Map 02's narrow six-heart margin and the short final combat duration deserve owner feedback. Skunk-only can currently win map 04 through upgraded blast damage despite immune Boars; immunity is not blast immunity and this remains a deliberate alternative to test with the owner.
+Combat seconds exclude preparation time and feedback discussion. These few policies demonstrate legal reachability and pressure, not universal difficulty or optimal play. Maps 02/04's six-heart margins and the short final combat duration deserve owner feedback. Skunk-only can currently win map 04 through upgraded blast damage despite immune Boars; immunity is not blast immunity and this remains a deliberate alternative to test with the owner. Its two-placement policy also wins with eight hearts and a large unused wallet, so the mixed rehearsal's pressure remains an owner balance question.
+
+Acceptance review found that omitting explicit routes on 03/04 accidentally selected legacy distance priority. The corrected authored layout changes no geometry, resources, waves or mechanics. Regenerated evidence retains all eight baseline wins; map 04 changes from seven hearts/269.8 seconds to six hearts/271.5 seconds, and its direct-only alternative changes from a loss to a four-heart win. These are observed targeting consequences, not accepted tuning. The regression replays actual legal campaign commands and asserts earliest arrival selection with real Turtle slow on both maps; it reproduces the former 37.3-second versus 20.1-second Boar targeting error before the correction.
 
 ## Verification
 
-- Check, 398 tests, format check, production build and workbench build passed. Production boundary excludes utility modules; candidate data is not activated in the normal production build.
+- Check, 399 tests, format check, production build and workbench build passed. Production boundary excludes utility modules; candidate data is not activated in the normal production build.
 - Browser checked the complete edit → draft auto-save → reload → Playtest → scoped Promote → uncached game reload for **each of five maps**. First-wave payouts were temporarily raised by one: 41 / 46 / 51 / 56 / 101 appeared in the reloaded real Game. All were restored through scoped Promote. No JavaScript build occurred during promotion, unrelated first-board recipes remained identical, and unit coverage checks immutable existing attempts.
+- After the targeting correction, both 03/04 repeated the complete browser round trip. Their shared layout and enabled remaining-travel-time targeting survived draft reload; promoted Game payouts were 51/56 and restored to 50/55. `route-promoted-game.jpg` captures the corrected mixed-map reload. Exact semantic comparison verifies that only the intended route references/assignments and shared layout differ from the previous candidate; all resources, waves and unrelated maps remain unchanged.
 - Every authored wave compiles through the shared spawn schedule. Maps 01/02/05 resolve exactly the same route library entry. Rat wave one stages route B after A; every Weasel wave starts both together. Fifth-wave Roadwardens share one spawn tick and distinct routes; no bosses appear in the first four waves.
 - Tests inspect complete all-wave art demand and resolved earned defender rosters, discovery migration, earlier replays, saved board travel, legal winning/losing policies, and Boar briefing/inspection.
 - Browser verified the live mixed inspection and held twin-boss formation with both runtime candidates. `promoted-game.jpg` shows the temporary 56 payout after reload; `workbench-promotion.jpg` shows restoration. Diagnostic screenshots are existing renderer output, not generated art ideas.

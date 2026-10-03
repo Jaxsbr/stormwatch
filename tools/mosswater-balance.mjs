@@ -59,7 +59,7 @@ try {
   }
   const out = {
     qualification:
-      "Real resolved Game, normal mode, seed42, public legal commands, no resources/health/roster injected; prior victories earned by the campaign run.",
+      "Real resolved Game, normal mode, seed42, public legal commands, no resources/health/roster injected; prior victories earned by the campaign run. All five new maps use explicit routes and remaining-travel-time targeting, including Rainstone single routes on 03/04. Only the original first-board maps retain legacy distance targeting.",
     contentIdentity: configurationIdentity(content),
     ...result,
     alternatives: losses,

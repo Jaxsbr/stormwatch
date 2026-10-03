@@ -128,7 +128,7 @@ export function play(
   const sites =
     legacy >= 0
       ? firstSites[legacy]
-      : g.level.routes
+      : (g.level.routes?.length ?? 1) > 1
         ? crossingSites
         : singleSites;
   let next = 0,

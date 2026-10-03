@@ -77,8 +77,24 @@ describe("held Mosswater candidate through resolved content and real Game", () =
     expect(levels[0].routes).toEqual(levels[1].routes);
     expect(levels[0].routes).toEqual(levels[4].routes);
     expect(levels[0].blocked).toEqual([]);
-    expect(levels[2].routes).toBeUndefined();
-    expect(levels[3].routes).toBeUndefined();
+    const rainstone = resolveConfiguration(content, "rainstone-crossing").level;
+    expect(rainstone.routes).toBeUndefined();
+    for (const level of levels.slice(2, 4)) {
+      expect(level.routes).toEqual([
+        { id: "rainstone-route", path: rainstone.path },
+      ]);
+      expect(level.path).toEqual(rainstone.path);
+      expect(level.blocked).toEqual(rainstone.blocked);
+      expect([level.width, level.depth]).toEqual([
+        rainstone.width,
+        rainstone.depth,
+      ]);
+      expect(
+        compileSpawnSchedule(level.waves[0]).every(
+          (spawn) => spawn.routeId === "rainstone-route",
+        ),
+      ).toBe(true);
+    }
     const rats = compileSpawnSchedule(levels[0].waves[0]);
     expect(rats.find((s) => s.routeId === "route-b")!.at).toBeGreaterThan(
       rats.filter((s) => s.routeId === "route-a").at(-1)!.at,
@@ -129,7 +145,7 @@ describe("held Mosswater candidate through resolved content and real Game", () =
     ).toBe(true);
     expect(expedition.reports.at(-1)!.kills.boss).toBe(2);
     expect(expedition.reports.slice(3).map((r) => r.lives)).toEqual([
-      12, 6, 12, 7, 12,
+      12, 6, 12, 6, 12,
     ]);
     expect(expedition.save.unlocked).toContain("skunk-upgrade");
   });
@@ -146,6 +162,21 @@ describe("held Mosswater candidate through resolved content and real Game", () =
     expect(
       play(content, "mosswater-03", entry("mosswater-03"), "direct").phase,
     ).toBe("won");
+    const directMixed = play(
+      content,
+      "mosswater-04",
+      entry("mosswater-04"),
+      "direct",
+    );
+    const upgradedMixed = play(
+      content,
+      "mosswater-04",
+      entry("mosswater-04"),
+      "upgrades",
+    );
+    expect(directMixed.phase).toBe("won");
+    expect(upgradedMixed.phase).toBe("won");
+    expect(directMixed.lives).toBeLessThan(upgradedMixed.lives);
     for (const policy of ["direct", "poison-only"] as const) {
       const r = play(content, "mosswater-05", entry("mosswater-05"), policy);
       expect(r.phase).toBe("lost");
