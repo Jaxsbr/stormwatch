@@ -202,3 +202,105 @@ it("includes a selected new map while leaving another new map and its anchor pen
   );
   expect(() => promoteWorkingWave(promoted, rebased)).not.toThrow();
 });
+
+it.each(["addition", "removal"] as const)(
+  "rebases pending map membership after a concurrent live recipe %s",
+  (change) => {
+    const base = baseline();
+    base.boards![0].visual.markers = Object.fromEntries(
+      base.boards![0].levelIds.map((id, i) => [id, { x: 20 + i * 30, y: 50 }]),
+    );
+    let draft = createMap(
+      createWorkingDraft(base),
+      "Pending draft map",
+      base.levels[0].id,
+      "pending-draft-map",
+      "pending-draft-wave",
+    );
+    draft.levelId = base.levels[0].id;
+    draft.waveId = base.levels[0].waves[0].id;
+    draft.content.levels[0].waves[0].reward += 1;
+    const pendingAnchor = structuredClone(
+      draft.content.boards![0].visual.markers!["pending-draft-map"],
+    );
+    const live = structuredClone(base);
+    const removedId = base.levels[1].id;
+    if (change === "addition") {
+      live.levels.push({
+        ...structuredClone(base.levels[0]),
+        id: "added-live-map",
+        name: "Added live map",
+      });
+      live.boards![0].levelIds.push("added-live-map");
+      live.boards![0].visual.markers!["added-live-map"] = { x: 80, y: 50 };
+    } else {
+      live.levels = live.levels.filter(({ id }) => id !== removedId);
+      live.boards![0].levelIds = live.boards![0].levelIds.filter(
+        (id) => id !== removedId,
+      );
+      delete live.boards![0].visual.markers![removedId];
+    }
+    const promoted = promoteWorkingWave(live, draft);
+    expect(promoted.boards).toEqual(live.boards);
+    expect(promoted.levels.map(({ id }) => id)).toEqual(
+      live.levels.map(({ id }) => id),
+    );
+    const rebased = validateWorkingDraft(
+      JSON.parse(JSON.stringify(rebaseAfterPromotion(draft, promoted))),
+    );
+    expect(rebased.base.boards).toEqual(promoted.boards);
+    expect(rebased.content.boards![0].levelIds).toEqual([
+      ...live.boards![0].levelIds,
+      "pending-draft-map",
+    ]);
+    expect(
+      rebased.content.boards![0].visual.markers!["pending-draft-map"],
+    ).toEqual(pendingAnchor);
+    if (change === "addition")
+      expect(
+        rebased.content.boards![0].visual.markers!["added-live-map"],
+      ).toEqual({ x: 80, y: 50 });
+    else
+      expect(rebased.content.boards![0].visual.markers).not.toHaveProperty(
+        removedId,
+      );
+    expect(() => promoteWorkingWave(promoted, rebased)).not.toThrow();
+    rebased.content.levels.find(
+      ({ id }) => id === "pending-draft-map",
+    )!.waves[0].packets = structuredClone(base.levels[0].waves[0].packets);
+    const all = promoteAllWorkingChanges(promoted, rebased);
+    expect(all.boards).toEqual(rebased.content.boards);
+    expect(all.levels.map(({ id }) => id)).toEqual([
+      ...live.levels.map(({ id }) => id),
+      "pending-draft-map",
+    ]);
+  },
+);
+
+it("preserves a stale board comparison alongside concurrent recipe additions", () => {
+  const base = baseline();
+  const draft = createMap(
+    createWorkingDraft(base),
+    "Pending map",
+    base.levels[0].id,
+    "pending-map",
+    "pending-wave",
+  );
+  draft.levelId = base.levels[0].id;
+  draft.waveId = base.levels[0].waves[0].id;
+  draft.content.boards![0].name = "Pending board name";
+  const live = structuredClone(base);
+  live.levels.push({ ...structuredClone(base.levels[0]), id: "live-map" });
+  live.boards![0].levelIds.push("live-map");
+  live.boards![0].name = "Live board name";
+  const rebased = rebaseAfterPromotion(draft, live);
+  expect(rebased.base.boards![0].name).toBe(base.boards![0].name);
+  expect(rebased.base.boards![0].levelIds).toContain("live-map");
+  expect(rebased.content.boards![0].levelIds).toEqual([
+    ...live.boards![0].levelIds,
+    "pending-map",
+  ]);
+  expect(() => promoteWorkingWave(live, rebased)).toThrow(
+    "Board first-board changed",
+  );
+});

@@ -19,6 +19,39 @@ function boardInCandidate(
   }
   return result;
 }
+/** Carry recipe additions/removals through snapshots without accepting board edits. */
+function reconcileRecipes(
+  board: BoardDef,
+  live: BoardDef | undefined,
+  baseIds: readonly string[],
+  candidateIds: readonly string[],
+): BoardDef {
+  const result = boardInCandidate(board, candidateIds);
+  for (const id of live?.levelIds ?? []) {
+    if (
+      baseIds.includes(id) ||
+      !candidateIds.includes(id) ||
+      result.levelIds.includes(id)
+    )
+      continue;
+    const following = live!.levelIds
+      .slice(live!.levelIds.indexOf(id) + 1)
+      .find((member) => result.levelIds.includes(member));
+    const preceding = live!.levelIds
+      .slice(0, live!.levelIds.indexOf(id))
+      .reverse()
+      .find((member) => result.levelIds.includes(member));
+    const index = following
+      ? result.levelIds.indexOf(following)
+      : preceding
+        ? result.levelIds.indexOf(preceding) + 1
+        : result.levelIds.length;
+    result.levelIds.splice(index, 0, id);
+    if (result.visual.markers && live?.visual.markers?.[id])
+      result.visual.markers[id] = structuredClone(live.visual.markers[id]);
+  }
+  return result;
+}
 /** Board membership, presentation and ordering are one conflict scope per board. */
 export function mergeBoardScopes(
   current: AuthoringContent,
@@ -71,6 +104,8 @@ export function rebaseBoardScopes(
   base: AuthoringContent,
   authored: AuthoringContent,
   current: AuthoringContent,
+  contentIds = authored.levels.map(({ id }) => id),
+  comparisonIds = current.levels.map(({ id }) => id),
 ): { content?: BoardDef[]; comparison?: BoardDef[] } {
   if (!base.boards && !authored.boards && !current.boards) return {};
   const old = resolveBoards(base),
@@ -90,19 +125,18 @@ export function rebaseBoardScopes(
     };
     // A selected-wave promotion may accept board metadata while new-map
     // membership remains pending. Accept that projected scope as the new base.
-    const acceptedAfter =
-      after &&
-      boardInCandidate(after, [
-        ...base.levels.map(({ id }) => id),
-        ...current.levels.map(({ id }) => id),
-      ]);
+    const baseIds = base.levels.map(({ id }) => id);
+    const pending = after && reconcileRecipes(after, live, baseIds, contentIds);
+    const previous =
+      before && reconcileRecipes(before, live, baseIds, comparisonIds);
+    const acceptedAfter = pending && boardInCandidate(pending, comparisonIds);
     if (
-      !equal(live, before) &&
-      !equal(live, after) &&
+      !equal(live, previous) &&
+      !equal(live, pending) &&
       !equal(live, acceptedAfter)
     )
-      replace(comparison, before);
-    replace(content, after);
+      replace(comparison, previous);
+    replace(content, pending);
   }
   const oldOrder = old.map(({ id }) => id),
     newOrder = next.map(({ id }) => id);
