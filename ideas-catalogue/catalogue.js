@@ -514,5 +514,59 @@ window.STORMWATCH_IDEAS = [
     "width": 1672,
     "height": 941,
     "sha256": "2722812772f5a0e051a0108d9701cd9cd7d0c62a15e335b473592c9daaf55fe1"
+  },
+  {
+    "id": "poolbanks-right-edge-blend-b-wet-earth",
+    "title": "Poolbanks right-edge blend B wet earth",
+    "description": "Owner requested removal of vertical worn-earth stripe; retain two exit mouths, blend remaining right edge into central terrain. Unselected variant.",
+    "kind": "concept",
+    "categories": [
+      "background"
+    ],
+    "asset": "assets/poolbanks-right-edge-blend-b-wet-earth.png",
+    "source": {
+      "label": "Board and scenery identity",
+      "file": "exec-0f7f93b7-49e0-4905-b76f-fca6be052606.png",
+      "session": "01a0fef2-7077-75d2-b43e-1e8c30d3c15f"
+    },
+    "width": 1672,
+    "height": 941,
+    "sha256": "2e8f87cbe2827e851ce233ea679566a82604284537f175d1375aa9f7f6586db4"
+  },
+  {
+    "id": "poolbanks-right-edge-blend-a-soft-moss",
+    "title": "Poolbanks right-edge blend A soft moss",
+    "description": "Owner requested removal of vertical worn-earth stripe; retain two exit mouths, blend remaining right edge into central terrain. Unselected variant.",
+    "kind": "concept",
+    "categories": [
+      "background"
+    ],
+    "asset": "assets/poolbanks-right-edge-blend-a-soft-moss.png",
+    "source": {
+      "label": "Board and scenery identity",
+      "file": "exec-50471beb-2300-4bb1-9b86-d10209fe148d.png",
+      "session": "01a0fef2-7077-75d2-b43e-1e8c30d3c15f"
+    },
+    "width": 1672,
+    "height": 941,
+    "sha256": "c141a85e21e6fbefc494e5e74ccd06377abee86df6bb9a25210180638cd1f2db"
+  },
+  {
+    "id": "poolbanks-right-edge-blend-c-wet-mottling",
+    "title": "Poolbanks right-edge blend C wet mottling",
+    "description": "Owner requested removal of vertical worn-earth stripe; retain two exit mouths, blend remaining right edge into central terrain. Unselected variant.",
+    "kind": "concept",
+    "categories": [
+      "background"
+    ],
+    "asset": "assets/poolbanks-right-edge-blend-c-wet-mottling.png",
+    "source": {
+      "label": "Board and scenery identity",
+      "file": "exec-f252bd5e-a11e-48bf-8344-2a3d99944625.png",
+      "session": "01a0fef2-7077-75d2-b43e-1e8c30d3c15f"
+    },
+    "width": 1672,
+    "height": 940,
+    "sha256": "08532b99383f6c146a7a20ed90400c3f03a37d2e283200155f5e35d0d15f8434"
   }
 ];
