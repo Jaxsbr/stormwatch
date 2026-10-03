@@ -20,6 +20,18 @@ For map scenery or enemy/defender visuals, follow the [encounter visual authorin
 
 ## Agent skills
 
+### Commit-time art capture
+
+After generating Stormwatch art, use `$catalogue-session-art` to archive every
+variation from the current session, including rejected options, before finishing
+the art task. For work spanning chats, supply all relevant session IDs in one sweep.
+
+When a commit flags PNG/JPEG images for idea capture, follow
+[the catalogue guidance](ideas-catalogue/AGENTS.md): inspect each staged image,
+capture reusable art or record a specific exclusion reason, then stage the result.
+When its originating sessions are known, sweep those sessions for sibling
+variations too; the Git hook can see only staged files.
+
 ### Issue tracker
 
 Issues and specs are local Markdown files under `.scratch/<feature>/`. See `docs/agents/issue-tracker.md`.

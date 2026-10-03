@@ -1,0 +1,320 @@
+// prettier-ignore
+window.STORMWATCH_IDEAS = [
+  {
+    "id": "mosswater-reach",
+    "title": "Mosswater Reach",
+    "description": "Wet woods, teal water, timber bridges and lanterns.",
+    "kind": "concept",
+    "asset": "assets/mosswater-reach.png",
+    "source": {
+      "label": "Board and scenery identity",
+      "session": "01a0fef2-7077-75d2-b43e-1e8c30d3c15f",
+      "file": "exec-cd3847a1-eade-49c6-8e46-cf13fa7ad1cd.png"
+    },
+    "width": 1536,
+    "height": 1024,
+    "sha256": "9415262cfb2e7a5c1c4508d692cc6ab512a0655cedfc8a0059ccd0140ad490dc",
+    "categories": [
+      "background",
+      "map",
+      "interface"
+    ]
+  },
+  {
+    "id": "copperleaf-hollow",
+    "title": "Copperleaf Hollow",
+    "description": "Copper foliage, old roots and a horseshoe journey.",
+    "kind": "concept",
+    "asset": "assets/copperleaf-hollow.png",
+    "source": {
+      "label": "Board and scenery identity",
+      "session": "01a0fef2-7077-75d2-b43e-1e8c30d3c15f",
+      "file": "exec-4e85e3ef-9b36-4ca1-9dcb-46f40406e50f.png"
+    },
+    "width": 1536,
+    "height": 1024,
+    "sha256": "d4d4c13340208f2f7c3cae9ab1a1fcbaeee3972645daa8edcfe0be08a09d6105",
+    "categories": [
+      "background",
+      "map",
+      "interface"
+    ]
+  },
+  {
+    "id": "stormroot-ridge",
+    "title": "Stormroot Ridge",
+    "description": "Rugged pines, slate shelves and a climbing zigzag.",
+    "kind": "concept",
+    "asset": "assets/stormroot-ridge.png",
+    "source": {
+      "label": "Board and scenery identity",
+      "session": "01a0fef2-7077-75d2-b43e-1e8c30d3c15f",
+      "file": "exec-f420ce87-1f0f-4ef3-a71c-198be94fb11b.png"
+    },
+    "width": 1672,
+    "height": 941,
+    "sha256": "36d9b0bea3896cfba2c40a4b2e6867ea0cd6631b5c2e1432448c00c979062578",
+    "categories": [
+      "background",
+      "map",
+      "interface"
+    ]
+  },
+  {
+    "id": "expedition-board",
+    "title": "Expedition board",
+    "description": "Woodland paths, standing stones and a river crossing.",
+    "kind": "existing",
+    "asset": "assets/expedition-board.webp",
+    "source": {
+      "label": "Current game art",
+      "file": "public/art/v2/expedition-map-v1/atlas.webp"
+    },
+    "width": 1672,
+    "height": 941,
+    "sha256": "662effe16b49335be5c2c7bb6e58a4d253d4ae8dc2936c078b4e17301fbe46d9",
+    "categories": [
+      "map"
+    ]
+  },
+  {
+    "id": "woodland-clearing",
+    "title": "Woodland clearing",
+    "description": "Moss, earth, pines and warm lanterns.",
+    "kind": "existing",
+    "asset": "assets/woodland-clearing.webp",
+    "source": {
+      "label": "Current game art",
+      "file": "public/art/v2/woodland-clearing-v3/atlas.webp"
+    },
+    "width": 1672,
+    "height": 941,
+    "sha256": "15c3b06c2a36f192ce545a3b1264af1f2049214fa4fb2212fa5383e766a106cd",
+    "categories": [
+      "background"
+    ]
+  },
+  {
+    "id": "rainstone-riverbank",
+    "title": "Rainstone riverbank",
+    "description": "Cool slate, teal water and open battle ground.",
+    "kind": "existing",
+    "asset": "assets/rainstone-riverbank.webp",
+    "source": {
+      "label": "Current game art",
+      "file": "public/art/v2/rainstone-riverbank-v2/atlas.webp"
+    },
+    "width": 1672,
+    "height": 941,
+    "sha256": "8c5fddf4863ae819fbb16be0489428db7298e1f57a5eb9da1416b3ddea353db8",
+    "categories": [
+      "background"
+    ]
+  },
+  {
+    "id": "title-woodland",
+    "title": "Title woodland",
+    "description": "The current woodland welcome backdrop.",
+    "kind": "existing",
+    "asset": "assets/title-woodland.webp",
+    "source": {
+      "label": "Current game art",
+      "file": "public/art/title-background.webp"
+    },
+    "width": 1672,
+    "height": 941,
+    "sha256": "4ce05791ff4d4df747d2273a0f592928c85b3b87345ea8c0a52bda5ac1d5fee7",
+    "categories": [
+      "background"
+    ]
+  },
+  {
+    "id": "squirrel-portrait",
+    "title": "Squirrel defender",
+    "description": "Current defender portrait.",
+    "kind": "existing",
+    "asset": "assets/squirrel-portrait.webp",
+    "source": {
+      "label": "Current game art",
+      "file": "public/art/v2/squirrel-side-defender-v1/portrait.webp"
+    },
+    "width": 128,
+    "height": 128,
+    "sha256": "bdbc8ef7b266621951e49d25eab2192c66c6f0cf6b4ecfbf1f7b207c34fe6911",
+    "categories": [
+      "character"
+    ]
+  },
+  {
+    "id": "skunk-portrait",
+    "title": "Skunk defender",
+    "description": "Current defender portrait.",
+    "kind": "existing",
+    "asset": "assets/skunk-portrait.webp",
+    "source": {
+      "label": "Current game art",
+      "file": "public/art/v2/skunk-side-defender-v1/portrait.webp"
+    },
+    "width": 128,
+    "height": 128,
+    "sha256": "3dee2ad54dfef2fc33ada370b3e032232eace590da090b262c67d4ceae278cf3",
+    "categories": [
+      "character"
+    ]
+  },
+  {
+    "id": "turtle-portrait",
+    "title": "Turtle defender",
+    "description": "Current defender portrait.",
+    "kind": "existing",
+    "asset": "assets/turtle-portrait.webp",
+    "source": {
+      "label": "Current game art",
+      "file": "public/art/v2/turtle-side-defender-v1/portrait.webp"
+    },
+    "width": 128,
+    "height": 128,
+    "sha256": "319855d5c86303c88061839fda5d85ae50b639d379a4c650a5e5651b0ba43925",
+    "categories": [
+      "character"
+    ]
+  },
+  {
+    "id": "rat-raider",
+    "title": "Rat raider",
+    "description": "Current character cutouts, assembled in a neutral pose.",
+    "kind": "existing",
+    "asset": "assets/rat-raider.webp",
+    "source": {
+      "label": "Current game character rig",
+      "file": "public/art/v2/rat-rig-v3/rig.json"
+    },
+    "width": 750,
+    "height": 808,
+    "sha256": "5a97bda19b7ccb165f7b9a2d71e5ccbc62e65aed4589f2dcbaac3c9f404c4e72",
+    "derivation": "Neutral assembly: authored part scales, body attachment anchors, pivots and z order; guard overlay excluded.",
+    "inputs": [
+      "art/v2/rat-rig-v3/body.webp",
+      "art/v2/rat-rig-v3/nearLeg.webp",
+      "art/v2/rat-rig-v3/farLeg.webp"
+    ],
+    "categories": [
+      "character"
+    ]
+  },
+  {
+    "id": "weasel-runner",
+    "title": "Weasel runner",
+    "description": "Current character cutouts, assembled in a neutral pose.",
+    "kind": "existing",
+    "asset": "assets/weasel-runner.webp",
+    "source": {
+      "label": "Current game character rig",
+      "file": "public/art/v2/weasel-rig-v1/rig.json"
+    },
+    "width": 880,
+    "height": 763,
+    "sha256": "2d3696e8f7ecc97900b305f7574e776b38c98fd4b217b5e8ad7751b8fe886b1b",
+    "derivation": "Neutral assembly: authored part scales, body attachment anchors, pivots and z order; guard overlay excluded.",
+    "inputs": [
+      "art/v2/weasel-rig-v1/body.webp",
+      "art/v2/weasel-rig-v1/nearLeg.webp",
+      "art/v2/weasel-rig-v1/farLeg.webp"
+    ],
+    "categories": [
+      "character"
+    ]
+  },
+  {
+    "id": "boar-armored",
+    "title": "Armored boar",
+    "description": "Current character cutouts, assembled in a neutral pose.",
+    "kind": "existing",
+    "asset": "assets/boar-armored.webp",
+    "source": {
+      "label": "Current game character rig",
+      "file": "public/art/v2/boar-rig-v1/rig.json"
+    },
+    "width": 850,
+    "height": 830,
+    "sha256": "fff28bf931de978c7c6f3d17781874a229c00e5ef3d5b55aa3f31dba0273f44c",
+    "derivation": "Neutral assembly: authored part scales, body attachment anchors, pivots and z order; guard overlay excluded.",
+    "inputs": [
+      "art/v2/boar-rig-v1/body.webp",
+      "art/v2/boar-rig-v1/nearLeg.webp",
+      "art/v2/boar-rig-v1/farLeg.webp"
+    ],
+    "categories": [
+      "character"
+    ]
+  },
+  {
+    "id": "badger-roadwarden",
+    "title": "Badger Roadwarden",
+    "description": "Current character cutouts, assembled in a neutral pose.",
+    "kind": "existing",
+    "asset": "assets/badger-roadwarden.webp",
+    "source": {
+      "label": "Current game character rig",
+      "file": "public/art/v2/badger-rig-v1/rig.json"
+    },
+    "width": 910,
+    "height": 898,
+    "sha256": "8b76ad7168c31909d1ac2f72cfc297ee894c2cf4ac4f6fcdd9a0bbdc010d42f5",
+    "derivation": "Neutral assembly: authored part scales, body attachment anchors, pivots and z order; guard overlay excluded.",
+    "inputs": [
+      "art/v2/badger-rig-v1/body.webp",
+      "art/v2/badger-rig-v1/nearLeg.webp",
+      "art/v2/badger-rig-v1/farLeg.webp"
+    ],
+    "categories": [
+      "character"
+    ]
+  },
+  {
+    "id": "badger-angry",
+    "title": "Roadwarden \u00b7 angry",
+    "description": "Current character cutouts, assembled in a neutral pose.",
+    "kind": "existing",
+    "asset": "assets/badger-angry.webp",
+    "source": {
+      "label": "Current game character rig",
+      "file": "public/art/v2/badger-side-angry-v1/rig.json"
+    },
+    "width": 910,
+    "height": 898,
+    "sha256": "462e6876302b84fb2764985fe7e6ff2311089bb42e39d191757cf2734b224e29",
+    "derivation": "Neutral assembly: authored part scales, body attachment anchors, pivots and z order; guard overlay excluded.",
+    "inputs": [
+      "art/v2/badger-side-angry-v1/body.webp",
+      "art/v2/badger-rig-v1/nearLeg.webp",
+      "art/v2/badger-rig-v1/farLeg.webp"
+    ],
+    "categories": [
+      "character"
+    ]
+  },
+  {
+    "id": "badger-raging",
+    "title": "Roadwarden \u00b7 raging",
+    "description": "Current character cutouts, assembled in a neutral pose.",
+    "kind": "existing",
+    "asset": "assets/badger-raging.webp",
+    "source": {
+      "label": "Current game character rig",
+      "file": "public/art/v2/badger-side-raging-v1/rig.json"
+    },
+    "width": 910,
+    "height": 898,
+    "sha256": "30e787332256df8962a0dbdd6f44d950f788437c739ac1bf017f49492049502e",
+    "derivation": "Neutral assembly: authored part scales, body attachment anchors, pivots and z order; guard overlay excluded.",
+    "inputs": [
+      "art/v2/badger-side-raging-v1/body.webp",
+      "art/v2/badger-rig-v1/nearLeg.webp",
+      "art/v2/badger-rig-v1/farLeg.webp"
+    ],
+    "categories": [
+      "character"
+    ]
+  }
+];
