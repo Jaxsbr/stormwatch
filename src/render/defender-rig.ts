@@ -3,6 +3,7 @@ import {
   AcceptedDefenderMotion,
   defenderMotionPhase,
 } from "./accepted-defender-motion";
+import { SkunkMotion, SKUNK_RELEASE, FLASK_SIZE } from "./skunk-motion";
 import { DefenderArm } from "./defender-arm";
 import { CutoutInstance, CutoutResource } from "./cutout";
 
@@ -16,6 +17,7 @@ export class DefenderRig {
   private arms = new Map<string, DefenderArm>();
   private order = 1000;
   private motion?: AcceptedDefenderMotion;
+  private skunk?: SkunkMotion;
   private localMuzzle = new THREE.Vector3();
   constructor(
     resource: CutoutResource,
@@ -34,7 +36,16 @@ export class DefenderRig {
       }
     for (const part of resource.definition!.parts)
       if (part.id === "holdArm" || part.id === "drawArm") {
-        const arm = new DefenderArm(part, resource);
+        const drawing =
+          resource.definition!.id === "skunk-side-defender-v1" &&
+          part.id === "drawArm"
+            ? {
+                ...resource.definition!.parts.find((p) => p.id === "holdArm")!,
+                scale: 0.88,
+                z: 3,
+              }
+            : part;
+        const arm = new DefenderArm(drawing, resource);
         this.arms.set(part.id, arm);
         this.group.add(arm.mesh);
         this.cutout.parts.get(part.id)!.visible = false;
@@ -59,6 +70,8 @@ export class DefenderRig {
       )
     )
       this.motion = new AcceptedDefenderMotion(this.cutout, this.arms);
+    if (resource.definition!.id === "skunk-side-defender-v1")
+      this.skunk = new SkunkMotion(this.cutout, this.arms);
   }
   private point(id: string, name: string) {
     const def = this.cutout.resource.definition!.parts.find(
@@ -87,9 +100,21 @@ export class DefenderRig {
     order = 1000,
     hasTarget = true,
     interval = Math.max(0.1, age + cooldown),
+    reducedMotion = false,
   ) {
     this.order = order;
     this.cutout.reset(order);
+    if (this.skunk) {
+      this.string.visible = this.arrow.visible = false;
+      this.skunk.update(
+        defenderMotionPhase(age, cooldown, interval, SKUNK_RELEASE, hasTarget),
+        order,
+        this.mirrored,
+        reducedMotion,
+      );
+      this.localMuzzle.copy(this.skunk.launch);
+      return;
+    }
     if (this.motion) {
       const phase = defenderMotionPhase(
         age,
@@ -271,6 +296,18 @@ export class DefenderRig {
     this.localMuzzle.copy(brace);
     this.reflect([positions, arrows]);
   }
+  /** Same painted plane and exact release origin for held and real flying bombs. */
+  bombLaunch() {
+    if (!this.skunk) return undefined;
+    this.group.updateWorldMatrix(true, false);
+    return {
+      origin: this.group.localToWorld(this.skunk.launch.clone()),
+      width: FLASK_SIZE[0] * this.group.scale.x,
+      height: FLASK_SIZE[1] * this.group.scale.y,
+      texture: this.skunk.flask.material.map!,
+      mirrored: this.mirrored,
+    };
+  }
   /** Solved two-hand launch shape in world space for the real net projectile. */
   netLaunch() {
     if (!this.motion?.turtle) return undefined;
@@ -309,6 +346,7 @@ export class DefenderRig {
   }
   dispose() {
     this.motion?.dispose();
+    this.skunk?.dispose();
     for (const line of [this.string, this.arrow]) {
       line.geometry.dispose();
       (line.material as THREE.Material).dispose();
