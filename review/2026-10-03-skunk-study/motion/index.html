@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Skunk · underhand motion study</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <header>
+      <div>
+        <small>STORMWATCH · SKUNK · MOTION STUDY 01</small>
+        <h1>A grounded underhand lob</h1>
+        <p>
+          Approved pose direction · enlarged neon flask · motion awaiting review
+        </p>
+      </div>
+      <button id="play">Pause</button
+      ><label
+        >Speed
+        <select id="speed">
+          <option value="1">Normal</option>
+          <option value="0.35">Slow · 35%</option>
+          <option value="0.1">Detail · 10%</option>
+        </select></label
+      ><label><input id="small" type="checkbox" /> 112px body</label
+      ><label><input id="reduced" type="checkbox" /> Reduced motion</label>
+    </header>
+    <main>
+      <section><h2>East</h2></section>
+      <section><h2>West · mirrored</h2></section>
+      <canvas
+        id="canvas"
+        aria-label="Continuous Skunk underhand throw shown in both directions"
+      ></canvas>
+    </main>
+    <footer>
+      <div id="poses">
+        <button data-time="0">Ready</button
+        ><button data-time="0.48">Preparation</button
+        ><button data-time="0.66">Release</button
+        ><button data-time="0.76">Follow-through</button
+        ><button data-time="0.94">Reload</button
+        ><button id="back" aria-label="Previous frame">−1 frame</button
+        ><button id="next" aria-label="Next frame">+1 frame</button>
+      </div>
+      <label
+        >Cycle
+        <input
+          id="time"
+          type="range"
+          min="0"
+          max="1"
+          step="0.001"
+          value="0" /></label
+      ><output id="beat" aria-live="off">Loading artwork…</output>
+      <p>
+        Review hand contact, shoulder joins, grounded feet and release. Flight
+        is a study demonstration; gas and real battlefield integration follow
+        later.
+      </p>
+      <details>
+        <summary>Approved pose reference and study limits</summary>
+        <img
+          src="../underhand-neon-flask-v2.png"
+          alt="Approved underhand poses with enlarged neon green flask"
+        />
+        <p>
+          Original body and arm artwork are reused. Closed painted paws and
+          sleeve overlaps remain constraints. Reload uses a brief fade at the
+          belt; it is not a final retrieval animation. Reduced motion suppresses
+          body effort and flask rotation. No attack cadence was changed.
+        </p>
+      </details>
+    </footer>
+    <script type="module" src="main.js"></script>
+  </body>
+</html>

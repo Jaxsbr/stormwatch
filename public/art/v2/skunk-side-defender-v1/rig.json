@@ -124,15 +124,15 @@
           95
         ]
       },
-      "texture": "art/v2/skunk-side-defender-v1/payload.webp",
-      "sha256": "a08ac281974b6858c1fdffa151cf87d6c18e3e1ef3e529e0f219e0815358fd59",
-      "bytes": 12654
+      "texture": "art/v2/skunk-side-defender-v1/neon-flask.webp",
+      "sha256": "1452848598f661c0c77655fa41b3cff46a1b6a4d507625caf60c28640012a887",
+      "bytes": 119654
     }
   ],
   "sourceSha256": "86d6ffc0a14e52cb8280d8701ec8b813a1ce93b897ea3aa7d155f373c821441f",
   "review": {
     "status": "candidate",
-    "notes": "Imported native separated parts. Assembly and motion gates pending."
+    "notes": "Owner accepted underhand neon-flask poses, continuous motion and B soft-puff effects without Poisoned text. Integrated battlefield acceptance remains pending."
   },
   "validation": {
     "width": 1536,
@@ -182,5 +182,25 @@
   },
   "animation": {
     "action": "thrower"
+  },
+  "runtimeOverrides": {
+    "payload": {
+      "texture": "art/v2/skunk-side-defender-v1/neon-flask.webp",
+      "source": "review/2026-10-03-skunk-study/motion/flask.png",
+      "sourceSha256": "5518d9833a727715ef8f976cf1f4ad60dea307497480afa7a0c053ad9a6a0aac",
+      "prompt": "review/2026-10-03-skunk-study/flask-prompt.txt",
+      "displaySize": [
+        280,
+        264
+      ],
+      "notes": "SkunkMotion uses the full separate prop texture for held and flying planes. Base parts and validation preserve the original sheet landmarks for source reassembly; the old payload sprite is hidden.",
+      "validation": {
+        "id": "payload",
+        "visiblePixels": 585435,
+        "transparentFraction": 0.6277847714961471,
+        "sourceWidth": 1285,
+        "sourceHeight": 1224
+      }
+    }
   }
 }

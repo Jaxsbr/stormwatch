@@ -34,3 +34,26 @@ playtest supplies the visual evidence for this same facing policy. A fresh brows
 walkthrough did not advance past the title screen in the automation session, so
 no new battlefield verification is claimed. Subsequent action changes must still
 pass their own pose, motion and battlefield review gates.
+
+## Skunk action and effects — 4 October 2026
+
+The owner selected the underhand action from A with B's corked flask, approximately
+2× the prior bomb size and bright neon green for visibility. The revised poses and
+continuous motion were accepted, followed by B's soft puffs with no “Poisoned”
+text. This extends the existing side-only decision; battlefield acceptance remains
+pending. [Study and provenance](../../review/2026-10-03-skunk-study/README.md).
+
+The runtime keeps the original body and continuous arm rig, sampling the exact
+release pose to hand the same texture and dimensions to the real projectile.
+Soft puffs read living enemies' authoritative poison status and the existing
+transient splash event. There is no additional combat timer or ground damage zone.
+Pause, expiry, immunity and evasion remain simulation decisions. Reloading the
+flask is a brief visual fade, as accepted in the motion study; vertical targets
+retain stylized side poses. The crowd fixture deliberately exaggerates overlap
+and does not establish encounter balance or physical-device performance.
+
+Focused tests cover mirrored release, first/late rendering, planted feet, pause,
+cadence scaling, pooled idle reset, reduced motion, actual Game poison outcomes,
+expiry and buffer reuse. The real Battlefield fixture covers both facings,
+vertical targets, a crowd, sale while a bomb is in flight and fresh-attempt cleanup.
+See [runtime verification](../../review/2026-10-03-skunk-study/battlefield/README.md).

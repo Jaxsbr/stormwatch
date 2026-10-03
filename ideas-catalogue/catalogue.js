@@ -273,7 +273,7 @@ window.STORMWATCH_IDEAS = [
   },
   {
     "id": "badger-angry",
-    "title": "Roadwarden \u00b7 angry",
+    "title": "Roadwarden · angry",
     "description": "Current character cutouts, assembled in a neutral pose.",
     "kind": "existing",
     "asset": "assets/badger-angry.webp",
@@ -296,7 +296,7 @@ window.STORMWATCH_IDEAS = [
   },
   {
     "id": "badger-raging",
-    "title": "Roadwarden \u00b7 raging",
+    "title": "Roadwarden · raging",
     "description": "Current character cutouts, assembled in a neutral pose.",
     "kind": "existing",
     "asset": "assets/badger-raging.webp",
@@ -316,5 +316,95 @@ window.STORMWATCH_IDEAS = [
     "categories": [
       "character"
     ]
+  },
+  {
+    "id": "skunk-seedpod-lob",
+    "title": "Skunk seedpod lob",
+    "description": "Initial option A; action selected, seedpod not selected.",
+    "kind": "concept",
+    "categories": [
+      "character"
+    ],
+    "asset": "assets/skunk-seedpod-lob.png",
+    "source": {
+      "label": "Skunk animation and effects",
+      "file": "exec-24fe8cd0-41ae-4ca0-a37e-766f1766879d.png",
+      "session": "01a0fef2-8c4a-70a2-bb65-d4272443e771"
+    },
+    "width": 1916,
+    "height": 821,
+    "sha256": "55dbb93aa5237c3b1c08252e4edebfc5f7c8bc233706c77f68109a4c4c79dd12"
+  },
+  {
+    "id": "skunk-neon-flask-poses",
+    "title": "Skunk enlarged neon flask poses",
+    "description": "Accepted underhand poses combining A action and B flask with enlarged neon green bomb.",
+    "kind": "concept",
+    "categories": [
+      "character"
+    ],
+    "asset": "assets/skunk-neon-flask-poses.png",
+    "source": {
+      "label": "Skunk animation and effects",
+      "file": "exec-310ba8d2-bee0-41b2-bb6f-b7b7003f0951.png",
+      "session": "01a0fef2-8c4a-70a2-bb65-d4272443e771"
+    },
+    "width": 1915,
+    "height": 821,
+    "sha256": "defe4e4325471548bad9b6e9f2b7d82a3a08da4dfe7e03d44183e114c9b968a2"
+  },
+  {
+    "id": "skunk-two-paw-heave",
+    "title": "Skunk two-paw heave",
+    "description": "Unselected option C, leaf parcel and two-paw scoop.",
+    "kind": "concept",
+    "categories": [
+      "character"
+    ],
+    "asset": "assets/skunk-two-paw-heave.png",
+    "source": {
+      "label": "Skunk animation and effects",
+      "file": "exec-52e6daa9-e87a-43a9-83d0-458306d4349b.png",
+      "session": "01a0fef2-8c4a-70a2-bb65-d4272443e771"
+    },
+    "width": 1942,
+    "height": 809,
+    "sha256": "4b9a465eaac7d5e848e27e2d9bb2b191bc7d4912878e7b7e4b7af931d82ff64d"
+  },
+  {
+    "id": "skunk-neon-flask-prop",
+    "title": "Skunk neon flask prop",
+    "description": "Transparent painted flask derived from accepted pose sheet for continuous motion.",
+    "kind": "concept",
+    "categories": [
+      "character"
+    ],
+    "asset": "assets/skunk-neon-flask-prop.png",
+    "source": {
+      "label": "Skunk animation and effects",
+      "file": "exec-69b9acfe-d4c5-4325-b21a-1829c5e3a3b8.png",
+      "session": "01a0fef2-8c4a-70a2-bb65-d4272443e771"
+    },
+    "width": 1285,
+    "height": 1224,
+    "sha256": "5518d9833a727715ef8f976cf1f4ad60dea307497480afa7a0c053ad9a6a0aac"
+  },
+  {
+    "id": "skunk-shoulder-toss",
+    "title": "Skunk shoulder toss",
+    "description": "Option B flask selected; shoulder toss not selected.",
+    "kind": "concept",
+    "categories": [
+      "character"
+    ],
+    "asset": "assets/skunk-shoulder-toss.png",
+    "source": {
+      "label": "Skunk animation and effects",
+      "file": "exec-8d29e73a-c6fb-486f-8060-e7f1a43430dd.png",
+      "session": "01a0fef2-8c4a-70a2-bb65-d4272443e771"
+    },
+    "width": 1942,
+    "height": 809,
+    "sha256": "6fda0030060b9a9d51cf41739142c1ebeca17c36b1d84fe7f92cc629b881f421"
   }
 ];

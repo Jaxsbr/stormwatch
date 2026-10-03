@@ -1,3 +1,5 @@
+import { PoisonEffects } from "./poison-effects";
+import { FLASK_SIZE } from "./skunk-motion";
 import { RallyEffect } from "./rally-effect";
 import { bossRagePhase } from "../sim/boss-rage";
 import * as THREE from "three";
@@ -95,6 +97,7 @@ export class Battlefield {
   private defenderPool = new ResourcePool<DefenderRig>();
   private shots = new Map<number, THREE.Mesh>();
   private effects = new EffectBatch();
+  private poisonEffects = new PoisonEffects();
   private combatText = new CombatText();
   private overlays = new OverlayBatch();
   private slowNetCue = new SlowNetCue();
@@ -591,6 +594,7 @@ export class Battlefield {
     this.aim.clear();
     this.trimMeshes(this.shots, new Set());
     this.effects.update([], position);
+    this.poisonEffects.update([], [], 0, position);
     this.combatText.update([], position);
     this.overlays.update([], [], position);
     this.slowNetCue.clear();
@@ -738,13 +742,42 @@ export class Battlefield {
       {
         let fired = this.fired.get(t.id);
         if (!fired || fired.shots !== t.shots) {
-          fired = { shots: t.shots, at: t.shots ? s.clock : -100 };
+          const latest =
+            t.kind === "stone"
+              ? s.shots
+                  .filter(
+                    (p) =>
+                      p.kind === "stone" &&
+                      p.source.x === t.x &&
+                      p.source.z === t.z,
+                  )
+                  .sort((a, b) => a.life - b.life)[0]
+              : undefined;
+          // When a render skips the whole flight, cooldown still locates the
+          // release within the current cadence; do not invent a fresh throw.
+          const age =
+            t.kind === "stone"
+              ? (latest?.life ??
+                Math.max(
+                  0,
+                  game.towers[t.kind].interval *
+                    (t.level === 2 ? game.rules.upgradeIntervalScale : 1) -
+                    t.cooldown,
+                ))
+              : 0;
+          fired = {
+            shots: t.shots,
+            at: t.shots ? s.clock - age : -100,
+          };
           this.fired.set(t.id, fired);
         }
         const defenderResource = this.art!.defender(t.kind);
         if (defenderResource.definition) {
           const target = s.enemies
-            .filter((e) => Math.hypot(e.x - t.x, e.z - t.z) <= game.range(t))
+            .filter(
+              (e) =>
+                e.alive && Math.hypot(e.x - t.x, e.z - t.z) <= game.range(t),
+            )
             .sort((a, b) => b.distance - a.distance)[0];
           // Towers use one side illustration, reflected toward the target.
           // Retain facing close to vertical to avoid flickering left/right.
@@ -806,6 +839,7 @@ export class Battlefield {
             !!target,
             game.towers[t.kind].interval *
               (t.level === 2 ? game.rules.upgradeIntervalScale : 1),
+            reducedMotion,
           );
           continue;
         }
@@ -1066,7 +1100,7 @@ export class Battlefield {
               )
             : p.kind === "net"
               ? new THREE.BufferGeometry()
-              : new THREE.CircleGeometry(7, 12),
+              : new THREE.PlaneGeometry(1, 1),
           material(
             p.kind === "net"
               ? 0xc6ba8c
@@ -1097,6 +1131,29 @@ export class Battlefield {
         m.userData.origin =
           muzzle?.clone() ??
           position(p.source).add(new THREE.Vector3(0, 55, 0));
+      if (p.kind === "stone" && !m.userData.bomb) {
+        const launch = sourceTower
+          ? this.figures.get(sourceTower.id)?.defender?.bombLaunch()
+          : undefined;
+        // Art belongs to this attempt, so an already-launched bomb survives selling its tower.
+        const texture =
+          launch?.texture ??
+          this.art!.defender("stone").textures.get("payload")!;
+        const paint = m.material as THREE.MeshBasicMaterial;
+        paint.map = texture;
+        paint.color.set(0xffffff);
+        paint.side = THREE.DoubleSide;
+        paint.forceSinglePass = true;
+        paint.needsUpdate = true;
+        if (launch) m.userData.origin = launch.origin.clone();
+        m.userData.bomb = { mirrored: launch?.mirrored ?? false };
+        m.scale.set(
+          (launch?.width ?? (FLASK_SIZE[0] * 98) / 745) *
+            (launch?.mirrored ? -1 : 1),
+          launch?.height ?? (FLASK_SIZE[1] * 98) / 745,
+          1,
+        );
+      }
       const origin = m.userData.origin as THREE.Vector3;
       const target = position(p.target).add(new THREE.Vector3(0, 35, 0));
       m.position.lerpVectors(origin, target, k);
@@ -1106,6 +1163,10 @@ export class Battlefield {
           Math.cos(k * Math.PI) * Math.PI * (p.kind === "stone" ? 95 : 6),
         target.x - origin.x,
       );
+      if (p.kind === "stone")
+        m.rotation.z = reducedMotion
+          ? 0
+          : -2 * k * (m.userData.bomb.mirrored ? -1 : 1);
       if (p.kind === "net") {
         if (!m.userData.launch) {
           const launch = sourceTower
@@ -1142,10 +1203,20 @@ export class Battlefield {
     this.trimMeshes(this.shots, shotIds);
     this.effects.update(
       s.effects.filter(
-        (effect) => !["evade", "immune", "shield"].includes(effect.kind),
+        (effect) =>
+          !["evade", "immune", "shield", "splash"].includes(effect.kind),
       ),
       position,
     );
+    this.poisonEffects.update(
+      s.enemies,
+      s.effects,
+      s.clock,
+      position,
+      reducedMotion,
+    );
+    if (!this.poisonEffects.mesh.parent)
+      this.scene.add(this.poisonEffects.mesh);
     this.combatText.update(s.effects, position);
     if (!this.combatText.group.parent) this.scene.add(this.combatText.group);
     if (!this.effects.mesh.parent) this.scene.add(this.effects.mesh);
@@ -1174,6 +1245,7 @@ export class Battlefield {
     this.observer.disconnect();
     this.clearWorld();
     this.effects.dispose();
+    this.poisonEffects.dispose();
     this.combatText.dispose();
     this.overlays.dispose();
     this.slowNetCue.dispose();
