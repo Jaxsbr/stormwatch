@@ -31,3 +31,13 @@ At `20524db`, poison fieldwise rebasing (`ab9176a`), selected-wave board project
 A further review repro remains blocking: when a pending draft map and a newly added live map share a board, selected-wave promotion preserves the live recipe, but subsequent draft rebasing drops its membership and fails validation. The board owner is correcting that scope reconciliation. PR17's previous authoring-only update also failed the simulated Last Lantern warm art-readiness threshold (1917 ms against 1773 ms); acceptance is diagnosing the measurement and checking the latest candidate with unchanged thresholds.
 
 These are capability delivery checks. Owner motion/scenery/battlefield gates and full five-encounter acceptance remain pending.
+
+## Held feedback build
+
+The overall candidate incorporates Skunk runtime `a879b6d`, scenery `68a08ae`, owner-approved wet-mottling painting `5574d1c`, the global ownership fix `6729891`, and five-encounter feedback contribution `39fa398`. The functional assembly is `7432f3a`; diagnostic capture classification follows at `1d9a3ca`.
+
+All 405 tests across 67 files, type checks, formatting, production and workbench builds pass. The deterministic balance run reproduces normal-mode wins through all eight encounters, including both final Roadwarden defeats. Thirty catalogue ideas verify. Each new encounter's authoring round trip is recorded in the encounter report; parent verified the guide and real Rat battlefield open without browser warnings or errors.
+
+Run `npm run feedback:mosswater` for the local guide, focused real-Game attempts, full profile journey and candidate-only workbench. The candidate file and feedback storage are isolated; normal builds still use the accepted three-map canonical recipes. The parent acceptance chat is reviewing feedback readiness. Original Boar art remains in this functional build pending the separate motion approval.
+
+Poison PR15 and routes PR18 have independently merged to main after review and passing CI; poison deployment passed. Board PR17 remains held for an additional new-live-board topology case: rebasing a pending metadata edit after a live sole-member move to a new board produces an empty board. Its owner is correcting the globally valid comparison/authored topology. This does not claim final release readiness, painting-context acceptance, board/marker acceptance or physical-device performance.
