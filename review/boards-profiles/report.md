@@ -104,6 +104,24 @@ fixtures establish infrastructure behavior, not campaign affordability or art ap
 
 ## Candidate checks
 
-`npm run check`, `npm test` (344 tests across 62 files), `npm run build`
+`npm run check`, `npm test` (346 tests across 62 files), `npm run build`
 and `npm run build:workbench` pass on the refreshed baseline. The production
 artifact boundary verifies 241 files. Existing bundle-size warnings remain.
+
+## Selected-wave scope correction
+
+Independent acceptance reproduced a pending-map scope leak: create a map on an
+explicit board, select an existing wave, then Playtest or Promote. The selected
+board included the unpublished map identity and anchor without its recipe, so
+validation failed with `board.levelIds: unknown or duplicate encounter`.
+
+The regression first failed at the public selected-wave seam. That candidate now
+projects board membership and anchors onto accepted recipes plus its selected new
+map. Other new maps remain in the draft. Known membership moves are not projected
+away, so cross-board moves still require atomic all-board promotion. Rebase accepts
+promoted metadata while retaining pending membership/anchors and genuine conflicts.
+
+Regressions cover existing-wave Playtest/promotion, selection of one new map with
+another pending, unchanged pending drafts and repeat promotion after rebase. The
+disposable API round trip now includes a pending map during draft reload, real
+Playtest, promotion and uncached game reload; no unpublished map reaches disk.

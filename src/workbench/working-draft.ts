@@ -281,6 +281,13 @@ export function promoteWorkingWave(
     draft.base,
     draft.content,
     selectedBoard ? [selectedBoard.id] : [],
+    // Unpublished maps other than the selected one stay in the draft, along
+    // with their marker anchors. Existing membership moves remain atomic.
+    [
+      ...draft.base.levels.map(({ id }) => id),
+      ...current.levels.map(({ id }) => id),
+      level.id,
+    ],
   );
   result.routeLayouts = mergeRouteLayouts(
     current,

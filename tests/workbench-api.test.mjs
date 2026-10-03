@@ -538,8 +538,19 @@ it("round trips authored board metadata through draft reload, real Playtest, sco
       { x: 20 + i * 25, y: 50 },
     ]),
   );
-  draft.content.levels[1].waves[0].reward += 19; // unrelated pending change
-  const reloaded = validateWorkingDraft(JSON.parse(JSON.stringify(draft)));
+  const withPendingMap = createMap(
+    draft,
+    "Pending map",
+    draft.levelId,
+    "pending-map",
+    "pending-wave",
+  );
+  withPendingMap.levelId = draft.levelId;
+  withPendingMap.waveId = draft.waveId;
+  withPendingMap.content.levels[1].waves[0].reward += 19; // unrelated pending change
+  const reloaded = validateWorkingDraft(
+    JSON.parse(JSON.stringify(withPendingMap)),
+  );
   const session = new AttemptSession(
     promoteWorkingWave(CANONICAL_CONTENT, reloaded),
     {
@@ -556,7 +567,9 @@ it("round trips authored board metadata through draft reload, real Playtest, sco
   const response = await post(reloaded);
   expect(response.status).toBe(200);
   const disk = JSON.parse(await readFile(file, "utf8"));
-  expect(disk.boards).toEqual(reloaded.content.boards);
+  expect(disk.boards).toEqual(draft.content.boards);
+  expect(disk.levels.some(({ id }) => id === "pending-map")).toBe(false);
+  expect(reloaded.content.boards[0].levelIds).toContain("pending-map");
   expect(disk.levels[1]).toEqual(CANONICAL_CONTENT.levels[1]);
   const runtime = runtimeContentMiddleware(file);
   let body, headers;
