@@ -1,43 +1,33 @@
-# Woodland capability integration
+# Woodland expansion feedback integration
 
-## Baseline and scope
+## Scope and merge status
 
-The isolated integration branch starts from main `98cfea9` and combines poison/immunity (`52553c0`), multiple routes/twin bosses (`b51c534`), and boards/profiles (`8b7fb07`). The assembled capability commit is `9319b74`.
+The held integration branch assembles poison/immunity, multiple routes and twin bosses, boards/profiles/discoveries, the approved Twin switchbacks geometry, Skunk runtime presentation, the selected Mossy Poolbanks painting and five authored Mosswater encounters. The approved specification is `.scratch/woodland-expedition-expansion/spec.md`.
 
-This is an integration baseline for authoring and review. It preserves the existing three-encounter campaign. New encounters, discovery activation, approved scenery and final character presentation remain separate delivery and owner acceptance work.
+Poison PR15 and multiple-route PR18 have independently merged into main with passing CI and deployment checks. Board/profile PR17 remains subject to independent review of its final authoring fixes. The assembled expansion remains a draft for owner feedback; it does not activate new canonical encounters or imply final visual or balance approval.
 
-## Merge resolution
+## Playable feedback build
 
-Configuration and simulation retain each capability's independent fields. Workbench controls expose combat settings, shared route layouts and board editing together. Promotion and rebasing retain all three scopes and their conflict checks. Both branches' API regression suites remain intact.
+Run `npm run feedback:mosswater`. The guide offers Rat crossing, mixed matchups, an earned twin-boss preparation, complete finale and full profile journey. These use the real Game and Battlefield with resolved authored content. Focused entries replay preceding normal-mode wins and public legal purchases; they do not inject currency, health, towers or discoveries.
 
-A combined API regression edits board metadata, a shared layout, poison duration/cadence, poison damage and immunity in one restored draft. It checks Playtest versus promoted uncached game reload, preservation of an unrelated live encounter edit, immutable existing attempts, and rejection of a repeated stale promotion.
+The candidate contains eight encounters, including the unchanged original three and nineteen new waves. Maps 01/02/05 share the approved crossing layout. Maps 03/04 preserve Rainstone geometry with explicit single-route assignments. The selected wet-mottling painting and Skunk neon flask/soft puffs are included; original Boar art supports functional feedback while its motion study awaits owner approval.
+
+The feedback adapter isolates its candidate content and profile/draft storage. Promotion changes `review/mosswater-encounters/game-content.json`, while normal production and workbench builds retain the accepted three-map canonical campaign. Existing attempts retain their immutable content.
 
 ## Verification
 
-- Type checking passed.
-- All 65 test files and 382 tests passed.
-- Formatting passed.
-- Production and workbench builds passed; production boundary verification passed across 241 files.
-- Both builds report the existing large-chunk advisory. No physical-device performance claim is made.
+The assembled functional head `442b793` passed type checking, formatting, all 418 tests across 69 files, production build and workbench build. The production boundary check passed across 247 files. Both builds retain the existing large-chunk advisory; no physical-device performance claim is made.
 
-## Outstanding independent review findings
+Each new encounter passed edit → draft reload → Playtest → scoped Promote → uncached game reload. Temporary payout edits were restored through promotion, without a JavaScript rebuild. The encounter report records legal campaign traces, all-wave art demand and balance qualifications. The baseline legal strategy wins all eight encounters; this establishes reachability rather than owner-approved difficulty.
 
-Two reproduced authoring defects in the incoming capabilities remain release blockers: combat rebasing restores unrelated old catalog fields, and an unfinished map on a board blocks an unrelated selected-wave Playtest/promotion. Their owners are preparing focused fixes. This integration baseline does not claim those defects are resolved, and remains off main pending fixes and review of the merge resolution.
+Independent review exposed two real-game defects, now corrected: implicit single-route maps accidentally used legacy distance priority, and Skunk presentation could face away from its simulation-selected target. Explicit route authoring and focused replay regressions correct the first. The renderer now queries the same target selection as simulation and uses the actual shot target before locking release; the recorded 504-shot legal replay changes from 80 opposite-facing shots to zero. Independent feedback verification reviews these corrections before the owner handoff.
 
-## Follow-on checkpoint
+Board authoring retains unrelated live edits and pending board intent through scoped promotion, JSON reload and repeated rebase. The final `0846765` fix preserves marker coordinates with their authored illustration rather than silently transferring or dropping them, and retains valid dependency snapshots when a pending travel-order edit conflicts with live board removal. Stale promotion guards remain in place. These exact review repros require independent confirmation before standalone PR17 merges.
 
-At `20524db`, poison fieldwise rebasing (`ab9176a`), selected-wave board projection (`783844d`) and the approved geometry decision (`be072df`) are included. All 387 tests, type checks, formatting and both builds pass. Independent review verified both initial repros are fixed.
+Thirty generated-art catalogue ideas verify, including rejected variants; runtime assets and provenance are committed. Diagnostic captures are classified separately. Browser verification of the initial combined fixture covered the earned twin-boss formation, combat feedback, pause, retry, inspection and candidate-only promotion. Server logs included ResizeObserver notifications during workbench transitions and an existing public-art path notice without visible malfunction; this is not a claim of silent logs.
 
-A further review repro remains blocking: when a pending draft map and a newly added live map share a board, selected-wave promotion preserves the live recipe, but subsequent draft rebasing drops its membership and fails validation. The board owner is correcting that scope reconciliation. PR17's previous authoring-only update also failed the simulated Last Lantern warm art-readiness threshold (1917 ms against 1773 ms); acceptance is diagnosing the measurement and checking the latest candidate with unchanged thresholds.
+## Owner and release gates
 
-These are capability delivery checks. Owner motion/scenery/battlefield gates and full five-encounter acceptance remain pending.
+Owner feedback remains required for board markers/navigation, painting clearance with the full HUD and crowds, Skunk battlefield effects, Boar motion/directional variants/battlefield appearance and final encounter balance. Full-profile progression, all-map briefings/crowds and phone/tablet touch review remain release checks.
 
-## Held feedback build
-
-The overall candidate incorporates Skunk runtime `a879b6d`, scenery `68a08ae`, owner-approved wet-mottling painting `5574d1c`, the global ownership fix `6729891`, and five-encounter feedback contribution `39fa398`. The functional assembly is `7432f3a`; diagnostic capture classification follows at `1d9a3ca`.
-
-All 405 tests across 67 files, type checks, formatting, production and workbench builds pass. The deterministic balance run reproduces normal-mode wins through all eight encounters, including both final Roadwarden defeats. Thirty catalogue ideas verify. Each new encounter's authoring round trip is recorded in the encounter report; parent verified the guide and real Rat battlefield open without browser warnings or errors.
-
-Run `npm run feedback:mosswater` for the local guide, focused real-Game attempts, full profile journey and candidate-only workbench. The candidate file and feedback storage are isolated; normal builds still use the accepted three-map canonical recipes. The parent acceptance chat is reviewing feedback readiness. Original Boar art remains in this functional build pending the separate motion approval.
-
-Poison PR15 and routes PR18 have independently merged to main after review and passing CI; poison deployment passed. Board PR17 remains held for an additional new-live-board topology case: rebasing a pending metadata edit after a live sole-member move to a new board produces an empty board. Its owner is correcting the globally valid comparison/authored topology. This does not claim final release readiness, painting-context acceptance, board/marker acceptance or physical-device performance.
+The parent coordinates canonical activation only after the standalone capability review and owner gates close. Feedback readiness does not authorize merging the held art/campaign assembly into main.
