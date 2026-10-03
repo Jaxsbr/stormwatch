@@ -40,59 +40,95 @@ function reconcileMemberships(
   );
   const owner = (boards: BoardDef[], id: string) =>
     boards.find((board) => board.levelIds.includes(id));
-  const sources = new Map(
-    candidateIds.map((id) => {
-      const current = owner(live, id),
-        pending = owner(preferred, id);
-      return [
-        id,
-        protectedIds.has(id) ? (pending ?? current) : (current ?? pending),
-      ] as const;
-    }),
+  const chooseSources = () =>
+    new Map(
+      candidateIds.map((id) => {
+        const current = owner(live, id),
+          pending = owner(preferred, id);
+        return [
+          id,
+          protectedIds.has(id) ? (pending ?? current) : (current ?? pending),
+        ] as const;
+      }),
+    );
+  let sources = chooseSources();
+  // Restoring historical ownership can displace the last member of another
+  // historical board. Restore that board's ownership too, until the topology
+  // is complete. A board introduced only in live content belongs to the live
+  // topology; it is absent from a historical snapshot if none of its members
+  // belong there. No empty board is materialized.
+  for (;;) {
+    let extended = false;
+    for (const board of preferred) {
+      if (!snapshot.some((entry) => entry.id === board.id)) continue;
+      if ([...sources.values()].some((source) => source?.id === board.id))
+        continue;
+      for (const id of board.levelIds) {
+        if (
+          !baseIds.includes(id) ||
+          !candidateIds.includes(id) ||
+          protectedIds.has(id)
+        )
+          continue;
+        protectedIds.add(id);
+        extended = true;
+      }
+    }
+    if (!extended) break;
+    sources = chooseSources();
+  }
+  const owners = new Set(
+    [...sources.values()].flatMap((source) => (source ? [source.id] : [])),
   );
-  return snapshot.map((board) => {
-    const first = protectedBoards.has(board.id)
-      ? preferred.find((entry) => entry.id === board.id)
-      : live.find((entry) => entry.id === board.id);
-    const pending = preferred.find((entry) => entry.id === board.id);
-    const current = live.find((entry) => entry.id === board.id);
-    const belongs = (id: string) => sources.get(id)?.id === board.id;
-    const ids = (first?.levelIds ?? []).filter(belongs);
-    // Place concurrent live additions among their live neighbours before
-    // appending unpublished recipes from the draft.
-    for (const id of current?.levelIds ?? []) {
-      if (!belongs(id) || ids.includes(id)) continue;
-      const following = current!.levelIds
-        .slice(current!.levelIds.indexOf(id) + 1)
-        .find((member) => ids.includes(member));
-      const preceding = current!.levelIds
-        .slice(0, current!.levelIds.indexOf(id))
-        .reverse()
-        .find((member) => ids.includes(member));
-      ids.splice(
-        following
-          ? ids.indexOf(following)
-          : preceding
-            ? ids.indexOf(preceding) + 1
-            : ids.length,
-        0,
-        id,
-      );
-    }
-    for (const id of [...(pending?.levelIds ?? []), ...candidateIds])
-      if (belongs(id) && !ids.includes(id)) ids.push(id);
-    const result = boardInCandidate(board, ids);
-    result.levelIds = ids;
-    if (result.visual.markers) {
-      result.visual.markers = Object.fromEntries(
-        ids.flatMap((id) => {
-          const marker = sources.get(id)?.visual.markers?.[id];
-          return marker ? [[id, structuredClone(marker)]] : [];
-        }),
-      );
-    }
-    return result;
-  });
+  const topology = [...snapshot];
+  for (const source of sources.values())
+    if (source && !topology.some((board) => board.id === source.id))
+      topology.push(source);
+  return topology
+    .filter((board) => owners.has(board.id))
+    .map((board) => {
+      const first = protectedBoards.has(board.id)
+        ? preferred.find((entry) => entry.id === board.id)
+        : live.find((entry) => entry.id === board.id);
+      const pending = preferred.find((entry) => entry.id === board.id);
+      const current = live.find((entry) => entry.id === board.id);
+      const belongs = (id: string) => sources.get(id)?.id === board.id;
+      const ids = (first?.levelIds ?? []).filter(belongs);
+      // Place concurrent live additions among their live neighbours before
+      // appending unpublished recipes from the draft.
+      for (const id of current?.levelIds ?? []) {
+        if (!belongs(id) || ids.includes(id)) continue;
+        const following = current!.levelIds
+          .slice(current!.levelIds.indexOf(id) + 1)
+          .find((member) => ids.includes(member));
+        const preceding = current!.levelIds
+          .slice(0, current!.levelIds.indexOf(id))
+          .reverse()
+          .find((member) => ids.includes(member));
+        ids.splice(
+          following
+            ? ids.indexOf(following)
+            : preceding
+              ? ids.indexOf(preceding) + 1
+              : ids.length,
+          0,
+          id,
+        );
+      }
+      for (const id of [...(pending?.levelIds ?? []), ...candidateIds])
+        if (belongs(id) && !ids.includes(id)) ids.push(id);
+      const result = boardInCandidate(board, ids);
+      result.levelIds = ids;
+      if (result.visual.markers) {
+        result.visual.markers = Object.fromEntries(
+          ids.flatMap((id) => {
+            const marker = sources.get(id)?.visual.markers?.[id];
+            return marker ? [[id, structuredClone(marker)]] : [];
+          }),
+        );
+      }
+      return result;
+    });
 }
 /** Board membership, presentation and ordering are one conflict scope per board. */
 export function mergeBoardScopes(
@@ -154,7 +190,7 @@ export function rebaseBoardScopes(
     next = resolveBoards(authored);
   let content = resolveBoards(current),
     comparison = resolveBoards(current);
-  const changed = new Set<string>(),
+  const membershipChanged = new Set<string>(),
     conflicted = new Set<string>();
   const baseIds = base.levels.map(({ id }) => id);
   const projectedOld = old.map((board) =>
@@ -176,7 +212,13 @@ export function rebaseBoardScopes(
       )
     )
       continue;
-    changed.add(id);
+    if (
+      !equal(
+        before && boardInCandidate(before, baseIds).levelIds,
+        after && boardInCandidate(after, baseIds).levelIds,
+      )
+    )
+      membershipChanged.add(id);
     const live = content.find((b) => b.id === id);
     const replace = (list: BoardDef[], value?: BoardDef) => {
       const index = list.findIndex((b) => b.id === id);
@@ -215,8 +257,20 @@ export function rebaseBoardScopes(
     live,
     baseIds,
     contentIds,
-    changed,
+    membershipChanged,
   );
+  // Presentation edits keep live ownership. Preserve only marker coordinates
+  // actually authored in this draft, including anchors of unpublished maps.
+  for (const board of content) {
+    const before = old.find((entry) => entry.id === board.id);
+    const after = next.find((entry) => entry.id === board.id);
+    if (!board.visual.markers || !after?.visual.markers) continue;
+    for (const id of board.levelIds) {
+      const marker = after.visual.markers[id];
+      if (marker && !equal(marker, before?.visual.markers?.[id]))
+        board.visual.markers[id] = structuredClone(marker);
+    }
+  }
   comparison = reconcileMemberships(
     comparison,
     old,
