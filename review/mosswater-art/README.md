@@ -24,3 +24,7 @@ Run `npm run dev -- --port 4186`, then open `/review/mosswater-art/`. This uses 
 Type checking, all 387 tests, production and workbench builds pass on integration baseline `20524db`. Production module boundary passes. Browser confirmed required art readiness, 40 legal empty cells, Squirrel placement and running Rat wave. Phone-sized renderer view shows clear routes and side openings. Tablet inspection is partial; full HUD/crowd and physical-device acceptance remain unverified. Full authoring promotion round trip awaits the encounter candidate; canonical content remains unchanged.
 
 Session capture: 9 unique generated outputs reconciled against full chat and native files; 3 already catalogued, 6 added, 0 missing. Catalogue metadata/hash verification passes and candidate navigation was visually inspected. Diagnostic `phone-clearance.png` shows the real renderer and is not a new art concept.
+
+## Wet-mottling artwork acceptance — 4 October 2026
+
+Owner explicitly selected and approved option 3 (wet mottling). Runtime Poolbanks atlas now uses `exec-f252bd5e-a11e-48bf-8344-2a3d99944625.png`: right vertical strip blended into central ground; two worn-earth exit mouths retained. Geometry and 40-cell capacity unchanged. All three edge-blend variants archived (session total 12 unique, none missing). Battlefield painting is approved; full campaign/HUD/crowd review, cleaned board artwork, markers and navigation remain pending. Earlier phone-clearance screenshot documents the preceding revision, not this approved painting.

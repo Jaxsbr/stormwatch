@@ -3,16 +3,17 @@
   "id": "mossy-poolbanks-candidate-v1",
   "role": "battlefield",
   "review": {
-    "status": "held-owner-review",
-    "notes": "Mosswater Reach and Mossy Poolbanks directions selected; 40 placement cells accepted. This adapted asset awaits final owner approval. No campaign activation."
+    "status": "owner-approved-artwork",
+    "date": "2026-10-04",
+    "notes": "Owner explicitly approved option 3 (wet mottling). Approval covers battlefield painting with the right vertical worn-earth strip blended into central terrain, retaining two exit mouths. Full campaign/HUD/crowd acceptance remains separate."
   },
   "texture": "art/v2/mossy-poolbanks-candidate-v1/atlas.webp",
   "width": 1672,
   "height": 941,
-  "sha256": "08c32607868d6450e99c5653e2a718398618b77fe540f10df69ec014da5c46a1",
-  "bytes": 742698,
-  "source": "exec-74a8cce1-f088-4086-be63-f8040f9c7931.png",
-  "provenance": "Native ImageGen edit of selected session concept, converted to WebP quality 92 without cropping. Full original archived in ideas catalogue.",
+  "sha256": "22fbcc8ab655ec2df6316e2f6c5e9a74523e0f30846baa52a8b9eaaa8d0c2d21",
+  "bytes": 613850,
+  "source": "exec-f252bd5e-a11e-48bf-8344-2a3d99944625.png",
+  "provenance": "Native ImageGen edit of selected Poolbanks clearance candidate using owner annotations; wet-mottling option selected. Converted to WebP quality 92 without cropping. Original and alternatives archived in ideas catalogue.",
   "clearance": {
     "layout": "twin-switchbacks",
     "blockedCellsAdded": 0,
