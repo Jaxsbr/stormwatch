@@ -114,6 +114,7 @@ export class CharacterRig {
     shieldRaised = false,
     ragePhase = 0,
     reducedMotion = false,
+    immuneAge = Infinity,
   ) {
     this.cutout.reset(order, color);
     const phase = (distance / 0.65) % 1;
@@ -136,6 +137,16 @@ export class CharacterRig {
       guard.visible = shieldRaised;
       guard.position.copy(body.position);
       guard.material.rotation = 0;
+    }
+
+    // Approved two-frame reaction. This reads a simulation-owned cue age;
+    // it changes neither immunity nor the shared walking gait/leg resources.
+    const resistance = this.cutout.parts.get("bodyResist");
+    if (resistance) {
+      resistance.visible = body.visible && immuneAge >= 0 && immuneAge < 0.3;
+      resistance.position.copy(body.position);
+      resistance.material.rotation = body.material.rotation;
+      if (resistance.visible) body.visible = false;
     }
 
     for (const [index, leg] of this.legs.entries()) {

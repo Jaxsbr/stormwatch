@@ -110,6 +110,16 @@
       "path": "review/2026-10-03-skunk-study/facing/routes.jpg",
       "sha256": "0aa59744985b226844f6e948f169dd95fdeb760837e82e3aa5b7a772a603c507",
       "reason": "Diagnostic legal replay capture of corrected cross-route release; no new generated art."
+    },
+    {
+      "path": "review/2026-10-04-boar-runtime/evidence/mixed-brace.png",
+      "sha256": "57ace602891d18792395dee7cf58a81323ce49477778625a3ce49a89e6876d07",
+      "reason": "Diagnostic capture of runtime Boar resistance in a real mixed encounter; no new art idea"
+    },
+    {
+      "path": "review/2026-10-04-boar-runtime/evidence/finale-brace.png",
+      "sha256": "1a6ff57018a3ba7fbd445a66ab3da52801d17a54cb56653198f8a788c1b530eb",
+      "reason": "Diagnostic capture of runtime Boar resistance among twin-boss crowds; no new art idea"
     }
   ]
 }

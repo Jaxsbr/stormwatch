@@ -19,7 +19,7 @@ export const enemyVisuals: Record<
     briefing: "weasel-rig-v1/body.webp",
   },
   armored: {
-    views: ["boar-rig-v1", "boar-front-rig-v1", "boar-rear-rig-v1"],
+    views: ["boar-side-resistance-v1", "boar-front-rig-v1", "boar-rear-rig-v1"],
     briefing: "boar-rig-v1/body.webp",
   },
   boss: {

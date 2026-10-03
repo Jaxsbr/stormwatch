@@ -273,7 +273,7 @@ window.STORMWATCH_IDEAS = [
   },
   {
     "id": "badger-angry",
-    "title": "Roadwarden \u00b7 angry",
+    "title": "Roadwarden · angry",
     "description": "Current character cutouts, assembled in a neutral pose.",
     "kind": "existing",
     "asset": "assets/badger-angry.webp",
@@ -296,7 +296,7 @@ window.STORMWATCH_IDEAS = [
   },
   {
     "id": "badger-raging",
-    "title": "Roadwarden \u00b7 raging",
+    "title": "Roadwarden · raging",
     "description": "Current character cutouts, assembled in a neutral pose.",
     "kind": "existing",
     "asset": "assets/badger-raging.webp",
@@ -568,5 +568,167 @@ window.STORMWATCH_IDEAS = [
     "width": 1672,
     "height": 940,
     "sha256": "08532b99383f6c146a7a20ed90400c3f03a37d2e283200155f5e35d0d15f8434"
+  },
+  {
+    "id": "boar-brace-b-20261003",
+    "title": "Iron Boar — Compact brace",
+    "description": "Unselected higher fist and tighter shield permutation.",
+    "kind": "concept",
+    "categories": [
+      "character"
+    ],
+    "asset": "assets/boar-brace-b-20261003.png",
+    "source": {
+      "label": "Iron Boar animation and appearance",
+      "file": "exec-949a9220-4266-4286-9e24-77de7716facf.png",
+      "session": "01a0fef2-9bdb-70f2-9f02-42e8cb7c95c4"
+    },
+    "width": 1410,
+    "height": 1116,
+    "sha256": "d83aaf956d8a63443c4b4ef8bac07083f77e785c36dd36318c4978d37721b91d"
+  },
+  {
+    "id": "boar-brace-a-20261003",
+    "title": "Iron Boar — Light tuck brace — selected",
+    "description": "Owner-selected resistance torso. Motion and battlefield approval pending.",
+    "kind": "concept",
+    "categories": [
+      "character"
+    ],
+    "asset": "assets/boar-brace-a-20261003.png",
+    "source": {
+      "label": "Iron Boar animation and appearance",
+      "file": "exec-ed0feb38-93cb-4061-b9d5-acd5ea167944.png",
+      "session": "01a0fef2-9bdb-70f2-9f02-42e8cb7c95c4"
+    },
+    "width": 1410,
+    "height": 1116,
+    "sha256": "df53b4f0b033bd7b49566e1c59c78728c37d434b8ab51de3b14ac03867656913"
+  },
+  {
+    "id": "boar-brace-c-20261003",
+    "title": "Iron Boar — Heavy settle brace",
+    "description": "Unselected torso settle and tucked-arm permutation.",
+    "kind": "concept",
+    "categories": [
+      "character"
+    ],
+    "asset": "assets/boar-brace-c-20261003.png",
+    "source": {
+      "label": "Iron Boar animation and appearance",
+      "file": "exec-69152e76-b223-40cf-8e18-3a936edf4e34.png",
+      "session": "01a0fef2-9bdb-70f2-9f02-42e8cb7c95c4"
+    },
+    "width": 1410,
+    "height": 1116,
+    "sha256": "d8deafc84efb5308e7d278eae644ae2f803dc5f827feaac8b70eabc28bedfee2"
+  },
+  {
+    "id": "boar-snarl-light-20261003",
+    "title": "Iron Boar — Light resistance expression",
+    "description": "First mouth-open alternative; not selected.",
+    "kind": "concept",
+    "categories": [
+      "character"
+    ],
+    "asset": "assets/boar-snarl-light-20261003.png",
+    "source": {
+      "label": "Iron Boar animation and appearance",
+      "file": "exec-ed84448f-af67-4f28-b321-4b0fc787a68d.png",
+      "session": "01a0fef2-9bdb-70f2-9f02-42e8cb7c95c4"
+    },
+    "width": 1410,
+    "height": 1115,
+    "sha256": "6dfb0e0598a3f44939c4a0233a00d3c6277c45dcc4c80eb27e57ea62467d73b5"
+  },
+  {
+    "id": "boar-snarl-broad-20261003",
+    "title": "Iron Boar — Broad growl expression",
+    "description": "Second mouth-open alternative; not selected.",
+    "kind": "concept",
+    "categories": [
+      "character"
+    ],
+    "asset": "assets/boar-snarl-broad-20261003.png",
+    "source": {
+      "label": "Iron Boar animation and appearance",
+      "file": "exec-80eb0532-b033-455c-aa54-856121b0970d.png",
+      "session": "01a0fef2-9bdb-70f2-9f02-42e8cb7c95c4"
+    },
+    "width": 1410,
+    "height": 1115,
+    "sha256": "be6c930ebd52f57728e9ecb847d97bcd544ead9e68e368dd70e1fdfc0450e3d4"
+  },
+  {
+    "id": "boar-snarl-selected-20261003",
+    "title": "Iron Boar — Selected snarl reference",
+    "description": "Third mouth-open expression selected as the basis for bracing studies.",
+    "kind": "concept",
+    "categories": [
+      "character"
+    ],
+    "asset": "assets/boar-snarl-selected-20261003.png",
+    "source": {
+      "label": "Iron Boar animation and appearance",
+      "file": "exec-3b022b6d-c40c-4084-bdb1-50f9759f9ba7.png",
+      "session": "01a0fef2-9bdb-70f2-9f02-42e8cb7c95c4"
+    },
+    "width": 1410,
+    "height": 1115,
+    "sha256": "4adf261e2a3762c11418f2140f519746bb05c7cf5872e0f9c24cfaa5b3ad86af"
+  },
+  {
+    "id": "boar-weathered-stoic-20261003",
+    "title": "Iron Boar — Weathered Stoic concept",
+    "description": "Unselected early tough-skin and expression direction.",
+    "kind": "concept",
+    "categories": [
+      "character"
+    ],
+    "asset": "assets/boar-weathered-stoic-20261003.png",
+    "source": {
+      "label": "Iron Boar animation and appearance",
+      "file": "exec-cf392018-da8a-452c-bf27-138a154e33d9.png",
+      "session": "01a0fef2-9bdb-70f2-9f02-42e8cb7c95c4"
+    },
+    "width": 1536,
+    "height": 1024,
+    "sha256": "e7dc67953476785fa2a6bd919dde7cf39644bdbbd9824607abf3d78281b6f273"
+  },
+  {
+    "id": "boar-bristled-stubborn-20261003",
+    "title": "Iron Boar — Bristled Stubborn concept",
+    "description": "Unselected early bristled appearance direction.",
+    "kind": "concept",
+    "categories": [
+      "character"
+    ],
+    "asset": "assets/boar-bristled-stubborn-20261003.png",
+    "source": {
+      "label": "Iron Boar animation and appearance",
+      "file": "exec-3a8c6eb0-1ba8-4ea4-9021-e9adb7d6d6fe.png",
+      "session": "01a0fef2-9bdb-70f2-9f02-42e8cb7c95c4"
+    },
+    "width": 1536,
+    "height": 1024,
+    "sha256": "63164ebf13db2beff8c8913b2e68c8090f430f5c5b0f38d5bcc3bb9e0e3e193e"
+  },
+  {
+    "id": "boar-leathery-unbothered-20261003",
+    "title": "Iron Boar — Leathery Unbothered concept",
+    "description": "Unselected early hide and expression direction.",
+    "kind": "concept",
+    "categories": [
+      "character"
+    ],
+    "asset": "assets/boar-leathery-unbothered-20261003.png",
+    "source": {
+      "label": "Iron Boar animation and appearance",
+      "file": "exec-53d00908-da63-45d7-b71c-27571415d269.png",
+      "session": "01a0fef2-9bdb-70f2-9f02-42e8cb7c95c4"
+    },
+    "width": 1536,
+    "height": 1024,
+    "sha256": "9b1afe730eada995d77a082d8db5901df68e2b31bc7ae1f29f1df2af1f4095d0"
   }
 ];

@@ -1,0 +1,174 @@
+{
+  "version": 1,
+  "id": "boar-side-resistance-v1",
+  "kind": "cutout-character",
+  "view": "side",
+  "animation": {
+    "hipHeight": 130,
+    "suggestedCycleSeconds": 0.95,
+    "nearPhase": 0,
+    "farPhase": 0.5,
+    "maxBodyBobSourcePixels": 4,
+    "requirement": "worldpath anchored stance plus2boneIK; no perframescaling"
+  },
+  "units": "sourcepixels localtoeachcrop; restPosition rootrelativeYup",
+  "parts": [
+    {
+      "id": "body",
+      "rect": [
+        60,
+        0,
+        850,
+        672
+      ],
+      "pivot": [
+        415,
+        550
+      ],
+      "scale": 1,
+      "z": 2,
+      "attachments": {
+        "nearHip": [
+          460,
+          555
+        ],
+        "farHip": [
+          360,
+          535
+        ],
+        "resistance": [
+          415,
+          550
+        ]
+      },
+      "restPosition": [
+        0,
+        0
+      ],
+      "texture": "art/v2/boar-rig-v1/body.webp",
+      "sha256": "87c010c63f2416492709f8ea48e2519961abac41fe31ca211f8521437778f8f7",
+      "bytes": 139584
+    },
+    {
+      "id": "nearLeg",
+      "rect": [
+        1030,
+        140,
+        380,
+        560
+      ],
+      "pivot": [
+        120,
+        60
+      ],
+      "scale": 0.55,
+      "z": 1,
+      "joints": {
+        "hip": [
+          120,
+          60
+        ],
+        "knee": [
+          200,
+          245
+        ],
+        "ankle": [
+          180,
+          420
+        ],
+        "sole": [
+          235,
+          530
+        ]
+      },
+      "attachTo": "body.nearHip",
+      "restPosition": [
+        45,
+        -5
+      ],
+      "texture": "art/v2/boar-rig-v1/nearLeg.webp",
+      "sha256": "fe10637278467f68d5586c722677e19dc2074af977cdce96c2792191d3fa3c22",
+      "bytes": 34266
+    },
+    {
+      "id": "farLeg",
+      "rect": [
+        1670,
+        140,
+        380,
+        560
+      ],
+      "pivot": [
+        120,
+        60
+      ],
+      "scale": 0.55,
+      "z": 0,
+      "joints": {
+        "hip": [
+          120,
+          60
+        ],
+        "knee": [
+          190,
+          245
+        ],
+        "ankle": [
+          175,
+          420
+        ],
+        "sole": [
+          230,
+          530
+        ]
+      },
+      "attachTo": "body.farHip",
+      "restPosition": [
+        -55,
+        15
+      ],
+      "texture": "art/v2/boar-rig-v1/farLeg.webp",
+      "sha256": "0b3b1260a9085f3c9d360de446175f3a47ed0f17cf40ba01daf51863e080f566",
+      "bytes": 32178
+    },
+    {
+      "id": "bodyResist",
+      "texture": "art/v2/boar-side-resistance-v1/body-resist.webp",
+      "rect": [
+        0,
+        0,
+        1410,
+        1116
+      ],
+      "pivot": [
+        699,
+        919
+      ],
+      "scale": 0.602,
+      "z": 2,
+      "attachTo": "body.resistance",
+      "sha256": "c0c33d5847644690711af90295338bd3b16027c04642be5bea9630760a219e7a",
+      "bytes": 249916
+    }
+  ],
+  "provenance": {
+    "neutralRig": "boar-rig-v1",
+    "selectedSource": "ideas-catalogue/assets/boar-brace-a-20261003.png",
+    "selectedSourceSha256": "df53b4f0b033bd7b49566e1c59c78728c37d434b8ab51de3b14ac03867656913",
+    "prompt": "prompt.txt",
+    "poseApproval": "Option A - use it",
+    "motionApproval": "approved",
+    "motionApprovalDate": "2026-10-04",
+    "studyCommit": "4fb3b4b",
+    "approvalCommit": "e36785d",
+    "scope": "Side torso and 300 ms reaction approved. Directional variants, equipment mirroring, gas and battlefield acceptance pending."
+  },
+  "encoding": {
+    "format": "webp",
+    "quality": 92,
+    "alphaQuality": 100,
+    "effort": 6,
+    "source": "native selected image; no resizing",
+    "alphaVerifiedExact": true
+  }
+}

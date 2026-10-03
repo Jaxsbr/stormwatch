@@ -43,3 +43,4 @@ Read the accepted records before changing consequential behavior. For a new deci
 - [Authored boards and profile continuation](boards-profile-progression.md) — descriptive candidate filename for coordinated expansion review; numbering is reserved during synthesis.
 
 - [Twin switchbacks crossing battlefield — approved geometry](twin-switchbacks-layout.md) — one shared layout for woodland encounters 1, 2 and 5.
+- [Iron Boar resistance torso](boar-resistance-torso.md) — approved side pose and motion; directional and battlefield review pending.
