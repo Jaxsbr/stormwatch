@@ -1,6 +1,6 @@
 # Enemy facing follows route travel
 
-Status: owner-requested bug fix, 4 October 2026; parent integration and deployment verification pending.
+Status: owner-requested bug fix, 4 October 2026; standalone main PR20 merged at `9e0b65a`; deployment verification pending.
 
 ## Context
 
@@ -30,8 +30,8 @@ unchanged. This follows the existing reflected defender resource convention.
 All four enemy roles face along return segments without new artwork, content,
 movement, damage, timing or simulation state changes. Existing vertical views,
 shield torso swaps, rage, pause and reduced-motion behavior remain in their own
-seams. The optional Boar immunity torso can use the same generic sprite reflection;
-its visibility timing belongs to its separate integration.
+seams. Whole-torso variants use the same generic sprite reflection. This fix
+changes no asset catalog or campaign content.
 
 ## Verification
 
@@ -42,10 +42,13 @@ pause, reduced motion, source texture isolation, pooled reuse and disposal. Actu
 reflected Rat boot contact remains within one stage pixel during the sampled stance;
 the native fixed-length IK retains its existing full-extension clamp.
 
-The four original symptom checks changed from failing to passing. The required
-check, 429 tests and production build pass; the production artifact boundary passes.
+The four original symptom checks fail on the main baseline and pass with this
+patch. Standalone verification passes the required check, 412 tests, formatting,
+production build (241-file artifact boundary) and workbench build.
 Browser verification uses normal-mode crossing play on the shared renderer, with
 paused left-return and right-forward Rats visible together. This is desktop browser
 behavior evidence, not physical mobile performance or whole-expansion art approval.
-Parent review, combined Boar torso verification and post-merge deployment remain
-separate handoff checks.
+Independent review of the identical renderer implementation and its standalone
+main adaptation passes. Post-merge deployment verification remains pending.
+
+The held feedback build combines the independently reviewed Boar immunity torso with this repair. All 433 integrated tests, type checking, formatting and both builds pass; a retained actual Game/Battlefield regression verifies the reflected brace, pause, 300 ms recovery and neutral pooled reuse. This integration does not close owner directional or battlefield-art acceptance.
