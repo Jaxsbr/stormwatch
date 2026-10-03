@@ -39,3 +39,4 @@ Read the accepted records before changing consequential behavior. For a new deci
 - [039: Commit-time ideas capture](039-commit-time-ideas-capture.md)
 
 - [Attached poison and combat outcomes](poison-combat-lifecycle.md) — descriptive filename reserved to avoid parallel ADR-number collisions.
+- [Stable routes and required boss defeats — implementation candidate](routes-and-required-boss-defeats.md)

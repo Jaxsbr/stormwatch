@@ -21,6 +21,7 @@ import {
 } from "./status-glyph";
 import { updateCastNet } from "./cast-net";
 import { onPath, pointOnPath } from "../sim/path";
+import { levelRoutes, routeFor } from "../sim/routes";
 import type { Game } from "../sim/game";
 import type { EnemyKind, LevelDef, Point, TowerKind } from "../sim/types";
 
@@ -83,13 +84,10 @@ export class Battlefield {
   private backdrop: THREE.Sprite | null = null;
   private generation = 0;
   private sceneryKey: string | null = null;
-  private gaitSampler = projectedPathSampler(
-    [
-      { x: 0, z: 0 },
-      { x: 1, z: 0 },
-    ],
-    position,
-  );
+  private gaitSamplers = new Map<
+    string,
+    ReturnType<typeof projectedPathSampler>
+  >();
   private figures = new Map<number, Figure>();
   private characterPool = new ResourcePool<CharacterRig>();
   private defenderPool = new ResourcePool<DefenderRig>();
@@ -353,7 +351,7 @@ export class Battlefield {
       level.id,
       level.width,
       level.depth,
-      level.path,
+      levelRoutes(level),
       level.blocked,
       backdropPath,
     ]);
@@ -371,7 +369,12 @@ export class Battlefield {
     }
     this.artTasks.length = this.coreArtTaskCount;
     this.sceneryKey = sceneryKey;
-    this.gaitSampler = projectedPathSampler(level.path, position);
+    this.gaitSamplers = new Map(
+      levelRoutes(level).map((r) => [
+        r.id,
+        projectedPathSampler(r.path, position),
+      ]),
+    );
     this.width = level.width;
     this.depth = level.depth;
     let scenery: THREE.Sprite;
@@ -399,32 +402,47 @@ export class Battlefield {
     const ctx = canvas.getContext("2d")!;
     ctx.scale(2, 2);
     ctx.translate(pathPadding, 0);
-    const pts = level.path.map((p) => ({
-      x: position(p).x,
-      y: H - position(p).y,
-    }));
-    // Continue the off-map entrance/exit into the scenery on wide stages.
-    // Simulation waypoints are unchanged.
-    if (pts[0].y === pts[1].y) pts[0].x = -pathPadding;
-    if (pts.at(-1)!.y === pts.at(-2)!.y) pts.at(-1)!.x = W + pathPadding;
     const route = new Path2D();
-    route.moveTo(pts[0].x, pts[0].y);
-    for (let i = 1; i < pts.length - 1; i++) {
-      const a = pts[i - 1],
-        b = pts[i],
-        c = pts[i + 1],
-        r = 15;
-      const ab = Math.hypot(b.x - a.x, b.y - a.y),
-        bc = Math.hypot(c.x - b.x, c.y - b.y);
-      route.lineTo(b.x + ((a.x - b.x) * r) / ab, b.y + ((a.y - b.y) * r) / ab);
-      route.quadraticCurveTo(
-        b.x,
-        b.y,
-        b.x + ((c.x - b.x) * r) / bc,
-        b.y + ((c.y - b.y) * r) / bc,
-      );
+    for (const authoredRoute of levelRoutes(level)) {
+      const pts = authoredRoute.path.map((p) => ({
+        x: position(p).x,
+        y: H - position(p).y,
+      }));
+      // Continue the off-map entrance/exit into the scenery on wide stages.
+      // Simulation waypoints are unchanged.
+      if (
+        pts[0].y === pts[1].y &&
+        (authoredRoute.path[0].x < 0 || authoredRoute.path[0].x >= level.width)
+      )
+        pts[0].x = authoredRoute.path[0].x < 0 ? -pathPadding : W + pathPadding;
+      if (
+        pts.at(-1)!.y === pts.at(-2)!.y &&
+        (authoredRoute.path.at(-1)!.x < 0 ||
+          authoredRoute.path.at(-1)!.x >= level.width)
+      )
+        pts.at(-1)!.x =
+          authoredRoute.path.at(-1)!.x < 0 ? -pathPadding : W + pathPadding;
+      route.moveTo(pts[0].x, pts[0].y);
+      for (let i = 1; i < pts.length - 1; i++) {
+        const a = pts[i - 1],
+          b = pts[i],
+          c = pts[i + 1],
+          r = 15;
+        const ab = Math.hypot(b.x - a.x, b.y - a.y),
+          bc = Math.hypot(c.x - b.x, c.y - b.y);
+        route.lineTo(
+          b.x + ((a.x - b.x) * r) / ab,
+          b.y + ((a.y - b.y) * r) / ab,
+        );
+        route.quadraticCurveTo(
+          b.x,
+          b.y,
+          b.x + ((c.x - b.x) * r) / bc,
+          b.y + ((c.y - b.y) * r) / bc,
+        );
+      }
+      route.lineTo(pts.at(-1)!.x, pts.at(-1)!.y);
     }
-    route.lineTo(pts.at(-1)!.x, pts.at(-1)!.y);
     ctx.lineCap = "round";
     ctx.lineJoin = "round";
     for (const [width, color] of [
@@ -914,7 +932,8 @@ export class Battlefield {
           reducedMotion,
         );
       }
-      const next = pointOnPath(game.level.path, e.distance + 0.02);
+      const enemyRoute = routeFor(game.level, e.routeId);
+      const next = pointOnPath(enemyRoute.path, e.distance + 0.02);
       const vertical = Math.abs(next.z - e.z) > Math.abs(next.x - e.x);
       const rage = e.kind === "boss" ? bossRagePhase(e) : 0;
       const desiredRig = this.art!.enemy(
@@ -946,7 +965,7 @@ export class Battlefield {
         f.character.group.position.copy(position(e)).add(evadeOffset);
         f.character.update(
           e.distance,
-          this.gaitSampler,
+          this.gaitSamplers.get(enemyRoute.id)!,
           f.sprite.renderOrder,
           f.sprite.material.color,
           e.shieldRaised ? Infinity : s.clock - e.hitAt,
