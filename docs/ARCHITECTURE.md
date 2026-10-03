@@ -48,7 +48,7 @@ tiles. Towers cannot reroute enemies. The presentation maps simulation coordinat
 onto a flat orthographic stage with separate horizontal/vertical spacing, a painted
 biome plate, and a textured continuous trail. Approved tower footprints remain
 screen aligned. Runtime character rigs choose front/rear views for vertical travel
-and side views for current rightward segments. Gait, reload and idle motion read
+and side views reflected toward horizontal route travel. Gait, reload and idle motion read
 simulation time/distance, so pause freezes them. A defender hit is tested before ground picking, including during placement previews.
 Ground taps select a pending cell; an explicit confirmation issues the placement command.
 
