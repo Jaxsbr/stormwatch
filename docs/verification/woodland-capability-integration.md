@@ -23,3 +23,11 @@ A combined API regression edits board metadata, a shared layout, poison duration
 ## Outstanding independent review findings
 
 Two reproduced authoring defects in the incoming capabilities remain release blockers: combat rebasing restores unrelated old catalog fields, and an unfinished map on a board blocks an unrelated selected-wave Playtest/promotion. Their owners are preparing focused fixes. This integration baseline does not claim those defects are resolved, and remains off main pending fixes and review of the merge resolution.
+
+## Follow-on checkpoint
+
+At `20524db`, poison fieldwise rebasing (`ab9176a`), selected-wave board projection (`783844d`) and the approved geometry decision (`be072df`) are included. All 387 tests, type checks, formatting and both builds pass. Independent review verified both initial repros are fixed.
+
+A further review repro remains blocking: when a pending draft map and a newly added live map share a board, selected-wave promotion preserves the live recipe, but subsequent draft rebasing drops its membership and fails validation. The board owner is correcting that scope reconciliation. PR17's previous authoring-only update also failed the simulated Last Lantern warm art-readiness threshold (1917 ms against 1773 ms); acceptance is diagnosing the measurement and checking the latest candidate with unchanged thresholds.
+
+These are capability delivery checks. Owner motion/scenery/battlefield gates and full five-encounter acceptance remain pending.

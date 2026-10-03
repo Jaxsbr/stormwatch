@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Skunk · poison effect directions</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <header>
+      <small>STORMWATCH · SKUNK · EFFECT EXPLORATION</small>
+      <h1>One impact. Poison travels with the enemy.</h1>
+      <p>Selected: B · Soft puffs · poison shown by gas alone</p>
+      <nav>
+        <button id="play">Pause</button
+        ><button id="restart">Replay impact</button
+        ><label
+          >Speed
+          <select id="speed">
+            <option value="1">Normal</option>
+            <option value="0.35">Slow</option>
+          </select></label
+        ><label
+          >Gas opacity
+          <input
+            id="opacity"
+            type="range"
+            min="0.2"
+            max="1"
+            step="0.05"
+            value="0.65"
+          /><output id="opacityValue">65%</output></label
+        ><label><input id="crowd" type="checkbox" checked /> Crowd</label
+        ><label><input id="reduced" type="checkbox" /> Reduced motion</label>
+      </nav>
+    </header>
+    <main>
+      <article>
+        <h2>A · Thin wisps</h2>
+        <p>Small lime curls · clearest silhouettes</p>
+        <canvas
+          id="a"
+          aria-label="Thin gas wisps following affected enemies"
+        ></canvas>
+      </article>
+      <article>
+        <h2>B · Soft puffs — selected</h2>
+        <p>Round rolling gas · strongest poison presence</p>
+        <canvas
+          id="b"
+          aria-label="Soft green gas puffs following affected enemies"
+        ></canvas>
+      </article>
+      <article>
+        <h2>C · Low trailing haze</h2>
+        <p>Short flattened plumes · face kept clear</p>
+        <canvas
+          id="c"
+          aria-label="Low green haze following affected enemies"
+        ></canvas>
+      </article>
+    </main>
+    <footer>
+      <label
+        >Sequence
+        <input
+          id="time"
+          type="range"
+          min="0"
+          max="6"
+          step="0.01"
+          value="0" /></label
+      ><output id="status">Loading original character art…</output>
+      <div>
+        <button data-time="0.9">Impact</button
+        ><button data-time="2.5">Attached gas</button
+        ><button data-time="4.4">Late arrival</button
+        ><button data-time="5.3">Expired</button>
+      </div>
+      <p>
+        Rat: poison attached · Weasel: example evasion · Boar: immune. A later
+        Rat stays untreated. This scripted comparison demonstrates intended
+        visual distinctions; it does not establish real hit eligibility, poison
+        duration or damage.
+      </p>
+      <p>
+        Green ground burst lasts under one second. Attached gas ends at the
+        illustrated expiry. No persistent ground effect or damage area is drawn.
+      </p>
+      <a href="../motion/index.html">Back to accepted motion study</a>
+    </footer>
+    <script type="module" src="main.js"></script>
+  </body>
+</html>

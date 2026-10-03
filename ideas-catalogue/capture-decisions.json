@@ -32,6 +32,41 @@
       "reason": "Diagnostic board/profile browser verification using existing approved art; no new art idea or generated variation"
     },
     {
+      "path": "review/2026-10-03-skunk-study/battlefield/crowd.jpg",
+      "sha256": "e08256eb83cc529369f2a17ce7c3440ba6709539a029551f6a24cc0bc5b94040",
+      "reason": "Diagnostic actual-Game crowd screenshot; existing art and procedural gas, no new generated art."
+    },
+    {
+      "path": "review/2026-10-03-skunk-study/battlefield/release.jpg",
+      "sha256": "539557727fa8400e713efb66e80a777dfdb6d5d047324d0c40db45bee153c69f",
+      "reason": "Diagnostic exact release screenshot of accepted rig and flask; source art archived separately."
+    },
+    {
+      "path": "review/2026-10-03-skunk-study/effects/attached-comparison.jpg",
+      "sha256": "bbe7aa8d48273e3430c2fc4515933098880e39399b233dc5b94de6dd2a0e9ef9",
+      "reason": "Historical procedural-effect comparison screenshot before label removal; no generated artwork."
+    },
+    {
+      "path": "review/2026-10-03-skunk-study/motion/follow-through.jpg",
+      "sha256": "6355819da98d6192a32a4dc865a760253b202058fba339014db0907ef0ccafac",
+      "reason": "Diagnostic follow-through rig screenshot; generated source flask already archived."
+    },
+    {
+      "path": "review/2026-10-03-skunk-study/motion/preparation.jpg",
+      "sha256": "99b70b7b8315616c66e7b7f04c8af69f3b3fe9bb54cf84bfc4887ed9c9b0d09c",
+      "reason": "Diagnostic preparation rig screenshot; generated source flask already archived."
+    },
+    {
+      "path": "review/2026-10-03-skunk-study/motion/review.jpg",
+      "sha256": "a9deeb8f661ae26616ca5c3dd5adfd5b703ae3fdf7de4bf5a42ab66e939fecac",
+      "reason": "Diagnostic motion-study review screenshot; generated source flask already archived."
+    },
+    {
+      "path": "review/2026-10-03-skunk-study/motion/small-scale.jpg",
+      "sha256": "db08d3d13d3ed8a9b323841bc7123c276f9deccec879dba58cf326b10a802d0c",
+      "reason": "Diagnostic game-scale rig screenshot; generated source flask already archived."
+    },
+    {
       "path": "review/mosswater-art/phone-clearance.png",
       "sha256": "c474097012fac9f1ad9b83ce4f769c7a06f67b097135c0097cf0044289483be2",
       "reason": "Diagnostic real-renderer phone-sized clearance screenshot; no new art concept"
