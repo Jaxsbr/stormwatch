@@ -36,7 +36,7 @@ const advantages: Record<
 const enemyTraits: Record<EnemyKind, string> = {
   raider: "Periodic shield · half damage",
   runner: "Runs fast",
-  armored: "Armor reduces blast · tough skin resists poison",
+  armored: "Tough skin · permanently poison immune · nets still slow",
   boss: "Rage · boosts nearby enemies’ speed",
 };
 

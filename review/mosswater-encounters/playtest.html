@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <link rel="stylesheet" href="/fonts/fonts.css" />
+    <title>Mosswater playtest</title>
+  </head>
+  <body>
+    <div id="app">
+      <header class="fixture-header">
+        <a href="./">Feedback guide</a
+        ><strong id="title">Preparing legal entry…</strong
+        ><button id="start">Start wave</button><button id="pause">Pause</button
+        ><button id="inspect">Inspect enemies</button
+        ><button id="retry">Retry</button>
+      </header>
+      <p class="fixture-label">
+        Functional fixture · held art candidate · visual and balance approval pending ·
+        normal mode · seed 42
+      </p>
+      <section id="field">
+        <div id="canvas-host"></div>
+        <div class="defender-popup-root" id="defender-popups"></div>
+        <div id="status" role="status"></div>
+        <div id="bosses"></div>
+      </section>
+      <section id="inspection" hidden></section>
+    </div>
+    <script type="module" src="./playtest.ts"></script>
+  </body>
+</html>

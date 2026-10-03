@@ -160,3 +160,10 @@
     animation: notice-fade 4s linear both;
   }
 }
+
+.menu-page[data-menu-view="enemies"] {
+  justify-content: flex-start;
+}
+.enemy-inspection p {
+  text-align: left;
+}

@@ -433,7 +433,10 @@ function openBattleMenu() {
   clearBattleSelection();
   sound.pause(true);
   document.querySelector<HTMLElement>(".battle-screen")!.inert = true;
-  battleMenu = new BattleMenu(root, save, fullscreenLabel());
+  battleMenu = new BattleMenu(root, save, fullscreenLabel(), {
+    level: game.level,
+    enemies: game.enemies,
+  });
   updateHud();
 }
 function closeBattleMenu() {
@@ -511,6 +514,7 @@ app.addEventListener("click", (e) => {
   }
   if (action.startsWith("menu-")) {
     if (!battleMenu || battleMenu.transitioning) return;
+    if (action === "menu-enemies") void battleMenu.navigate("enemies");
     if (action === "menu-settings") void battleMenu.navigate("settings");
     if (action === "menu-back") void battleMenu.navigate("menu");
     if (action === "menu-quit") void battleMenu.navigate("quit");

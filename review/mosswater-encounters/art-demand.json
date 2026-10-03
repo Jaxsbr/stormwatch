@@ -1,0 +1,372 @@
+[
+  {
+    "id": "mosswater-01",
+    "art": {
+      "backdrop": "art/v2/mossy-poolbanks-candidate-v1/atlas.webp",
+      "enemies": [
+        {
+          "kind": "raider",
+          "views": [
+            "rat-rig-v3",
+            "rat-front-rig-v3",
+            "rat-rear-rig-v3"
+          ],
+          "briefing": "rat-rig-v3/body.webp"
+        }
+      ],
+      "defenders": [
+        {
+          "kind": "bolt",
+          "sideRig": "squirrel-side-defender-v1",
+          "portrait": "squirrel-side-defender-v1/portrait.webp"
+        },
+        {
+          "kind": "net",
+          "sideRig": "turtle-side-defender-v1",
+          "portrait": "turtle-side-defender-v1/portrait.webp"
+        },
+        {
+          "kind": "stone",
+          "sideRig": "skunk-side-defender-v1",
+          "portrait": "skunk-side-defender-v1/portrait.webp"
+        }
+      ]
+    },
+    "waves": [
+      {
+        "id": "mosswater-01-wave-1",
+        "enemies": [
+          "raider"
+        ]
+      },
+      {
+        "id": "mosswater-01-wave-2",
+        "enemies": [
+          "raider"
+        ]
+      },
+      {
+        "id": "mosswater-01-wave-3",
+        "enemies": [
+          "raider"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "mosswater-02",
+    "art": {
+      "backdrop": "art/v2/mossy-poolbanks-candidate-v1/atlas.webp",
+      "enemies": [
+        {
+          "kind": "runner",
+          "views": [
+            "weasel-rig-v1",
+            "weasel-front-rig-v1",
+            "weasel-rear-rig-v1"
+          ],
+          "briefing": "weasel-rig-v1/body.webp"
+        }
+      ],
+      "defenders": [
+        {
+          "kind": "bolt",
+          "sideRig": "squirrel-side-defender-v1",
+          "portrait": "squirrel-side-defender-v1/portrait.webp"
+        },
+        {
+          "kind": "net",
+          "sideRig": "turtle-side-defender-v1",
+          "portrait": "turtle-side-defender-v1/portrait.webp"
+        },
+        {
+          "kind": "stone",
+          "sideRig": "skunk-side-defender-v1",
+          "portrait": "skunk-side-defender-v1/portrait.webp"
+        }
+      ]
+    },
+    "waves": [
+      {
+        "id": "mosswater-02-wave-1",
+        "enemies": [
+          "runner"
+        ]
+      },
+      {
+        "id": "mosswater-02-wave-2",
+        "enemies": [
+          "runner"
+        ]
+      },
+      {
+        "id": "mosswater-02-wave-3",
+        "enemies": [
+          "runner"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "mosswater-03",
+    "art": {
+      "backdrop": "art/v2/mossy-poolbanks-candidate-v1/atlas.webp",
+      "enemies": [
+        {
+          "kind": "armored",
+          "views": [
+            "boar-rig-v1",
+            "boar-front-rig-v1",
+            "boar-rear-rig-v1"
+          ],
+          "briefing": "boar-rig-v1/body.webp"
+        }
+      ],
+      "defenders": [
+        {
+          "kind": "bolt",
+          "sideRig": "squirrel-side-defender-v1",
+          "portrait": "squirrel-side-defender-v1/portrait.webp"
+        },
+        {
+          "kind": "net",
+          "sideRig": "turtle-side-defender-v1",
+          "portrait": "turtle-side-defender-v1/portrait.webp"
+        },
+        {
+          "kind": "stone",
+          "sideRig": "skunk-side-defender-v1",
+          "portrait": "skunk-side-defender-v1/portrait.webp"
+        }
+      ]
+    },
+    "waves": [
+      {
+        "id": "mosswater-03-wave-1",
+        "enemies": [
+          "armored"
+        ]
+      },
+      {
+        "id": "mosswater-03-wave-2",
+        "enemies": [
+          "armored"
+        ]
+      },
+      {
+        "id": "mosswater-03-wave-3",
+        "enemies": [
+          "armored"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "mosswater-04",
+    "art": {
+      "backdrop": "art/v2/mossy-poolbanks-candidate-v1/atlas.webp",
+      "enemies": [
+        {
+          "kind": "raider",
+          "views": [
+            "rat-rig-v3",
+            "rat-front-rig-v3",
+            "rat-rear-rig-v3"
+          ],
+          "briefing": "rat-rig-v3/body.webp"
+        },
+        {
+          "kind": "runner",
+          "views": [
+            "weasel-rig-v1",
+            "weasel-front-rig-v1",
+            "weasel-rear-rig-v1"
+          ],
+          "briefing": "weasel-rig-v1/body.webp"
+        },
+        {
+          "kind": "armored",
+          "views": [
+            "boar-rig-v1",
+            "boar-front-rig-v1",
+            "boar-rear-rig-v1"
+          ],
+          "briefing": "boar-rig-v1/body.webp"
+        }
+      ],
+      "defenders": [
+        {
+          "kind": "bolt",
+          "sideRig": "squirrel-side-defender-v1",
+          "portrait": "squirrel-side-defender-v1/portrait.webp"
+        },
+        {
+          "kind": "net",
+          "sideRig": "turtle-side-defender-v1",
+          "portrait": "turtle-side-defender-v1/portrait.webp"
+        },
+        {
+          "kind": "stone",
+          "sideRig": "skunk-side-defender-v1",
+          "portrait": "skunk-side-defender-v1/portrait.webp"
+        }
+      ]
+    },
+    "waves": [
+      {
+        "id": "mosswater-04-wave-1",
+        "enemies": [
+          "raider",
+          "runner",
+          "armored"
+        ]
+      },
+      {
+        "id": "mosswater-04-wave-2",
+        "enemies": [
+          "raider",
+          "runner",
+          "armored"
+        ]
+      },
+      {
+        "id": "mosswater-04-wave-3",
+        "enemies": [
+          "raider",
+          "runner",
+          "armored"
+        ]
+      },
+      {
+        "id": "mosswater-04-wave-4",
+        "enemies": [
+          "raider",
+          "runner",
+          "armored"
+        ]
+      },
+      {
+        "id": "mosswater-04-wave-5",
+        "enemies": [
+          "raider",
+          "runner",
+          "armored"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "mosswater-05",
+    "art": {
+      "backdrop": "art/v2/mossy-poolbanks-candidate-v1/atlas.webp",
+      "enemies": [
+        {
+          "kind": "raider",
+          "views": [
+            "rat-rig-v3",
+            "rat-front-rig-v3",
+            "rat-rear-rig-v3"
+          ],
+          "briefing": "rat-rig-v3/body.webp"
+        },
+        {
+          "kind": "runner",
+          "views": [
+            "weasel-rig-v1",
+            "weasel-front-rig-v1",
+            "weasel-rear-rig-v1"
+          ],
+          "briefing": "weasel-rig-v1/body.webp"
+        },
+        {
+          "kind": "armored",
+          "views": [
+            "boar-rig-v1",
+            "boar-front-rig-v1",
+            "boar-rear-rig-v1"
+          ],
+          "briefing": "boar-rig-v1/body.webp"
+        },
+        {
+          "kind": "boss",
+          "views": [
+            "badger-rig-v1",
+            "badger-front-rig-v1",
+            "badger-rear-rig-v1"
+          ],
+          "briefing": "badger-rig-v1/body.webp",
+          "expressions": {
+            "front": [
+              "badger-front-angry-v1",
+              "badger-front-raging-v1"
+            ],
+            "side": [
+              "badger-side-angry-v1",
+              "badger-side-raging-v1"
+            ]
+          }
+        }
+      ],
+      "defenders": [
+        {
+          "kind": "bolt",
+          "sideRig": "squirrel-side-defender-v1",
+          "portrait": "squirrel-side-defender-v1/portrait.webp"
+        },
+        {
+          "kind": "net",
+          "sideRig": "turtle-side-defender-v1",
+          "portrait": "turtle-side-defender-v1/portrait.webp"
+        },
+        {
+          "kind": "stone",
+          "sideRig": "skunk-side-defender-v1",
+          "portrait": "skunk-side-defender-v1/portrait.webp"
+        }
+      ]
+    },
+    "waves": [
+      {
+        "id": "mosswater-05-wave-1",
+        "enemies": [
+          "raider",
+          "runner",
+          "armored"
+        ]
+      },
+      {
+        "id": "mosswater-05-wave-2",
+        "enemies": [
+          "raider",
+          "runner",
+          "armored"
+        ]
+      },
+      {
+        "id": "mosswater-05-wave-3",
+        "enemies": [
+          "raider",
+          "runner",
+          "armored"
+        ]
+      },
+      {
+        "id": "mosswater-05-wave-4",
+        "enemies": [
+          "raider",
+          "runner",
+          "armored"
+        ]
+      },
+      {
+        "id": "mosswater-05-wave-5",
+        "enemies": [
+          "raider",
+          "boss",
+          "runner",
+          "armored"
+        ]
+      }
+    ]
+  }
+]

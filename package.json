@@ -26,7 +26,9 @@
     "prototype:squirrel": "vite --host 127.0.0.1 --open /review/2026-09-28-animation-prototype/squirrel-study/index.html",
     "prototype:squirrel-poses": "vite --host 127.0.0.1 --open /review/2026-09-28-animation-prototype/squirrel-study/pose-motion/index.html",
     "prepare": "husky",
-    "ideas:check-staged": "node ideas-catalogue/check-staged.mjs"
+    "ideas:check-staged": "node ideas-catalogue/check-staged.mjs",
+    "feedback:mosswater": "node tools/mosswater-feedback.mjs",
+    "balance:mosswater": "node tools/mosswater-balance.mjs"
   },
   "dependencies": {
     "three": "0.186.0"
