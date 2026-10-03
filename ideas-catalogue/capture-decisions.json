@@ -95,6 +95,16 @@
       "path": "review/mosswater-encounters/workbench-promotion.jpg",
       "sha256": "30a2e39e054f686f9e5f915ac6c4894f36f0f732b2fd966ced8b547ae843daab",
       "reason": "Diagnostic workbench promotion verification screenshot; no new generated art."
+    },
+    {
+      "path": "review/2026-10-03-skunk-study/facing/first.jpg",
+      "sha256": "d31e5cff5fe081a15762a8da96717319f5fcc1ef9d85183b6fb35f86d60302be",
+      "reason": "Diagnostic legal replay capture of corrected first-shot facing; no new generated art."
+    },
+    {
+      "path": "review/2026-10-03-skunk-study/facing/routes.jpg",
+      "sha256": "0aa59744985b226844f6e948f169dd95fdeb760837e82e3aa5b7a772a603c507",
+      "reason": "Diagnostic legal replay capture of corrected cross-route release; no new generated art."
     }
   ]
 }

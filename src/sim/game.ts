@@ -355,14 +355,7 @@ export class Game {
     for (const t of s.towers) {
       t.cooldown -= dt;
       if (t.cooldown > 0) continue;
-      const target = s.enemies
-        .filter((e) => e.alive && distance(e, t) <= this.range(t))
-        .sort(
-          (a, b) =>
-            (this.level.routes
-              ? this.threatTime(a) - this.threatTime(b)
-              : b.distance - a.distance) || a.id - b.id,
-        )[0];
+      const target = this.targetFor(t);
       if (!target) continue;
       const def = this.towers[t.kind];
       t.cooldown =
@@ -481,6 +474,17 @@ export class Game {
       ) *
       (e.slowUntil > this.state.clock ? this.rules.slowScale : 1)
     );
+  }
+  /** Read-only current combat choice; preparation adapters share the firing policy. */
+  targetFor(t: Readonly<Tower>): Readonly<Enemy> | undefined {
+    return this.state.enemies
+      .filter((e) => e.alive && distance(e, t) <= this.range(t))
+      .sort(
+        (a, b) =>
+          (this.level.routes
+            ? this.threatTime(a) - this.threatTime(b)
+            : b.distance - a.distance) || a.id - b.id,
+      )[0];
   }
   private threatTime(e: Enemy): number {
     return remainingTravelTime(

@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Skunk facing regression</title>
+    <style>
+      body {
+        margin: 0;
+        background: #14221b;
+        color: #e5eedc;
+        font: 15px system-ui;
+      }
+      header {
+        padding: 12px 20px;
+      }
+      h1 {
+        font-size: 20px;
+        margin: 0 0 8px;
+      }
+      button {
+        font: inherit;
+        min-height: 44px;
+        margin: 4px;
+        padding: 8px 12px;
+      }
+      #field {
+        height: 540px;
+        width: 100%;
+      }
+      #state {
+        margin: 8px;
+      }
+      p {
+        margin: 8px 0;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <h1>Skunk · actual Mosswater release facing</h1>
+      <p>
+        Normal-mode legal command replay · seed 42 · accepted motion and effects
+        · owner battlefield acceptance pending
+      </p>
+      <button id="first">First shot · 0.7s</button>
+      <button id="conflict">Route priority · 6.7s</button>
+      <button id="late">Late first render · 6.8s</button>
+      <button id="step">Step frame</button>
+      <button id="sell">Sell firing Skunk</button>
+      <p id="state" role="status">Loading…</p>
+    </header>
+    <main id="field"></main>
+    <script type="module" src="./main.ts"></script>
+  </body>
+</html>
