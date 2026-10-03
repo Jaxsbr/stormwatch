@@ -122,3 +122,41 @@ Recovery starts a fresh damage window; damage taken during rage is not banked.
 At 25% health, full rage becomes permanent. Both Promote actions save these
 settings. Older drafts keep their speed tuning and gain the cycle defaults.
 Turtle slow remains fully effective in every phase.
+
+## Shared routes
+
+Map & wave settings includes a **Shared route layout** selector. Choose
+`twin-switchbacks` to reference the approved two-route geometry; this does not
+register a new campaign encounter. The map preview shows both fixed routes,
+with circles for entrances and squares for exits. Select an enemy group on the
+timeline to edit **Assigned route**. New groups use the first route unless assigned
+otherwise. **Arrive with previous group** begins at that group's start plus this
+group's wait; use zero wait for simultaneous twin arrivals. Following sequential
+groups wait for both cadences. The first group of a wave cannot use this setting.
+Enable **Require every finale boss defeated** for the twin finale. Draft saving
+allows an unfinished finale, but Playtest/runtime loading/promotion require at
+least one finale boss, and the actual game requires every authored boss to die.
+
+A selected shared layout exposes one x,z waypoint per line for each route. Apply
+shared routes validates the complete draft before saving; invalid coordinates or
+nonorthogonal segments leave the saved geometry unchanged. Geometry changes
+affect every map referencing that layout. Coordinate changes to accepted campaign
+geometry with its design owners, including any new scenery blocks.
+
+Promote wave includes changed geometry for its referenced shared layout. Promote
+all changes includes every changed shared layout. Both preserve unrelated disk
+layouts and reject a stale edited layout before writing any content. Existing
+attempts retain their old geometry; reload the game to start with promoted data.
+Old version-one drafts keep their paths and timings and acquire the approved
+layout library. No schema-version bump is needed.
+
+For structured promotion, include `routeLayouts: ["twin-switchbacks"]` in the
+selection when its geometry changed. A shared reference uses `routeLayoutId` plus
+empty local `path` and `blocked` arrays and matching layout dimensions. Inline
+`routes` also require an empty legacy `path`. Legacy maps keep their existing path
+and target priority; explicit routes use remaining travel time. See the
+[route contract](decisions/routes-and-required-boss-defeats.md).
+For new single-route encounters, enable **Prioritize remaining travel time** to
+author an explicit single route. Leaving it off preserves a legacy map's recorded
+distance priority. Map-owned route coordinates remain editable after detaching a
+shared layout; this changes only that map.

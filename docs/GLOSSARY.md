@@ -12,6 +12,9 @@
 | Wave reward                      | Fixed crowns granted once when a wave is cleared; it is independent of savings and elapsed time.                                                                   |
 | Discovery unlock                 | A persistent capability earned by victory or a later boss, such as the ability to upgrade Squirrels.                                                               |
 | Leak                             | An enemy reaches the end of the trail and removes village hearts.                                                                                                  |
+| Route | One fixed entrance-to-exit trail. An enemy keeps its assigned route even where trails cross. |
+| Shared route layout | One authored geometry reused by encounters, including routes and blocked ground. |
+| Remaining travel time | A threat estimate using distance left on the assigned route and current movement speed; future ability changes are not predicted. |
 | Splash                           | Damage to enemies within a radius of a stone impact.                                                                                                               |
 | Poison | Enemy-attached damage over time. Reapplication refreshes duration without stacking and retains the stronger active damage. Armor and shields do not prevent its damage. |
 | Tough skin | Iron Boar’s permanent poison immunity; ordinary blast damage and net slowing remain effective. |

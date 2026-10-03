@@ -2,6 +2,11 @@ import { afterEach, expect, it, vi } from "vitest";
 import * as THREE from "three";
 import { Battlefield } from "../src/render/battlefield";
 import { LEVELS } from "../src/content/levels";
+import {
+  CANONICAL_CONTENT,
+  resolveConfiguration,
+} from "../src/config/configuration";
+import { useRouteLayout } from "../src/workbench/route-authoring";
 
 // Mock only the browser/WebGL boundary; execute real Battlefield ownership.
 vi.mock("three", async (original) => {
@@ -103,6 +108,29 @@ it("rebuilds scenery for a backdrop-only edit and retains unchanged scenery", ()
   expect(disposeOldBackdrop).toHaveBeenCalledTimes(1);
   field.load(rainstone);
   expect(sceneryLoads(rainstonePath)).toBe(1);
+  field.dispose();
+});
+it("retains both routes on retry and rebuilds scenery when only the second route changes", () => {
+  const { field } = fixture();
+  const content = structuredClone(CANONICAL_CONTENT);
+  useRouteLayout(content, content.levels[0], "twin-switchbacks");
+  const level = resolveConfiguration(content).level;
+  const loads = vi.mocked(THREE.TextureLoader.prototype.load);
+  field.load(level);
+  const count = loads.mock.calls.length;
+  const backdropIndex = loads.mock.calls.findIndex(([url]) =>
+    url.endsWith("art/v2/woodland-clearing-v3/atlas.webp"),
+  );
+  const texture = loads.mock.results[backdropIndex].value as THREE.Texture;
+  const dispose = vi.spyOn(texture, "dispose");
+  field.load(level);
+  expect(loads.mock.calls).toHaveLength(count);
+  expect(dispose).not.toHaveBeenCalled();
+  content.routeLayouts![0].routes[1].path[1].x = 1;
+  content.routeLayouts![0].routes[1].path[2].x = 1;
+  field.load(resolveConfiguration(content).level);
+  expect(loads.mock.calls.length).toBeGreaterThan(count);
+  expect(dispose).toHaveBeenCalled();
   field.dispose();
 });
 

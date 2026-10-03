@@ -2885,3 +2885,9 @@ button:active:not(:disabled) {
     gap: 10px;
   }
 }
+
+.encounter-routes .route-preview {
+  width: 100%;
+  max-width: 360px;
+  max-height: 200px;
+}

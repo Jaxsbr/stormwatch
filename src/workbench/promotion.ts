@@ -9,6 +9,7 @@ import { validateAuthoredVisuals } from "../content/encounter-visuals";
 
 export interface PromotionSelection {
   levels?: string[];
+  routeLayouts?: string[];
   towers?: string[];
   enemies?: string[];
   rules?: string[];
@@ -37,7 +38,8 @@ export function previewPromotion(
   if (
     !selection ||
     Object.keys(selection).some(
-      (key) => !["levels", "towers", "enemies", "rules"].includes(key),
+      (key) =>
+        !["levels", "routeLayouts", "towers", "enemies", "rules"].includes(key),
     )
   )
     throw new Error("Unsupported promotion scope");
@@ -49,7 +51,13 @@ export function previewPromotion(
     throw new Error("Select authored content explicitly before promotion");
   const content = clone(baseline);
   const changes: PromotionPreview["changes"] = [];
-  for (const scope of ["levels", "towers", "enemies", "rules"] as const) {
+  for (const scope of [
+    "levels",
+    "routeLayouts",
+    "towers",
+    "enemies",
+    "rules",
+  ] as const) {
     const ids = selection[scope] ?? [];
     if (
       !Array.isArray(ids) ||
@@ -58,7 +66,19 @@ export function previewPromotion(
     )
       throw new Error(`Invalid ${scope} selection`);
     for (const id of ids) {
-      if (scope === "levels") {
+      if (scope === "routeLayouts") {
+        const after = revision.content.routeLayouts?.find((l) => l.id === id);
+        if (!after) throw new Error(`Unknown route layout ${id}`);
+        content.routeLayouts ??= [];
+        const index = content.routeLayouts.findIndex((l) => l.id === id);
+        changes.push({
+          scope: `routeLayouts/${id}`,
+          before: content.routeLayouts[index] ?? null,
+          after: clone(after),
+        });
+        if (index < 0) content.routeLayouts.push(clone(after));
+        else content.routeLayouts[index] = clone(after);
+      } else if (scope === "levels") {
         const index = content.levels.findIndex((level) => level.id === id);
         const after = revision.content.levels.find((level) => level.id === id);
         if (index < 0 || !after) throw new Error(`Unknown level ${id}`);
@@ -128,7 +148,7 @@ export function verifyPromotionScenarios(
   revision: DraftRevision,
   scenarios: Scenario[] = [],
 ): string[] {
-  const catalogOrRules = ["towers", "enemies", "rules"].some(
+  const catalogOrRules = ["towers", "enemies", "rules", "routeLayouts"].some(
     (scope) =>
       (preview.selected[scope as keyof PromotionSelection]?.length ?? 0) > 0,
   );
