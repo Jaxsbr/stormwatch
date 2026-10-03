@@ -75,7 +75,12 @@ it("derives promised legacy rewards without showing them as newly earned", () =>
 });
 
 it("shows both first-board rewards only when both are newly granted", () => {
-  const first = recordVictoryOutcome(freshSave(), "the-last-lantern", 1);
+  const prepared = recordVictoryOutcome(
+    recordVictoryOutcome(freshSave(), "lantern-pass", 1).save,
+    "rainstone-crossing",
+    1,
+  ).save;
+  const first = recordVictoryOutcome(prepared, "the-last-lantern", 1);
   expect(first.firstBoardComplete).toBe(true);
   expect(first.rewards).toEqual([
     { kind: "advantage-unlock", card: "reach" },

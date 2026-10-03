@@ -160,3 +160,21 @@ For new single-route encounters, enable **Prioritize remaining travel time** to
 author an explicit single route. Leaving it off preserves a legacy map's recorded
 distance priority. Map-owned route coordinates remain editable after detaching a
 shared layout; this changes only that map.
+
+## Boards
+
+Board settings reference existing encounter identities; they do not duplicate map
+recipes. Set the display name, reviewed illustration, encounter order and travel
+order. Enable authored marker anchors to position every encounter by percentage of
+the full illustration. Save board draft applies the complete validated transaction
+and persists it automatically; reloading retains it. Existing recipes without a
+board collection retain their current first-board illustration and marker positions.
+
+Promote wave includes the selected encounter's board settings, map settings, wave
+and changed shared abilities. Other board/map/wave edits stay pending. Use Promote
+all changes for travel-order changes or membership moves between boards. Conflicting
+board settings or travel order reject promotion without writing partial content.
+The agent promotion preview also accepts explicit `boards` identity selections.
+Review the game board after uncached reload; Playtest uses the same content model
+but never writes campaign/profile progress. New board illustrations require asset
+acceptance and catalog registration before they can be selected.

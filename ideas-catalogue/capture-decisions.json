@@ -1,4 +1,35 @@
 {
   "version": 1,
-  "exclusions": []
+  "exclusions": [
+    {
+      "path": "review/boards-profiles/map-desktop-before.png",
+      "sha256": "92d016bcbb63aaae696a816f3c8bdb7a41513e7ec637b146f17e802fb162a386",
+      "reason": "Diagnostic board/profile browser verification using existing approved art; no new art idea or generated variation"
+    },
+    {
+      "path": "review/boards-profiles/map-desktop-after.png",
+      "sha256": "92d016bcbb63aaae696a816f3c8bdb7a41513e7ec637b146f17e802fb162a386",
+      "reason": "Diagnostic board/profile browser verification using existing approved art; no new art idea or generated variation"
+    },
+    {
+      "path": "review/boards-profiles/map-phone-after.png",
+      "sha256": "c9d52c89101505911b4f83c712e6650d0dc9c71d56a66f869299ce8d9b06dad8",
+      "reason": "Diagnostic board/profile browser verification using existing approved art; no new art idea or generated variation"
+    },
+    {
+      "path": "review/boards-profiles/bob-reloaded-board.png",
+      "sha256": "76a623ca0b81f1c043dc240f190417786f204f7977dbc80088dbf7758c1883f5",
+      "reason": "Diagnostic board/profile browser verification using existing approved art; no new art idea or generated variation"
+    },
+    {
+      "path": "review/boards-profiles/legacy-completed-board.png",
+      "sha256": "dd6034e9c88b060d1e8622c59c616467a5075d252ba8cde3b54999acda8e7c95",
+      "reason": "Diagnostic board/profile browser verification using existing approved art; no new art idea or generated variation"
+    },
+    {
+      "path": "review/boards-profiles/invalid-destination-recovered.png",
+      "sha256": "20e5fbba0973f4a9a028ece9a7b8cdc7f3ec8419e0bc7ce33b9a35bfd1b6a752",
+      "reason": "Diagnostic board/profile browser verification using existing approved art; no new art idea or generated variation"
+    }
+  ]
 }

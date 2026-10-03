@@ -1,3 +1,4 @@
+import { validateBoards, type BoardDef } from "../content/boards";
 import source from "../content/recipes.json";
 import type {
   LevelDef,
@@ -52,6 +53,7 @@ export interface AuthoringContent {
     bossRage?: BossRageSettings;
     skunkPoison?: PoisonSettings;
   };
+  boards?: BoardDef[];
   levels: LevelRecipe[];
   towers: Record<TowerKind, TowerDef>;
   enemies: Record<EnemyKind, EnemyDef>;
@@ -230,6 +232,7 @@ export function validateContent(
     [
       "schemaVersion",
       "levels",
+      "boards",
       "towers",
       "enemies",
       "rules",
@@ -314,6 +317,7 @@ export function validateContent(
     }
   }
   ids(content.levels, "levels");
+  validateBoards(content);
   for (const level of content.levels) {
     exact(
       level,

@@ -5,7 +5,12 @@ import {
   type AuthoringContent,
   type AttemptConfiguration,
 } from "../config/configuration";
-import { availableCards, levelForAttempt } from "../content/progression";
+import {
+  progressionContext,
+  earnedUpgrades,
+  availableCards,
+  levelForAttempt,
+} from "../content/progression";
 import { freshSave, recordVictory } from "../persistence/save";
 import type { CardId, Point, TowerKind } from "../sim/types";
 export interface Scenario {
@@ -146,14 +151,16 @@ export function resolveScenario(
   validateContent(content);
   const selected = scenario.difficultyCandidate?.content ?? content;
   const config = resolveConfiguration(selected, scenario.levelId);
-  const index = selected.levels.findIndex((l) => l.id === scenario.levelId);
-  let save = freshSave();
-  for (const level of selected.levels.slice(
+  const context = progressionContext(selected);
+  const order = context.boards.flatMap(({ levelIds }) => levelIds);
+  const index = order.indexOf(scenario.levelId);
+  let save = freshSave(context);
+  for (const id of order.slice(
     0,
-    scenario.progression === "replay" ? selected.levels.length : index,
+    scenario.progression === "replay" ? order.length : Math.max(0, index),
   ))
-    save = recordVictory(save, level.id, 3);
-  const level = structuredClone(levelForAttempt(config.level, save));
+    save = recordVictory(save, id, 3, context);
+  const level = structuredClone(levelForAttempt(config.level, save, context));
   const overrides = scenario.overrides ?? {};
   if (scenario.waveId && !level.waves.some((w) => w.id === scenario.waveId))
     throw new Error(`Unknown wave ${scenario.waveId}`);
@@ -170,9 +177,7 @@ export function resolveScenario(
       overrides.coins - (assist ? config.rules.assistCrowns : 0);
   const cards = availableCards(level, save);
   const card = overrides.card ?? (cards.length === 1 ? cards[0] : "none");
-  const upgraded =
-    overrides.upgrades ??
-    (save.unlocked.includes("squirrel-upgrade") ? ["bolt"] : []);
+  const upgraded = overrides.upgrades ?? earnedUpgrades(save, context);
   const result = { ...config, level };
   result.identity = configurationIdentity({ ...result, identity: undefined });
   return {

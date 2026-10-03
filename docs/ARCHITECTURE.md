@@ -19,12 +19,13 @@ flowchart LR
 | `src/content`                              | Tower/enemy/card catalogs and three campaign encounters                                                       | Add level data, register it, validate and test                            |
 | `src/sim/game.ts`                          | Commands, 30 Hz simulation, damage, movement, targets, waves and outcomes                                     | Add a rule with focused deterministic tests                               |
 | `src/sim/economy.ts`                       | Fixed wave rewards and sell refunds                                                                           | Tune authored rewards alongside catalog costs and strategy evidence       |
-| `src/content/progression.ts`               | Discovery grants, legacy derivation, result meanings and replay roster resolution                              | Add an approved reward in one definition and verify profile/replay flow   |
+| `src/content/boards.ts`                   | Board registry validation, approved illustration references and legacy board resolution                      | Register accepted real campaign boards with ordered encounter references |
+| `src/content/progression.ts`               | Board gates, discovery grants, legacy derivation, result meanings and replay roster resolution                              | Add an approved reward in one definition and verify profile/replay flow   |
 | `src/render/battlefield.ts`                | Flat orthographic painted battlefield, continuous trail, rig direction/aim, picking, range and effects        | New visual without importing browser APIs into simulation                 |
 | `src/render/cutout.ts`, `character-rig.ts` | Shared native textures, per-actor joints and view-aware walking                                               | Descriptor-driven parts; side IK and front/rear projected legs            |
 | `src/main.ts`                              | Semantic HTML screens, input commands, attempt lifecycle and HUD                                              | New screen or input adapter; currently a deliberately small single module |
 | `src/audio/sound.ts`                       | Gesture-unlocked music and synthesized cue family                                                             | New licensed track or cue, preserving volume/mute lifecycle               |
-| `src/persistence/save.ts`                  | Version 2 validation/defaults, save migrations, stars and settings; stores progression outcomes                | Explicit migration for future schema changes                              |
+| `src/persistence/save.ts`                  | Version 2 validation/defaults, save migrations, stars, settings and per-profile viewed board; stores progression outcomes                | Explicit migration for future schema changes                              |
 | `src/qa/benchmark.ts`                      | Separate artificial browser stress fixture                                                                    | Raw RAF measurement; never used by normal gameplay                        |
 
 Simulation commands return success/failure and emit lightweight events. The UI translates commands into feedback; rendering reads state. `advance` accumulates fixed 1/30-second steps and limits long-frame catch-up. `tick` is available to deterministic tests. Randomness uses a seeded generator; current encounter rules have no random targeting or damage. Fixed seeds alone do not make browser frame timings deterministic.
@@ -248,3 +249,8 @@ proximity. Every authored finale boss must die when boss defeat is required;
 either twin escaping loses before that tick's projectile impacts.
 Approved side/front expression resources share the original leg textures. See
 decision 034 and the boss-wave review fixture.
+
+Authored `boards` optionally register ordered encounter references and reviewed
+presentation metadata. Absent collections resolve to the existing first board.
+Progression and save/profile adapters share a resolved campaign context; workbench
+board scopes use the same validator. See [the board/profile decision](decisions/boards-profile-progression.md).

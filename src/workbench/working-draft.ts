@@ -1,3 +1,5 @@
+import { resolveBoards } from "../content/boards";
+import { mergeBoardScopes, rebaseBoardScopes } from "./board-scopes";
 import {
   configurationIdentity,
   CANONICAL_CONTENT,
@@ -161,6 +163,13 @@ export function createMap(
     waves: [emptyWave("Wave 1", waveId)],
   };
   next.content.levels.push(level);
+  const board = next.content.boards?.find(({ levelIds }) =>
+    levelIds.includes(draft.levelId),
+  );
+  board?.levelIds.push(level.id);
+  // Copy the selected point as a draft starting position; retain every existing anchor.
+  if (board?.visual.markers)
+    board.visual.markers[level.id] = clone(board.visual.markers[draft.levelId]);
   next.levelId = level.id;
   next.waveId = waveId;
   return validateWorkingDraft(next);
@@ -264,7 +273,15 @@ export function promoteWorkingWave(
     throw new Error(
       "Shared ability settings changed in game config. Reload their latest settings before promoting.",
     );
-  const result = clone(current);
+  const selectedBoard = resolveBoards(draft.content).find(({ levelIds }) =>
+    levelIds.includes(level.id),
+  );
+  const result = mergeBoardScopes(
+    current,
+    draft.base,
+    draft.content,
+    selectedBoard ? [selectedBoard.id] : [],
+  );
   result.routeLayouts = mergeRouteLayouts(
     current,
     draft.base,
@@ -298,7 +315,7 @@ export function promoteAllWorkingChanges(
   current.routeLayouts ??= clone(CANONICAL_CONTENT.routeLayouts ?? []);
   validateContent(current);
   const draft = validateWorkingDraft(input);
-  const result = clone(current);
+  const result = mergeBoardScopes(current, draft.base, draft.content);
   result.routeLayouts = mergeRouteLayouts(current, draft.base, draft.content);
   const merge = <T>(
     authored: T,
@@ -398,6 +415,9 @@ export function rebaseAfterPromotion(
     if (index < 0) content.routeLayouts.push(clone(layout));
     else content.routeLayouts[index] = clone(layout);
   }
+  const boards = rebaseBoardScopes(draft.base, draft.content, newBaseline);
+  if (boards.content) content.boards = boards.content;
+  if (boards.comparison) comparisonBase.boards = boards.comparison;
   const conflicts = (authored: unknown, old: unknown, current: unknown) =>
     !equal(authored, old) && !equal(current, old) && !equal(current, authored);
   for (const authored of draft.content.levels) {
