@@ -1,0 +1,5384 @@
+{
+  "qualification": "Real resolved Game, normal mode, seed42, public legal commands, no resources/health/roster injected; prior victories earned by the campaign run.",
+  "contentIdentity": "v1-bd345d97",
+  "save": {
+    "version": 2,
+    "viewedBoard": "first-board",
+    "stars": {
+      "lantern-pass": 3,
+      "rainstone-crossing": 3,
+      "the-last-lantern": 3,
+      "mosswater-01": 3,
+      "mosswater-02": 2,
+      "mosswater-03": 3,
+      "mosswater-04": 2,
+      "mosswater-05": 3
+    },
+    "unlocked": [
+      "squirrel-upgrade",
+      "turtle",
+      "reach",
+      "nets",
+      "skunk",
+      "skunk-upgrade"
+    ],
+    "music": 0.5,
+    "effects": 0.5,
+    "muted": false,
+    "showGrid": false,
+    "tutorialSeen": false
+  },
+  "reports": [
+    {
+      "id": "lantern-pass",
+      "policy": "balanced",
+      "phase": "won",
+      "seconds": 355.6,
+      "lives": 12,
+      "leaks": 0,
+      "coins": 201,
+      "kills": {
+        "raider": 113,
+        "runner": 0,
+        "armored": 0,
+        "boss": 0
+      },
+      "trace": [
+        {
+          "tick": 0,
+          "command": {
+            "type": "place",
+            "kind": "bolt",
+            "point": {
+              "x": 1,
+              "z": 4
+            }
+          },
+          "accepted": true
+        },
+        {
+          "tick": 0,
+          "command": {
+            "type": "place",
+            "kind": "bolt",
+            "point": {
+              "x": 3,
+              "z": 2
+            }
+          },
+          "accepted": true
+        },
+        {
+          "tick": 0,
+          "command": {
+            "type": "start"
+          },
+          "accepted": true
+        },
+        {
+          "tick": 1290,
+          "command": {
+            "type": "place",
+            "kind": "bolt",
+            "point": {
+              "x": 5,
+              "z": 2
+            }
+          },
+          "accepted": true
+        },
+        {
+          "tick": 2310,
+          "command": {
+            "type": "place",
+            "kind": "bolt",
+            "point": {
+              "x": 7,
+              "z": 5
+            }
+          },
+          "accepted": true
+        },
+        {
+          "tick": 2310,
+          "command": {
+            "type": "start"
+          },
+          "accepted": true
+        },
+        {
+          "tick": 3690,
+          "command": {
+            "type": "place",
+            "kind": "bolt",
+            "point": {
+              "x": 3,
+              "z": 0
+            }
+          },
+          "accepted": true
+        },
+        {
+          "tick": 3930,
+          "command": {
+            "type": "start"
+          },
+          "accepted": true
+        },
+        {
+          "tick": 4080,
+          "command": {
+            "type": "place",
+            "kind": "bolt",
+            "point": {
+              "x": 7,
+              "z": 4
+            }
+          },
+          "accepted": true
+        },
+        {
+          "tick": 6210,
+          "command": {
+            "type": "place",
+            "kind": "bolt",
+            "point": {
+              "x": 5,
+              "z": 0
+            }
+          },
+          "accepted": true
+        },
+        {
+          "tick": 6330,
+          "command": {
+            "type": "start"
+          },
+          "accepted": true
+        },
+        {
+          "tick": 8760,
+          "command": {
+            "type": "start"
+          },
+          "accepted": true
+        }
+      ],
+      "checkpoints": [
+        {
+          "wave": 1,
+          "seconds": 76.2,
+          "lives": 12,
+          "coins": 45,
+          "towers": 3,
+          "upgrades": 0
+        },
+        {
+          "wave": 2,
+          "seconds": 129.8,
+          "lives": 12,
+          "coins": 39,
+          "towers": 5,
+          "upgrades": 0
+        },
+        {
+          "wave": 3,
+          "seconds": 209.5,
+          "lives": 12,
+          "coins": 33,
+          "towers": 7,
+          "upgrades": 0
+        },
+        {
+          "wave": 4,
+          "seconds": 289.9,
+          "lives": 12,
+          "coins": 115,
+          "towers": 7,
+          "upgrades": 0
+        },
+        {
+          "wave": 5,
+          "seconds": 355.6,
+          "lives": 12,
+          "coins": 201,
+          "towers": 7,
+          "upgrades": 0
+        }
+      ]
+    },
+    {
+      "id": "rainstone-crossing",
+      "policy": "balanced",
+      "phase": "won",
+      "seconds": 390.1,
+      "lives": 12,
+      "leaks": 0,
+      "coins": 29,
+      "kills": {
+        "raider": 106,
+        "runner": 116,
+        "armored": 0,
+        "boss": 0
+      },
+      "trace": [
+        {
+          "tick": 0,
+          "command": {
+            "type": "place",
+            "kind": "bolt",
+            "point": {
+              "x": 0,
+              "z": 4
+            }
+          },
+          "accepted": true
+        },
+        {
+          "tick": 0,
+          "command": {
+            "type": "place",
+            "kind": "bolt",
+            "point": {
+              "x": 3,
+              "z": 2
+            }
+          },
+          "accepted": true
+        },
+        {
+          "tick": 0,
+          "command": {
+            "type": "place",
+            "kind": "bolt",
+            "point": {
+              "x": 6,
+              "z": 2
+            }
+          },
+          "accepted": true
+        },
+        {
+          "tick": 0,
+          "command": {
+            "type": "start"
+          },
+          "accepted": true
+        },
+        {
+          "tick": 1620,
+          "command": {
+            "type": "place",
+            "kind": "bolt",
+            "point": {
+              "x": 9,
+              "z": 5
+            }
+          },
+          "accepted": true
+        },
+        {
+          "tick": 3060,
+          "command": {
+            "type": "place",
+            "kind": "bolt",
+            "point": {
+              "x": 2,
+              "z": 6
+            }
+          },
+          "accepted": true
+        },
+        {
+          "tick": 3540,
+          "command": {
+            "type": "place",
+            "kind": "bolt",
+            "point": {
+              "x": 9,
+              "z": 4
+            }
+          },
+          "accepted": true
+        },
+        {
+          "tick": 3540,
+          "command": {
+            "type": "start"
+          },
+          "accepted": true
+        },
+        {
+          "tick": 4530,
+          "command": {
+            "type": "place",
+            "kind": "bolt",
+            "point": {
+              "x": 5,
+              "z": 4
+            }
+          },
+          "accepted": true
+        },
+        {
+          "tick": 5760,
+          "command": {
+            "type": "place",
+            "kind": "bolt",
+            "point": {
+              "x": 7,
+              "z": 2
+            }
+          },
+          "accepted": true
+        },
+        {
+          "tick": 5910,
+          "command": {
+            "type": "place",
+            "kind": "bolt",
+            "point": {
+              "x": 3,
+              "z": 4
+            }
+          },
+          "accepted": true
+        },
+        {
+          "tick": 5910,
+          "command": {
+            "type": "start"
+          },
+          "accepted": true
+        },
+        {
+          "tick": 6900,
+          "command": {
+            "type": "place",
+            "kind": "bolt",
+            "point": {
+              "x": 9,
+              "z": 2
+            }
+          },
+          "accepted": true
+        },
+        {
+          "tick": 8010,
+          "command": {
+            "type": "place",
+            "kind": "bolt",
+            "point": {
+              "x": 7,
+              "z": 5
+            }
+          },
+          "accepted": true
+        },
+        {
+          "tick": 8520,
+          "command": {
+            "type": "upgrade",
+            "id": 1
+          },
+          "accepted": true
+        },
+        {
+          "tick": 8520,
+          "command": {
+            "type": "start"
+          },
+          "accepted": true
+        },
+        {
+          "tick": 9360,
+          "command": {
+            "type": "place",
+            "kind": "bolt",
+            "point": {
+              "x": 2,
+              "z": 4
+            }
+          },
+          "accepted": true
+        },
+        {
+          "tick": 10260,
+          "command": {
+            "type": "upgrade",
+            "id": 2
+          },
+          "accepted": true
+        },
+        {
+          "tick": 11250,
+          "command": {
+            "type": "upgrade",
+            "id": 3
+          },
+          "accepted": true
+        }
+      ],
+      "checkpoints": [
+        {
+          "wave": 1,
+          "seconds": 117.4,
+          "lives": 12,
+          "coins": 55,
+          "towers": 5,
+          "upgrades": 0
+        },
+        {
+          "wave": 2,
+          "seconds": 195.5,
+          "lives": 12,
+          "coins": 47,
+          "towers": 8,
+          "upgrades": 0
+        },
+        {
+          "wave": 3,
+          "seconds": 282.2,
+          "lives": 12,
+          "coins": 58,
+          "towers": 11,
+          "upgrades": 0
+        },
+        {
+          "wave": 4,
+          "seconds": 390.1,
+          "lives": 12,
+          "coins": 29,
+          "towers": 12,
+          "upgrades": 3
+        }
+      ]
+    },
+    {
+      "id": "the-last-lantern",
+      "policy": "balanced",
+      "phase": "won",
+      "seconds": 538.4,
+      "lives": 12,
+      "leaks": 0,
+      "coins": 43,
+      "kills": {
+        "raider": 161,
+        "runner": 225,
+        "armored": 0,
+        "boss": 1
+      },
+      "trace": [
+        {
+          "tick": 0,
+          "command": {
+            "type": "place",
+            "kind": "bolt",
+            "point": {
+              "x": 8,
+              "z": 4
+            }
+          },
+          "accepted": true
+        },
+        {
+          "tick": 0,
+          "command": {
+            "type": "upgrade",
+            "id": 1
+          },
+          "accepted": true
+        },
+        {
+          "tick": 0,
+          "command": {
+            "type": "place",
+            "kind": "bolt",
+            "point": {
+              "x": 3,
+              "z": 3
+            }
+          },
+          "accepted": true
+        },
+        {
+          "tick": 0,
+          "command": {
+            "type": "upgrade",
+            "id": 2
+          },
+          "accepted": true
+        },
+        {
+          "tick": 0,
+          "command": {
+            "type": "place",
+            "kind": "bolt",
+            "point": {
+              "x": 5,
+              "z": 3
+            }
+          },
+          "accepted": true
+        },
+        {
+          "tick": 0,
+          "command": {
+            "type": "start"
+          },
+          "accepted": true
+        },
+        {
+          "tick": 1350,
+          "command": {
+            "type": "place",
+            "kind": "bolt",
+            "point": {
+              "x": 6,
+              "z": 3
+            }
+          },
+          "accepted": true
+        },
+        {
+          "tick": 2070,
+          "command": {
+            "type": "place",
+            "kind": "bolt",
+            "point": {
+              "x": 3,
+              "z": 2
+            }
+          },
+          "accepted": true
+        },
+        {
+          "tick": 2070,
+          "command": {
+            "type": "start"
+          },
+          "accepted": true
+        },
+        {
+          "tick": 2940,
+          "command": {
+            "type": "place",
+            "kind": "bolt",
+            "point": {
+              "x": 8,
+              "z": 3
+            }
+          },
+          "accepted": true
+        },
+        {
+          "tick": 3870,
+          "command": {
+            "type": "place",
+            "kind": "bolt",
+            "point": {
+              "x": 5,
+              "z": 4
+            }
+          },
+          "accepted": true
+        },
+        {
+          "tick": 3900,
+          "command": {
+            "type": "start"
+          },
+          "accepted": true
+        },
+        {
+          "tick": 4290,
+          "command": {
+            "type": "place",
+            "kind": "bolt",
+            "point": {
+              "x": 6,
+              "z": 4
+            }
+          },
+          "accepted": true
+        },
+        {
+          "tick": 5490,
+          "command": {
+            "type": "place",
+            "kind": "bolt",
+            "point": {
+              "x": 8,
+              "z": 5
+            }
+          },
+          "accepted": true
+        },
+        {
+          "tick": 6480,
+          "command": {
+            "type": "place",
+            "kind": "bolt",
+            "point": {
+              "x": 3,
+              "z": 4
+            }
+          },
+          "accepted": true
+        },
+        {
+          "tick": 7020,
+          "command": {
+            "type": "place",
+            "kind": "bolt",
+            "point": {
+              "x": 1,
+              "z": 2
+            }
+          },
+          "accepted": true
+        },
+        {
+          "tick": 7020,
+          "command": {
+            "type": "start"
+          },
+          "accepted": true
+        },
+        {
+          "tick": 7620,
+          "command": {
+            "type": "place",
+            "kind": "bolt",
+            "point": {
+              "x": 5,
+              "z": 2
+            }
+          },
+          "accepted": true
+        },
+        {
+          "tick": 8490,
+          "command": {
+            "type": "upgrade",
+            "id": 3
+          },
+          "accepted": true
+        },
+        {
+          "tick": 9330,
+          "command": {
+            "type": "upgrade",
+            "id": 176
+          },
+          "accepted": true
+        },
+        {
+          "tick": 9870,
+          "command": {
+            "type": "upgrade",
+            "id": 293
+          },
+          "accepted": true
+        },
+        {
+          "tick": 9870,
+          "command": {
+            "type": "start"
+          },
+          "accepted": true
+        },
+        {
+          "tick": 10560,
+          "command": {
+            "type": "upgrade",
+            "id": 479
+          },
+          "accepted": true
+        },
+        {
+          "tick": 11430,
+          "command": {
+            "type": "upgrade",
+            "id": 701
+          },
+          "accepted": true
+        },
+        {
+          "tick": 12150,
+          "command": {
+            "type": "upgrade",
+            "id": 776
+          },
+          "accepted": true
+        },
+        {
+          "tick": 13020,
+          "command": {
+            "type": "upgrade",
+            "id": 1080
+          },
+          "accepted": true
+        },
+        {
+          "tick": 13800,
+          "command": {
+            "type": "upgrade",
+            "id": 1353
+          },
+          "accepted": true
+        },
+        {
+          "tick": 13860,
+          "command": {
+            "type": "start"
+          },
+          "accepted": true
+        },
+        {
+          "tick": 14160,
+          "command": {
+            "type": "upgrade",
+            "id": 1511
+          },
+          "accepted": true
+        },
+        {
+          "tick": 15330,
+          "command": {
+            "type": "upgrade",
+            "id": 1754
+          },
+          "accepted": true
+        }
+      ],
+      "checkpoints": [
+        {
+          "wave": 1,
+          "seconds": 68.3,
+          "lives": 12,
+          "coins": 50,
+          "towers": 4,
+          "upgrades": 2
+        },
+        {
+          "wave": 2,
+          "seconds": 129.2,
+          "lives": 12,
+          "coins": 30,
+          "towers": 7,
+          "upgrades": 2
+        },
+        {
+          "wave": 3,
+          "seconds": 232.4,
+          "lives": 12,
+          "coins": 52,
+          "towers": 10,
+          "upgrades": 2
+        },
+        {
+          "wave": 4,
+          "seconds": 327,
+          "lives": 12,
+          "coins": 70,
+          "towers": 12,
+          "upgrades": 4
+        },
+        {
+          "wave": 5,
+          "seconds": 459.2,
+          "lives": 12,
+          "coins": 39,
+          "towers": 12,
+          "upgrades": 10
+        },
+        {
+          "wave": 6,
+          "seconds": 538.4,
+          "lives": 12,
+          "coins": 43,
+          "towers": 12,
+          "upgrades": 12
+        }
+      ]
+    },
+    {
+      "id": "mosswater-01",
+      "policy": "balanced",
+      "phase": "won",
+      "seconds": 114.2,
+      "lives": 12,
+      "leaks": 0,
+      "coins": 29,
+      "kills": {
+        "raider": 72,
+        "runner": 0,
+        "armored": 0,
+        "boss": 0
+      },
+      "trace": [
+        {
+          "tick": 0,
+          "command": {
+            "type": "place",
+            "kind": "stone",
+            "point": {
+              "x": 1,
+              "z": 2
+            }
+          },
+          "accepted": true
+        },
+        {
+          "tick": 0,
+          "command": {
+            "type": "place",
+            "kind": "bolt",
+            "point": {
+              "x": 1,
+              "z": 5
+            }
+          },
+          "accepted": true
+        },
+        {
+          "tick": 0,
+          "command": {
+            "type": "place",
+            "kind": "net",
+            "point": {
+              "x": 3,
+              "z": 2
+            }
+          },
+          "accepted": true
+        },
+        {
+          "tick": 0,
+          "command": {
+            "type": "start"
+          },
+          "accepted": true
+        },
+        {
+          "tick": 480,
+          "command": {
+            "type": "place",
+            "kind": "bolt",
+            "point": {
+              "x": 5,
+              "z": 2
+            }
+          },
+          "accepted": true
+        },
+        {
+          "tick": 750,
+          "command": {
+            "type": "place",
+            "kind": "bolt",
+            "point": {
+              "x": 8,
+              "z": 2
+            }
+          },
+          "accepted": true
+        },
+        {
+          "tick": 750,
+          "command": {
+            "type": "start"
+          },
+          "accepted": true
+        },
+        {
+          "tick": 1350,
+          "command": {
+            "type": "place",
+            "kind": "bolt",
+            "point": {
+              "x": 10,
+              "z": 3
+            }
+          },
+          "accepted": true
+        },
+        {
+          "tick": 2130,
+          "command": {
+            "type": "upgrade",
+            "id": 2
+          },
+          "accepted": true
+        },
+        {
+          "tick": 2130,
+          "command": {
+            "type": "start"
+          },
+          "accepted": true
+        },
+        {
+          "tick": 2730,
+          "command": {
+            "type": "place",
+            "kind": "net",
+            "point": {
+              "x": 8,
+              "z": 6
+            }
+          },
+          "accepted": true
+        }
+      ],
+      "checkpoints": [
+        {
+          "wave": 1,
+          "seconds": 25,
+          "lives": 12,
+          "coins": 57,
+          "towers": 4,
+          "upgrades": 0
+        },
+        {
+          "wave": 2,
+          "seconds": 70.2,
+          "lives": 12,
+          "coins": 70,
+          "towers": 6,
+          "upgrades": 0
+        },
+        {
+          "wave": 3,
+          "seconds": 114.2,
+          "lives": 12,
+          "coins": 29,
+          "towers": 7,
+          "upgrades": 1
+        }
+      ]
+    },
+    {
+      "id": "mosswater-02",
+      "policy": "balanced",
+      "phase": "won",
+      "seconds": 95.3,
+      "lives": 6,
+      "leaks": 6,
+      "coins": 16,
+      "kills": {
+        "raider": 0,
+        "runner": 78,
+        "armored": 0,
+        "boss": 0
+      },
+      "trace": [
+        {
+          "tick": 0,
+          "command": {
+            "type": "place",
+            "kind": "stone",
+            "point": {
+              "x": 1,
+              "z": 2
+            }
+          },
+          "accepted": true
+        },
+        {
+          "tick": 0,
+          "command": {
+            "type": "place",
+            "kind": "stone",
+            "point": {
+              "x": 1,
+              "z": 5
+            }
+          },
+          "accepted": true
+        },
+        {
+          "tick": 0,
+          "command": {
+            "type": "place",
+            "kind": "stone",
+            "point": {
+              "x": 3,
+              "z": 2
+            }
+          },
+          "accepted": true
+        },
+        {
+          "tick": 0,
+          "command": {
+            "type": "start"
+          },
+          "accepted": true
+        },
+        {
+          "tick": 960,
+          "command": {
+            "type": "place",
+            "kind": "net",
+            "point": {
+              "x": 5,
+              "z": 2
+            }
+          },
+          "accepted": true
+        },
+        {
+          "tick": 960,
+          "command": {
+            "type": "start"
+          },
+          "accepted": true
+        },
+        {
+          "tick": 1050,
+          "command": {
+            "type": "place",
+            "kind": "bolt",
+            "point": {
+              "x": 8,
+              "z": 2
+            }
+          },
+          "accepted": true
+        },
+        {
+          "tick": 1740,
+          "command": {
+            "type": "place",
+            "kind": "bolt",
+            "point": {
+              "x": 10,
+              "z": 3
+            }
+          },
+          "accepted": true
+        },
+        {
+          "tick": 1890,
+          "command": {
+            "type": "upgrade",
+            "id": 148
+          },
+          "accepted": true
+        },
+        {
+          "tick": 1890,
+          "command": {
+            "type": "start"
+          },
+          "accepted": true
+        },
+        {
+          "tick": 2700,
+          "command": {
+            "type": "place",
+            "kind": "net",
+            "point": {
+              "x": 8,
+              "z": 6
+            }
+          },
+          "accepted": true
+        }
+      ],
+      "checkpoints": [
+        {
+          "wave": 1,
+          "seconds": 31.1,
+          "lives": 10,
+          "coins": 86,
+          "towers": 3,
+          "upgrades": 0
+        },
+        {
+          "wave": 2,
+          "seconds": 61.2,
+          "lives": 9,
+          "coins": 55,
+          "towers": 6,
+          "upgrades": 0
+        },
+        {
+          "wave": 3,
+          "seconds": 95.3,
+          "lives": 6,
+          "coins": 16,
+          "towers": 7,
+          "upgrades": 1
+        }
+      ]
+    },
+    {
+      "id": "mosswater-03",
+      "policy": "balanced",
+      "phase": "won",
+      "seconds": 169.9,
+      "lives": 12,
+      "leaks": 0,
+      "coins": 39,
+      "kills": {
+        "raider": 0,
+        "runner": 0,
+        "armored": 36,
+        "boss": 0
+      },
+      "trace": [
+        {
+          "tick": 0,
+          "command": {
+            "type": "place",
+            "kind": "bolt",
+            "point": {
+              "x": 0,
+              "z": 4
+            }
+          },
+          "accepted": true
+        },
+        {
+          "tick": 0,
+          "command": {
+            "type": "upgrade",
+            "id": 1
+          },
+          "accepted": true
+        },
+        {
+          "tick": 0,
+          "command": {
+            "type": "place",
+            "kind": "bolt",
+            "point": {
+              "x": 3,
+              "z": 2
+            }
+          },
+          "accepted": true
+        },
+        {
+          "tick": 0,
+          "command": {
+            "type": "upgrade",
+            "id": 2
+          },
+          "accepted": true
+        },
+        {
+          "tick": 0,
+          "command": {
+            "type": "start"
+          },
+          "accepted": true
+        },
+        {
+          "tick": 600,
+          "command": {
+            "type": "place",
+            "kind": "bolt",
+            "point": {
+              "x": 6,
+              "z": 2
+            }
+          },
+          "accepted": true
+        },
+        {
+          "tick": 1500,
+          "command": {
+            "type": "upgrade",
+            "id": 99
+          },
+          "accepted": true
+        },
+        {
+          "tick": 1500,
+          "command": {
+            "type": "start"
+          },
+          "accepted": true
+        },
+        {
+          "tick": 2760,
+          "command": {
+            "type": "place",
+            "kind": "net",
+            "point": {
+              "x": 9,
+              "z": 5
+            }
+          },
+          "accepted": true
+        },
+        {
+          "tick": 3150,
+          "command": {
+            "type": "place",
+            "kind": "bolt",
+            "point": {
+              "x": 2,
+              "z": 6
+            }
+          },
+          "accepted": true
+        },
+        {
+          "tick": 3150,
+          "command": {
+            "type": "start"
+          },
+          "accepted": true
+        },
+        {
+          "tick": 4110,
+          "command": {
+            "type": "place",
+            "kind": "net",
+            "point": {
+              "x": 9,
+              "z": 4
+            }
+          },
+          "accepted": true
+        }
+      ],
+      "checkpoints": [
+        {
+          "wave": 1,
+          "seconds": 50,
+          "lives": 12,
+          "coins": 72,
+          "towers": 3,
+          "upgrades": 2
+        },
+        {
+          "wave": 2,
+          "seconds": 104.5,
+          "lives": 12,
+          "coins": 65,
+          "towers": 4,
+          "upgrades": 3
+        },
+        {
+          "wave": 3,
+          "seconds": 169.9,
+          "lives": 12,
+          "coins": 39,
+          "towers": 6,
+          "upgrades": 3
+        }
+      ]
+    },
+    {
+      "id": "mosswater-04",
+      "policy": "balanced",
+      "phase": "won",
+      "seconds": 269.8,
+      "lives": 7,
+      "leaks": 3,
+      "coins": 40,
+      "kills": {
+        "raider": 80,
+        "runner": 49,
+        "armored": 28,
+        "boss": 0
+      },
+      "trace": [
+        {
+          "tick": 0,
+          "command": {
+            "type": "place",
+            "kind": "stone",
+            "point": {
+              "x": 0,
+              "z": 4
+            }
+          },
+          "accepted": true
+        },
+        {
+          "tick": 0,
+          "command": {
+            "type": "place",
+            "kind": "bolt",
+            "point": {
+              "x": 3,
+              "z": 2
+            }
+          },
+          "accepted": true
+        },
+        {
+          "tick": 0,
+          "command": {
+            "type": "place",
+            "kind": "net",
+            "point": {
+              "x": 6,
+              "z": 2
+            }
+          },
+          "accepted": true
+        },
+        {
+          "tick": 0,
+          "command": {
+            "type": "place",
+            "kind": "bolt",
+            "point": {
+              "x": 9,
+              "z": 5
+            }
+          },
+          "accepted": true
+        },
+        {
+          "tick": 0,
+          "command": {
+            "type": "place",
+            "kind": "bolt",
+            "point": {
+              "x": 2,
+              "z": 6
+            }
+          },
+          "accepted": true
+        },
+        {
+          "tick": 0,
+          "command": {
+            "type": "start"
+          },
+          "accepted": true
+        },
+        {
+          "tick": 1770,
+          "command": {
+            "type": "place",
+            "kind": "bolt",
+            "point": {
+              "x": 9,
+              "z": 4
+            }
+          },
+          "accepted": true
+        },
+        {
+          "tick": 1950,
+          "command": {
+            "type": "place",
+            "kind": "net",
+            "point": {
+              "x": 5,
+              "z": 4
+            }
+          },
+          "accepted": true
+        },
+        {
+          "tick": 1950,
+          "command": {
+            "type": "start"
+          },
+          "accepted": true
+        },
+        {
+          "tick": 2700,
+          "command": {
+            "type": "place",
+            "kind": "bolt",
+            "point": {
+              "x": 7,
+              "z": 2
+            }
+          },
+          "accepted": true
+        },
+        {
+          "tick": 4020,
+          "command": {
+            "type": "upgrade",
+            "id": 1
+          },
+          "accepted": true
+        },
+        {
+          "tick": 4020,
+          "command": {
+            "type": "start"
+          },
+          "accepted": true
+        },
+        {
+          "tick": 4470,
+          "command": {
+            "type": "upgrade",
+            "id": 2
+          },
+          "accepted": true
+        },
+        {
+          "tick": 5280,
+          "command": {
+            "type": "upgrade",
+            "id": 4
+          },
+          "accepted": true
+        },
+        {
+          "tick": 5280,
+          "command": {
+            "type": "start"
+          },
+          "accepted": true
+        },
+        {
+          "tick": 5460,
+          "command": {
+            "type": "upgrade",
+            "id": 5
+          },
+          "accepted": true
+        },
+        {
+          "tick": 6120,
+          "command": {
+            "type": "upgrade",
+            "id": 309
+          },
+          "accepted": true
+        },
+        {
+          "tick": 6690,
+          "command": {
+            "type": "upgrade",
+            "id": 538
+          },
+          "accepted": true
+        },
+        {
+          "tick": 6690,
+          "command": {
+            "type": "start"
+          },
+          "accepted": true
+        },
+        {
+          "tick": 6990,
+          "command": {
+            "type": "place",
+            "kind": "stone",
+            "point": {
+              "x": 3,
+              "z": 4
+            }
+          },
+          "accepted": true
+        },
+        {
+          "tick": 7380,
+          "command": {
+            "type": "place",
+            "kind": "bolt",
+            "point": {
+              "x": 9,
+              "z": 2
+            }
+          },
+          "accepted": true
+        }
+      ],
+      "checkpoints": [
+        {
+          "wave": 1,
+          "seconds": 64.9,
+          "lives": 7,
+          "coins": 58,
+          "towers": 6,
+          "upgrades": 0
+        },
+        {
+          "wave": 2,
+          "seconds": 133.4,
+          "lives": 7,
+          "coins": 90,
+          "towers": 8,
+          "upgrades": 0
+        },
+        {
+          "wave": 3,
+          "seconds": 174.4,
+          "lives": 7,
+          "coins": 101,
+          "towers": 8,
+          "upgrades": 2
+        },
+        {
+          "wave": 4,
+          "seconds": 220.8,
+          "lives": 7,
+          "coins": 96,
+          "towers": 8,
+          "upgrades": 5
+        },
+        {
+          "wave": 5,
+          "seconds": 269.8,
+          "lives": 7,
+          "coins": 40,
+          "towers": 10,
+          "upgrades": 6
+        }
+      ]
+    },
+    {
+      "id": "mosswater-05",
+      "policy": "balanced",
+      "phase": "won",
+      "seconds": 182.1,
+      "lives": 12,
+      "leaks": 0,
+      "coins": 29,
+      "kills": {
+        "raider": 112,
+        "runner": 56,
+        "armored": 34,
+        "boss": 2
+      },
+      "trace": [
+        {
+          "tick": 0,
+          "command": {
+            "type": "place",
+            "kind": "stone",
+            "point": {
+              "x": 1,
+              "z": 2
+            }
+          },
+          "accepted": true
+        },
+        {
+          "tick": 0,
+          "command": {
+            "type": "place",
+            "kind": "stone",
+            "point": {
+              "x": 1,
+              "z": 5
+            }
+          },
+          "accepted": true
+        },
+        {
+          "tick": 0,
+          "command": {
+            "type": "place",
+            "kind": "net",
+            "point": {
+              "x": 3,
+              "z": 2
+            }
+          },
+          "accepted": true
+        },
+        {
+          "tick": 0,
+          "command": {
+            "type": "place",
+            "kind": "stone",
+            "point": {
+              "x": 5,
+              "z": 2
+            }
+          },
+          "accepted": true
+        },
+        {
+          "tick": 0,
+          "command": {
+            "type": "place",
+            "kind": "bolt",
+            "point": {
+              "x": 8,
+              "z": 2
+            }
+          },
+          "accepted": true
+        },
+        {
+          "tick": 0,
+          "command": {
+            "type": "place",
+            "kind": "net",
+            "point": {
+              "x": 10,
+              "z": 3
+            }
+          },
+          "accepted": true
+        },
+        {
+          "tick": 0,
+          "command": {
+            "type": "place",
+            "kind": "stone",
+            "point": {
+              "x": 8,
+              "z": 6
+            }
+          },
+          "accepted": true
+        },
+        {
+          "tick": 0,
+          "command": {
+            "type": "start"
+          },
+          "accepted": true
+        },
+        {
+          "tick": 570,
+          "command": {
+            "type": "place",
+            "kind": "bolt",
+            "point": {
+              "x": 5,
+              "z": 6
+            }
+          },
+          "accepted": true
+        },
+        {
+          "tick": 870,
+          "command": {
+            "type": "upgrade",
+            "id": 1
+          },
+          "accepted": true
+        },
+        {
+          "tick": 870,
+          "command": {
+            "type": "place",
+            "kind": "bolt",
+            "point": {
+              "x": 3,
+              "z": 4
+            }
+          },
+          "accepted": true
+        },
+        {
+          "tick": 870,
+          "command": {
+            "type": "start"
+          },
+          "accepted": true
+        },
+        {
+          "tick": 1230,
+          "command": {
+            "type": "place",
+            "kind": "bolt",
+            "point": {
+              "x": 7,
+              "z": 2
+            }
+          },
+          "accepted": true
+        },
+        {
+          "tick": 1740,
+          "command": {
+            "type": "upgrade",
+            "id": 2
+          },
+          "accepted": true
+        },
+        {
+          "tick": 1740,
+          "command": {
+            "type": "upgrade",
+            "id": 4
+          },
+          "accepted": true
+        },
+        {
+          "tick": 1740,
+          "command": {
+            "type": "start"
+          },
+          "accepted": true
+        },
+        {
+          "tick": 2100,
+          "command": {
+            "type": "place",
+            "kind": "net",
+            "point": {
+              "x": 10,
+              "z": 5
+            }
+          },
+          "accepted": true
+        },
+        {
+          "tick": 2460,
+          "command": {
+            "type": "place",
+            "kind": "bolt",
+            "point": {
+              "x": 8,
+              "z": 5
+            }
+          },
+          "accepted": true
+        },
+        {
+          "tick": 2490,
+          "command": {
+            "type": "upgrade",
+            "id": 5
+          },
+          "accepted": true
+        },
+        {
+          "tick": 2490,
+          "command": {
+            "type": "upgrade",
+            "id": 7
+          },
+          "accepted": true
+        },
+        {
+          "tick": 2490,
+          "command": {
+            "type": "start"
+          },
+          "accepted": true
+        },
+        {
+          "tick": 2880,
+          "command": {
+            "type": "upgrade",
+            "id": 175
+          },
+          "accepted": true
+        },
+        {
+          "tick": 3300,
+          "command": {
+            "type": "upgrade",
+            "id": 263
+          },
+          "accepted": true
+        },
+        {
+          "tick": 3420,
+          "command": {
+            "type": "upgrade",
+            "id": 379
+          },
+          "accepted": true
+        },
+        {
+          "tick": 3420,
+          "command": {
+            "type": "upgrade",
+            "id": 872
+          },
+          "accepted": true
+        },
+        {
+          "tick": 3420,
+          "command": {
+            "type": "start"
+          },
+          "accepted": true
+        },
+        {
+          "tick": 3720,
+          "command": {
+            "type": "place",
+            "kind": "stone",
+            "point": {
+              "x": 10,
+              "z": 4
+            }
+          },
+          "accepted": true
+        },
+        {
+          "tick": 4980,
+          "command": {
+            "type": "upgrade",
+            "id": 1382
+          },
+          "accepted": true
+        }
+      ],
+      "checkpoints": [
+        {
+          "wave": 1,
+          "seconds": 28.2,
+          "lives": 12,
+          "coins": 124,
+          "towers": 8,
+          "upgrades": 0
+        },
+        {
+          "wave": 2,
+          "seconds": 57.2,
+          "lives": 12,
+          "coins": 158,
+          "towers": 10,
+          "upgrades": 1
+        },
+        {
+          "wave": 3,
+          "seconds": 82.2,
+          "lives": 12,
+          "coins": 132,
+          "towers": 12,
+          "upgrades": 3
+        },
+        {
+          "wave": 4,
+          "seconds": 112.5,
+          "lives": 12,
+          "coins": 131,
+          "towers": 12,
+          "upgrades": 7
+        },
+        {
+          "wave": 5,
+          "seconds": 182.1,
+          "lives": 12,
+          "coins": 29,
+          "towers": 13,
+          "upgrades": 10
+        }
+      ]
+    }
+  ],
+  "alternatives": [
+    {
+      "id": "mosswater-01",
+      "policy": "upgrades",
+      "phase": "won",
+      "seconds": 130.3,
+      "lives": 8,
+      "leaks": 4,
+      "coins": 21,
+      "kills": {
+        "raider": 68,
+        "runner": 0,
+        "armored": 0,
+        "boss": 0
+      },
+      "trace": [
+        {
+          "tick": 0,
+          "command": {
+            "type": "place",
+            "kind": "stone",
+            "point": {
+              "x": 1,
+              "z": 2
+            }
+          },
+          "accepted": true
+        },
+        {
+          "tick": 0,
+          "command": {
+            "type": "place",
+            "kind": "bolt",
+            "point": {
+              "x": 1,
+              "z": 5
+            }
+          },
+          "accepted": true
+        },
+        {
+          "tick": 0,
+          "command": {
+            "type": "upgrade",
+            "id": 2
+          },
+          "accepted": true
+        },
+        {
+          "tick": 0,
+          "command": {
+            "type": "start"
+          },
+          "accepted": true
+        },
+        {
+          "tick": 1560,
+          "command": {
+            "type": "place",
+            "kind": "net",
+            "point": {
+              "x": 3,
+              "z": 2
+            }
+          },
+          "accepted": true
+        },
+        {
+          "tick": 1560,
+          "command": {
+            "type": "start"
+          },
+          "accepted": true
+        },
+        {
+          "tick": 1680,
+          "command": {
+            "type": "place",
+            "kind": "bolt",
+            "point": {
+              "x": 5,
+              "z": 2
+            }
+          },
+          "accepted": true
+        },
+        {
+          "tick": 2580,
+          "command": {
+            "type": "place",
+            "kind": "bolt",
+            "point": {
+              "x": 8,
+              "z": 2
+            }
+          },
+          "accepted": true
+        },
+        {
+          "tick": 2640,
+          "command": {
+            "type": "place",
+            "kind": "bolt",
+            "point": {
+              "x": 10,
+              "z": 3
+            }
+          },
+          "accepted": true
+        },
+        {
+          "tick": 2640,
+          "command": {
+            "type": "start"
+          },
+          "accepted": true
+        },
+        {
+          "tick": 3420,
+          "command": {
+            "type": "place",
+            "kind": "net",
+            "point": {
+              "x": 8,
+              "z": 6
+            }
+          },
+          "accepted": true
+        }
+      ],
+      "checkpoints": [
+        {
+          "wave": 1,
+          "seconds": 51.2,
+          "lives": 8,
+          "coins": 84,
+          "towers": 2,
+          "upgrades": 1
+        },
+        {
+          "wave": 2,
+          "seconds": 86.9,
+          "lives": 8,
+          "coins": 47,
+          "towers": 5,
+          "upgrades": 1
+        },
+        {
+          "wave": 3,
+          "seconds": 130.3,
+          "lives": 8,
+          "coins": 21,
+          "towers": 7,
+          "upgrades": 1
+        }
+      ]
+    },
+    {
+      "id": "mosswater-01",
+      "policy": "direct",
+      "phase": "won",
+      "seconds": 150,
+      "lives": 1,
+      "leaks": 11,
+      "coins": 22,
+      "kills": {
+        "raider": 61,
+        "runner": 0,
+        "armored": 0,
+        "boss": 0
+      },
+      "trace": [
+        {
+          "tick": 0,
+          "command": {
+            "type": "place",
+            "kind": "bolt",
+            "point": {
+              "x": 1,
+              "z": 2
+            }
+          },
+          "accepted": true
+        },
+        {
+          "tick": 0,
+          "command": {
+            "type": "upgrade",
+            "id": 1
+          },
+          "accepted": true
+        },
+        {
+          "tick": 0,
+          "command": {
+            "type": "place",
+            "kind": "bolt",
+            "point": {
+              "x": 1,
+              "z": 5
+            }
+          },
+          "accepted": true
+        },
+        {
+          "tick": 0,
+          "command": {
+            "type": "place",
+            "kind": "bolt",
+            "point": {
+              "x": 3,
+              "z": 2
+            }
+          },
+          "accepted": true
+        },
+        {
+          "tick": 0,
+          "command": {
+            "type": "start"
+          },
+          "accepted": true
+        },
+        {
+          "tick": 1560,
+          "command": {
+            "type": "upgrade",
+            "id": 2
+          },
+          "accepted": true
+        },
+        {
+          "tick": 1560,
+          "command": {
+            "type": "start"
+          },
+          "accepted": true
+        },
+        {
+          "tick": 2400,
+          "command": {
+            "type": "place",
+            "kind": "bolt",
+            "point": {
+              "x": 5,
+              "z": 2
+            }
+          },
+          "accepted": true
+        },
+        {
+          "tick": 3060,
+          "command": {
+            "type": "upgrade",
+            "id": 3
+          },
+          "accepted": true
+        },
+        {
+          "tick": 3060,
+          "command": {
+            "type": "start"
+          },
+          "accepted": true
+        },
+        {
+          "tick": 3930,
+          "command": {
+            "type": "place",
+            "kind": "bolt",
+            "point": {
+              "x": 8,
+              "z": 2
+            }
+          },
+          "accepted": true
+        }
+      ],
+      "checkpoints": [
+        {
+          "wave": 1,
+          "seconds": 51.2,
+          "lives": 8,
+          "coins": 69,
+          "towers": 3,
+          "upgrades": 1
+        },
+        {
+          "wave": 2,
+          "seconds": 100.9,
+          "lives": 2,
+          "coins": 55,
+          "towers": 4,
+          "upgrades": 2
+        },
+        {
+          "wave": 3,
+          "seconds": 150,
+          "lives": 1,
+          "coins": 22,
+          "towers": 5,
+          "upgrades": 3
+        }
+      ]
+    },
+    {
+      "id": "mosswater-01",
+      "policy": "poison-only",
+      "phase": "won",
+      "seconds": 67,
+      "lives": 12,
+      "leaks": 0,
+      "coins": 19,
+      "kills": {
+        "raider": 72,
+        "runner": 0,
+        "armored": 0,
+        "boss": 0
+      },
+      "trace": [
+        {
+          "tick": 0,
+          "command": {
+            "type": "place",
+            "kind": "stone",
+            "point": {
+              "x": 1,
+              "z": 2
+            }
+          },
+          "accepted": true
+        },
+        {
+          "tick": 0,
+          "command": {
+            "type": "place",
+            "kind": "stone",
+            "point": {
+              "x": 1,
+              "z": 5
+            }
+          },
+          "accepted": true
+        },
+        {
+          "tick": 0,
+          "command": {
+            "type": "start"
+          },
+          "accepted": true
+        },
+        {
+          "tick": 390,
+          "command": {
+            "type": "place",
+            "kind": "stone",
+            "point": {
+              "x": 3,
+              "z": 2
+            }
+          },
+          "accepted": true
+        },
+        {
+          "tick": 720,
+          "command": {
+            "type": "start"
+          },
+          "accepted": true
+        },
+        {
+          "tick": 870,
+          "command": {
+            "type": "place",
+            "kind": "stone",
+            "point": {
+              "x": 5,
+              "z": 2
+            }
+          },
+          "accepted": true
+        },
+        {
+          "tick": 1380,
+          "command": {
+            "type": "place",
+            "kind": "stone",
+            "point": {
+              "x": 8,
+              "z": 2
+            }
+          },
+          "accepted": true
+        },
+        {
+          "tick": 1380,
+          "command": {
+            "type": "start"
+          },
+          "accepted": true
+        },
+        {
+          "tick": 1950,
+          "command": {
+            "type": "place",
+            "kind": "stone",
+            "point": {
+              "x": 10,
+              "z": 3
+            }
+          },
+          "accepted": true
+        }
+      ],
+      "checkpoints": [
+        {
+          "wave": 1,
+          "seconds": 23.3,
+          "lives": 12,
+          "coins": 57,
+          "towers": 3,
+          "upgrades": 0
+        },
+        {
+          "wave": 2,
+          "seconds": 45,
+          "lives": 12,
+          "coins": 85,
+          "towers": 4,
+          "upgrades": 0
+        },
+        {
+          "wave": 3,
+          "seconds": 67,
+          "lives": 12,
+          "coins": 19,
+          "towers": 6,
+          "upgrades": 0
+        }
+      ]
+    },
+    {
+      "id": "mosswater-01",
+      "policy": "one-lane",
+      "phase": "lost",
+      "seconds": 98.9,
+      "lives": 0,
+      "leaks": 12,
+      "coins": 114,
+      "kills": {
+        "raider": 27,
+        "runner": 0,
+        "armored": 0,
+        "boss": 0
+      },
+      "trace": [
+        {
+          "tick": 0,
+          "command": {
+            "type": "place",
+            "kind": "stone",
+            "point": {
+              "x": 1,
+              "z": 2
+            }
+          },
+          "accepted": true
+        },
+        {
+          "tick": 0,
+          "command": {
+            "type": "place",
+            "kind": "bolt",
+            "point": {
+              "x": 1,
+              "z": 5
+            }
+          },
+          "accepted": true
+        },
+        {
+          "tick": 0,
+          "command": {
+            "type": "upgrade",
+            "id": 2
+          },
+          "accepted": true
+        },
+        {
+          "tick": 0,
+          "command": {
+            "type": "start"
+          },
+          "accepted": true
+        },
+        {
+          "tick": 1560,
+          "command": {
+            "type": "start"
+          },
+          "accepted": true
+        }
+      ],
+      "checkpoints": [
+        {
+          "wave": 1,
+          "seconds": 51.2,
+          "lives": 8,
+          "coins": 84,
+          "towers": 2,
+          "upgrades": 1
+        },
+        {
+          "wave": 2,
+          "seconds": 98.9,
+          "lives": 0,
+          "coins": 114,
+          "towers": 2,
+          "upgrades": 1
+        }
+      ]
+    },
+    {
+      "id": "mosswater-01",
+      "policy": "hoard",
+      "phase": "lost",
+      "seconds": 47.2,
+      "lives": 0,
+      "leaks": 12,
+      "coins": 180,
+      "kills": {
+        "raider": 0,
+        "runner": 0,
+        "armored": 0,
+        "boss": 0
+      },
+      "trace": [
+        {
+          "tick": 0,
+          "command": {
+            "type": "start"
+          },
+          "accepted": true
+        }
+      ],
+      "checkpoints": [
+        {
+          "wave": 1,
+          "seconds": 47.2,
+          "lives": 0,
+          "coins": 180,
+          "towers": 0,
+          "upgrades": 0
+        }
+      ]
+    },
+    {
+      "id": "mosswater-02",
+      "policy": "upgrades",
+      "phase": "won",
+      "seconds": 95.3,
+      "lives": 6,
+      "leaks": 6,
+      "coins": 16,
+      "kills": {
+        "raider": 0,
+        "runner": 78,
+        "armored": 0,
+        "boss": 0
+      },
+      "trace": [
+        {
+          "tick": 0,
+          "command": {
+            "type": "place",
+            "kind": "stone",
+            "point": {
+              "x": 1,
+              "z": 2
+            }
+          },
+          "accepted": true
+        },
+        {
+          "tick": 0,
+          "command": {
+            "type": "place",
+            "kind": "stone",
+            "point": {
+              "x": 1,
+              "z": 5
+            }
+          },
+          "accepted": true
+        },
+        {
+          "tick": 0,
+          "command": {
+            "type": "place",
+            "kind": "stone",
+            "point": {
+              "x": 3,
+              "z": 2
+            }
+          },
+          "accepted": true
+        },
+        {
+          "tick": 0,
+          "command": {
+            "type": "start"
+          },
+          "accepted": true
+        },
+        {
+          "tick": 960,
+          "command": {
+            "type": "place",
+            "kind": "net",
+            "point": {
+              "x": 5,
+              "z": 2
+            }
+          },
+          "accepted": true
+        },
+        {
+          "tick": 960,
+          "command": {
+            "type": "start"
+          },
+          "accepted": true
+        },
+        {
+          "tick": 1050,
+          "command": {
+            "type": "place",
+            "kind": "bolt",
+            "point": {
+              "x": 8,
+              "z": 2
+            }
+          },
+          "accepted": true
+        },
+        {
+          "tick": 1740,
+          "command": {
+            "type": "place",
+            "kind": "bolt",
+            "point": {
+              "x": 10,
+              "z": 3
+            }
+          },
+          "accepted": true
+        },
+        {
+          "tick": 1890,
+          "command": {
+            "type": "upgrade",
+            "id": 148
+          },
+          "accepted": true
+        },
+        {
+          "tick": 1890,
+          "command": {
+            "type": "start"
+          },
+          "accepted": true
+        },
+        {
+          "tick": 2700,
+          "command": {
+            "type": "place",
+            "kind": "net",
+            "point": {
+              "x": 8,
+              "z": 6
+            }
+          },
+          "accepted": true
+        }
+      ],
+      "checkpoints": [
+        {
+          "wave": 1,
+          "seconds": 31.1,
+          "lives": 10,
+          "coins": 86,
+          "towers": 3,
+          "upgrades": 0
+        },
+        {
+          "wave": 2,
+          "seconds": 61.2,
+          "lives": 9,
+          "coins": 55,
+          "towers": 6,
+          "upgrades": 0
+        },
+        {
+          "wave": 3,
+          "seconds": 95.3,
+          "lives": 6,
+          "coins": 16,
+          "towers": 7,
+          "upgrades": 1
+        }
+      ]
+    },
+    {
+      "id": "mosswater-02",
+      "policy": "direct",
+      "phase": "lost",
+      "seconds": 30.8,
+      "lives": 0,
+      "leaks": 12,
+      "coins": 16,
+      "kills": {
+        "raider": 0,
+        "runner": 3,
+        "armored": 0,
+        "boss": 0
+      },
+      "trace": [
+        {
+          "tick": 0,
+          "command": {
+            "type": "place",
+            "kind": "bolt",
+            "point": {
+              "x": 1,
+              "z": 2
+            }
+          },
+          "accepted": true
+        },
+        {
+          "tick": 0,
+          "command": {
+            "type": "upgrade",
+            "id": 1
+          },
+          "accepted": true
+        },
+        {
+          "tick": 0,
+          "command": {
+            "type": "place",
+            "kind": "bolt",
+            "point": {
+              "x": 1,
+              "z": 5
+            }
+          },
+          "accepted": true
+        },
+        {
+          "tick": 0,
+          "command": {
+            "type": "upgrade",
+            "id": 2
+          },
+          "accepted": true
+        },
+        {
+          "tick": 0,
+          "command": {
+            "type": "start"
+          },
+          "accepted": true
+        }
+      ],
+      "checkpoints": [
+        {
+          "wave": 1,
+          "seconds": 30.8,
+          "lives": 0,
+          "coins": 16,
+          "towers": 2,
+          "upgrades": 2
+        }
+      ]
+    },
+    {
+      "id": "mosswater-02",
+      "policy": "poison-only",
+      "phase": "won",
+      "seconds": 92.5,
+      "lives": 7,
+      "leaks": 5,
+      "coins": 58,
+      "kills": {
+        "raider": 0,
+        "runner": 79,
+        "armored": 0,
+        "boss": 0
+      },
+      "trace": [
+        {
+          "tick": 0,
+          "command": {
+            "type": "place",
+            "kind": "stone",
+            "point": {
+              "x": 1,
+              "z": 2
+            }
+          },
+          "accepted": true
+        },
+        {
+          "tick": 0,
+          "command": {
+            "type": "place",
+            "kind": "stone",
+            "point": {
+              "x": 1,
+              "z": 5
+            }
+          },
+          "accepted": true
+        },
+        {
+          "tick": 0,
+          "command": {
+            "type": "place",
+            "kind": "stone",
+            "point": {
+              "x": 3,
+              "z": 2
+            }
+          },
+          "accepted": true
+        },
+        {
+          "tick": 0,
+          "command": {
+            "type": "start"
+          },
+          "accepted": true
+        },
+        {
+          "tick": 960,
+          "command": {
+            "type": "place",
+            "kind": "stone",
+            "point": {
+              "x": 5,
+              "z": 2
+            }
+          },
+          "accepted": true
+        },
+        {
+          "tick": 960,
+          "command": {
+            "type": "start"
+          },
+          "accepted": true
+        },
+        {
+          "tick": 1650,
+          "command": {
+            "type": "place",
+            "kind": "stone",
+            "point": {
+              "x": 8,
+              "z": 2
+            }
+          },
+          "accepted": true
+        },
+        {
+          "tick": 1800,
+          "command": {
+            "type": "start"
+          },
+          "accepted": true
+        },
+        {
+          "tick": 1890,
+          "command": {
+            "type": "place",
+            "kind": "stone",
+            "point": {
+              "x": 10,
+              "z": 3
+            }
+          },
+          "accepted": true
+        }
+      ],
+      "checkpoints": [
+        {
+          "wave": 1,
+          "seconds": 31.1,
+          "lives": 10,
+          "coins": 86,
+          "towers": 3,
+          "upgrades": 0
+        },
+        {
+          "wave": 2,
+          "seconds": 58.4,
+          "lives": 10,
+          "coins": 57,
+          "towers": 5,
+          "upgrades": 0
+        },
+        {
+          "wave": 3,
+          "seconds": 92.5,
+          "lives": 7,
+          "coins": 58,
+          "towers": 6,
+          "upgrades": 0
+        }
+      ]
+    },
+    {
+      "id": "mosswater-02",
+      "policy": "one-lane",
+      "phase": "lost",
+      "seconds": 57.1,
+      "lives": 0,
+      "leaks": 12,
+      "coins": 159,
+      "kills": {
+        "raider": 0,
+        "runner": 22,
+        "armored": 0,
+        "boss": 0
+      },
+      "trace": [
+        {
+          "tick": 0,
+          "command": {
+            "type": "place",
+            "kind": "stone",
+            "point": {
+              "x": 1,
+              "z": 2
+            }
+          },
+          "accepted": true
+        },
+        {
+          "tick": 0,
+          "command": {
+            "type": "place",
+            "kind": "stone",
+            "point": {
+              "x": 1,
+              "z": 5
+            }
+          },
+          "accepted": true
+        },
+        {
+          "tick": 0,
+          "command": {
+            "type": "start"
+          },
+          "accepted": true
+        },
+        {
+          "tick": 960,
+          "command": {
+            "type": "start"
+          },
+          "accepted": true
+        }
+      ],
+      "checkpoints": [
+        {
+          "wave": 1,
+          "seconds": 31.1,
+          "lives": 3,
+          "coins": 137,
+          "towers": 2,
+          "upgrades": 0
+        },
+        {
+          "wave": 2,
+          "seconds": 57.1,
+          "lives": 0,
+          "coins": 159,
+          "towers": 2,
+          "upgrades": 0
+        }
+      ]
+    },
+    {
+      "id": "mosswater-02",
+      "policy": "hoard",
+      "phase": "lost",
+      "seconds": 28.9,
+      "lives": 0,
+      "leaks": 12,
+      "coins": 200,
+      "kills": {
+        "raider": 0,
+        "runner": 0,
+        "armored": 0,
+        "boss": 0
+      },
+      "trace": [
+        {
+          "tick": 0,
+          "command": {
+            "type": "start"
+          },
+          "accepted": true
+        }
+      ],
+      "checkpoints": [
+        {
+          "wave": 1,
+          "seconds": 28.9,
+          "lives": 0,
+          "coins": 200,
+          "towers": 0,
+          "upgrades": 0
+        }
+      ]
+    },
+    {
+      "id": "mosswater-03",
+      "policy": "upgrades",
+      "phase": "won",
+      "seconds": 169.9,
+      "lives": 12,
+      "leaks": 0,
+      "coins": 39,
+      "kills": {
+        "raider": 0,
+        "runner": 0,
+        "armored": 36,
+        "boss": 0
+      },
+      "trace": [
+        {
+          "tick": 0,
+          "command": {
+            "type": "place",
+            "kind": "bolt",
+            "point": {
+              "x": 0,
+              "z": 4
+            }
+          },
+          "accepted": true
+        },
+        {
+          "tick": 0,
+          "command": {
+            "type": "upgrade",
+            "id": 1
+          },
+          "accepted": true
+        },
+        {
+          "tick": 0,
+          "command": {
+            "type": "place",
+            "kind": "bolt",
+            "point": {
+              "x": 3,
+              "z": 2
+            }
+          },
+          "accepted": true
+        },
+        {
+          "tick": 0,
+          "command": {
+            "type": "upgrade",
+            "id": 2
+          },
+          "accepted": true
+        },
+        {
+          "tick": 0,
+          "command": {
+            "type": "start"
+          },
+          "accepted": true
+        },
+        {
+          "tick": 600,
+          "command": {
+            "type": "place",
+            "kind": "bolt",
+            "point": {
+              "x": 6,
+              "z": 2
+            }
+          },
+          "accepted": true
+        },
+        {
+          "tick": 1500,
+          "command": {
+            "type": "upgrade",
+            "id": 99
+          },
+          "accepted": true
+        },
+        {
+          "tick": 1500,
+          "command": {
+            "type": "start"
+          },
+          "accepted": true
+        },
+        {
+          "tick": 2760,
+          "command": {
+            "type": "place",
+            "kind": "net",
+            "point": {
+              "x": 9,
+              "z": 5
+            }
+          },
+          "accepted": true
+        },
+        {
+          "tick": 3150,
+          "command": {
+            "type": "place",
+            "kind": "bolt",
+            "point": {
+              "x": 2,
+              "z": 6
+            }
+          },
+          "accepted": true
+        },
+        {
+          "tick": 3150,
+          "command": {
+            "type": "start"
+          },
+          "accepted": true
+        },
+        {
+          "tick": 4110,
+          "command": {
+            "type": "place",
+            "kind": "net",
+            "point": {
+              "x": 9,
+              "z": 4
+            }
+          },
+          "accepted": true
+        }
+      ],
+      "checkpoints": [
+        {
+          "wave": 1,
+          "seconds": 50,
+          "lives": 12,
+          "coins": 72,
+          "towers": 3,
+          "upgrades": 2
+        },
+        {
+          "wave": 2,
+          "seconds": 104.5,
+          "lives": 12,
+          "coins": 65,
+          "towers": 4,
+          "upgrades": 3
+        },
+        {
+          "wave": 3,
+          "seconds": 169.9,
+          "lives": 12,
+          "coins": 39,
+          "towers": 6,
+          "upgrades": 3
+        }
+      ]
+    },
+    {
+      "id": "mosswater-03",
+      "policy": "direct",
+      "phase": "won",
+      "seconds": 168.8,
+      "lives": 12,
+      "leaks": 0,
+      "coins": 4,
+      "kills": {
+        "raider": 0,
+        "runner": 0,
+        "armored": 36,
+        "boss": 0
+      },
+      "trace": [
+        {
+          "tick": 0,
+          "command": {
+            "type": "place",
+            "kind": "bolt",
+            "point": {
+              "x": 0,
+              "z": 4
+            }
+          },
+          "accepted": true
+        },
+        {
+          "tick": 0,
+          "command": {
+            "type": "upgrade",
+            "id": 1
+          },
+          "accepted": true
+        },
+        {
+          "tick": 0,
+          "command": {
+            "type": "place",
+            "kind": "bolt",
+            "point": {
+              "x": 3,
+              "z": 2
+            }
+          },
+          "accepted": true
+        },
+        {
+          "tick": 0,
+          "command": {
+            "type": "upgrade",
+            "id": 2
+          },
+          "accepted": true
+        },
+        {
+          "tick": 0,
+          "command": {
+            "type": "start"
+          },
+          "accepted": true
+        },
+        {
+          "tick": 600,
+          "command": {
+            "type": "place",
+            "kind": "bolt",
+            "point": {
+              "x": 6,
+              "z": 2
+            }
+          },
+          "accepted": true
+        },
+        {
+          "tick": 1500,
+          "command": {
+            "type": "upgrade",
+            "id": 99
+          },
+          "accepted": true
+        },
+        {
+          "tick": 1500,
+          "command": {
+            "type": "start"
+          },
+          "accepted": true
+        },
+        {
+          "tick": 2430,
+          "command": {
+            "type": "place",
+            "kind": "bolt",
+            "point": {
+              "x": 9,
+              "z": 5
+            }
+          },
+          "accepted": true
+        },
+        {
+          "tick": 3150,
+          "command": {
+            "type": "upgrade",
+            "id": 406
+          },
+          "accepted": true
+        },
+        {
+          "tick": 3150,
+          "command": {
+            "type": "start"
+          },
+          "accepted": true
+        },
+        {
+          "tick": 3930,
+          "command": {
+            "type": "place",
+            "kind": "bolt",
+            "point": {
+              "x": 2,
+              "z": 6
+            }
+          },
+          "accepted": true
+        },
+        {
+          "tick": 5040,
+          "command": {
+            "type": "place",
+            "kind": "bolt",
+            "point": {
+              "x": 9,
+              "z": 4
+            }
+          },
+          "accepted": true
+        }
+      ],
+      "checkpoints": [
+        {
+          "wave": 1,
+          "seconds": 50,
+          "lives": 12,
+          "coins": 72,
+          "towers": 3,
+          "upgrades": 2
+        },
+        {
+          "wave": 2,
+          "seconds": 104.5,
+          "lives": 12,
+          "coins": 75,
+          "towers": 4,
+          "upgrades": 3
+        },
+        {
+          "wave": 3,
+          "seconds": 168.8,
+          "lives": 12,
+          "coins": 4,
+          "towers": 6,
+          "upgrades": 4
+        }
+      ]
+    },
+    {
+      "id": "mosswater-03",
+      "policy": "poison-only",
+      "phase": "lost",
+      "seconds": 134.7,
+      "lives": 0,
+      "leaks": 6,
+      "coins": 38,
+      "kills": {
+        "raider": 0,
+        "runner": 0,
+        "armored": 12,
+        "boss": 0
+      },
+      "trace": [
+        {
+          "tick": 0,
+          "command": {
+            "type": "place",
+            "kind": "stone",
+            "point": {
+              "x": 0,
+              "z": 4
+            }
+          },
+          "accepted": true
+        },
+        {
+          "tick": 0,
+          "command": {
+            "type": "upgrade",
+            "id": 1
+          },
+          "accepted": true
+        },
+        {
+          "tick": 0,
+          "command": {
+            "type": "place",
+            "kind": "stone",
+            "point": {
+              "x": 3,
+              "z": 2
+            }
+          },
+          "accepted": true
+        },
+        {
+          "tick": 0,
+          "command": {
+            "type": "start"
+          },
+          "accepted": true
+        },
+        {
+          "tick": 1980,
+          "command": {
+            "type": "upgrade",
+            "id": 2
+          },
+          "accepted": true
+        },
+        {
+          "tick": 1980,
+          "command": {
+            "type": "start"
+          },
+          "accepted": true
+        }
+      ],
+      "checkpoints": [
+        {
+          "wave": 1,
+          "seconds": 65.2,
+          "lives": 2,
+          "coins": 77,
+          "towers": 2,
+          "upgrades": 1
+        },
+        {
+          "wave": 2,
+          "seconds": 134.7,
+          "lives": 0,
+          "coins": 38,
+          "towers": 2,
+          "upgrades": 2
+        }
+      ]
+    },
+    {
+      "id": "mosswater-03",
+      "policy": "one-lane",
+      "phase": "lost",
+      "seconds": 129.1,
+      "lives": 0,
+      "leaks": 6,
+      "coins": 120,
+      "kills": {
+        "raider": 0,
+        "runner": 0,
+        "armored": 10,
+        "boss": 0
+      },
+      "trace": [
+        {
+          "tick": 0,
+          "command": {
+            "type": "place",
+            "kind": "bolt",
+            "point": {
+              "x": 0,
+              "z": 4
+            }
+          },
+          "accepted": true
+        },
+        {
+          "tick": 0,
+          "command": {
+            "type": "upgrade",
+            "id": 1
+          },
+          "accepted": true
+        },
+        {
+          "tick": 0,
+          "command": {
+            "type": "place",
+            "kind": "bolt",
+            "point": {
+              "x": 3,
+              "z": 2
+            }
+          },
+          "accepted": true
+        },
+        {
+          "tick": 0,
+          "command": {
+            "type": "upgrade",
+            "id": 2
+          },
+          "accepted": true
+        },
+        {
+          "tick": 0,
+          "command": {
+            "type": "start"
+          },
+          "accepted": true
+        },
+        {
+          "tick": 1980,
+          "command": {
+            "type": "start"
+          },
+          "accepted": true
+        }
+      ],
+      "checkpoints": [
+        {
+          "wave": 1,
+          "seconds": 65.2,
+          "lives": 6,
+          "coins": 100,
+          "towers": 2,
+          "upgrades": 2
+        },
+        {
+          "wave": 2,
+          "seconds": 129.1,
+          "lives": 0,
+          "coins": 120,
+          "towers": 2,
+          "upgrades": 2
+        }
+      ]
+    },
+    {
+      "id": "mosswater-03",
+      "policy": "hoard",
+      "phase": "lost",
+      "seconds": 59.3,
+      "lives": 0,
+      "leaks": 6,
+      "coins": 220,
+      "kills": {
+        "raider": 0,
+        "runner": 0,
+        "armored": 0,
+        "boss": 0
+      },
+      "trace": [
+        {
+          "tick": 0,
+          "command": {
+            "type": "start"
+          },
+          "accepted": true
+        }
+      ],
+      "checkpoints": [
+        {
+          "wave": 1,
+          "seconds": 59.3,
+          "lives": 0,
+          "coins": 220,
+          "towers": 0,
+          "upgrades": 0
+        }
+      ]
+    },
+    {
+      "id": "mosswater-04",
+      "policy": "upgrades",
+      "phase": "won",
+      "seconds": 206,
+      "lives": 12,
+      "leaks": 0,
+      "coins": 50,
+      "kills": {
+        "raider": 80,
+        "runner": 50,
+        "armored": 30,
+        "boss": 0
+      },
+      "trace": [
+        {
+          "tick": 0,
+          "command": {
+            "type": "place",
+            "kind": "stone",
+            "point": {
+              "x": 0,
+              "z": 4
+            }
+          },
+          "accepted": true
+        },
+        {
+          "tick": 0,
+          "command": {
+            "type": "upgrade",
+            "id": 1
+          },
+          "accepted": true
+        },
+        {
+          "tick": 0,
+          "command": {
+            "type": "place",
+            "kind": "bolt",
+            "point": {
+              "x": 3,
+              "z": 2
+            }
+          },
+          "accepted": true
+        },
+        {
+          "tick": 0,
+          "command": {
+            "type": "upgrade",
+            "id": 2
+          },
+          "accepted": true
+        },
+        {
+          "tick": 0,
+          "command": {
+            "type": "start"
+          },
+          "accepted": true
+        },
+        {
+          "tick": 960,
+          "command": {
+            "type": "place",
+            "kind": "net",
+            "point": {
+              "x": 6,
+              "z": 2
+            }
+          },
+          "accepted": true
+        },
+        {
+          "tick": 960,
+          "command": {
+            "type": "place",
+            "kind": "bolt",
+            "point": {
+              "x": 9,
+              "z": 5
+            }
+          },
+          "accepted": true
+        },
+        {
+          "tick": 960,
+          "command": {
+            "type": "start"
+          },
+          "accepted": true
+        },
+        {
+          "tick": 1290,
+          "command": {
+            "type": "place",
+            "kind": "bolt",
+            "point": {
+              "x": 2,
+              "z": 6
+            }
+          },
+          "accepted": true
+        },
+        {
+          "tick": 2130,
+          "command": {
+            "type": "upgrade",
+            "id": 161
+          },
+          "accepted": true
+        },
+        {
+          "tick": 2130,
+          "command": {
+            "type": "place",
+            "kind": "bolt",
+            "point": {
+              "x": 9,
+              "z": 4
+            }
+          },
+          "accepted": true
+        },
+        {
+          "tick": 2130,
+          "command": {
+            "type": "start"
+          },
+          "accepted": true
+        },
+        {
+          "tick": 2640,
+          "command": {
+            "type": "place",
+            "kind": "net",
+            "point": {
+              "x": 5,
+              "z": 4
+            }
+          },
+          "accepted": true
+        },
+        {
+          "tick": 3390,
+          "command": {
+            "type": "upgrade",
+            "id": 231
+          },
+          "accepted": true
+        },
+        {
+          "tick": 3390,
+          "command": {
+            "type": "place",
+            "kind": "bolt",
+            "point": {
+              "x": 7,
+              "z": 2
+            }
+          },
+          "accepted": true
+        },
+        {
+          "tick": 3390,
+          "command": {
+            "type": "start"
+          },
+          "accepted": true
+        },
+        {
+          "tick": 3990,
+          "command": {
+            "type": "upgrade",
+            "id": 406
+          },
+          "accepted": true
+        },
+        {
+          "tick": 4800,
+          "command": {
+            "type": "upgrade",
+            "id": 686
+          },
+          "accepted": true
+        },
+        {
+          "tick": 4800,
+          "command": {
+            "type": "start"
+          },
+          "accepted": true
+        },
+        {
+          "tick": 5040,
+          "command": {
+            "type": "place",
+            "kind": "stone",
+            "point": {
+              "x": 3,
+              "z": 4
+            }
+          },
+          "accepted": true
+        },
+        {
+          "tick": 5340,
+          "command": {
+            "type": "place",
+            "kind": "bolt",
+            "point": {
+              "x": 9,
+              "z": 2
+            }
+          },
+          "accepted": true
+        }
+      ],
+      "checkpoints": [
+        {
+          "wave": 1,
+          "seconds": 31.1,
+          "lives": 12,
+          "coins": 108,
+          "towers": 2,
+          "upgrades": 2
+        },
+        {
+          "wave": 2,
+          "seconds": 69.6,
+          "lives": 12,
+          "coins": 100,
+          "towers": 5,
+          "upgrades": 2
+        },
+        {
+          "wave": 3,
+          "seconds": 110.6,
+          "lives": 12,
+          "coins": 96,
+          "towers": 7,
+          "upgrades": 3
+        },
+        {
+          "wave": 4,
+          "seconds": 157,
+          "lives": 12,
+          "coins": 106,
+          "towers": 8,
+          "upgrades": 5
+        },
+        {
+          "wave": 5,
+          "seconds": 206,
+          "lives": 12,
+          "coins": 50,
+          "towers": 10,
+          "upgrades": 6
+        }
+      ]
+    },
+    {
+      "id": "mosswater-04",
+      "policy": "direct",
+      "phase": "lost",
+      "seconds": 95,
+      "lives": 0,
+      "leaks": 11,
+      "coins": 24,
+      "kills": {
+        "raider": 13,
+        "runner": 6,
+        "armored": 4,
+        "boss": 0
+      },
+      "trace": [
+        {
+          "tick": 0,
+          "command": {
+            "type": "place",
+            "kind": "bolt",
+            "point": {
+              "x": 0,
+              "z": 4
+            }
+          },
+          "accepted": true
+        },
+        {
+          "tick": 0,
+          "command": {
+            "type": "upgrade",
+            "id": 1
+          },
+          "accepted": true
+        },
+        {
+          "tick": 0,
+          "command": {
+            "type": "place",
+            "kind": "bolt",
+            "point": {
+              "x": 3,
+              "z": 2
+            }
+          },
+          "accepted": true
+        },
+        {
+          "tick": 0,
+          "command": {
+            "type": "upgrade",
+            "id": 2
+          },
+          "accepted": true
+        },
+        {
+          "tick": 0,
+          "command": {
+            "type": "place",
+            "kind": "bolt",
+            "point": {
+              "x": 6,
+              "z": 2
+            }
+          },
+          "accepted": true
+        },
+        {
+          "tick": 0,
+          "command": {
+            "type": "start"
+          },
+          "accepted": true
+        },
+        {
+          "tick": 1890,
+          "command": {
+            "type": "upgrade",
+            "id": 3
+          },
+          "accepted": true
+        },
+        {
+          "tick": 1890,
+          "command": {
+            "type": "start"
+          },
+          "accepted": true
+        },
+        {
+          "tick": 2040,
+          "command": {
+            "type": "place",
+            "kind": "bolt",
+            "point": {
+              "x": 9,
+              "z": 5
+            }
+          },
+          "accepted": true
+        }
+      ],
+      "checkpoints": [
+        {
+          "wave": 1,
+          "seconds": 62.6,
+          "lives": 1,
+          "coins": 91,
+          "towers": 3,
+          "upgrades": 2
+        },
+        {
+          "wave": 2,
+          "seconds": 95,
+          "lives": 0,
+          "coins": 24,
+          "towers": 4,
+          "upgrades": 3
+        }
+      ]
+    },
+    {
+      "id": "mosswater-04",
+      "policy": "poison-only",
+      "phase": "won",
+      "seconds": 223.6,
+      "lives": 12,
+      "leaks": 0,
+      "coins": 60,
+      "kills": {
+        "raider": 80,
+        "runner": 50,
+        "armored": 30,
+        "boss": 0
+      },
+      "trace": [
+        {
+          "tick": 0,
+          "command": {
+            "type": "place",
+            "kind": "stone",
+            "point": {
+              "x": 0,
+              "z": 4
+            }
+          },
+          "accepted": true
+        },
+        {
+          "tick": 0,
+          "command": {
+            "type": "place",
+            "kind": "stone",
+            "point": {
+              "x": 3,
+              "z": 2
+            }
+          },
+          "accepted": true
+        },
+        {
+          "tick": 0,
+          "command": {
+            "type": "place",
+            "kind": "stone",
+            "point": {
+              "x": 6,
+              "z": 2
+            }
+          },
+          "accepted": true
+        },
+        {
+          "tick": 0,
+          "command": {
+            "type": "start"
+          },
+          "accepted": true
+        },
+        {
+          "tick": 330,
+          "command": {
+            "type": "place",
+            "kind": "stone",
+            "point": {
+              "x": 9,
+              "z": 5
+            }
+          },
+          "accepted": true
+        },
+        {
+          "tick": 1500,
+          "command": {
+            "type": "place",
+            "kind": "stone",
+            "point": {
+              "x": 2,
+              "z": 6
+            }
+          },
+          "accepted": true
+        },
+        {
+          "tick": 1500,
+          "command": {
+            "type": "start"
+          },
+          "accepted": true
+        },
+        {
+          "tick": 2400,
+          "command": {
+            "type": "place",
+            "kind": "stone",
+            "point": {
+              "x": 9,
+              "z": 4
+            }
+          },
+          "accepted": true
+        },
+        {
+          "tick": 2820,
+          "command": {
+            "type": "upgrade",
+            "id": 1
+          },
+          "accepted": true
+        },
+        {
+          "tick": 2820,
+          "command": {
+            "type": "start"
+          },
+          "accepted": true
+        },
+        {
+          "tick": 3810,
+          "command": {
+            "type": "place",
+            "kind": "stone",
+            "point": {
+              "x": 5,
+              "z": 4
+            }
+          },
+          "accepted": true
+        },
+        {
+          "tick": 4080,
+          "command": {
+            "type": "upgrade",
+            "id": 2
+          },
+          "accepted": true
+        },
+        {
+          "tick": 4080,
+          "command": {
+            "type": "start"
+          },
+          "accepted": true
+        },
+        {
+          "tick": 4890,
+          "command": {
+            "type": "place",
+            "kind": "stone",
+            "point": {
+              "x": 7,
+              "z": 2
+            }
+          },
+          "accepted": true
+        },
+        {
+          "tick": 5340,
+          "command": {
+            "type": "upgrade",
+            "id": 3
+          },
+          "accepted": true
+        },
+        {
+          "tick": 5340,
+          "command": {
+            "type": "start"
+          },
+          "accepted": true
+        },
+        {
+          "tick": 5730,
+          "command": {
+            "type": "place",
+            "kind": "stone",
+            "point": {
+              "x": 3,
+              "z": 4
+            }
+          },
+          "accepted": true
+        }
+      ],
+      "checkpoints": [
+        {
+          "wave": 1,
+          "seconds": 49.7,
+          "lives": 12,
+          "coins": 83,
+          "towers": 4,
+          "upgrades": 0
+        },
+        {
+          "wave": 2,
+          "seconds": 93.6,
+          "lives": 12,
+          "coins": 75,
+          "towers": 6,
+          "upgrades": 0
+        },
+        {
+          "wave": 3,
+          "seconds": 134.6,
+          "lives": 12,
+          "coins": 76,
+          "towers": 7,
+          "upgrades": 1
+        },
+        {
+          "wave": 4,
+          "seconds": 176.6,
+          "lives": 12,
+          "coins": 96,
+          "towers": 8,
+          "upgrades": 2
+        },
+        {
+          "wave": 5,
+          "seconds": 223.6,
+          "lives": 12,
+          "coins": 60,
+          "towers": 9,
+          "upgrades": 3
+        }
+      ]
+    },
+    {
+      "id": "mosswater-04",
+      "policy": "one-lane",
+      "phase": "lost",
+      "seconds": 235.7,
+      "lives": 0,
+      "leaks": 10,
+      "coins": 581,
+      "kills": {
+        "raider": 80,
+        "runner": 39,
+        "armored": 22,
+        "boss": 0
+      },
+      "trace": [
+        {
+          "tick": 0,
+          "command": {
+            "type": "place",
+            "kind": "stone",
+            "point": {
+              "x": 0,
+              "z": 4
+            }
+          },
+          "accepted": true
+        },
+        {
+          "tick": 0,
+          "command": {
+            "type": "place",
+            "kind": "bolt",
+            "point": {
+              "x": 3,
+              "z": 2
+            }
+          },
+          "accepted": true
+        },
+        {
+          "tick": 0,
+          "command": {
+            "type": "upgrade",
+            "id": 1
+          },
+          "accepted": true
+        },
+        {
+          "tick": 0,
+          "command": {
+            "type": "upgrade",
+            "id": 2
+          },
+          "accepted": true
+        },
+        {
+          "tick": 0,
+          "command": {
+            "type": "start"
+          },
+          "accepted": true
+        },
+        {
+          "tick": 960,
+          "command": {
+            "type": "start"
+          },
+          "accepted": true
+        },
+        {
+          "tick": 2190,
+          "command": {
+            "type": "start"
+          },
+          "accepted": true
+        },
+        {
+          "tick": 3480,
+          "command": {
+            "type": "start"
+          },
+          "accepted": true
+        },
+        {
+          "tick": 5940,
+          "command": {
+            "type": "start"
+          },
+          "accepted": true
+        }
+      ],
+      "checkpoints": [
+        {
+          "wave": 1,
+          "seconds": 31.1,
+          "lives": 12,
+          "coins": 108,
+          "towers": 2,
+          "upgrades": 2
+        },
+        {
+          "wave": 2,
+          "seconds": 72.1,
+          "lives": 12,
+          "coins": 230,
+          "towers": 2,
+          "upgrades": 2
+        },
+        {
+          "wave": 3,
+          "seconds": 114.3,
+          "lives": 12,
+          "coins": 371,
+          "towers": 2,
+          "upgrades": 2
+        },
+        {
+          "wave": 4,
+          "seconds": 195.3,
+          "lives": 4,
+          "coins": 515,
+          "towers": 2,
+          "upgrades": 2
+        },
+        {
+          "wave": 5,
+          "seconds": 235.7,
+          "lives": 0,
+          "coins": 581,
+          "towers": 2,
+          "upgrades": 2
+        }
+      ]
+    },
+    {
+      "id": "mosswater-04",
+      "policy": "hoard",
+      "phase": "lost",
+      "seconds": 36.9,
+      "lives": 0,
+      "leaks": 12,
+      "coins": 240,
+      "kills": {
+        "raider": 0,
+        "runner": 0,
+        "armored": 0,
+        "boss": 0
+      },
+      "trace": [
+        {
+          "tick": 0,
+          "command": {
+            "type": "start"
+          },
+          "accepted": true
+        }
+      ],
+      "checkpoints": [
+        {
+          "wave": 1,
+          "seconds": 36.9,
+          "lives": 0,
+          "coins": 240,
+          "towers": 0,
+          "upgrades": 0
+        }
+      ]
+    },
+    {
+      "id": "mosswater-05",
+      "policy": "upgrades",
+      "phase": "won",
+      "seconds": 171.9,
+      "lives": 12,
+      "leaks": 0,
+      "coins": 29,
+      "kills": {
+        "raider": 112,
+        "runner": 56,
+        "armored": 34,
+        "boss": 2
+      },
+      "trace": [
+        {
+          "tick": 0,
+          "command": {
+            "type": "place",
+            "kind": "stone",
+            "point": {
+              "x": 1,
+              "z": 2
+            }
+          },
+          "accepted": true
+        },
+        {
+          "tick": 0,
+          "command": {
+            "type": "upgrade",
+            "id": 1
+          },
+          "accepted": true
+        },
+        {
+          "tick": 0,
+          "command": {
+            "type": "place",
+            "kind": "stone",
+            "point": {
+              "x": 1,
+              "z": 5
+            }
+          },
+          "accepted": true
+        },
+        {
+          "tick": 0,
+          "command": {
+            "type": "upgrade",
+            "id": 2
+          },
+          "accepted": true
+        },
+        {
+          "tick": 0,
+          "command": {
+            "type": "place",
+            "kind": "net",
+            "point": {
+              "x": 3,
+              "z": 2
+            }
+          },
+          "accepted": true
+        },
+        {
+          "tick": 0,
+          "command": {
+            "type": "place",
+            "kind": "stone",
+            "point": {
+              "x": 5,
+              "z": 2
+            }
+          },
+          "accepted": true
+        },
+        {
+          "tick": 0,
+          "command": {
+            "type": "start"
+          },
+          "accepted": true
+        },
+        {
+          "tick": 300,
+          "command": {
+            "type": "place",
+            "kind": "bolt",
+            "point": {
+              "x": 8,
+              "z": 2
+            }
+          },
+          "accepted": true
+        },
+        {
+          "tick": 600,
+          "command": {
+            "type": "upgrade",
+            "id": 4
+          },
+          "accepted": true
+        },
+        {
+          "tick": 600,
+          "command": {
+            "type": "place",
+            "kind": "net",
+            "point": {
+              "x": 10,
+              "z": 3
+            }
+          },
+          "accepted": true
+        },
+        {
+          "tick": 600,
+          "command": {
+            "type": "start"
+          },
+          "accepted": true
+        },
+        {
+          "tick": 990,
+          "command": {
+            "type": "upgrade",
+            "id": 99
+          },
+          "accepted": true
+        },
+        {
+          "tick": 1290,
+          "command": {
+            "type": "place",
+            "kind": "stone",
+            "point": {
+              "x": 8,
+              "z": 6
+            }
+          },
+          "accepted": true
+        },
+        {
+          "tick": 1290,
+          "command": {
+            "type": "place",
+            "kind": "bolt",
+            "point": {
+              "x": 5,
+              "z": 6
+            }
+          },
+          "accepted": true
+        },
+        {
+          "tick": 1290,
+          "command": {
+            "type": "start"
+          },
+          "accepted": true
+        },
+        {
+          "tick": 1380,
+          "command": {
+            "type": "place",
+            "kind": "bolt",
+            "point": {
+              "x": 3,
+              "z": 4
+            }
+          },
+          "accepted": true
+        },
+        {
+          "tick": 1620,
+          "command": {
+            "type": "place",
+            "kind": "bolt",
+            "point": {
+              "x": 7,
+              "z": 2
+            }
+          },
+          "accepted": true
+        },
+        {
+          "tick": 2040,
+          "command": {
+            "type": "upgrade",
+            "id": 405
+          },
+          "accepted": true
+        },
+        {
+          "tick": 2040,
+          "command": {
+            "type": "upgrade",
+            "id": 406
+          },
+          "accepted": true
+        },
+        {
+          "tick": 2040,
+          "command": {
+            "type": "start"
+          },
+          "accepted": true
+        },
+        {
+          "tick": 2190,
+          "command": {
+            "type": "place",
+            "kind": "net",
+            "point": {
+              "x": 10,
+              "z": 5
+            }
+          },
+          "accepted": true
+        },
+        {
+          "tick": 2430,
+          "command": {
+            "type": "place",
+            "kind": "bolt",
+            "point": {
+              "x": 8,
+              "z": 5
+            }
+          },
+          "accepted": true
+        },
+        {
+          "tick": 2880,
+          "command": {
+            "type": "upgrade",
+            "id": 433
+          },
+          "accepted": true
+        },
+        {
+          "tick": 2970,
+          "command": {
+            "type": "upgrade",
+            "id": 530
+          },
+          "accepted": true
+        },
+        {
+          "tick": 2970,
+          "command": {
+            "type": "upgrade",
+            "id": 844
+          },
+          "accepted": true
+        },
+        {
+          "tick": 2970,
+          "command": {
+            "type": "start"
+          },
+          "accepted": true
+        },
+        {
+          "tick": 3270,
+          "command": {
+            "type": "place",
+            "kind": "stone",
+            "point": {
+              "x": 10,
+              "z": 4
+            }
+          },
+          "accepted": true
+        },
+        {
+          "tick": 4530,
+          "command": {
+            "type": "upgrade",
+            "id": 1179
+          },
+          "accepted": true
+        }
+      ],
+      "checkpoints": [
+        {
+          "wave": 1,
+          "seconds": 19.2,
+          "lives": 12,
+          "coins": 129,
+          "towers": 5,
+          "upgrades": 2
+        },
+        {
+          "wave": 2,
+          "seconds": 41.9,
+          "lives": 12,
+          "coins": 138,
+          "towers": 6,
+          "upgrades": 4
+        },
+        {
+          "wave": 3,
+          "seconds": 66.9,
+          "lives": 12,
+          "coins": 167,
+          "towers": 10,
+          "upgrades": 4
+        },
+        {
+          "wave": 4,
+          "seconds": 97.3,
+          "lives": 12,
+          "coins": 131,
+          "towers": 12,
+          "upgrades": 7
+        },
+        {
+          "wave": 5,
+          "seconds": 171.9,
+          "lives": 12,
+          "coins": 29,
+          "towers": 13,
+          "upgrades": 10
+        }
+      ]
+    },
+    {
+      "id": "mosswater-05",
+      "policy": "direct",
+      "phase": "lost",
+      "seconds": 260.1,
+      "lives": 6,
+      "leaks": 1,
+      "coins": 17,
+      "kills": {
+        "raider": 112,
+        "runner": 56,
+        "armored": 34,
+        "boss": 0
+      },
+      "trace": [
+        {
+          "tick": 0,
+          "command": {
+            "type": "place",
+            "kind": "bolt",
+            "point": {
+              "x": 1,
+              "z": 2
+            }
+          },
+          "accepted": true
+        },
+        {
+          "tick": 0,
+          "command": {
+            "type": "upgrade",
+            "id": 1
+          },
+          "accepted": true
+        },
+        {
+          "tick": 0,
+          "command": {
+            "type": "place",
+            "kind": "bolt",
+            "point": {
+              "x": 1,
+              "z": 5
+            }
+          },
+          "accepted": true
+        },
+        {
+          "tick": 0,
+          "command": {
+            "type": "upgrade",
+            "id": 2
+          },
+          "accepted": true
+        },
+        {
+          "tick": 0,
+          "command": {
+            "type": "place",
+            "kind": "bolt",
+            "point": {
+              "x": 3,
+              "z": 2
+            }
+          },
+          "accepted": true
+        },
+        {
+          "tick": 0,
+          "command": {
+            "type": "upgrade",
+            "id": 3
+          },
+          "accepted": true
+        },
+        {
+          "tick": 0,
+          "command": {
+            "type": "place",
+            "kind": "bolt",
+            "point": {
+              "x": 5,
+              "z": 2
+            }
+          },
+          "accepted": true
+        },
+        {
+          "tick": 0,
+          "command": {
+            "type": "upgrade",
+            "id": 4
+          },
+          "accepted": true
+        },
+        {
+          "tick": 0,
+          "command": {
+            "type": "start"
+          },
+          "accepted": true
+        },
+        {
+          "tick": 420,
+          "command": {
+            "type": "place",
+            "kind": "bolt",
+            "point": {
+              "x": 8,
+              "z": 2
+            }
+          },
+          "accepted": true
+        },
+        {
+          "tick": 1260,
+          "command": {
+            "type": "place",
+            "kind": "bolt",
+            "point": {
+              "x": 10,
+              "z": 3
+            }
+          },
+          "accepted": true
+        },
+        {
+          "tick": 1410,
+          "command": {
+            "type": "upgrade",
+            "id": 140
+          },
+          "accepted": true
+        },
+        {
+          "tick": 1410,
+          "command": {
+            "type": "place",
+            "kind": "bolt",
+            "point": {
+              "x": 8,
+              "z": 6
+            }
+          },
+          "accepted": true
+        },
+        {
+          "tick": 1410,
+          "command": {
+            "type": "start"
+          },
+          "accepted": true
+        },
+        {
+          "tick": 2070,
+          "command": {
+            "type": "place",
+            "kind": "bolt",
+            "point": {
+              "x": 5,
+              "z": 6
+            }
+          },
+          "accepted": true
+        },
+        {
+          "tick": 2670,
+          "command": {
+            "type": "place",
+            "kind": "bolt",
+            "point": {
+              "x": 3,
+              "z": 4
+            }
+          },
+          "accepted": true
+        },
+        {
+          "tick": 2910,
+          "command": {
+            "type": "upgrade",
+            "id": 350
+          },
+          "accepted": true
+        },
+        {
+          "tick": 2910,
+          "command": {
+            "type": "upgrade",
+            "id": 369
+          },
+          "accepted": true
+        },
+        {
+          "tick": 2910,
+          "command": {
+            "type": "start"
+          },
+          "accepted": true
+        },
+        {
+          "tick": 3480,
+          "command": {
+            "type": "place",
+            "kind": "bolt",
+            "point": {
+              "x": 7,
+              "z": 2
+            }
+          },
+          "accepted": true
+        },
+        {
+          "tick": 3930,
+          "command": {
+            "type": "place",
+            "kind": "bolt",
+            "point": {
+              "x": 10,
+              "z": 5
+            }
+          },
+          "accepted": true
+        },
+        {
+          "tick": 4470,
+          "command": {
+            "type": "upgrade",
+            "id": 613
+          },
+          "accepted": true
+        },
+        {
+          "tick": 4470,
+          "command": {
+            "type": "upgrade",
+            "id": 832
+          },
+          "accepted": true
+        },
+        {
+          "tick": 4470,
+          "command": {
+            "type": "start"
+          },
+          "accepted": true
+        },
+        {
+          "tick": 4650,
+          "command": {
+            "type": "place",
+            "kind": "bolt",
+            "point": {
+              "x": 8,
+              "z": 5
+            }
+          },
+          "accepted": true
+        },
+        {
+          "tick": 5160,
+          "command": {
+            "type": "place",
+            "kind": "bolt",
+            "point": {
+              "x": 10,
+              "z": 4
+            }
+          },
+          "accepted": true
+        },
+        {
+          "tick": 5550,
+          "command": {
+            "type": "place",
+            "kind": "bolt",
+            "point": {
+              "x": 3,
+              "z": 6
+            }
+          },
+          "accepted": true
+        },
+        {
+          "tick": 6000,
+          "command": {
+            "type": "upgrade",
+            "id": 1142
+          },
+          "accepted": true
+        },
+        {
+          "tick": 6000,
+          "command": {
+            "type": "upgrade",
+            "id": 1389
+          },
+          "accepted": true
+        },
+        {
+          "tick": 6000,
+          "command": {
+            "type": "place",
+            "kind": "bolt",
+            "point": {
+              "x": 1,
+              "z": 0
+            }
+          },
+          "accepted": true
+        },
+        {
+          "tick": 6000,
+          "command": {
+            "type": "start"
+          },
+          "accepted": true
+        },
+        {
+          "tick": 6480,
+          "command": {
+            "type": "place",
+            "kind": "bolt",
+            "point": {
+              "x": 9,
+              "z": 6
+            }
+          },
+          "accepted": true
+        },
+        {
+          "tick": 6840,
+          "command": {
+            "type": "place",
+            "kind": "bolt",
+            "point": {
+              "x": 10,
+              "z": 7
+            }
+          },
+          "accepted": true
+        }
+      ],
+      "checkpoints": [
+        {
+          "wave": 1,
+          "seconds": 46.5,
+          "lives": 12,
+          "coins": 104,
+          "towers": 6,
+          "upgrades": 4
+        },
+        {
+          "wave": 2,
+          "seconds": 96,
+          "lives": 12,
+          "coins": 118,
+          "towers": 9,
+          "upgrades": 5
+        },
+        {
+          "wave": 3,
+          "seconds": 147.3,
+          "lives": 12,
+          "coins": 142,
+          "towers": 11,
+          "upgrades": 7
+        },
+        {
+          "wave": 4,
+          "seconds": 198,
+          "lives": 12,
+          "coins": 151,
+          "towers": 14,
+          "upgrades": 9
+        },
+        {
+          "wave": 5,
+          "seconds": 260.1,
+          "lives": 6,
+          "coins": 17,
+          "towers": 17,
+          "upgrades": 11
+        }
+      ]
+    },
+    {
+      "id": "mosswater-05",
+      "policy": "poison-only",
+      "phase": "lost",
+      "seconds": 168.1,
+      "lives": 6,
+      "leaks": 1,
+      "coins": 62,
+      "kills": {
+        "raider": 112,
+        "runner": 56,
+        "armored": 34,
+        "boss": 0
+      },
+      "trace": [
+        {
+          "tick": 0,
+          "command": {
+            "type": "place",
+            "kind": "stone",
+            "point": {
+              "x": 1,
+              "z": 2
+            }
+          },
+          "accepted": true
+        },
+        {
+          "tick": 0,
+          "command": {
+            "type": "place",
+            "kind": "stone",
+            "point": {
+              "x": 1,
+              "z": 5
+            }
+          },
+          "accepted": true
+        },
+        {
+          "tick": 0,
+          "command": {
+            "type": "place",
+            "kind": "stone",
+            "point": {
+              "x": 3,
+              "z": 2
+            }
+          },
+          "accepted": true
+        },
+        {
+          "tick": 0,
+          "command": {
+            "type": "place",
+            "kind": "stone",
+            "point": {
+              "x": 5,
+              "z": 2
+            }
+          },
+          "accepted": true
+        },
+        {
+          "tick": 0,
+          "command": {
+            "type": "place",
+            "kind": "stone",
+            "point": {
+              "x": 8,
+              "z": 2
+            }
+          },
+          "accepted": true
+        },
+        {
+          "tick": 0,
+          "command": {
+            "type": "place",
+            "kind": "stone",
+            "point": {
+              "x": 10,
+              "z": 3
+            }
+          },
+          "accepted": true
+        },
+        {
+          "tick": 0,
+          "command": {
+            "type": "start"
+          },
+          "accepted": true
+        },
+        {
+          "tick": 630,
+          "command": {
+            "type": "place",
+            "kind": "stone",
+            "point": {
+              "x": 8,
+              "z": 6
+            }
+          },
+          "accepted": true
+        },
+        {
+          "tick": 960,
+          "command": {
+            "type": "upgrade",
+            "id": 1
+          },
+          "accepted": true
+        },
+        {
+          "tick": 960,
+          "command": {
+            "type": "start"
+          },
+          "accepted": true
+        },
+        {
+          "tick": 1290,
+          "command": {
+            "type": "place",
+            "kind": "stone",
+            "point": {
+              "x": 5,
+              "z": 6
+            }
+          },
+          "accepted": true
+        },
+        {
+          "tick": 1920,
+          "command": {
+            "type": "upgrade",
+            "id": 2
+          },
+          "accepted": true
+        },
+        {
+          "tick": 1920,
+          "command": {
+            "type": "upgrade",
+            "id": 3
+          },
+          "accepted": true
+        },
+        {
+          "tick": 1920,
+          "command": {
+            "type": "start"
+          },
+          "accepted": true
+        },
+        {
+          "tick": 2310,
+          "command": {
+            "type": "place",
+            "kind": "stone",
+            "point": {
+              "x": 3,
+              "z": 4
+            }
+          },
+          "accepted": true
+        },
+        {
+          "tick": 2670,
+          "command": {
+            "type": "upgrade",
+            "id": 4
+          },
+          "accepted": true
+        },
+        {
+          "tick": 2670,
+          "command": {
+            "type": "upgrade",
+            "id": 5
+          },
+          "accepted": true
+        },
+        {
+          "tick": 2670,
+          "command": {
+            "type": "start"
+          },
+          "accepted": true
+        },
+        {
+          "tick": 3060,
+          "command": {
+            "type": "place",
+            "kind": "stone",
+            "point": {
+              "x": 7,
+              "z": 2
+            }
+          },
+          "accepted": true
+        },
+        {
+          "tick": 3540,
+          "command": {
+            "type": "upgrade",
+            "id": 6
+          },
+          "accepted": true
+        },
+        {
+          "tick": 3540,
+          "command": {
+            "type": "upgrade",
+            "id": 212
+          },
+          "accepted": true
+        },
+        {
+          "tick": 3540,
+          "command": {
+            "type": "start"
+          },
+          "accepted": true
+        },
+        {
+          "tick": 3810,
+          "command": {
+            "type": "place",
+            "kind": "stone",
+            "point": {
+              "x": 10,
+              "z": 5
+            }
+          },
+          "accepted": true
+        }
+      ],
+      "checkpoints": [
+        {
+          "wave": 1,
+          "seconds": 31.4,
+          "lives": 12,
+          "coins": 109,
+          "towers": 7,
+          "upgrades": 0
+        },
+        {
+          "wave": 2,
+          "seconds": 62.7,
+          "lives": 12,
+          "coins": 158,
+          "towers": 8,
+          "upgrades": 1
+        },
+        {
+          "wave": 3,
+          "seconds": 87.2,
+          "lives": 12,
+          "coins": 157,
+          "towers": 9,
+          "upgrades": 3
+        },
+        {
+          "wave": 4,
+          "seconds": 115.4,
+          "lives": 12,
+          "coins": 181,
+          "towers": 10,
+          "upgrades": 5
+        },
+        {
+          "wave": 5,
+          "seconds": 168.1,
+          "lives": 6,
+          "coins": 62,
+          "towers": 11,
+          "upgrades": 7
+        }
+      ]
+    },
+    {
+      "id": "mosswater-05",
+      "policy": "one-lane",
+      "phase": "lost",
+      "seconds": 224.4,
+      "lives": 0,
+      "leaks": 8,
+      "coins": 998,
+      "kills": {
+        "raider": 112,
+        "runner": 52,
+        "armored": 30,
+        "boss": 0
+      },
+      "trace": [
+        {
+          "tick": 0,
+          "command": {
+            "type": "place",
+            "kind": "stone",
+            "point": {
+              "x": 1,
+              "z": 2
+            }
+          },
+          "accepted": true
+        },
+        {
+          "tick": 0,
+          "command": {
+            "type": "place",
+            "kind": "stone",
+            "point": {
+              "x": 1,
+              "z": 5
+            }
+          },
+          "accepted": true
+        },
+        {
+          "tick": 0,
+          "command": {
+            "type": "upgrade",
+            "id": 1
+          },
+          "accepted": true
+        },
+        {
+          "tick": 0,
+          "command": {
+            "type": "upgrade",
+            "id": 2
+          },
+          "accepted": true
+        },
+        {
+          "tick": 0,
+          "command": {
+            "type": "start"
+          },
+          "accepted": true
+        },
+        {
+          "tick": 660,
+          "command": {
+            "type": "start"
+          },
+          "accepted": true
+        },
+        {
+          "tick": 1530,
+          "command": {
+            "type": "start"
+          },
+          "accepted": true
+        },
+        {
+          "tick": 2970,
+          "command": {
+            "type": "start"
+          },
+          "accepted": true
+        },
+        {
+          "tick": 5010,
+          "command": {
+            "type": "start"
+          },
+          "accepted": true
+        }
+      ],
+      "checkpoints": [
+        {
+          "wave": 1,
+          "seconds": 21.8,
+          "lives": 12,
+          "coins": 284,
+          "towers": 2,
+          "upgrades": 2
+        },
+        {
+          "wave": 2,
+          "seconds": 50.6,
+          "lives": 12,
+          "coins": 473,
+          "towers": 2,
+          "upgrades": 2
+        },
+        {
+          "wave": 3,
+          "seconds": 97.8,
+          "lives": 10,
+          "coins": 683,
+          "towers": 2,
+          "upgrades": 2
+        },
+        {
+          "wave": 4,
+          "seconds": 165.5,
+          "lives": 6,
+          "coins": 914,
+          "towers": 2,
+          "upgrades": 2
+        },
+        {
+          "wave": 5,
+          "seconds": 224.4,
+          "lives": 0,
+          "coins": 998,
+          "towers": 2,
+          "upgrades": 2
+        }
+      ]
+    },
+    {
+      "id": "mosswater-05",
+      "policy": "hoard",
+      "phase": "lost",
+      "seconds": 38.7,
+      "lives": 0,
+      "leaks": 12,
+      "coins": 400,
+      "kills": {
+        "raider": 0,
+        "runner": 0,
+        "armored": 0,
+        "boss": 0
+      },
+      "trace": [
+        {
+          "tick": 0,
+          "command": {
+            "type": "start"
+          },
+          "accepted": true
+        }
+      ],
+      "checkpoints": [
+        {
+          "wave": 1,
+          "seconds": 38.7,
+          "lives": 0,
+          "coins": 400,
+          "towers": 0,
+          "upgrades": 0
+        }
+      ]
+    }
+  ]
+}
