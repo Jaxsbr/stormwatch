@@ -945,18 +945,23 @@ export class Battlefield {
         ? desiredRig
         : this.art!.enemy(e.kind, "side");
       if (characterResource.definition) {
-        if (f.character && f.character.cutout.resource !== characterResource) {
+        const mirrored = !vertical && next.x < e.x;
+        if (
+          f.character &&
+          (f.character.cutout.resource !== characterResource ||
+            f.character.mirrored !== mirrored)
+        ) {
           this.scene.remove(f.character.group);
           this.characterPool.release(f.character);
           f.character = undefined;
         }
         if (!f.character) {
           f.character = this.characterPool.acquire(
-            `${characterResource.definition.id}:${height}`,
+            `${characterResource.definition.id}:${height}:${mirrored}`,
             () => {
               if (__STORMWATCH_QA__ && this.profileTiming)
                 this.frameProfile.createdRigs++;
-              return new CharacterRig(characterResource, height);
+              return new CharacterRig(characterResource, height, mirrored);
             },
           );
           this.scene.add(f.character.group);

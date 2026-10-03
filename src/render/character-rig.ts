@@ -26,10 +26,28 @@ export class CharacterRig {
   private readonly scale: number;
   private readonly hipHeight: number;
   private readonly frontal: boolean;
-  constructor(resource: CutoutResource, height = 88) {
+  private readonly mirroredTextures: THREE.Texture[] = [];
+  constructor(
+    resource: CutoutResource,
+    height = 88,
+    readonly mirrored = false,
+  ) {
     this.cutout = new CutoutInstance(resource, height);
     this.group = this.cutout.group;
     this.scale = this.group.scale.x;
+    if (mirrored) {
+      this.group.scale.x = -this.scale;
+      // Sprites billboard with unsigned world scale; reflect their UVs and
+      // pivot explicitly. The group's reflection handles limb meshes/anchors.
+      for (const sprite of this.cutout.parts.values()) {
+        const texture = sprite.material.map!.clone();
+        texture.repeat.x = -1;
+        texture.offset.x = 1;
+        sprite.material.map = texture;
+        sprite.center.x = 1 - sprite.center.x;
+        this.mirroredTextures.push(texture);
+      }
+    }
     this.frontal =
       resource.definition!.view === "front" ||
       resource.definition!.view === "rear";
@@ -129,7 +147,8 @@ export class CharacterRig {
     const swing = reducedMotion ? 0 : Math.sin(phase * Math.PI * 2) * ragePhase;
     body.position.x += swing * 10;
     body.position.y += Math.abs(swing) * 3;
-    body.material.rotation = impact * 0.045 + swing * 0.035;
+    body.material.rotation =
+      (impact * 0.045 + swing * 0.035) * (this.mirrored ? -1 : 1);
     const guard = this.cutout.parts.get("bodyGuard");
     body.visible = !shieldRaised || !guard;
     if (guard) {
@@ -149,7 +168,11 @@ export class CharacterRig {
       );
       // Preserve each view's anatomical hip ordering. Front-facing art reverses
       // screen-left/right relative to the side view; fixed offsets cross its legs.
-      foot.x += leg.hip.x - (index === 0 ? 35 : -35);
+      // Convert the sampled world displacement into the reflected group's
+      // local space, keeping each boot planted instead of reversing its stride.
+      foot.x =
+        leg.hip.x +
+        (foot.x - (index === 0 ? 35 : -35)) * (this.mirrored ? -1 : 1);
       if (this.frontal) {
         // Knees flex in depth when viewed head-on. Project the cloth vertically
         // instead of bending both knees sideways in the image plane. Keep each
@@ -178,6 +201,7 @@ export class CharacterRig {
       l.mesh.geometry.dispose();
       l.mesh.material.dispose();
     });
+    this.mirroredTextures.forEach((texture) => texture.dispose());
     this.cutout.dispose();
   }
 }
