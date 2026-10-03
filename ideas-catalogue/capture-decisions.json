@@ -70,6 +70,31 @@
       "path": "review/mosswater-art/phone-clearance.png",
       "sha256": "c474097012fac9f1ad9b83ce4f769c7a06f67b097135c0097cf0044289483be2",
       "reason": "Diagnostic real-renderer phone-sized clearance screenshot; no new art concept"
+    },
+    {
+      "path": "review/mosswater-encounters/finale-preparation.jpg",
+      "sha256": "f13d45b95a431ab0ecbf4d11c131dd7790eb91fe8976450deaabadbba16e5655",
+      "reason": "Diagnostic legal finale preparation using existing renderer and captured source assets; no new generated art."
+    },
+    {
+      "path": "review/mosswater-encounters/inspection.jpg",
+      "sha256": "b62a6d26b84a4ec4132fd9ff5dbebb896989cc950d87b6993a4ee45bc6a0e904",
+      "reason": "Diagnostic enemy inspection UI screenshot; no new generated art."
+    },
+    {
+      "path": "review/mosswater-encounters/promoted-game.jpg",
+      "sha256": "a95d7a73434e772ee52194e301b02c8481cb6615efaf1a0948ef5e0fb97ec300",
+      "reason": "Diagnostic candidate promotion and game reload screenshot; no new generated art."
+    },
+    {
+      "path": "review/mosswater-encounters/twin-bosses.jpg",
+      "sha256": "fc1bb225dcfbfb79bf7543d1b329ba84c1246318f15ace76e279e3b6f01c614b",
+      "reason": "Diagnostic real Game twin-boss fixture using captured source assets; no new generated art."
+    },
+    {
+      "path": "review/mosswater-encounters/workbench-promotion.jpg",
+      "sha256": "30a2e39e054f686f9e5f915ac6c4894f36f0f732b2fd966ced8b547ae843daab",
+      "reason": "Diagnostic workbench promotion verification screenshot; no new generated art."
     }
   ]
 }
