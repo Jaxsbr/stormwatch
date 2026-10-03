@@ -22,7 +22,8 @@ in [ARCHITECTURE.md](../ARCHITECTURE.md); designer controls are in
   Weasel evade with booleans. Shared timing changes affect every enabled wave;
   individual groups carry arrival timing and count, not ability timing overrides.
 - Playtest and Promote must resolve the same authored settings. Preserve scoped
-  promotion: selected map settings and wave, plus changed shared ability defaults.
+  promotion: selected board/map settings and wave, plus changed shared ability defaults.
+  Travel-order changes and membership moves between boards use all-board promotion.
   Keep unrelated content and pending draft edits, validate the result, check stale
   scopes, and atomically replace the canonical file.
 
@@ -30,7 +31,8 @@ in [ARCHITECTURE.md](../ARCHITECTURE.md); designer controls are in
 
 1. Inspect the canonical recipe and current draft workflow before editing. For a
    new map, use an existing supported layout as a starting point and supply stable
-   IDs. Canonical array order controls campaign order and unlock progression.
+   IDs. Authored board order and each board's encounter references control campaign order and unlock progression. Recipes
+   without boards retain canonical level-array order.
 2. Keep authored fields editable and understandable in the workbench. If a change
    needs a new schema field or mechanic, implement its validation, compilation,
    appropriate workbench control, persistence/migration and presentation together.

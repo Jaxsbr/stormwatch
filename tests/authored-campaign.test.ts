@@ -1,6 +1,5 @@
 import { afterEach, expect, it, vi } from "vitest";
 import source from "../src/content/recipes.json";
-import { levelUnlocked } from "../src/content/progression";
 import { advantageScreen } from "../src/ui/advantage-screen";
 
 // A promoted recipe is part of the game build, not runtime browser storage.
@@ -19,6 +18,7 @@ it("registers appended recipes in campaign order and preserves their earned star
   vi.resetModules();
   vi.doMock("../src/content/recipes.json", () => ({ default: promoted }));
   const { LEVELS } = await import("../src/content/levels");
+  const { levelUnlocked } = await import("../src/content/progression");
   const { freshSave, recordVictory, parseSave } =
     await import("../src/persistence/save");
   const { loadProfiles } = await import("../src/persistence/profiles");

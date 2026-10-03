@@ -372,3 +372,66 @@ it("round trips rage tuning through saved draft, Playtest, Promote and runtime r
   });
   expect(reloaded.configurationIdentity).toBe(playtest.configurationIdentity);
 });
+
+it("round trips authored board metadata through draft reload, real Playtest, scoped promotion and uncached runtime reload", async () => {
+  const { file, post } = await fixture();
+  const { resolveBoards } = await import("../src/content/boards");
+  const { progressionContext } = await import("../src/content/progression");
+  const { parseSave } = await import("../src/persistence/save");
+  const draft = createWorkingDraft(CANONICAL_CONTENT);
+  draft.content.boards = resolveBoards(draft.content);
+  draft.content.boards[0].name = "Authored board fixture";
+  draft.content.boards[0].visual.markers = Object.fromEntries(
+    draft.content.boards[0].levelIds.map((id, i) => [
+      id,
+      { x: 20 + i * 25, y: 50 },
+    ]),
+  );
+  draft.content.levels[1].waves[0].reward += 19; // unrelated pending change
+  const reloaded = validateWorkingDraft(JSON.parse(JSON.stringify(draft)));
+  const session = new AttemptSession(
+    promoteWorkingWave(CANONICAL_CONTENT, reloaded),
+    {
+      id: "board-round-trip",
+      levelId: reloaded.levelId,
+      waveId: reloaded.waveId,
+      mode: "wave",
+      progression: "first-arrival",
+      difficulty: "normal",
+      seed: 42,
+    },
+  );
+  const before = session.game.level;
+  const response = await post(reloaded);
+  expect(response.status).toBe(200);
+  const disk = JSON.parse(await readFile(file, "utf8"));
+  expect(disk.boards).toEqual(reloaded.content.boards);
+  expect(disk.levels[1]).toEqual(CANONICAL_CONTENT.levels[1]);
+  const runtime = runtimeContentMiddleware(file);
+  let body, headers;
+  await runtime(
+    { method: "GET", url: "/game-content.json" },
+    {
+      writeHead(_status, h) {
+        headers = h;
+      },
+      end(text) {
+        body = text;
+      },
+    },
+    () => {},
+  );
+  expect(headers["Cache-Control"]).toBe("no-store");
+  const loaded = JSON.parse(body);
+  const context = progressionContext(loaded);
+  expect(context.boards[0].name).toBe("Authored board fixture");
+  expect(
+    parseSave(
+      JSON.stringify({ version: 2, stars: { [loaded.levels[0].id]: 1 } }),
+      context,
+    ).viewedBoard,
+  ).toBe(context.boards[0].id);
+  expect(session.game.level).toEqual(before);
+  expect((await post(reloaded)).status).toBe(409);
+  expect(JSON.parse(await readFile(file, "utf8"))).toEqual(disk);
+});
