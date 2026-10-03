@@ -54,3 +54,16 @@ After integration: check, all 345 tests across 61 files, production build and
 workbench build passed. Production boundary remains verified across 241 files.
 Catalogue verification passed for 16 entries; staged capture gate recognized all
 three PNGs inherited from main as captured. No capture exclusions were needed.
+
+## Acceptance-review regression fix
+
+The review reproduced a field-loss defect: pending Skunk poison damage 4→7 and
+live cost 65→66 rebased to old cost 65, falsely blocking Promote All. The same
+whole-record copy discarded live Boar armor edits and mishandled pending removal
+of optional combat fields. Three focused regressions failed before the fix.
+Catalog rebasing now overlays only draft-changed fields onto live records,
+including optional removals; existing combat conflict bases remain intact.
+All 36 focused poison/working-draft/API tests pass. Full verification passes:
+348 tests across 61 files, check, production build, workbench build, changed-file
+formatting and diff checks. Parent integrates this bounded follow-up into the
+combined capability branch; no merge to main is performed here.
