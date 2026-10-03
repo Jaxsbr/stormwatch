@@ -372,3 +372,62 @@ it("round trips rage tuning through saved draft, Playtest, Promote and runtime r
   });
   expect(reloaded.configurationIdentity).toBe(playtest.configurationIdentity);
 });
+
+it("round trips poison controls through draft reload, Playtest, atomic promotion and uncached runtime reload", async () => {
+  const { file, post } = await fixture();
+  const draft = createWorkingDraft(CANONICAL_CONTENT);
+  draft.content.abilityDefaults.skunkPoison = {
+    durationSeconds: 6,
+    tickSeconds: 0.5,
+  };
+  draft.content.towers.stone.poisonDamage = 7;
+  draft.content.enemies.armored.poisonImmune = false;
+  const restored = validateWorkingDraft(JSON.parse(JSON.stringify(draft)));
+  const scenario = {
+    id: "poison-roundtrip",
+    levelId: restored.levelId,
+    waveId: restored.waveId,
+    mode: "wave",
+    progression: "first-arrival",
+    difficulty: "normal",
+    seed: 42,
+  };
+  const oldAttempt = new AttemptSession(CANONICAL_CONTENT, scenario);
+  const playtest = new AttemptSession(
+    promoteWorkingWave(CANONICAL_CONTENT, restored),
+    scenario,
+  );
+  expect((await post(restored)).status).toBe(200);
+  let loaded;
+  await runtimeContentMiddleware(file)(
+    { method: "GET", url: "/game-content.json" },
+    {
+      writeHead(code, headers) {
+        expect(code).toBe(200);
+        expect(headers["Cache-Control"]).toContain("no-store");
+      },
+      end(body) {
+        loaded = JSON.parse(body);
+      },
+    },
+    () => {
+      throw new Error("Missing runtime content");
+    },
+  );
+  const reloaded = new AttemptSession(loaded, scenario);
+  expect(reloaded.game.skunkPoison).toEqual({
+    durationSeconds: 6,
+    tickSeconds: 0.5,
+  });
+  expect(reloaded.game.towers.stone.poisonDamage).toBe(7);
+  expect(reloaded.game.enemies.armored.poisonImmune).toBe(false);
+  expect(reloaded.configurationIdentity).toBe(playtest.configurationIdentity);
+  expect(oldAttempt.game.skunkPoison).toEqual(
+    CANONICAL_CONTENT.abilityDefaults.skunkPoison,
+  );
+  expect(oldAttempt.game.towers.stone.poisonDamage).toBe(
+    CANONICAL_CONTENT.towers.stone.poisonDamage,
+  );
+  expect(loaded.levels).toEqual(CANONICAL_CONTENT.levels);
+  expect((await post(restored)).status).toBe(409);
+});

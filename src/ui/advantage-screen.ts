@@ -34,7 +34,7 @@ const advantages: Record<
 const enemyTraits: Record<EnemyKind, string> = {
   raider: "Periodic shield · half damage",
   runner: "Runs fast",
-  armored: "Blocks damage",
+  armored: "Armor reduces blast · tough skin resists poison",
   boss: "Rage · boosts nearby enemies’ speed",
 };
 
@@ -72,7 +72,7 @@ export function advantageScreen(
         .map(
           (kind) => `<li>
         <img src="${import.meta.env.BASE_URL}${artPath(enemyVisuals[kind].briefing)}" alt="" draggable="false">
-        <div><strong>${ENEMIES[kind].name}</strong><span>${kind === "raider" && !level.waves.some((w) => w.groups.some((g) => g.kind === "raider" && g.shieldEnabled !== false)) ? "Shield off" : kind === "runner" && level.waves.some((w) => w.groups.some((g) => g.kind === "runner" && g.evasionCycle)) ? "Runs fast · periodic evade" : enemyTraits[kind]}</span></div>
+        <div><strong>${ENEMIES[kind].name}</strong><span>${kind === "raider" && !level.waves.some((w) => w.groups.some((g) => g.kind === "raider" && g.shieldEnabled !== false)) ? "Shield off" : kind === "runner" && level.waves.some((w) => w.groups.some((g) => g.kind === "runner" && g.evasionCycle)) ? "Runs fast · periodic evade" : kind === "armored" && !ENEMIES.armored.poisonImmune ? "Armor reduces damage" : enemyTraits[kind]}</span></div>
       </li>`,
         )
         .join("")}</ul>

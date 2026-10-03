@@ -4,34 +4,41 @@ import type { Effect, Point } from "../sim/types";
 /** One shared label texture; short-lived sprites follow simulation effect ages. */
 export class CombatText {
   readonly group = new THREE.Group();
-  private readonly texture: THREE.CanvasTexture;
+  private readonly textures = new Map<string, THREE.CanvasTexture>();
   private readonly labels = new Map<number, THREE.Sprite>();
   constructor() {
-    const canvas = document.createElement("canvas");
-    canvas.width = 192;
-    canvas.height = 64;
-    const context = canvas.getContext("2d")!;
-    context.font = "bold 36px sans-serif";
-    context.textAlign = "center";
-    context.textBaseline = "middle";
-    context.lineWidth = 7;
-    context.strokeStyle = "#302319";
-    context.strokeText("Evade", 96, 32);
-    context.fillStyle = "#ffe080";
-    context.fillText("Evade", 96, 32);
-    this.texture = new THREE.CanvasTexture(canvas);
-    this.texture.colorSpace = THREE.SRGBColorSpace;
+    for (const [kind, text] of [
+      ["evade", "Evade"],
+      ["immune", "Immune"],
+      ["shield", "Shield"],
+    ]) {
+      const canvas = document.createElement("canvas");
+      canvas.width = 192;
+      canvas.height = 64;
+      const context = canvas.getContext("2d")!;
+      context.font = "bold 36px sans-serif";
+      context.textAlign = "center";
+      context.textBaseline = "middle";
+      context.lineWidth = 7;
+      context.strokeStyle = "#302319";
+      context.strokeText(text, 96, 32);
+      context.fillStyle = "#ffe080";
+      context.fillText(text, 96, 32);
+      const texture = new THREE.CanvasTexture(canvas);
+      texture.colorSpace = THREE.SRGBColorSpace;
+      this.textures.set(kind, texture);
+    }
   }
   update(effects: readonly Effect[], project: (point: Point) => THREE.Vector3) {
     const active = new Set<number>();
     for (const effect of effects) {
-      if (effect.kind !== "evade") continue;
+      if (!this.textures.has(effect.kind)) continue;
       active.add(effect.id);
       let label = this.labels.get(effect.id);
       if (!label) {
         label = new THREE.Sprite(
           new THREE.SpriteMaterial({
-            map: this.texture,
+            map: this.textures.get(effect.kind),
             transparent: true,
             depthTest: false,
             depthWrite: false,
@@ -56,6 +63,6 @@ export class CombatText {
   }
   dispose() {
     this.update([], () => new THREE.Vector3());
-    this.texture.dispose();
+    for (const texture of this.textures.values()) texture.dispose();
   }
 }

@@ -9,6 +9,7 @@ import type {
   EnemyDef,
   ShieldCycle,
   EvasionCycle,
+  PoisonSettings,
 } from "../sim/types";
 import { validateLevel } from "../sim/path";
 import { compileSpawnSchedule } from "../sim/spawn-schedule";
@@ -45,6 +46,7 @@ export interface AuthoringContent {
     ratShield: ShieldCycle;
     weaselEvade: EvasionCycle;
     bossRage?: BossRageSettings;
+    skunkPoison?: PoisonSettings;
   };
   levels: LevelRecipe[];
   towers: Record<TowerKind, TowerDef>;
@@ -57,6 +59,7 @@ export interface AttemptConfiguration {
   enemies: Record<EnemyKind, EnemyDef>;
   rules: GameplayRules;
   bossRage?: BossRageSettings;
+  skunkPoison?: PoisonSettings;
   identity: string;
 }
 export let DEFAULT_RULES: GameplayRules = freeze(structuredClone(source.rules));
@@ -78,6 +81,7 @@ export function installRuntimeContent(value: unknown): void {
   DEFAULT_RULES = CANONICAL_CONTENT.rules;
 }
 export const ABILITY_DEFAULTS = {
+  skunkPoison: { durationSeconds: 4, tickSeconds: 1 },
   bossRage: structuredClone(source.abilityDefaults.bossRage),
   ratShield: { upSeconds: 3, downSeconds: 5 },
   weaselEvade: { upSeconds: 2, downSeconds: 3 },
@@ -102,6 +106,9 @@ export function normalizeAbilities(
     ...ABILITY_DEFAULTS.bossRage,
     ...next.abilityDefaults.bossRage,
   };
+  next.abilityDefaults.skunkPoison ??= structuredClone(
+    ABILITY_DEFAULTS.skunkPoison,
+  );
   for (const level of next.levels)
     for (const wave of level.waves) {
       wave.abilities = waveAbilities(wave);
@@ -204,9 +211,17 @@ export function validateContent(content: AuthoringContent): void {
   if (content.abilityDefaults !== undefined) {
     exact(
       content.abilityDefaults,
-      ["ratShield", "weaselEvade", "bossRage"],
+      ["ratShield", "weaselEvade", "bossRage", "skunkPoison"],
       "abilityDefaults",
     );
+    if (content.abilityDefaults.skunkPoison !== undefined) {
+      const poison = content.abilityDefaults.skunkPoison;
+      exact(poison, ["durationSeconds", "tickSeconds"], "skunkPoison");
+      numeric(poison.durationSeconds, "skunkPoison.durationSeconds", 1 / 30);
+      numeric(poison.tickSeconds, "skunkPoison.tickSeconds", 1 / 30);
+      if (poison.tickSeconds > poison.durationSeconds)
+        throw new Error("Poison cadence exceeds duration");
+    }
     if (content.abilityDefaults.bossRage !== undefined) {
       const rage = content.abilityDefaults.bossRage;
       exact(
@@ -390,8 +405,30 @@ export function validateContent(content: AuthoringContent): void {
         unknown
       >;
       if (!value) throw new Error(`${name}.${kind}: missing`);
-      exact(value, Object.keys(baseline), kind);
+      exact(
+        value,
+        [
+          ...Object.keys(baseline),
+          ...(name === "towers" ? ["poisonDamage"] : ["poisonImmune"]),
+        ],
+        kind,
+      );
+      if (value.poisonDamage !== undefined) {
+        if (kind !== "stone")
+          throw new Error("Only Skunk supports poison damage");
+        numeric(
+          value.poisonDamage as number,
+          "stone.poisonDamage",
+          Number.EPSILON,
+        );
+      }
+      if (
+        value.poisonImmune !== undefined &&
+        (typeof value.poisonImmune !== "boolean" || kind !== "armored")
+      )
+        throw new Error("Only Boar supports poison immunity");
       for (const [key, base] of Object.entries(baseline)) {
+        if (key === "poisonDamage" || key === "poisonImmune") continue;
         if (typeof base === "number")
           numeric(
             value[key] as number,
@@ -437,6 +474,9 @@ export function resolveConfiguration(
     towers: structuredClone(content.towers),
     enemies: structuredClone(content.enemies),
     rules: structuredClone(content.rules),
+    skunkPoison: structuredClone(
+      content.abilityDefaults?.skunkPoison ?? ABILITY_DEFAULTS.skunkPoison,
+    ),
     bossRage: structuredClone({
       ...ABILITY_DEFAULTS.bossRage,
       ...content.abilityDefaults?.bossRage,

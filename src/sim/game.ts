@@ -1,3 +1,4 @@
+import { applyPoison, advancePoison, feedbackReady } from "./poison";
 import { bossRageSpeed, updateBossRage } from "./boss-rage";
 import { ENEMIES, TOWERS } from "../content/catalog";
 import {
@@ -27,6 +28,7 @@ import type {
   GameState,
   LevelDef,
   Point,
+  PoisonSettings,
   Tower,
   TowerKind,
   WaveGroupDef,
@@ -44,6 +46,7 @@ export class Game {
   readonly enemies: typeof ENEMIES;
   readonly rules: GameplayRules;
   readonly bossRage: Required<BossRageSettings>;
+  readonly skunkPoison: PoisonSettings;
   readonly state: GameState;
   readonly events: GameEvent[] = [];
   private serial = 1;
@@ -72,6 +75,11 @@ export class Game {
     this.towers = structuredClone(snapshot?.towers ?? TOWERS);
     this.enemies = structuredClone(snapshot?.enemies ?? ENEMIES);
     this.rules = structuredClone(snapshot?.rules ?? DEFAULT_RULES);
+    this.skunkPoison = structuredClone(
+      snapshot?.skunkPoison ??
+        CANONICAL_CONTENT.abilityDefaults?.skunkPoison ??
+        ABILITY_DEFAULTS.skunkPoison,
+    );
     this.bossRage = structuredClone({
       ...ABILITY_DEFAULTS.bossRage,
       ...(snapshot?.bossRage ?? CANONICAL_CONTENT.abilityDefaults?.bossRage),
@@ -86,6 +94,7 @@ export class Game {
     freeze(this.towers);
     freeze(this.enemies);
     freeze(this.rules);
+    freeze(this.skunkPoison);
     freeze(this.bossRage);
     level = this.level;
     validateLevel(level);
@@ -268,6 +277,7 @@ export class Game {
         distance: 0,
         slowUntil: 0,
         alive: true,
+        poisonImmune: def.poisonImmune ?? false,
         hitAt: -1,
         spawnedAt: s.clock,
         shieldRaised: false,
@@ -293,6 +303,12 @@ export class Game {
     }
     const len = pathLength(this.level.path);
     for (const e of s.enemies) {
+      if (!e.alive) continue;
+      const expired = advancePoison(e, s.clock, (damage) => {
+        this.enemyEvent(e, "poison-tick", damage);
+        this.hurt(e, damage, false, true);
+      });
+      if (expired) this.enemyEvent(e, "poison-expired");
       if (!e.alive) continue;
       advanceRatShield(e, s.clock);
       const evadeSpeed = advanceWeaselEvasion(
@@ -354,6 +370,11 @@ export class Game {
         source: { x: t.x, z: t.z },
         targetId: target.id,
         kind: t.kind,
+        poisonDamage:
+          def.poisonDamage === undefined
+            ? undefined
+            : def.poisonDamage *
+              (t.level === 2 ? this.rules.upgradeDamageScale : 1),
         damage:
           def.damage * (t.level === 2 ? this.rules.upgradeDamageScale : 1),
         life: 0,
@@ -372,8 +393,24 @@ export class Game {
           if (
             target.alive &&
             distance(target, shot.target) <= this.rules.splashRadius
-          )
-            this.hurt(target, shot.damage, true);
+          ) {
+            const landed = this.hurt(target, shot.damage, true);
+            if (landed && target.alive && shot.poisonDamage !== undefined) {
+              const outcome = applyPoison(
+                target,
+                shot.poisonDamage,
+                s.clock,
+                this.skunkPoison,
+              );
+              if (
+                outcome !== "immune" ||
+                feedbackReady(target, "immuneAt", s.clock)
+              ) {
+                this.enemyEvent(target, outcome);
+                if (outcome === "immune") this.feedback(target, "immune");
+              }
+            }
+          }
         s.effects.push({
           ...shot.target,
           id: this.serial++,
@@ -457,7 +494,25 @@ export class Game {
       boss.rallyWarningEmitted = false;
     }
   }
-  private hurt(e: Enemy, damage: number, projectile = false) {
+  private enemyEvent(e: Enemy, type: GameEvent["type"], value?: number) {
+    this.emit(type, value);
+    Object.assign(this.events[this.events.length - 1], {
+      enemyId: e.id,
+      enemyKind: e.kind,
+      wave: this.state.wave,
+    });
+  }
+  private feedback(e: Enemy, kind: "immune" | "shield") {
+    this.state.effects.push({
+      x: e.x,
+      z: e.z,
+      id: this.serial++,
+      kind,
+      age: 0,
+      ttl: 0.7,
+    });
+  }
+  private hurt(e: Enemy, damage: number, projectile = false, poison = false) {
     if (!e.alive) return false;
     const s = this.state;
     const evasion = weaselEvasionImpact(e, s.clock, projectile);
@@ -471,7 +526,7 @@ export class Game {
           age: 0,
           ttl: 0.7,
         });
-        this.emit("evade");
+        this.enemyEvent(e, "evade");
       }
       return false;
     }
@@ -481,12 +536,16 @@ export class Game {
       projectile,
       this.rules.guardDamageScale,
     );
-    e.hp -=
-      Math.max(1, damage - this.enemies[e.kind].armor) * guard.damageScale;
+    e.hp -= poison
+      ? damage
+      : Math.max(1, damage - this.enemies[e.kind].armor) * guard.damageScale;
     if (e.hp > 0) updateBossRage(e, s.clock, this.bossRage);
     if (guard.guarded) {
-      this.emit("shield-hit");
-    } else {
+      if (feedbackReady(e, "shieldCueAt", s.clock)) {
+        this.enemyEvent(e, "shield-hit");
+        this.feedback(e, "shield");
+      }
+    } else if (!poison) {
       e.hitAt = s.clock;
       s.effects.push({
         x: e.x,
@@ -507,7 +566,8 @@ export class Game {
       );
       s.coins += reward;
       s.goldEarned += reward;
-      this.emit("kill");
+      delete e.poison;
+      this.enemyEvent(e, "kill");
     }
     return true;
   }
