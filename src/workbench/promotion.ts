@@ -1,3 +1,4 @@
+import { resolveBoards } from "../content/boards";
 import { resolveScenario, type Scenario } from "./scenarios";
 import {
   resolveConfiguration,
@@ -8,6 +9,7 @@ import { contentIdentity, type DraftRevision } from "./drafts";
 import { validateAuthoredVisuals } from "../content/encounter-visuals";
 
 export interface PromotionSelection {
+  boards?: string[];
   levels?: string[];
   routeLayouts?: string[];
   towers?: string[];
@@ -39,7 +41,14 @@ export function previewPromotion(
     !selection ||
     Object.keys(selection).some(
       (key) =>
-        !["levels", "routeLayouts", "towers", "enemies", "rules"].includes(key),
+        ![
+          "boards",
+          "levels",
+          "routeLayouts",
+          "towers",
+          "enemies",
+          "rules",
+        ].includes(key),
     )
   )
     throw new Error("Unsupported promotion scope");
@@ -52,6 +61,7 @@ export function previewPromotion(
   const content = clone(baseline);
   const changes: PromotionPreview["changes"] = [];
   for (const scope of [
+    "boards",
     "levels",
     "routeLayouts",
     "towers",
@@ -78,6 +88,20 @@ export function previewPromotion(
         });
         if (index < 0) content.routeLayouts.push(clone(after));
         else content.routeLayouts[index] = clone(after);
+      } else if (scope === "boards") {
+        content.boards ??= resolveBoards(content);
+        const index = content.boards.findIndex((board) => board.id === id);
+        const after = resolveBoards(revision.content).find(
+          (board) => board.id === id,
+        );
+        if (!after) throw new Error(`Unknown board ${id}`);
+        changes.push({
+          scope: `boards/${id}`,
+          before: content.boards[index] && clone(content.boards[index]),
+          after: clone(after),
+        });
+        if (index < 0) content.boards.push(clone(after));
+        else content.boards[index] = clone(after);
       } else if (scope === "levels") {
         const index = content.levels.findIndex((level) => level.id === id);
         const after = revision.content.levels.find((level) => level.id === id);
@@ -105,6 +129,17 @@ export function previewPromotion(
       }
     }
   }
+  if (selection.boards?.length) {
+    const before = resolveBoards(baseline).map(({ id }) => id),
+      after = resolveBoards(revision.content).map(({ id }) => id);
+    if (contentIdentity(before) !== contentIdentity(after)) {
+      if (after.some((id) => !selection.boards!.includes(id)))
+        throw new Error("Select every board to promote travel order changes");
+      content.boards = after.map((id) =>
+        content.boards!.find((board) => board.id === id)!,
+      );
+    }
+  }
   validateContent(content);
   validateAuthoredVisuals(content);
   return {
@@ -125,6 +160,7 @@ export function verifyPromotionIdentity(
   levelId: string,
   options: Parameters<typeof resolveConfiguration>[2] = {},
 ): string {
+  verifyBoardSelection(preview, revision);
   const tested = resolveConfiguration(
     revision.content,
     levelId,
@@ -148,13 +184,24 @@ export function verifyPromotionScenarios(
   revision: DraftRevision,
   scenarios: Scenario[] = [],
 ): string[] {
+  verifyBoardSelection(preview, revision);
   const catalogOrRules = ["towers", "enemies", "rules", "routeLayouts"].some(
     (scope) =>
       (preview.selected[scope as keyof PromotionSelection]?.length ?? 0) > 0,
   );
   const affected = catalogOrRules
     ? preview.content.levels.map((level) => level.id)
-    : (preview.selected.levels ?? []);
+    : [
+        ...new Set([
+          ...(preview.selected.levels ?? []),
+          ...resolveBoards(preview.content)
+            .filter(({ id }) => preview.selected.boards?.includes(id))
+            .flatMap(({ levelIds }) => levelIds),
+          ...resolveBoards(revision.content)
+            .filter(({ id }) => preview.selected.boards?.includes(id))
+            .flatMap(({ levelIds }) => levelIds),
+        ]),
+      ];
   const identities: string[] = [];
   for (const levelId of affected) {
     const matched = scenarios.filter(
@@ -194,4 +241,21 @@ export function verifyPromotionScenarios(
     }
   }
   return identities;
+}
+
+function verifyBoardSelection(
+  preview: PromotionPreview,
+  revision: DraftRevision,
+): void {
+  for (const id of preview.selected.boards ?? []) {
+    if (
+      contentIdentity(
+        resolveBoards(preview.content).find((board) => board.id === id),
+      ) !==
+      contentIdentity(
+        resolveBoards(revision.content).find((board) => board.id === id),
+      )
+    )
+      throw new Error(`Selected board ${id} differs from the tested revision`);
+  }
 }

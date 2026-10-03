@@ -1,3 +1,9 @@
+import { resolveBoards } from "../content/boards";
+import {
+  boardRebaseDependencies,
+  mergeBoardScopes,
+  rebaseBoardScopes,
+} from "./board-scopes";
 import {
   configurationIdentity,
   CANONICAL_CONTENT,
@@ -161,6 +167,13 @@ export function createMap(
     waves: [emptyWave("Wave 1", waveId)],
   };
   next.content.levels.push(level);
+  const board = next.content.boards?.find(({ levelIds }) =>
+    levelIds.includes(draft.levelId),
+  );
+  board?.levelIds.push(level.id);
+  // Copy the selected point as a draft starting position; retain every existing anchor.
+  if (board?.visual.markers)
+    board.visual.markers[level.id] = clone(board.visual.markers[draft.levelId]);
   next.levelId = level.id;
   next.waveId = waveId;
   return validateWorkingDraft(next);
@@ -264,7 +277,22 @@ export function promoteWorkingWave(
     throw new Error(
       "Shared ability settings changed in game config. Reload their latest settings before promoting.",
     );
-  const result = clone(current);
+  const selectedBoard = resolveBoards(draft.content).find(({ levelIds }) =>
+    levelIds.includes(level.id),
+  );
+  const result = mergeBoardScopes(
+    current,
+    draft.base,
+    draft.content,
+    selectedBoard ? [selectedBoard.id] : [],
+    // Unpublished maps other than the selected one stay in the draft, along
+    // with their marker anchors. Existing membership moves remain atomic.
+    [
+      ...draft.base.levels.map(({ id }) => id),
+      ...current.levels.map(({ id }) => id),
+      level.id,
+    ],
+  );
   result.routeLayouts = mergeRouteLayouts(
     current,
     draft.base,
@@ -298,7 +326,7 @@ export function promoteAllWorkingChanges(
   current.routeLayouts ??= clone(CANONICAL_CONTENT.routeLayouts ?? []);
   validateContent(current);
   const draft = validateWorkingDraft(input);
-  const result = clone(current);
+  const result = mergeBoardScopes(current, draft.base, draft.content);
   result.routeLayouts = mergeRouteLayouts(current, draft.base, draft.content);
   const merge = <T>(
     authored: T,
@@ -479,6 +507,29 @@ export function rebaseAfterPromotion(
       else target.waves[index] = clone(wave);
     }
   }
+  // Keep recipes only in draft snapshots when pending board intent depends on
+  // a deleted live board/encounter. Promotion still checks the historical scope.
+  for (const id of boardRebaseDependencies(
+    draft.base,
+    draft.content,
+    newBaseline,
+  )) {
+    const old = draft.base.levels.find((level) => level.id === id)!;
+    const authored = draft.content.levels.find((level) => level.id === id);
+    if (!comparisonBase.levels.some((level) => level.id === id))
+      comparisonBase.levels.push(clone(old));
+    if (authored && !content.levels.some((level) => level.id === id))
+      content.levels.push(clone(authored));
+  }
+  const boards = rebaseBoardScopes(
+    draft.base,
+    draft.content,
+    newBaseline,
+    content.levels.map(({ id }) => id),
+    comparisonBase.levels.map(({ id }) => id),
+  );
+  if (boards.content) content.boards = boards.content;
+  if (boards.comparison) comparisonBase.boards = boards.comparison;
   if (!equal(draft.content.abilityDefaults, draft.base.abilityDefaults)) {
     content.abilityDefaults = clone(draft.content.abilityDefaults);
     if (

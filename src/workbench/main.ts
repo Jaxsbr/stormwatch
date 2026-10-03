@@ -1,3 +1,4 @@
+import { mountBoardEditor } from "./board-editor";
 import "../style.css";
 import "../ui/game-chrome.css";
 import "../ui/button-skin.css";
@@ -252,7 +253,7 @@ function render() {
   root.innerHTML = `<main class="wb-shell ws-shell"><header class="wb-header"><div><p class="wb-eyebrow">STORMWATCH</p><h1>Designer workbench</h1></div><span id="draft-status" role="status"></span></header>
   <section class="ws-workspace"><div class="ws-picker-bar"><label>Map<select id="map-picker">${draft.content.levels.map((l) => `<option value="${esc(l.id)}" ${l.id === map.id ? "selected" : ""}>${esc(l.name)}</option>`).join("")}</select></label><button data-action="new-map">+ Map</button><label>Wave<select id="wave-picker">${map.waves.map((w, i) => `<option value="${esc(w.id)}" ${w.id === current.id ? "selected" : ""}>${i + 1}. ${esc(w.title)}</option>`).join("")}</select></label><button data-action="new-wave">+ Wave</button></div>
   <div class="ws-heading"><div><h2>Shape the arrivals.</h2><p>Move enemy groups, shape their rhythm, then try the wave.</p></div><div class="ws-actions"><button data-action="play">Playtest</button><button data-action="promote">Promote wave</button><button data-action="promote-all" class="primary">Promote all changes</button></div></div>
-  <div class="ws-save-line"><span id="promotion-state"></span><span>Promote wave saves only this wave, its map settings, shared abilities and poison settings. Promote all changes saves edits across every map and wave.</span></div>
+  <div class="ws-save-line"><span id="promotion-state"></span><span>Promote wave saves only this wave, its map and board settings, referenced route layout, shared abilities and poison settings. Promote all changes saves edits across every board, map and wave.</span></div>
   <div id="workspace-message" class="wb-feedback" role="status"></div><button data-action="refresh-config" hidden>Keep draft with latest game config</button>
   ${playable() ? '<section id="wave-canvas" aria-label="Visual wave editor"></section>' : `<section class="ws-empty"><h3>Add your first enemy group</h3><p>Choose an enemy, then shape the group on the timeline.</p><div class="wg-palette">${palette()}</div></section>`}
   <fieldset class="ws-abilities"><legend>Abilities for this wave</legend><label><input type="checkbox" data-ability="ratShield" ${abilities.ratShield ? "checked" : ""}/> Rat shield <small data-timing-summary="ratShield">${defaults.ratShield.upSeconds}s shielded / ${defaults.ratShield.downSeconds}s exposed</small></label><label><input type="checkbox" data-ability="weaselEvade" ${abilities.weaselEvade ? "checked" : ""}/> Weasel evade <small data-timing-summary="weaselEvade">${defaults.weaselEvade.upSeconds}s evading / ${defaults.weaselEvade.downSeconds}s exposed</small></label></fieldset>
@@ -263,6 +264,22 @@ function render() {
   root
     .querySelector("#map-settings .ws-settings-grid")
     ?.insertAdjacentHTML("beforeend", backdropPicker(map));
+  const boardHost = document.createElement("section");
+  root.querySelector(".ws-workspace")!.append(boardHost);
+  mountBoardEditor(
+    boardHost,
+    () => draft,
+    (next) => {
+      draft = next;
+      error = "";
+      message =
+        "Board draft saved. Review the order and positions before promotion.";
+      persist();
+      render();
+      root.querySelector<HTMLDetailsElement>("#board-settings")!.open = true;
+    },
+    fail,
+  );
   if (playable())
     canvas = mountWaveCanvas(root.querySelector<HTMLElement>("#wave-canvas")!, {
       level: editorLevel(),
@@ -632,7 +649,7 @@ async function promote(all = false) {
     error = "";
     message = all
       ? "Promoted all map, wave and shared ability changes. Reload the game to play your changes."
-      : `Promoted ${wave().title} only, plus map settings, shared abilities and poison settings.${pendingPromotion(true) ? " Other draft changes remain." : ""} Reload the game to play your changes.`;
+      : `Promoted ${wave().title} only, plus map and board settings, referenced route layout, shared abilities and poison settings.${pendingPromotion(true) ? " Other draft changes remain." : ""} Reload the game to play your changes.`;
     persist();
   } finally {
     saving = false;

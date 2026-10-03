@@ -1,3 +1,5 @@
+import { escapeHtml } from "./html";
+import type { BoardDef } from "../content/boards";
 import { ENEMIES, TOWERS } from "../content/catalog";
 import { towerPortrait } from "../render/portraits";
 import type { CardId, EnemyKind, GameState } from "../sim/types";
@@ -27,6 +29,7 @@ export function resultCard(
   >,
   rewards: readonly ResultReward[] = [],
   firstBoardComplete = false,
+  completion?: { name: string; expeditionComplete: boolean; next?: BoardDef },
 ) {
   const won = state.phase === "won";
   const defeatedEnemies = (Object.keys(ENEMIES) as EnemyKind[])
@@ -41,9 +44,9 @@ export function resultCard(
     )
     .join("");
   return `<section class="result-card" aria-labelledby="result-title">
-    <header class="result-heading"><h1 id="result-title" tabindex="-1">${firstBoardComplete ? "First Board Complete!" : won ? "Victory!" : "Defeat"}</h1>
+    <header class="result-heading"><h1 id="result-title" tabindex="-1">${completion && !firstBoardComplete ? (completion.expeditionComplete ? "Expedition Complete!" : "Board Complete!") : firstBoardComplete ? "First Board Complete!" : won ? "Victory!" : "Defeat"}</h1>
     ${won ? `<div class="result-stars" aria-label="${state.stars} stars">${"★".repeat(state.stars)}${"☆".repeat(3 - state.stars)}</div>` : ""}
-    ${firstBoardComplete ? '<p class="chapter-complete-copy">The Roadwarden is turned back. Your first board is complete.</p>' : ""}
+    ${firstBoardComplete ? '<p class="chapter-complete-copy">The Roadwarden is turned back. Your first board is complete.</p>' : completion ? `<p class="chapter-complete-copy">${escapeHtml(completion.name)} is complete. Revisit your crossings to earn more stars.</p>` : ""}
     </header>
     <section class="result-summary" aria-label="Battle results">
       <span class="result-accessible-total">Enemies stopped: ${state.kills}</span>
@@ -75,6 +78,6 @@ export function resultCard(
             .join("")}</section>`
         : ""
     }
-    <div class="result-actions">${button("map", "Back to map", "primary")}</div>
+    <div class="result-actions">${button("map", "Back to map", "primary")}${completion?.next ? button(`board:${escapeHtml(completion.next.id)}`, "Explore next board", "primary") : ""}</div>
   </section>`;
 }

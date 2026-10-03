@@ -523,3 +523,262 @@ it("round trips shared routes and simultaneous twin bosses through draft, Playte
   expect(stale.status).toBe(409);
   expect(JSON.parse(await readFile(file, "utf8"))).toEqual(changed);
 });
+
+it("round trips authored board metadata through draft reload, real Playtest, scoped promotion and uncached runtime reload", async () => {
+  const { file, post } = await fixture();
+  const { resolveBoards } = await import("../src/content/boards");
+  const { progressionContext } = await import("../src/content/progression");
+  const { parseSave } = await import("../src/persistence/save");
+  const draft = createWorkingDraft(CANONICAL_CONTENT);
+  draft.content.boards = resolveBoards(draft.content);
+  draft.content.boards[0].name = "Authored board fixture";
+  draft.content.boards[0].visual.markers = Object.fromEntries(
+    draft.content.boards[0].levelIds.map((id, i) => [
+      id,
+      { x: 20 + i * 25, y: 50 },
+    ]),
+  );
+  const withPendingMap = createMap(
+    draft,
+    "Pending map",
+    draft.levelId,
+    "pending-map",
+    "pending-wave",
+  );
+  withPendingMap.levelId = draft.levelId;
+  withPendingMap.waveId = draft.waveId;
+  withPendingMap.content.levels[1].waves[0].reward += 19; // unrelated pending change
+  const reloaded = validateWorkingDraft(
+    JSON.parse(JSON.stringify(withPendingMap)),
+  );
+  const session = new AttemptSession(
+    promoteWorkingWave(CANONICAL_CONTENT, reloaded),
+    {
+      id: "board-round-trip",
+      levelId: reloaded.levelId,
+      waveId: reloaded.waveId,
+      mode: "wave",
+      progression: "first-arrival",
+      difficulty: "normal",
+      seed: 42,
+    },
+  );
+  const before = session.game.level;
+  const response = await post(reloaded);
+  expect(response.status).toBe(200);
+  const disk = JSON.parse(await readFile(file, "utf8"));
+  expect(disk.boards).toEqual(draft.content.boards);
+  expect(disk.levels.some(({ id }) => id === "pending-map")).toBe(false);
+  expect(reloaded.content.boards[0].levelIds).toContain("pending-map");
+  expect(disk.levels[1]).toEqual(CANONICAL_CONTENT.levels[1]);
+  const runtime = runtimeContentMiddleware(file);
+  let body, headers;
+  await runtime(
+    { method: "GET", url: "/game-content.json" },
+    {
+      writeHead(_status, h) {
+        headers = h;
+      },
+      end(text) {
+        body = text;
+      },
+    },
+    () => {},
+  );
+  expect(headers["Cache-Control"]).toBe("no-store");
+  const loaded = JSON.parse(body);
+  const context = progressionContext(loaded);
+  expect(context.boards[0].name).toBe("Authored board fixture");
+  expect(
+    parseSave(
+      JSON.stringify({ version: 2, stars: { [loaded.levels[0].id]: 1 } }),
+      context,
+    ).viewedBoard,
+  ).toBe(context.boards[0].id);
+  expect(session.game.level).toEqual(before);
+  expect((await post(reloaded)).status).toBe(409);
+  expect(JSON.parse(await readFile(file, "utf8"))).toEqual(disk);
+});
+
+it("promotes board, route and poison changes together without losing unrelated live content", async () => {
+  const { file, post } = await fixture();
+  const { resolveBoards } = await import("../src/content/boards");
+  const draft = createWorkingDraft(CANONICAL_CONTENT);
+  const map = draft.content.levels[0];
+  useRouteLayout(draft.content, map, "twin-switchbacks");
+  draft.content.boards = resolveBoards(draft.content);
+  draft.content.boards[0].name = "Combined capability acceptance";
+  const layout = draft.content.routeLayouts.find(
+    (l) => l.id === "twin-switchbacks",
+  );
+  layout.routes[0].path[2].z = 6;
+  layout.routes[0].path[3].z = 6;
+  draft.content.abilityDefaults.skunkPoison = {
+    durationSeconds: 6,
+    tickSeconds: 0.5,
+  };
+  draft.content.towers.stone.poisonDamage = 7;
+  draft.content.enemies.armored.poisonImmune = false;
+  const live = structuredClone(CANONICAL_CONTENT);
+  live.levels[1].startCoins += 17;
+  await writeFile(file, JSON.stringify(live));
+  const restored = validateWorkingDraft(JSON.parse(JSON.stringify(draft)));
+  const scenario = {
+    id: "combined-capability-roundtrip",
+    levelId: restored.levelId,
+    waveId: restored.waveId,
+    mode: "wave",
+    progression: "first-arrival",
+    difficulty: "normal",
+    seed: 42,
+  };
+  const previous = new AttemptSession(CANONICAL_CONTENT, scenario);
+  const playtest = new AttemptSession(
+    promoteWorkingWave(live, restored),
+    scenario,
+  );
+  expect((await post(restored)).status).toBe(200);
+  let loaded;
+  await runtimeContentMiddleware(file)(
+    { method: "GET", url: "/game-content.json?reload=combined" },
+    {
+      writeHead(code, headers) {
+        expect(code).toBe(200);
+        expect(headers["Cache-Control"]).toBe("no-store");
+      },
+      end(body) {
+        loaded = JSON.parse(body);
+      },
+    },
+    () => {
+      throw new Error("Missing combined runtime content");
+    },
+  );
+  const reloaded = new AttemptSession(loaded, scenario);
+  expect(resolveBoards(loaded)[0].name).toBe("Combined capability acceptance");
+  expect(reloaded.game.level.routes).toHaveLength(2);
+  expect(reloaded.game.level.routes[0].path[2].z).toBe(6);
+  expect(reloaded.game.skunkPoison).toEqual({
+    durationSeconds: 6,
+    tickSeconds: 0.5,
+  });
+  expect(reloaded.game.towers.stone.poisonDamage).toBe(7);
+  expect(reloaded.game.enemies.armored.poisonImmune).toBe(false);
+  expect(reloaded.configurationIdentity).toBe(playtest.configurationIdentity);
+  expect(loaded.levels[1].startCoins).toBe(live.levels[1].startCoins);
+  expect(previous.game.level.routes).toBeUndefined();
+  expect(previous.game.skunkPoison).toEqual(
+    CANONICAL_CONTENT.abilityDefaults.skunkPoison,
+  );
+  expect((await post(restored)).status).toBe(409);
+  expect(JSON.parse(await readFile(file, "utf8"))).toEqual(loaded);
+});
+
+it.each(["moved marker", "removed ordered board"])(
+  "retains %s intent across scoped promotion, draft reload and uncached game loading",
+  async (change) => {
+    const { file, post } = await fixture();
+    const { resolveBoards } = await import("../src/content/boards");
+    const base = structuredClone(CANONICAL_CONTENT);
+    const first = resolveBoards(base)[0];
+    base.boards = [
+      { ...structuredClone(first), levelIds: first.levelIds.slice(0, 2) },
+      {
+        ...structuredClone(first),
+        id: "second-board",
+        levelIds: first.levelIds.slice(2),
+      },
+    ];
+    for (const board of base.boards)
+      board.visual.markers = Object.fromEntries(
+        board.levelIds.map((id, i) => [id, { x: 20 + i * 30, y: 50 }]),
+      );
+    const draft = createMap(
+      createWorkingDraft(base),
+      "Pending D",
+      base.levels[0].id,
+      "pending-d",
+      "wave-d",
+    );
+    const live = structuredClone(base);
+    if (change === "moved marker") {
+      const moved = base.levels[1].id;
+      draft.content.boards[0].visual.markers[moved] = { x: 31, y: 41 };
+      draft.levelId = base.levels[2].id;
+      draft.waveId = base.levels[2].waves[0].id;
+      live.boards[0].levelIds.pop();
+      delete live.boards[0].visual.markers[moved];
+      live.boards.push({
+        ...structuredClone(first),
+        id: "third-board",
+        levelIds: [moved],
+        visual: {
+          illustration: "expedition-map-v1",
+          markers: { [moved]: { x: 80, y: 60 } },
+        },
+      });
+    } else {
+      draft.content.boards.reverse();
+      draft.levelId = base.levels[0].id;
+      draft.waveId = base.levels[0].waves[0].id;
+      const removed = live.boards.pop().levelIds[0];
+      live.levels = live.levels.filter(({ id }) => id !== removed);
+    }
+    draft.content.levels.find(
+      ({ id }) => id === draft.levelId,
+    ).waves[0].reward += 1;
+    await writeFile(file, JSON.stringify(live));
+    let reloaded = validateWorkingDraft(JSON.parse(JSON.stringify(draft)));
+    const attempt = new AttemptSession(promoteWorkingWave(live, reloaded), {
+      id: "board-intent-roundtrip",
+      levelId: reloaded.levelId,
+      waveId: reloaded.waveId,
+      mode: "wave",
+      progression: "first-arrival",
+      difficulty: "normal",
+      seed: 42,
+    });
+    expect((await post(reloaded)).status).toBe(200);
+    const disk = JSON.parse(await readFile(file, "utf8"));
+    reloaded = validateWorkingDraft(
+      JSON.parse(JSON.stringify(rebaseAfterPromotion(reloaded, disk))),
+    );
+    expect((await post(reloaded)).status).toBe(200);
+    reloaded = validateWorkingDraft(
+      JSON.parse(
+        JSON.stringify(
+          rebaseAfterPromotion(
+            reloaded,
+            JSON.parse(await readFile(file, "utf8")),
+          ),
+        ),
+      ),
+    );
+    reloaded.content.levels.find(
+      ({ id }) => id === "pending-d",
+    ).waves[0].packets = structuredClone(base.levels[0].waves[0].packets);
+    expect((await post(reloaded, {}, true)).status).toBe(409);
+    expect(JSON.parse(await readFile(file, "utf8"))).toEqual(disk);
+    let loaded;
+    await runtimeContentMiddleware(file)(
+      { method: "GET", url: "/game-content.json?reload=board-intent" },
+      {
+        writeHead(status, headers) {
+          expect(status).toBe(200);
+          expect(headers["Cache-Control"]).toBe("no-store");
+        },
+        end(body) {
+          loaded = JSON.parse(body);
+        },
+      },
+      () => {
+        throw new Error("Missing runtime content");
+      },
+    );
+    expect(loaded.boards).toEqual(live.boards);
+    expect(loaded.levels.some(({ id }) => id === "pending-d")).toBe(false);
+    expect(
+      new AttemptSession(loaded, attempt.scenario).configurationIdentity,
+    ).toBe(attempt.configurationIdentity);
+  },
+);
