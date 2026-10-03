@@ -475,16 +475,30 @@ export function rebaseAfterPromotion(
       else record(comparisonBase)[field] = clone(old);
     }
   }
-  for (const scope of ["towers", "enemies", "rules"] as const) {
-    for (const key of Object.keys(draft.content[scope])) {
-      const authored = draft.content[scope] as unknown as Record<
-        string,
-        unknown
-      >;
-      const old = draft.base[scope] as unknown as Record<string, unknown>;
-      const target = content[scope] as unknown as Record<string, unknown>;
-      if (!equal(authored[key], old[key])) target[key] = clone(authored[key]);
+  // Catalog records can contain both a pending combat edit and unrelated live
+  // tuning. Overlay only fields changed by the draft, including optional removals.
+  for (const scope of ["towers", "enemies"] as const) {
+    const records = (value: AuthoringContent) =>
+      value[scope] as unknown as Record<string, Record<string, unknown>>;
+    for (const kind of Object.keys(records(draft.content))) {
+      const authored = records(draft.content)[kind];
+      const old = records(draft.base)[kind];
+      const target = records(content)[kind];
+      for (const field of new Set([
+        ...Object.keys(old),
+        ...Object.keys(authored),
+      ])) {
+        if (equal(authored[field], old[field])) continue;
+        if (authored[field] === undefined) delete target[field];
+        else target[field] = clone(authored[field]);
+      }
     }
+  }
+  for (const key of Object.keys(draft.content.rules)) {
+    const authored = draft.content.rules as unknown as Record<string, unknown>;
+    const old = draft.base.rules as unknown as Record<string, unknown>;
+    const target = content.rules as unknown as Record<string, unknown>;
+    if (!equal(authored[key], old[key])) target[key] = clone(authored[key]);
   }
   return validateWorkingDraft({ ...draft, base: comparisonBase, content });
 }

@@ -305,3 +305,53 @@ it("retains catalog conflicts after refreshing a draft baseline instead of overw
   expect(rebased.content.towers.stone.poisonDamage).toBe(7);
   expect(() => promoteWorkingWave(live, rebased)).toThrow(/changed/);
 });
+
+it("preserves unrelated live tower fields when rebasing pending poison tuning", () => {
+  const baseline = structuredClone(CANONICAL_CONTENT);
+  const draft = createWorkingDraft(baseline);
+  draft.content.towers.stone.poisonDamage = 7;
+  const live = structuredClone(baseline);
+  live.towers.stone.cost = 66;
+  const rebased = rebaseAfterPromotion(draft, live);
+  expect(rebased.content.towers.stone.cost).toBe(66);
+  const promoted = promoteAllWorkingChanges(live, rebased);
+  expect(promoted.towers.stone).toEqual({
+    ...live.towers.stone,
+    poisonDamage: 7,
+  });
+});
+
+it("preserves unrelated live enemy fields when rebasing pending immunity edits", () => {
+  const baseline = structuredClone(CANONICAL_CONTENT);
+  const draft = createWorkingDraft(baseline);
+  draft.content.enemies.armored.poisonImmune = false;
+  const live = structuredClone(baseline);
+  live.enemies.armored.armor += 1;
+  const rebased = rebaseAfterPromotion(draft, live);
+  expect(rebased.content.enemies.armored.armor).toBe(
+    live.enemies.armored.armor,
+  );
+  const promoted = promoteAllWorkingChanges(live, rebased);
+  expect(promoted.enemies.armored).toEqual({
+    ...live.enemies.armored,
+    poisonImmune: false,
+  });
+});
+
+it("preserves removal of optional combat fields without restoring unrelated catalog values", () => {
+  const baseline = structuredClone(CANONICAL_CONTENT);
+  const draft = createWorkingDraft(baseline);
+  delete draft.content.towers.stone.poisonDamage;
+  delete draft.content.enemies.armored.poisonImmune;
+  const live = structuredClone(baseline);
+  live.towers.stone.cost += 1;
+  live.enemies.armored.hp += 1;
+  const promoted = promoteAllWorkingChanges(
+    live,
+    rebaseAfterPromotion(draft, live),
+  );
+  expect(promoted.towers.stone.cost).toBe(live.towers.stone.cost);
+  expect(promoted.enemies.armored.hp).toBe(live.enemies.armored.hp);
+  expect(promoted.towers.stone.poisonDamage).toBeUndefined();
+  expect(promoted.enemies.armored.poisonImmune).toBeUndefined();
+});
