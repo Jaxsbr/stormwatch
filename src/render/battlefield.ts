@@ -28,6 +28,7 @@ import type { EnemyKind, LevelDef, Point, TowerKind } from "../sim/types";
 // Simulation coordinates remain independent of the painted presentation.
 const W = 1280,
   H = 720,
+  FRAME_HEIGHT = H + 50,
   X = 96,
   Y = 74,
   ORIGIN_X = 112,
@@ -81,7 +82,6 @@ export class Battlefield {
   private world = new THREE.Group();
   private placementGrid: THREE.LineSegments | null = null;
   private gridVisible = false;
-  private backdrop: THREE.Sprite | null = null;
   private generation = 0;
   private sceneryKey: string | null = null;
   private gaitSamplers = new Map<
@@ -155,7 +155,7 @@ export class Battlefield {
     this.renderer.domElement.tabIndex = 0;
     host.append(this.renderer.domElement);
     // Include top-row animal ears/selection marker and bottom-row tile edges.
-    this.camera.position.set(W / 2, H / 2 + 50, 100);
+    this.camera.position.set(W / 2, FRAME_HEIGHT / 2, 100);
     this.camera.near = 0.1;
     this.camera.far = 200;
     this.scene.add(this.world);
@@ -319,29 +319,24 @@ export class Battlefield {
   resize() {
     if (this.disposed) return;
     const bounds = this.host.getBoundingClientRect();
-    const width = Math.floor(bounds.width);
-    const height = Math.floor(bounds.height);
-    if (width < 1 || height < 1) return;
+    const availableWidth = Math.floor(bounds.width);
+    const availableHeight = Math.floor(bounds.height);
+    if (availableWidth < 1 || availableHeight < 1) return;
+    const aspect = W / H;
+    const width = Math.min(availableWidth, availableHeight * aspect);
+    const height = width / aspect;
     if (width === this.bufferWidth && height === this.bufferHeight) return;
     this.bufferWidth = width;
     this.bufferHeight = height;
-    const aspect = width / height,
-      span = Math.max(680, W / aspect);
+    // One landscape frame includes the complete painting and upper actor
+    // headroom. Resizing fits the canvas, never individual scene layers.
+    const span = FRAME_HEIGHT;
     this.camera.left = (-span * aspect) / 2;
     this.camera.right = (span * aspect) / 2;
     this.camera.top = span / 2;
     this.camera.bottom = -span / 2;
     this.camera.updateProjectionMatrix();
-    this.renderer.setSize(width, height, false);
-    this.fitBackdrop();
-  }
-  private fitBackdrop() {
-    if (!this.backdrop) return;
-    const factor = Math.max(
-      (this.camera.right - this.camera.left) / W,
-      (this.camera.top - this.camera.bottom) / H,
-    );
-    this.backdrop.scale.set(W * factor, H * factor, 1);
+    this.renderer.setSize(width, height, true);
   }
   load(level: LevelDef) {
     // Retrying an encounter resets actors, not its unchanged painted terrain.
@@ -391,8 +386,7 @@ export class Battlefield {
     );
     scenery.visible = !!backdrop.image;
     scenery.position.set(W / 2, H / 2, 0);
-    this.backdrop = scenery;
-    this.fitBackdrop();
+    scenery.scale.set(W, H, 1);
     scenery.renderOrder = 0;
     this.world.add(scenery);
     const canvas = document.createElement("canvas");
@@ -571,7 +565,6 @@ export class Battlefield {
   private clearWorld(retainScenery = false) {
     if (!retainScenery) {
       this.generation++;
-      this.backdrop = null;
       this.placementGrid = null;
       this.sceneryKey = null;
     }
@@ -673,6 +666,15 @@ export class Battlefield {
   }
   pick(clientX: number, clientY: number): Point | null {
     const r = this.renderer.domElement.getBoundingClientRect();
+    if (
+      r.width <= 0 ||
+      r.height <= 0 ||
+      clientX < r.left ||
+      clientX > r.left + r.width ||
+      clientY < r.top ||
+      clientY > r.top + r.height
+    )
+      return null;
     const v = new THREE.Vector3(
       ((clientX - r.left) / r.width) * 2 - 1,
       1 - ((clientY - r.top) / r.height) * 2,

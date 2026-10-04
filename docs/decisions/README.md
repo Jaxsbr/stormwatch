@@ -45,3 +45,5 @@ Read the accepted records before changing consequential behavior. For a new deci
 - [Twin switchbacks crossing battlefield — approved geometry](twin-switchbacks-layout.md) — one shared layout for woodland encounters 1, 2 and 5.
 
 - [Enemy facing follows route travel](enemy-route-facing.md) — shared renderer repair using existing art and route geometry.
+
+- [040: One fixed landscape battlefield frame](040-fixed-battlefield-frame.md) — complete scene letterboxing and aligned picking.
