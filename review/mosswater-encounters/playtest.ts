@@ -24,7 +24,7 @@ const [
   import("../../src/ui/enemy-inspection"),
 ]);
 const style = document.createElement("style");
-style.textContent = `body{background:#15221e;color:#fff0cd;overflow:auto}#app{height:auto;min-height:100dvh}.fixture-header{display:flex;gap:8px;align-items:center;flex-wrap:wrap;padding:8px}.fixture-header a{color:#e6cf9f}.fixture-header strong{flex:1}button{min-height:44px;padding:8px 12px;font:inherit;background:#263d32;color:#fff0cd;border:1px solid #9c9668;border-radius:8px}.fixture-label{margin:4px 8px;font:13px system-ui}#field{width:100%;height:calc(100dvh - 112px);min-height:280px;position:relative}#canvas-host{position:absolute;inset:0}#status{position:absolute;top:8px;left:8px;pointer-events:none;background:#15221ee0;padding:8px;border-radius:8px;font:15px system-ui}#bosses{position:absolute;top:8px;right:8px;pointer-events:none;background:#15221ee0;padding:8px;font:14px system-ui}#inspection{position:absolute;z-index:5000;inset:100px 15%;padding:20px;background:#15221ef5;overflow:auto;border:1px solid #ccb582;border-radius:16px}.enemy-inspection{margin-bottom:20px}.enemy-inspection h3{margin:0}.enemy-inspection p{font:16px/1.5 system-ui}`;
+style.textContent = `body{background:#15221e;color:#fff0cd;overflow:hidden}#app{height:100dvh;min-height:0;isolation:isolate;display:flex;flex-direction:column}.fixture-header{flex:none;display:flex;gap:8px;align-items:center;flex-wrap:wrap;padding:8px}.fixture-header a{color:#e6cf9f}.fixture-header strong{flex:1}button{min-height:44px;padding:8px 12px;font:inherit;background:#263d32;color:#fff0cd;border:1px solid #9c9668;border-radius:8px}.fixture-label{flex:none;margin:4px 8px;font:13px system-ui}#field{width:100%;flex:1;min-height:0;position:relative}#canvas-host{position:absolute;inset:0}#status{position:absolute;top:8px;left:8px;pointer-events:none;background:#15221ee0;padding:8px;border-radius:8px;font:15px system-ui}#bosses{position:absolute;top:8px;right:8px;pointer-events:none;background:#15221ee0;padding:8px;font:14px system-ui}#inspection{position:absolute;z-index:5000;inset:100px 15%;padding:20px;background:#15221ef5;overflow:auto;border:1px solid #ccb582;border-radius:16px}.enemy-inspection{margin-bottom:20px}.enemy-inspection h3{margin:0}.enemy-inspection p{font:16px/1.5 system-ui}`;
 document.head.append(style);
 const params = new URLSearchParams(location.search),
   id = params.get("map") ?? "mosswater-01";
@@ -99,12 +99,32 @@ function update() {
     game.state.phase === "paused" ? "Resume" : "Pause";
   popups.update();
 }
+const portraitScreen = matchMedia("(orientation: portrait)");
+const orientationGuide =
+  document.querySelector<HTMLElement>("#orientation-guide")!;
+const app = document.querySelector<HTMLElement>("#app")!;
+let orientationBlocked = false;
+let focusBeforeRotation: HTMLElement | null = null;
+function syncOrientation() {
+  const blocked = portraitScreen.matches;
+  if (blocked !== orientationBlocked) {
+    orientationBlocked = blocked;
+    orientationGuide.hidden = !blocked;
+    app.inert = blocked;
+    if (blocked) {
+      focusBeforeRotation = document.activeElement as HTMLElement;
+      orientationGuide.focus();
+    } else if (focusBeforeRotation?.isConnected) focusBeforeRotation.focus();
+  }
+  if (blocked && game.state.phase === "wave") game.pause();
+}
 let previous = performance.now(),
   accumulator = 0;
 function frame(now: number) {
   const dt = Math.min((now - previous) / 1000, 0.1);
   previous = now;
-  accumulator += dt;
+  syncOrientation();
+  accumulator += orientationBlocked ? 0 : dt;
   while (accumulator >= 1 / 30) {
     if (game.state.phase !== "preparation") game.tick(1 / 30);
     accumulator -= 1 / 30;

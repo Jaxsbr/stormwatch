@@ -46,3 +46,5 @@ Read the accepted records before changing consequential behavior. For a new deci
 - [Iron Boar resistance torso](boar-resistance-torso.md) — approved side pose and motion; directional and battlefield review pending.
 
 - [Enemy facing follows route travel](enemy-route-facing.md) — shared renderer fix for leftward return segments.
+
+- [040: One fixed landscape battlefield frame](040-fixed-battlefield-frame.md) — complete scene letterboxing and aligned picking.

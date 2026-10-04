@@ -163,7 +163,7 @@ it("allocates only once after a toolbar-height burst and ignores unchanged or su
   notify();
   expect(setSize).not.toHaveBeenCalled();
   vi.advanceTimersByTime(100);
-  expect(setSize.mock.calls).toEqual([[1024, 560, false]]);
+  expect(setSize.mock.calls).toEqual([[560 * (1280 / 720), 560, true]]);
   for (let event = 0; event < 20; event++) field.resize();
   bounds.height = 560.9;
   field.resize();
