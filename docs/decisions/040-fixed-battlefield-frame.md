@@ -1,6 +1,6 @@
 # 040 — One fixed landscape battlefield frame
 
-**Status:** accepted renderer correction; deployment verification pending integration.
+**Status:** accepted renderer correction; standalone PR21 merged; deployment verification pending.
 
 ## Context
 
@@ -33,6 +33,9 @@ The game retains its portrait rotation guide. The encounter fixture uses that
 same guidance, pauses an active wave, makes its app inert, and keeps inspection
 panels below the guide. Its header and field fit the viewport without scrolling.
 
+This supersedes the arbitrary host-aspect framing in decision 027; its resize
+settling, resource lifetime and disposal guarantees remain applicable.
+
 ## Consequences
 
 Wide or tall hosts show gutters, and the complete painting is slightly smaller
@@ -59,4 +62,4 @@ resistance cue, and profile shortcuts do not change.
 - `npm run check`, all 448 tests, production build (including the production
   boundary check), workbench build and formatting check pass. Browser evidence
   uses viewport emulation; it makes no physical mobile performance claim.
-- Main workflow and deployed game verification remain integration responsibilities.
+- Standalone main PR21 passed 425 tests, required builds and independent Standards/Spec review. Its first art check reported a single warm-render outlier; one unchanged rerun passed without modifying thresholds. PR21 merged at `1df4c97`. Main deployment verification remains in progress.

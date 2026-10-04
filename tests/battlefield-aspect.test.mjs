@@ -2,11 +2,6 @@ import { afterEach, expect, it, vi } from "vitest";
 import * as THREE from "three";
 import { Battlefield } from "../src/render/battlefield";
 import { LEVELS } from "../src/content/levels";
-import {
-  CANONICAL_CONTENT,
-  resolveConfiguration,
-} from "../src/config/configuration";
-import { useRouteLayout } from "../src/workbench/route-authoring";
 
 // Mock only the browser/WebGL boundary; execute real Battlefield ownership.
 let viewportBounds;
