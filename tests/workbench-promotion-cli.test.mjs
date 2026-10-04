@@ -8,6 +8,7 @@ const bundle = () => ({
   traces: [],
   results: [],
 });
+// Five real CLI subprocesses are an integration check, not a five-second performance budget.
 it("previews and atomically applies only canonical content in a disposable workspace, preserving it on errors", async () => {
   const { mkdtemp, mkdir, writeFile, readFile, rm } =
     await import("node:fs/promises");
@@ -38,33 +39,48 @@ it("previews and atomically applies only canonical content in a disposable works
       "--workspace",
       workspace,
     ];
-    const output = execFileSync(process.execPath, args, { encoding: "utf8" });
+    const output = execFileSync(process.execPath, args, {
+      encoding: "utf8",
+      timeout: 10_000,
+    });
     expect(output).toContain("candidateIdentity");
     expect(await readFile(destination, "utf8")).toBe(original);
     await writeFile(selectionFile, JSON.stringify({ towers: ["bolt"] }));
     expect(() =>
-      execFileSync(process.execPath, [...args, "--apply"], { stdio: "pipe" }),
+      execFileSync(process.execPath, [...args, "--apply"], {
+        stdio: "pipe",
+        timeout: 10_000,
+      }),
     ).toThrow();
     expect(await readFile(destination, "utf8")).toBe(original);
     await writeFile(
       selectionFile,
       JSON.stringify({ levels: [revision.content.levels[0].id] }),
     );
-    execFileSync(process.execPath, [...args, "--apply"], { encoding: "utf8" });
+    execFileSync(process.execPath, [...args, "--apply"], {
+      encoding: "utf8",
+      timeout: 10_000,
+    });
     const accepted = await readFile(destination, "utf8");
     expect(JSON.parse(accepted).levels[0].startCoins).toBe(
       revision.content.levels[0].startCoins,
     );
     expect(() =>
-      execFileSync(process.execPath, [...args, "--apply"], { stdio: "pipe" }),
+      execFileSync(process.execPath, [...args, "--apply"], {
+        stdio: "pipe",
+        timeout: 10_000,
+      }),
     ).toThrow();
     expect(await readFile(destination, "utf8")).toBe(accepted);
     await writeFile(exportFile, '{"schemaVersion":99}');
     expect(() =>
-      execFileSync(process.execPath, [...args, "--apply"], { stdio: "pipe" }),
+      execFileSync(process.execPath, [...args, "--apply"], {
+        stdio: "pipe",
+        timeout: 10_000,
+      }),
     ).toThrow();
     expect(await readFile(destination, "utf8")).toBe(accepted);
   } finally {
     await rm(workspace, { recursive: true, force: true });
   }
-});
+}, 30_000);

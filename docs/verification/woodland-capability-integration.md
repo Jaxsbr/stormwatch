@@ -6,6 +6,19 @@ and play-feel gates for this version are closed; physical-device performance is
 unverified and painted mouth/route registration and trail spill remain deferred.
 See [current activation evidence](../evidence/mosswater-activation.md).
 
+Parent verification confirms the integrated production artifact resolves exactly
+the accepted eight-map data, the original three recipes remain unchanged, and no
+accepted image bytes changed during activation. The outgoing publication scan
+finds no private machine paths or credential-like material.
+
+The first activation CI build timed out in the real five-process workbench CLI
+integration check at 5.46 seconds; no behavior assertion failed. That test now has
+a bounded 30-second orchestration allowance and 10-second subprocess limits,
+while retaining preview, scoped promotion, stale/error refusal and byte-preservation
+assertions. This adjusts a test harness limit, not gameplay or an art-performance
+gate. The original CLI assertions and complete release suite are rerun before the
+new exact commit receives CI.
+
 ## Historical capability and feedback-stage verification
 
 The held-stage records and then-open gates below are historical provenance.
