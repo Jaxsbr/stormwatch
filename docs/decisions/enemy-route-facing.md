@@ -51,4 +51,4 @@ behavior evidence, not physical mobile performance or whole-expansion art approv
 Independent review of the identical renderer implementation and its standalone
 main adaptation passes. Main workflow `37162460066` verifies successful build and deployment of `9e0b65a`.
 
-The held feedback build combines the independently reviewed Boar immunity torso with this repair. All 433 integrated tests, type checking, formatting and both builds pass; a retained actual Game/Battlefield regression verifies the reflected brace, pause, 300 ms recovery and neutral pooled reuse. This integration does not close owner directional or battlefield-art acceptance.
+The held feedback build combines the independently reviewed Boar immunity torso with this repair. All 433 integrated tests, type checking, formatting and both builds pass; a retained actual Game/Battlefield regression verifies the reflected brace, pause, 600 ms recovery and neutral pooled reuse. This integration does not close owner directional or battlefield-art acceptance.

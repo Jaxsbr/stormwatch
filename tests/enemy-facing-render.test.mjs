@@ -322,7 +322,7 @@ it("keeps reflected Rat boot contact within the native IK reach tolerance during
   field.dispose();
 });
 
-it("renders a real leftward Boar immunity cue, pauses, returns at300ms and resets a reused actor", () => {
+it("renders a real leftward Boar immunity cue, pauses, returns after600ms and resets a reused actor", () => {
   const { game, field, actor, config } = fixture("armored", false, true);
   let cue;
   for (let i = 0; i < 3000; i++) {
@@ -358,6 +358,11 @@ it("renders a real leftward Boar immunity cue, pauses, returns at300ms and reset
   game.tick(DT * 10);
   field.update(game, null, DT);
   expect(game.state.clock - cue.immuneAt).toBeGreaterThanOrEqual(0.3);
+  expect(brace.visible).toBe(true);
+  expect(body.visible).toBe(false);
+  game.tick(DT * 9);
+  field.update(game, null, DT);
+  expect(game.state.clock - cue.immuneAt).toBeGreaterThanOrEqual(0.6);
   expect(brace.visible).toBe(false);
   expect(body.visible).toBe(true);
   const next = new Game(game.level, "none", false, 42, {
