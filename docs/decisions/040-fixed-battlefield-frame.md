@@ -1,6 +1,6 @@
 # 040 — One fixed landscape battlefield frame
 
-**Status:** accepted renderer correction; standalone PR21 merged; deployment verification pending.
+**Status:** accepted renderer correction; standalone PR21 merged and deployment verified.
 
 ## Context
 
@@ -62,4 +62,4 @@ resistance cue, and profile shortcuts do not change.
 - `npm run check`, all 448 tests, production build (including the production
   boundary check), workbench build and formatting check pass. Browser evidence
   uses viewport emulation; it makes no physical mobile performance claim.
-- Standalone main PR21 passed 425 tests, required builds and independent Standards/Spec review. Its first art check reported a single warm-render outlier; one unchanged rerun passed without modifying thresholds. PR21 merged at `1df4c97`. Main deployment verification remains in progress.
+- Standalone main PR21 passed 425 tests, required builds and independent Standards/Spec review. Its first art check reported a single warm-render outlier; one unchanged rerun passed without modifying thresholds. PR21 merged at `1df4c97`. Main workflow `37172754555` completed successfully, including build and deployment. The deployed title loads without browser errors and serves the centered fixed-canvas stylesheet.
