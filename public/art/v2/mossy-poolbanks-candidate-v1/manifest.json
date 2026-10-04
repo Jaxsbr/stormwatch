@@ -19,5 +19,14 @@
     "blockedCellsAdded": 0,
     "interiorPools": "cosmetic traversable shallows"
   },
-  "sourceSha256": "08532b99383f6c146a7a20ed90400c3f03a37d2e283200155f5e35d0d15f8434"
+  "sourceSha256": "08532b99383f6c146a7a20ed90400c3f03a37d2e283200155f5e35d0d15f8434",
+  "generation": {
+    "tool": "Native ImageGen",
+    "mode": "edit",
+    "prompt": "prompt.txt",
+    "transparentBackground": false,
+    "referenceImage": "ideas-catalogue/assets/mossy-poolbanks-clearance-candidate.png",
+    "referenceContext": "Actual edit input was the owner-annotated screenshot codex-clipboard-3658471b-a545-46e3-93b1-32516ef62104.png of this clearance candidate. Three cream rectangles marked the upper, middle and lower right worn-earth strip for removal. The unannotated underlying candidate is archived at referenceImage; it is not a byte-identical substitute for the annotated input.",
+    "promptRecovery": "Exact submitted prompt recovered from this art chat\u2019s visible generation tool-call history; final file newline is storage formatting."
+  }
 }
