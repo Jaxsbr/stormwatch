@@ -120,6 +120,21 @@
       "path": "review/2026-10-04-boar-runtime/evidence/finale-brace.png",
       "sha256": "1a6ff57018a3ba7fbd445a66ab3da52801d17a54cb56653198f8a788c1b530eb",
       "reason": "Diagnostic capture of runtime Boar resistance among twin-boss crowds; no new art idea"
+    },
+    {
+      "path": "docs/evidence/mosswater-production-gates.png",
+      "sha256": "74d3f0293d0f5e18d591cb97f897272307b77392f5700c1fb862591f2594014e",
+      "reason": "Diagnostic capture of canonical campaign gates; unchanged accepted artwork"
+    },
+    {
+      "path": "docs/evidence/mosswater-production-finale.png",
+      "sha256": "417e85bf713869ce5aafc729b4e2a7b9ff0883dc80c44d88dce419277aac47ee",
+      "reason": "Diagnostic capture of ordinary finale preparation; unchanged accepted artwork"
+    },
+    {
+      "path": "docs/evidence/mosswater-canonical-roundtrip.png",
+      "sha256": "dff131279c00086292502009fbcbd151f7244dcd705984ee5384bbf93aabb841",
+      "reason": "Diagnostic capture of disposable canonical promotion result; unchanged accepted artwork"
     }
   ]
 }

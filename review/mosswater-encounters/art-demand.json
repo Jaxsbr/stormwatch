@@ -115,7 +115,7 @@
         {
           "kind": "armored",
           "views": [
-            "boar-rig-v1",
+            "boar-side-resistance-v1",
             "boar-front-rig-v1",
             "boar-rear-rig-v1"
           ],
@@ -187,7 +187,7 @@
         {
           "kind": "armored",
           "views": [
-            "boar-rig-v1",
+            "boar-side-resistance-v1",
             "boar-front-rig-v1",
             "boar-rear-rig-v1"
           ],
@@ -281,7 +281,7 @@
         {
           "kind": "armored",
           "views": [
-            "boar-rig-v1",
+            "boar-side-resistance-v1",
             "boar-front-rig-v1",
             "boar-rear-rig-v1"
           ],
