@@ -112,7 +112,7 @@ function render() {
     (e) =>
       e.immuneAt !== undefined &&
       game.state.clock - e.immuneAt >= 0 &&
-      game.state.clock - e.immuneAt < 0.3,
+      game.state.clock - e.immuneAt < 0.6,
   );
   document.querySelector("#status")!.textContent =
     `${game.level.name} · ${game.state.phase} · wave ${game.state.wave}/${game.level.waves.length} · ${game.state.clock.toFixed(2)} s · ${paused ? "paused" : "playing"}\nBoars ${boars.length} · active immunity cues ${active.length} (side ${active.filter(side).length}) · events: Immune ${immuneCount}, hits ${damageCount}, max slowed Boars ${maxSlowedBoars} · max simultaneous bosses ${maxBosses}\nLast immune: ${lastCue} · poison attached to Boars ${boars.filter((e) => e.poison).length}`;

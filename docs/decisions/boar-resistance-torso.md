@@ -9,11 +9,14 @@ while preserving the existing Iron Boar identity. After expression and bracing
 comparisons, the owner selected the third snarl and then Option A — Light tuck.
 On 4 October 2026 the owner approved the neutral → brace → neutral motion study.
 
+The owner subsequently requested a longer brace in the battlefield preview.
+The revised candidate doubles the hold to 600 ms; visual acceptance remains open.
+
 ## Decision
 
 Preserve the original neutral torso and walking legs. Add the selected complete
 side torso as `bodyResist`, following the existing alternate-torso pattern.
-The character rig displays it for 300 ms from the simulation-owned `immuneAt`
+The character rig displays it for 600 ms from the simulation-owned `immuneAt`
 timestamp. Repeated emitted immunity cues extend the hold without intermediate
 neutral flicker. The simulation still owns immunity and cue cadence; this pose
 has no effect on damage, movement, nets or poison application.

@@ -26,7 +26,7 @@ Catalogue verification passes for all 39 entries on this integration baseline.
 - That descriptor retains the original neutral and both legs, adding only
   `bodyResist` with source scale 0.602 and pivot (699, 919), as in the approved study.
 - `Battlefield` passes `clock - immuneAt` to `CharacterRig`; the optional torso
-  is visible at ages 0 through less than 0.3 seconds. It uses the same actor,
+  is visible at ages 0 through less than 0.6 seconds. It uses the same actor,
   position, tint and impact rotation. All leg resources and gait phase persist.
 - Every update resets torso visibility, so returning to neutral or reusing a
   pooled rig cannot leave another actor bracing. Existing art readiness and
@@ -65,7 +65,7 @@ fast playback and next-cue seeking are explicitly marked. Next side brace seeks
 an actual immunity event on a horizontal route segment. Pause freezes simulation
 advancement and pose; Step advances one fixed tick.
 
-Observed desktop browser evidence:
+Original 300 ms candidate desktop browser evidence:
 
 - Mixed, tick 569 / 18.97 s: three Boars, two active immunity cues, one side brace,
   zero attached poison. The selected bracing silhouette is visible with normal
@@ -89,7 +89,7 @@ battlefield acceptance remain open. Physical mobile performance was not tested.
 `npm run build:workbench` passed. Production boundary passed across 250 files;
 review/QA code is excluded from the game entry graph. Existing chunk-size
 warnings remain. Focused tests verify native descriptor/leg preservation,
-300 ms expiry, repeated cue refresh, pooled-state reset, tint and neutral
+600 ms expiry, repeated cue refresh, pooled-state reset, tint and neutral
 front/rear fallback. Poison combat tests continue to pass.
 
 No authoring fields were changed, so no new edit/Promote round-trip claim is made.
@@ -97,3 +97,9 @@ The parent will integrate the facing contribution and arrange independent high-
 reasoning review before requesting battlefield acceptance or release. Browser
 fixture controls were corrected during development and reloaded before final
 captures; earlier console history can contain the superseded missing-button error.
+
+## Longer hold revision
+
+The owner requested that bracing remain longer. The runtime and preview now hold
+the selected pose for 600 ms (previously 300 ms), refreshed by each emitted
+immunity cue. This timing revision remains available for owner visual review.

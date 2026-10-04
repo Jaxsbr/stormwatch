@@ -162,7 +162,7 @@ export class CharacterRig {
     // it changes neither immunity nor the shared walking gait/leg resources.
     const resistance = this.cutout.parts.get("bodyResist");
     if (resistance) {
-      resistance.visible = body.visible && immuneAge >= 0 && immuneAge < 0.3;
+      resistance.visible = body.visible && immuneAge >= 0 && immuneAge < 0.6;
       resistance.position.copy(body.position);
       resistance.material.rotation = body.material.rotation;
       if (resistance.visible) body.visible = false;

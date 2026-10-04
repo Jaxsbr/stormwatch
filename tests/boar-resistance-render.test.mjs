@@ -47,7 +47,7 @@ it("keeps the original neutral, leg sources and geometry while registering the a
   expect(brace.scale).toBe(0.602);
 });
 
-it("changes only torso visibility for 300 ms, resets on reuse, and keeps simultaneous hit/slow presentation", async () => {
+it("changes only torso visibility for 600 ms, resets on reuse, and keeps simultaneous hit/slow presentation", async () => {
   const { resource, rig } = await createRig();
   const body = rig.cutout.parts.get("body"),
     brace = rig.cutout.parts.get("bodyResist");
@@ -65,9 +65,11 @@ it("changes only torso visibility for 300 ms, resets on reuse, and keeps simulta
   expect(brace.position).toEqual(body.position);
   expect(brace.material.rotation).toBe(body.material.rotation);
   expect(brace.material.color.getHex()).toBe(0xb9dfd1);
-  update(0.299, true);
-  expect(brace.visible).toBe(true);
   update(0.3);
+  expect(brace.visible).toBe(true);
+  update(0.599, true);
+  expect(brace.visible).toBe(true);
+  update(0.6);
   expect(body.visible).toBe(true);
   expect(brace.visible).toBe(false);
   update(0.01);
