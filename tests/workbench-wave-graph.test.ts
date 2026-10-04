@@ -58,7 +58,9 @@ describe("visual wave authoring", () => {
     expect(graph.sequences[0]).toMatchObject({ repeat: 2, count: 8 });
     expect(graph.sequences[0].handoff).toBeCloseTo(9.7);
     expect(graph.end).toBeCloseTo(10.7);
-    expect(graph.nodes.flatMap((node) => node.spawns)).toEqual(
+    expect(
+      graph.nodes.flatMap((node) => node.spawns).sort((a, b) => a.at - b.at),
+    ).toEqual(
       compileSpawnSchedule(
         compileLevel({ ...level, waves: [wave] }).waves[0],
         0.7,
@@ -366,7 +368,11 @@ describe("visual wave authoring", () => {
           wave,
           CANONICAL_CONTENT.rules.initialSpawnDelay,
         );
-        expect(graph.nodes.flatMap((node) => node.spawns)).toEqual(
+        expect(
+          graph.nodes
+            .flatMap((node) => node.spawns)
+            .sort((a, b) => a.at - b.at),
+        ).toEqual(
           compileSpawnSchedule(
             compileLevel({ ...entry, waves: [wave] }).waves[0],
             CANONICAL_CONTENT.rules.initialSpawnDelay,

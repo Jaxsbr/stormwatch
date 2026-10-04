@@ -2,7 +2,12 @@
 
 ## Current state
 
-Playable two-encounter visual reboot with generated painterly scenery, an orthographic Three.js battlefield, articulated animal defenders and directional enemies, upgrades/sell, targeted rescue, support choice/unlock, local stars/settings, retry/assistance, orchestral loop and effect cues. Fixed-step rules and both encounter strategies have focused tests. See the [current visual audit](../review/2026-09-20-reboot/current-rubric-audit.md) and [historical foundation acceptance](ACCEPTANCE.md) for exact evidence and gaps; implementation does not imply every device/audio check passed.
+Eight encounters across two boards are canonical, with owner acceptance of the
+assembled woodland expansion on 4 October 2026. First-board teaching remains
+unchanged; Mosswater adds earned Skunk, Iron Boar immunity and twin Roadwardens.
+See [current activation evidence](evidence/mosswater-activation.md). Physical-device
+performance remains unverified; painted mouth/route alignment and trail-edge spill
+are a deferred scenery-registration follow-up, not an activation blocker.
 
 ## Prioritized next work
 

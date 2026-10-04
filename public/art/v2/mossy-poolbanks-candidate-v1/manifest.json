@@ -3,13 +3,13 @@
   "id": "mossy-poolbanks-candidate-v1",
   "role": "battlefield",
   "review": {
-    "status": "owner-approved-artwork",
+    "status": "owner-accepted-runtime",
     "date": "2026-10-04",
-    "notes": "Owner explicitly approved option 3 (wet mottling). Approval covers battlefield painting with the right vertical worn-earth strip blended into central terrain, retaining two exit mouths. Full campaign/HUD/crowd acceptance remains separate."
+    "notes": "Owner completed the assembled expansion playthrough and accepted the current runtime art, motion, effects, HUD, board navigation and balance for merge on 4 October 2026. Stable asset identity and image bytes retained. Painted entrance/exit alignment and trail spill remain the explicit deferred battlefield-art-registration scope exception; this does not assert measured scenery registration."
   },
   "texture": "art/v2/mossy-poolbanks-candidate-v1/atlas.webp",
   "width": 1672,
-  "height": 941,
+  "height": 940,
   "sha256": "22fbcc8ab655ec2df6316e2f6c5e9a74523e0f30846baa52a8b9eaaa8d0c2d21",
   "bytes": 613850,
   "source": "exec-f252bd5e-a11e-48bf-8344-2a3d99944625.png",
@@ -18,5 +18,6 @@
     "layout": "twin-switchbacks",
     "blockedCellsAdded": 0,
     "interiorPools": "cosmetic traversable shallows"
-  }
+  },
+  "sourceSha256": "08532b99383f6c146a7a20ed90400c3f03a37d2e283200155f5e35d0d15f8434"
 }

@@ -1,6 +1,6 @@
 # Iron Boar resistance torso
 
-Status: side pose and motion accepted; directional extensions and battlefield taste review pending.
+Status: accepted in the assembled expansion playthrough on 4 October 2026, including the 600 ms battlefield reaction and directional appearance. Earlier study approvals below remain provenance.
 
 ## Context
 
@@ -41,4 +41,4 @@ unchanged leg resources, hit/slow tint and neutral front/rear behavior. Real
 resolved encounter playback demonstrated the brace in mixed and twin-boss crowds,
 normal net slowing and zero attached poison on Boars. Checks, 421 tests, game and
 workbench builds passed. See the [runtime evidence](../../review/2026-10-04-boar-runtime/README.md).
-Deployment and owner battlefield acceptance remain pending coordinated integration.
+Owner battlefield acceptance is complete for the assembled version. Parent owns merge and deployment verification; see [canonical activation](mosswater-campaign-activation.md).

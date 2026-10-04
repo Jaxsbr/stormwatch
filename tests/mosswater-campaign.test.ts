@@ -37,7 +37,7 @@ import {
   promoteWorkingWave,
 } from "../src/workbench/working-draft";
 
-const content = candidate as AuthoringContent;
+const content = CANONICAL_CONTENT;
 const context = progressionContext(content);
 const expedition = campaign(content);
 function entry(id: string) {
@@ -50,15 +50,21 @@ function entry(id: string) {
   return save;
 }
 
-describe("held Mosswater candidate through resolved content and real Game", () => {
-  it("keeps the current canonical campaign inactive and validates the complete 3/3/3/5/5 candidate", () => {
-    expect(CANONICAL_CONTENT.levels).toHaveLength(3);
-    expect(progressionContext().discoveries.map((d) => d.id)).not.toContain(
+describe("accepted canonical Mosswater campaign through resolved content and real Game", () => {
+  it("activates the exact accepted eight-map campaign and its discoveries", () => {
+    expect(CANONICAL_CONTENT).toEqual(candidate);
+    expect(CANONICAL_CONTENT.levels).toHaveLength(8);
+    expect(progressionContext().discoveries.map((d) => d.id)).toEqual([
+      "squirrel-upgrade",
+      "turtle",
+      "reach",
+      "nets",
       "skunk",
-    );
+      "skunk-upgrade",
+    ]);
     validateContent(content);
     validateAuthoredVisuals(content);
-    expect(content.levels.slice(0, 3)).toEqual(CANONICAL_CONTENT.levels);
+    expect(content.levels.slice(0, 3)).toEqual(candidate.levels.slice(0, 3));
     expect(content.levels.slice(3).map((m) => m.waves.length)).toEqual([
       3, 3, 3, 5, 5,
     ]);

@@ -161,7 +161,7 @@
     "motionApprovalDate": "2026-10-04",
     "studyCommit": "4fb3b4b",
     "approvalCommit": "e36785d",
-    "scope": "Side torso and 300 ms reaction approved. Directional variants, equipment mirroring, gas and battlefield acceptance pending."
+    "scope": "Original side torso and 300 ms study approval retained historically; the assembled runtime 600 ms reaction, directional variants, equipment mirroring and battlefield appearance accepted in owner playthrough on 4 October 2026."
   },
   "encoding": {
     "format": "webp",
@@ -170,5 +170,10 @@
     "effort": 6,
     "source": "native selected image; no resizing",
     "alphaVerifiedExact": true
+  },
+  "review": {
+    "status": "owner-accepted-runtime",
+    "date": "2026-10-04",
+    "notes": "Owner completed the assembled expansion playthrough and accepted the current runtime art, motion, effects, HUD, board navigation and balance for merge on 4 October 2026. Stable asset identity and image bytes retained."
   }
 }

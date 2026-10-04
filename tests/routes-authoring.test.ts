@@ -1,3 +1,4 @@
+import { legacyFirstBoard } from "./fixtures/first-board-content";
 import { expect, it } from "vitest";
 import {
   CANONICAL_CONTENT,
@@ -30,7 +31,7 @@ function shared() {
   return c;
 }
 it("normalizes old version-one drafts without rewriting legacy routes, groups or timings", () => {
-  const old = structuredClone(CANONICAL_CONTENT);
+  const old = legacyFirstBoard();
   delete old.routeLayouts;
   const wave = structuredClone(old.levels[0].waves[0]);
   const path = structuredClone(old.levels[0].path);
@@ -48,7 +49,7 @@ it("normalizes old version-one drafts without rewriting legacy routes, groups or
   expect(g.level.routes).toBeUndefined();
 });
 it("promotes a newly chosen shared layout when disk content predates the layout library", () => {
-  const old = structuredClone(CANONICAL_CONTENT);
+  const old = legacyFirstBoard();
   delete old.routeLayouts;
   const draft = createWorkingDraft(old);
   useRouteLayout(draft.content, draft.content.levels[0], "twin-switchbacks");
@@ -106,7 +107,7 @@ it("promotes changed shared layout by identity alongside a selected wave, preser
   expect(promoted.levels[2].startCoins).toBe(live.levels[2].startCoins);
   expect(promoted.levels[1].waves[0].reward).toBe(c.levels[1].waves[0].reward);
   expect(promoted.routeLayouts!.find((l) => l.id === "unrelated")).toEqual(
-    live.routeLayouts![1],
+    live.routeLayouts!.find((l) => l.id === "unrelated"),
   );
   expect(resolveConfiguration(promoted).level.routes).toEqual(
     resolveConfiguration(draft.content).level.routes,

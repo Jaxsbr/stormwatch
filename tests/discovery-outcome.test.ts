@@ -74,7 +74,7 @@ it("derives promised legacy rewards without showing them as newly earned", () =>
   ]);
 });
 
-it("shows both first-board rewards only when both are newly granted", () => {
+it("shows first-board advantages and Skunk only when newly granted", () => {
   const prepared = recordVictoryOutcome(
     recordVictoryOutcome(freshSave(), "lantern-pass", 1).save,
     "rainstone-crossing",
@@ -85,8 +85,9 @@ it("shows both first-board rewards only when both are newly granted", () => {
   expect(first.rewards).toEqual([
     { kind: "advantage-unlock", card: "reach" },
     { kind: "advantage-unlock", card: "nets" },
+    { kind: "tower-unlock", tower: "stone" },
   ]);
-  expect(first.rewards.map((reward) => reward.kind)).toHaveLength(2);
+  expect(first.rewards.map((reward) => reward.kind)).toHaveLength(3);
   const repeated = recordVictoryOutcome(first.save, "the-last-lantern", 2);
   expect(repeated.firstBoardComplete).toBe(false);
   expect(repeated.rewards).toEqual([]);

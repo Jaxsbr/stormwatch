@@ -9,7 +9,7 @@ const server = await createServer({
 });
 try {
   const content = JSON.parse(
-    await readFile("review/mosswater-encounters/game-content.json", "utf8"),
+    await readFile("src/content/recipes.json", "utf8"),
   );
   const { validateContent, configurationIdentity } = await server.ssrLoadModule(
     "/src/config/configuration.ts",
@@ -59,7 +59,7 @@ try {
   }
   const out = {
     qualification:
-      "Real resolved Game, normal mode, seed42, public legal commands, no resources/health/roster injected; prior victories earned by the campaign run. All five new maps use explicit routes and remaining-travel-time targeting, including Rainstone single routes on 03/04. Only the original first-board maps retain legacy distance targeting.",
+      "Accepted canonical content, real resolved Game, normal mode, seed42, public legal commands, no resources/health/roster injected; prior victories earned by the campaign run. All five new maps use explicit routes and remaining-travel-time targeting, including Rainstone single routes on 03/04. Only the original first-board maps retain legacy distance targeting.",
     contentIdentity: configurationIdentity(content),
     ...result,
     alternatives: losses,

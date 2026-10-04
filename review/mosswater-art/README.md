@@ -1,3 +1,17 @@
+# Accepted Mosswater runtime art
+
+Owner completed the assembled expansion playthrough and accepted the current
+board, markers/navigation, scenery, HUD/crowds and runtime character presentation
+on 4 October 2026. Stable asset IDs and image bytes remain unchanged. Current
+runtime manifests record acceptance. Painted mouth/route alignment and trail-edge
+spill are explicitly deferred, and physical-device performance remains unverified.
+See [activation evidence](../../docs/evidence/mosswater-activation.md).
+
+## Historical review-stage evidence
+
+The held workflow and earlier open gates below describe the preceding art review,
+not current release requirements.
+
 # Held Mosswater art candidate
 
 This candidate must not activate or merge into the released campaign before owner review.

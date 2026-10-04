@@ -1,3 +1,4 @@
+import { legacyFirstBoard } from "./fixtures/first-board-content";
 import { describe, expect, it } from "vitest";
 import {
   CANONICAL_CONTENT,
@@ -438,7 +439,7 @@ describe("authored fixed routes", () => {
       mutate(value);
       expect(() => validateContent(value)).toThrow();
     }
-    const old = structuredClone(CANONICAL_CONTENT);
+    const old = legacyFirstBoard();
     delete old.routeLayouts;
     const g = game(old);
     const [e] = spawn(g, 1);

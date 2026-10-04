@@ -96,5 +96,5 @@ it("earns every replay entry for all-map review while retaining ordinary attempt
     );
   }
   expect(JSON.stringify(content)).toBe(before);
-  expect(CANONICAL_CONTENT.levels).toHaveLength(3);
+  expect(CANONICAL_CONTENT).toEqual(content);
 });

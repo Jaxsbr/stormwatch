@@ -1,6 +1,6 @@
-# Mosswater encounters: held functional candidate
+# Mosswater encounters: accepted campaign and historical feedback evidence
 
-Status: implementation ready for review; owner play feel and visual acceptance pending.
+Status: owner completed the assembled playthrough and accepted this eight-map version for merge on 4 October 2026. The exact accepted snapshot is now canonical. See [activation verification](../../docs/evidence/mosswater-activation.md). Earlier captures document the feedback stage.
 
 ## Run
 
@@ -16,7 +16,7 @@ Status: implementation ready for review; owner play feel and visual acceptance p
 - Full game/profile journey: `/`
 - Candidate authoring and promotion: `/workbench.html`
 
-The dedicated local adapter serves `game-content.json` for both the actual game and workbench. Promotion atomically replaces this review folder's candidate file, never `src/content/recipes.json`. Feedback profile/draft storage has its own namespace, preserving previous development data. Stop the server with Ctrl-C. Normal production and workbench builds retain the accepted three-map canonical campaign.
+The dedicated local adapter serves `game-content.json` for both the actual game and workbench. Promotion atomically replaces this review folder's candidate file, never `src/content/recipes.json`. Feedback profile/draft storage has its own namespace, preserving previous development data. Stop the server with Ctrl-C. Normal production and workbench builds now load the canonical eight-map campaign. This dedicated feedback adapter remains isolated and is excluded from production.
 
 Focused entry replays preceding normal-mode **won Game attempts** at fixed ticks before constructing the chosen encounter. The finale entry also replays public legal purchases through its first four waves, including preparation purchases, and stops before launching wave five. This is accelerated legal entry evidence, not injected health, currency, towers or discoveries. Its preparation holds until Start wave; the full game retains its usual countdown. Manual controls use the same Game/Battlefield and defender selection adapters. Retry reconstructs the immutable candidate and earned entry.
 
@@ -34,7 +34,7 @@ No first-board map, shared enemy HP, boss rage, tower cost or combat constant ch
 
 Maps 03/04 share the explicit `rainstone-single` layout and stable `rainstone-route` assignment. Path, dimensions and blocked cells are exactly the original Rainstone geometry. Every new map therefore uses remaining-travel-time targeting, including effective net slow; only the original three maps retain legacy distance priority.
 
-The larger final wallet/payouts pay for coverage across distant exits and upgrades before the bosses. A smaller 350-coin opening and 80–95 payouts did not support the recorded mixed line: one boss escaped. Preserving the 2200-HP Roadwardens and boss rules makes spending/coverage the tuning levers. The final policy also needs late coverage near the right exit; resources alone did not fix the first formation. These are reproducible candidate values, not owner-approved final balance.
+The larger final wallet/payouts pay for coverage across distant exits and upgrades before the bosses. A smaller 350-coin opening and 80–95 payouts did not support the recorded mixed line: one boss escaped. Preserving the 2200-HP Roadwardens and boss rules makes spending/coverage the tuning levers. The final policy also needs late coverage near the right exit; resources alone did not fix the first formation. The owner accepted the assembled values in the current playthrough; deterministic policy evidence still does not establish universal difficulty.
 
 Discovery definitions activate only with the complete five-ID Mosswater destination: all first-board victories earn Skunk, including legacy completed profiles; victory on 02 earns its upgrade. The existing progression/save interfaces own result rewards, replay roster, board travel and profile validation. Base rosters carry Squirrel/Turtle; earned Skunk is resolved for every new encounter and earlier completed replays. Fresh first-board teaching stays intact.
 
@@ -54,22 +54,29 @@ Run `npm run balance:mosswater -- --write` to reproduce `balance-evidence.json` 
 
 Combat seconds exclude preparation time and feedback discussion. These few policies demonstrate legal reachability and pressure, not universal difficulty or optimal play. Maps 02/04's six-heart margins and the short final combat duration deserve owner feedback. Skunk-only can currently win map 04 through upgraded blast damage despite immune Boars; immunity is not blast immunity and this remains a deliberate alternative to test with the owner. Its two-placement policy also wins with eight hearts and a large unused wallet, so the mixed rehearsal's pressure remains an owner balance question.
 
-Acceptance review found that omitting explicit routes on 03/04 accidentally selected legacy distance priority. The corrected authored layout changes no geometry, resources, waves or mechanics. Regenerated evidence retains all eight baseline wins; map 04 changes from seven hearts/269.8 seconds to six hearts/271.5 seconds, and its direct-only alternative changes from a loss to a four-heart win. These are observed targeting consequences, not accepted tuning. The regression replays actual legal campaign commands and asserts earliest arrival selection with real Turtle slow on both maps; it reproduces the former 37.3-second versus 20.1-second Boar targeting error before the correction.
+Acceptance review found that omitting explicit routes on 03/04 accidentally selected legacy distance priority. The corrected authored layout changes no geometry, resources, waves or mechanics. Regenerated evidence retains all eight baseline wins; map 04 changes from seven hearts/269.8 seconds to six hearts/271.5 seconds, and its direct-only alternative changes from a loss to a four-heart win. These are observed targeting consequences, retained in the version the owner accepted. The regression replays actual legal campaign commands and asserts earliest arrival selection with real Turtle slow on both maps; it reproduces the former 37.3-second versus 20.1-second Boar targeting error before the correction.
 
 ## Verification
 
-- Check, 399 tests, format check, production build and workbench build passed. Production boundary excludes utility modules; candidate data is not activated in the normal production build.
+- Check, 399 tests, format check, production build and workbench build passed. Production boundary excludes utility modules; This 399-test result is historical; current canonical verification is in the activation record.
 - Browser checked the complete edit → draft auto-save → reload → Playtest → scoped Promote → uncached game reload for **each of five maps**. First-wave payouts were temporarily raised by one: 41 / 46 / 51 / 56 / 101 appeared in the reloaded real Game. All were restored through scoped Promote. No JavaScript build occurred during promotion, unrelated first-board recipes remained identical, and unit coverage checks immutable existing attempts.
 - After the targeting correction, both 03/04 repeated the complete browser round trip. Their shared layout and enabled remaining-travel-time targeting survived draft reload; promoted Game payouts were 51/56 and restored to 50/55. `route-promoted-game.jpg` captures the corrected mixed-map reload. Exact semantic comparison verifies that only the intended route references/assignments and shared layout differ from the previous candidate; all resources, waves and unrelated maps remain unchanged.
 - Every authored wave compiles through the shared spawn schedule. Maps 01/02/05 resolve exactly the same route library entry. Rat wave one stages route B after A; every Weasel wave starts both together. Fifth-wave Roadwardens share one spawn tick and distinct routes; no bosses appear in the first four waves.
 - Tests inspect complete all-wave art demand and resolved earned defender rosters, discovery migration, earlier replays, saved board travel, legal winning/losing policies, and Boar briefing/inspection.
 - Browser verified the live mixed inspection and held twin-boss formation with both runtime candidates. `promoted-game.jpg` shows the temporary 56 payout after reload; `workbench-promotion.jpg` shows restoration. Diagnostic screenshots are existing renderer output, not generated art ideas.
 
-## Remaining gates
+## Current acceptance and limitations
 
-Mosswater complete battlefield clearance/HUD/crowds, board marker/navigation appearance, Skunk real-battlefield effects and Boar directional variants/battlefield appearance await owner approval. Boar side pose and motion are approved and integrated. All-map briefing/crowd review, full profile journey, phone/tablet touch review and final balance feel remain release acceptance work. The original Boar neutral/legs and the approved side resistance torso are functional fixture resources. No deployment/main merge occurred; physical mobile performance is unverified.
+The owner accepted current battlefield/HUD/crowd presentation, board/navigation,
+Skunk effects, Boar appearance and 600 ms motion, and overall play feel after an
+assembled playthrough on 4 October 2026. No new taste approval is required for
+this exact snapshot. Physical-device performance remains unverified. Painted
+mouth/route alignment and trail-edge spill are the explicitly deferred
+battlefield-art-registration exception; no art or routes were changed to mask it.
 
-Parent integrates this contribution with remaining capability/art fixes and owns canonical activation. Copy the accepted candidate into canonical recipes only after its art, progression and owner gates agree; rerun the complete checks and release journey then.
+The canonical source is `src/content/recipes.json`; the review JSON preserves the
+accepted activation snapshot. The parent owns main merge and deployment verification.
+Historical screenshots, candidate names and earlier checks remain provenance.
 
 Finale feedback formation: before launching wave five, the legal replay has twelve defenders and 21 coins. Continue buying during combat: the baseline winning policy adds and upgrades a Skunk beside the right exit at cell (10, 4) when earned coins allow. No extra purchases happen automatically in manual feedback playback.
 

@@ -52,7 +52,7 @@ separate layout and balance review.
   by generation guides, workbench preview, runtime route drawing and registration
   checks. Keep browser/rendering dependencies out of simulation.
 - Record native source dimensions, delivered dimensions, any crop/padding and the
-  source-to-reference transform. The current 1672×941 painting must use its actual
+  source-to-reference transform. The current 1672×940 painting must use its actual
   dimensions; requesting 16:9 is not evidence of an exact aspect ratio.
 - Use one uniform scenery transform and known import operations. Do not add hidden
   per-route offsets, independently warp scene layers or adjust the camera to mask

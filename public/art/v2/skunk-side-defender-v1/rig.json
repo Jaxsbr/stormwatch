@@ -131,8 +131,9 @@
   ],
   "sourceSha256": "86d6ffc0a14e52cb8280d8701ec8b813a1ce93b897ea3aa7d155f373c821441f",
   "review": {
-    "status": "candidate",
-    "notes": "Owner accepted underhand neon-flask poses, continuous motion and B soft-puff effects without Poisoned text. Integrated battlefield acceptance remains pending."
+    "status": "owner-accepted-runtime",
+    "date": "2026-10-04",
+    "notes": "Owner completed the assembled expansion playthrough and accepted the current runtime art, motion, effects, HUD, board navigation and balance for merge on 4 October 2026. Stable asset identity and image bytes retained."
   },
   "validation": {
     "width": 1536,

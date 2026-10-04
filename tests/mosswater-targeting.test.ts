@@ -1,16 +1,15 @@
 import { expect, it } from "vitest";
-import candidate from "../review/mosswater-encounters/game-content.json";
+import { CANONICAL_CONTENT } from "../src/config/configuration";
 import {
   campaign,
   createAttempt,
 } from "../review/mosswater-encounters/strategies";
-import type { AuthoringContent } from "../src/config/configuration";
 import { progressionContext } from "../src/content/progression";
 import { freshSave, recordVictoryOutcome } from "../src/persistence/save";
 import { distance, pathLength } from "../src/sim/path";
 
 it("targets the soonest arrival on new single routes, including actual net-slowed Boars in the earned campaign", () => {
-  const content = candidate as AuthoringContent;
+  const content = CANONICAL_CONTENT;
   const context = progressionContext(content);
   const expedition = campaign(content);
   let save = freshSave(context);

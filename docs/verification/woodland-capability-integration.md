@@ -1,3 +1,15 @@
+# Current canonical activation
+
+Owner accepted the complete assembled expansion playthrough on 4 October 2026.
+The exact accepted eight-map data is now canonical. Owner artwork, motion, effects
+and play-feel gates for this version are closed; physical-device performance is
+unverified and painted mouth/route registration and trail spill remain deferred.
+See [current activation evidence](../evidence/mosswater-activation.md).
+
+## Historical capability and feedback-stage verification
+
+The held-stage records and then-open gates below are historical provenance.
+
 # Woodland expansion feedback integration
 
 ## Scope and merge status

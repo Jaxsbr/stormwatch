@@ -518,7 +518,7 @@ window.STORMWATCH_IDEAS = [
   {
     "id": "poolbanks-right-edge-blend-b-wet-earth",
     "title": "Poolbanks right-edge blend B wet earth",
-    "description": "Owner requested removal of vertical worn-earth stripe; retain two exit mouths, blend remaining right edge into central terrain. Unselected variant.",
+    "description": "Owner selected wet mottling to remove the vertical worn-earth stripe, retain two exit mouths and blend the right edge into central terrain. Accepted in the assembled expansion playthrough; painted route registration remains deferred.",
     "kind": "concept",
     "categories": [
       "background"
@@ -536,7 +536,7 @@ window.STORMWATCH_IDEAS = [
   {
     "id": "poolbanks-right-edge-blend-a-soft-moss",
     "title": "Poolbanks right-edge blend A soft moss",
-    "description": "Owner requested removal of vertical worn-earth stripe; retain two exit mouths, blend remaining right edge into central terrain. Unselected variant.",
+    "description": "Owner selected wet mottling to remove the vertical worn-earth stripe, retain two exit mouths and blend the right edge into central terrain. Accepted in the assembled expansion playthrough; painted route registration remains deferred.",
     "kind": "concept",
     "categories": [
       "background"
@@ -554,7 +554,7 @@ window.STORMWATCH_IDEAS = [
   {
     "id": "poolbanks-right-edge-blend-c-wet-mottling",
     "title": "Poolbanks right-edge blend C wet mottling",
-    "description": "Owner requested removal of vertical worn-earth stripe; retain two exit mouths, blend remaining right edge into central terrain. Unselected variant.",
+    "description": "Owner selected wet mottling to remove the vertical worn-earth stripe, retain two exit mouths and blend the right edge into central terrain. Accepted in the assembled expansion playthrough; painted route registration remains deferred.",
     "kind": "concept",
     "categories": [
       "background"

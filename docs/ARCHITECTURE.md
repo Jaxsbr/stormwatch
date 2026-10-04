@@ -16,7 +16,7 @@ flowchart LR
 
 | Boundary                                   | Implemented responsibility                                                                                    | Extension point                                                           |
 | ------------------------------------------ | ------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------- |
-| `src/content`                              | Tower/enemy/card catalogs and three campaign encounters                                                       | Add level data, register it, validate and test                            |
+| `src/content`                              | Tower/enemy/card catalogs and eight encounters across two authored boards                                                       | Add level data, register it, validate and test                            |
 | `src/sim/game.ts`                          | Commands, 30 Hz simulation, damage, movement, targets, waves and outcomes                                     | Add a rule with focused deterministic tests                               |
 | `src/sim/economy.ts`                       | Fixed wave rewards and sell refunds                                                                           | Tune authored rewards alongside catalog costs and strategy evidence       |
 | `src/content/boards.ts`                   | Board registry validation, approved illustration references and legacy board resolution                      | Register accepted real campaign boards with ordered encounter references |
@@ -256,3 +256,21 @@ Authored `boards` optionally register ordered encounter references and reviewed
 presentation metadata. Absent collections resolve to the existing first board.
 Progression and save/profile adapters share a resolved campaign context; workbench
 board scopes use the same validator. See [the board/profile decision](decisions/boards-profile-progression.md).
+
+### Accepted Mosswater campaign
+
+Canonical recipes register the unchanged three-map first board and five-map
+Mosswater Reach. All first-board victories grant Skunk and onward travel; victory
+on Mosswater 02 grants its upgrade. Legacy first-board saves derive the promised
+Skunk grant, preserving their earned stars and independent profile preferences.
+Every new map uses explicit routes and travel-time targeting. Maps 01/02/05 share
+Twin switchbacks; 03/04 share the exact Rainstone single-route geometry. Ordinary
+production saves keep their established keys; feedback replay/profile helpers and
+storage namespaces remain outside the production graph and artifact.
+
+The owner accepted the assembled runtime art, landscape frame, 600 ms Boar cue
+and play feel on 4 October 2026. Scenery entrance/exit alignment and trail-edge
+spill remain an explicitly deferred registration issue. Physical-device performance
+is unverified. See [activation](decisions/mosswater-campaign-activation.md) and
+[verification](evidence/mosswater-activation.md). No simulation or adapter boundary
+is changed by activation.

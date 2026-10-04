@@ -1,6 +1,6 @@
 # Author the complete Mosswater candidate without campaign activation
 
-Status: functional implementation; visual and balance acceptance pending.
+Status: historical staging decision, superseded for release by [canonical activation](mosswater-campaign-activation.md) after owner playthrough acceptance on 4 October 2026. The held workflow and evidence below describe the earlier review stage.
 
 ## Context
 

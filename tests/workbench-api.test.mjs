@@ -1,3 +1,4 @@
+import { legacyFirstBoard } from "./fixtures/first-board-content";
 import { runtimeContentMiddleware } from "../tools/runtime-content.mjs";
 import { afterEach, expect, it } from "vitest";
 import { Readable } from "node:stream";
@@ -679,7 +680,7 @@ it.each(["moved marker", "removed ordered board"])(
   async (change) => {
     const { file, post } = await fixture();
     const { resolveBoards } = await import("../src/content/boards");
-    const base = structuredClone(CANONICAL_CONTENT);
+    const base = legacyFirstBoard();
     const first = resolveBoards(base)[0];
     base.boards = [
       { ...structuredClone(first), levelIds: first.levelIds.slice(0, 2) },

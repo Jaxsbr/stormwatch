@@ -3,8 +3,9 @@
   "id": "mosswater-board-candidate-v1",
   "role": "board",
   "review": {
-    "status": "held-owner-review",
-    "notes": "Mosswater Reach and Mossy Poolbanks directions selected; 40 placement cells accepted. This adapted asset awaits final owner approval. No campaign activation."
+    "status": "owner-accepted-runtime",
+    "date": "2026-10-04",
+    "notes": "Owner completed the assembled expansion playthrough and accepted the current runtime art, motion, effects, HUD, board navigation and balance for merge on 4 October 2026. Stable asset identity and image bytes retained."
   },
   "texture": "art/v2/mosswater-board-candidate-v1/atlas.webp",
   "width": 1672,

@@ -61,7 +61,7 @@ const server = await createServer({
 });
 await server.listen();
 console.log(
-  "Mosswater functional feedback — held art candidates, visual acceptance pending",
+  "Mosswater functional feedback — accepted campaign, isolated review helpers",
 );
 console.log(
   "Feedback guide: http://127.0.0.1:4177/review/mosswater-encounters/",

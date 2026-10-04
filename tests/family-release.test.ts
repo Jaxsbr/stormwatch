@@ -155,7 +155,9 @@ it.each([false, true])(
     const complete = profiles.users[1].progress;
     expect(complete.stars["the-last-lantern"]).toBeGreaterThan(0);
     expect(availableCards(LEVELS[2], complete)).toEqual(["reach", "nets"]);
-    expect(levelUnlocked(LEVELS, 3, complete)).toBe(false);
+    expect(levelUnlocked(LEVELS, 3, complete)).toBe(true);
+    expect(complete.unlocked).toContain("skunk");
+    expect(levelUnlocked(LEVELS, 4, complete)).toBe(false);
     const replay = play(0, complete, false, "reach");
     expect(replay.state.phase).toBe("won");
     expect(replay.level.availableTowers).toContain("net");
