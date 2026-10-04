@@ -10,7 +10,8 @@ comparisons, the owner selected the third snarl and then Option A — Light tuck
 On 4 October 2026 the owner approved the neutral → brace → neutral motion study.
 
 The owner subsequently requested a longer brace in the battlefield preview.
-The revised candidate doubles the hold to 600 ms; visual acceptance remains open.
+The revised candidate doubles the hold to 600 ms. The owner approved this longer
+hold on 4 October 2026 (“good, approved”). Other visual acceptance gates remain open.
 
 ## Decision
 

@@ -102,4 +102,6 @@ captures; earlier console history can contain the superseded missing-button erro
 
 The owner requested that bracing remain longer. The runtime and preview now hold
 the selected pose for 600 ms (previously 300 ms), refreshed by each emitted
-immunity cue. This timing revision remains available for owner visual review.
+immunity cue. On 4 October 2026 the owner approved the longer timing (“good,
+approved”). This approval covers the 600 ms hold; it does not close the remaining
+directional artwork, gas/text or overall battlefield acceptance gates.
