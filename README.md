@@ -4,12 +4,16 @@ A small, atmospheric woodland tower-defense expedition: protect the lantern line
 build animal defenses and choose when to spend wave rewards on reinforcements and
 upgrades. Dark, child-friendly art; no occult themes or gore.
 
-The current first board follows Lantern Pass → Rainstone Crossing → The Last
-Lantern. Discover Squirrel upgrades, Turtle control and earned replay advantages
-through the expedition. Three.js draws the close orthographic battlefield with
+The expedition has eight encounters across two boards. Lantern Pass → Rainstone
+Crossing → The Last Lantern opens Mosswater Reach: five encounters introducing
+Skunk poison, permanently poison-immune Iron Boars and simultaneous twin
+Roadwardens. Earn Squirrel upgrades, Turtle control and Skunk replay rosters;
+Mosswater encounter 2 earns the Skunk upgrade. Three.js draws the close orthographic battlefield with
 painted scenery and articulated directional characters. Landscape phone/tablet
 and desktop layouts are supported; physical-device and family-play verification
-remain distinct from automated checks.
+remain distinct from automated checks. The owner accepted the assembled expansion
+playthrough on 4 October 2026; [activation evidence](docs/evidence/mosswater-activation.md)
+records automated verification and the deferred scenery-registration exception.
 [Project game link](https://jaxsbr.github.io/stormwatch/) · [Source repository](https://github.com/Jaxsbr/stormwatch)
 
 ## Run

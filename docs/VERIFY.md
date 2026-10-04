@@ -70,3 +70,20 @@ Build, then run `node tools/review-preview.mjs` and open `http://127.0.0.1:4176/
 Verify the saved file's timestamp, dimensions, duration and actual frames before describing it. Capture at1× for motion review; disclose any preparation/play segments run at2×. Canvas footage excludes HTML HUD and sound. Retain corresponding full-page screenshots for menus, selected controls and results. A successful save does not certify smoothness or sound quality.
 
 The stress fixture now logs synchronous render/frame work and preceding-frame scene rebuilds for intervals over100ms. These timings help attribution but do not measure asynchronous GPU completion or excuse long frames.
+
+## Canonical eight-map expansion
+
+Use the normal production build and ordinary profile storage. A fresh player opens
+only Lantern Pass; every first-board victory opens Mosswater Reach and derives
+Skunk for completed legacy saves. Verify forward/back travel, profile isolation,
+remembered destination, first/replay rosters and upgrade timing after Mosswater 02.
+Complete the legal campaign with `npm run balance:mosswater -- --write`; this now
+reads canonical recipes and records all nineteen expansion-wave art demands.
+The final wave must kill both independently routed Roadwardens; either escaping
+loses. Promotion is tested in a disposable copy through automatic draft save,
+reload, Playtest, scoped Promote and uncached ordinary game reload.
+
+Owner visual/play-feel acceptance is complete for the current assembled version.
+The remaining device performance evidence requires actual hardware; no emulation
+claim substitutes for it. Deferred painted mouth/route alignment and trail-edge
+spill stay separate from the accepted version. See [activation evidence](evidence/mosswater-activation.md).

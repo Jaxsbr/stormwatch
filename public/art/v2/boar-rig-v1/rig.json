@@ -131,8 +131,9 @@
     "requirement": "worldpath anchored stance plus2boneIK; no perframescaling"
   },
   "review": {
-    "status": "candidate",
-    "notes": "Imported native separated parts. Assembly and motion gates pending."
+    "status": "owner-accepted-runtime",
+    "date": "2026-10-04",
+    "notes": "Owner completed the assembled expansion playthrough and accepted the current runtime art, motion, effects, HUD, board navigation and balance for merge on 4 October 2026. Stable asset identity and image bytes retained."
   },
   "sourceSha256": "0bd4d5a03e08c1936fa84296db29eba0af4d831d84b94115534b9842ff106e2d",
   "validation": {

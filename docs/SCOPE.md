@@ -4,6 +4,8 @@
 
 > Tower presentation update (29 September 2026): side-only towers and pose-first animation are approved in [ADR 031](decisions/031-side-only-tower-animation.md). Follow the [tower animation process](TOWER-ANIMATION-PROCESS.md).
 
+> Expansion acceptance (4 October 2026): the owner completed the assembled eight-map, two-board playthrough and accepted canonical activation and merge. Existing woodland direction, balancing, runtime art, 600 ms Boar reaction and fixed landscape frame remain unchanged. Painted mouth/route alignment and trail-edge spill are explicitly deferred; physical-device performance is unverified. See [activation decision](decisions/mosswater-campaign-activation.md).
+
 Status: confirmed by the owner on 20 September 2026; implementation authorized. Approved title and personal repository name: Stormwatch / `Jaxsbr/stormwatch`. This document records the confirmed product decisions; architectural records live in `decisions/`.
 
 ## Product promise

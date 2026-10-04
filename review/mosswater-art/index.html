@@ -1,0 +1,79 @@
+<!doctype html><meta charset="utf-8" /><title>Mosswater held art review</title
+><style>
+  body {
+    margin: 20px;
+    background: #152020;
+    color: #eee6d3;
+    font: 16px system-ui;
+  }
+  button,
+  select {
+    padding: 10px;
+    margin: 4px;
+    min-height: 44px;
+  }
+  #field {
+    width: 1280px;
+    height: 720px;
+    max-width: 100%;
+    position: relative;
+  }
+  #field canvas {
+    display: block;
+  }
+  #board {
+    position: relative;
+    width: min(100%, 1280px);
+    aspect-ratio: 1672/941;
+    background: url("/art/v2/mosswater-board-candidate-v1/atlas.webp")
+      center/contain no-repeat;
+  }
+  #board button {
+    position: absolute;
+    transform: translate(-50%, -50%);
+    border-radius: 50%;
+    background: #493d29;
+    color: #fff4d6;
+    border: 2px solid #bdab75;
+    font-weight: bold;
+  }
+  p {
+    max-width: 1100px;
+  }
+  a {
+    color: #9bd5d8;
+  }
+</style>
+<h1>Mosswater · held art review</h1>
+<p>
+  Wet-mottling battlefield artwork approved; complete campaign visual review
+  pending. Real Game + Battlefield, exact approved routes, no added blocked
+  cells. Synthetic visual fixture: borrowed Rat wave and optional legal
+  starting-wallet placement. It does not establish campaign balance.
+</p>
+<select id="scene">
+  <option value="candidate">Twin switchbacks · revised Poolbanks</option>
+  <option value="original">Twin switchbacks · selected original</option>
+  <option value="lantern-pass">Lantern Pass · existing</option>
+  <option value="rainstone-crossing">Rainstone Crossing · existing</option>
+  <option value="the-last-lantern">Last Lantern · existing</option>
+</select>
+<button id="start">Start wave</button><button id="pause">Pause / resume</button
+><button id="place">Place affordable Squirrels</button
+><button data-size="1280,720">Desktop</button
+><button data-size="844,390">Phone landscape</button
+><button data-size="1024,768">Tablet</button>
+<p id="status">Loading…</p>
+<div id="field"></div>
+<h2>Mosswater Reach · proposed marker anchors</h2>
+<p>
+  Five separate 44px+ controls. Names/labels and navigation styling still
+  require final review. This board does not activate campaign content.
+</p>
+<div id="board"></div>
+<p>
+  <a href="/ideas-catalogue/index.html#mossy-poolbanks-clearance-candidate"
+    >Session art catalogue</a
+  >
+</p>
+<script type="module" src="./review.ts"></script>

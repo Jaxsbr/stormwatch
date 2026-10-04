@@ -20,6 +20,7 @@ it("loads promoted waves, catalogs, rules and new map save IDs before game impor
     id: "runtime-map",
     name: "Runtime map",
   });
+  content.boards![0].levelIds.push("runtime-map");
   content.enemies.raider.hp = 71;
   content.towers.bolt.cost = 43;
   content.rules.normalLives = 16;

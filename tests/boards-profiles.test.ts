@@ -1,3 +1,4 @@
+import { legacyFirstBoard } from "./fixtures/first-board-content";
 import { describe, expect, it } from "vitest";
 import {
   CANONICAL_CONTENT,
@@ -29,7 +30,7 @@ import { Game } from "../src/sim/game";
 
 /** Synthetic two-board fixture, never registered or shipped as campaign content. */
 export function twoBoards() {
-  const content = structuredClone(CANONICAL_CONTENT);
+  const content = legacyFirstBoard();
   content.levels.push(
     ...content.levels.slice(0, 2).map((level, i) => ({
       ...structuredClone(level),
@@ -81,10 +82,38 @@ function winFirst(context: ReturnType<typeof progressionContext>): SaveData {
 }
 
 describe("resolved boards through public progression and save interfaces", () => {
-  it("preserves legacy registry, initial roster and current artwork without activating Skunk or a destination", () => {
+  it("preserves the original teaching roster and unlocks accepted Mosswater only after all first-board wins", () => {
     const context = progressionContext();
-    expect(resolveBoards(CANONICAL_CONTENT)[0].levelIds).toEqual(
-      CANONICAL_CONTENT.levels.map(({ id }) => id),
+    expect(context.boards.map((b) => b.levelIds.length)).toEqual([3, 5]);
+    const fresh = freshSave();
+    expect(boardNavigation(context, fresh).next).toBeUndefined();
+    const save = winFirst(context);
+    expect(save.unlocked).toEqual([
+      "squirrel-upgrade",
+      "turtle",
+      "reach",
+      "nets",
+      "skunk",
+    ]);
+    expect(boardNavigation(context, save).next?.id).toBe("mosswater-reach");
+    expect(save.viewedBoard).toBe(FIRST_BOARD_ID);
+    expect(
+      expeditionScreen(
+        CANONICAL_CONTENT.levels.map((level) => compileLevel(level)),
+        save,
+        context,
+      ),
+    ).toContain('data-action="board:mosswater-reach"');
+    expect(
+      levelForAttempt(compileLevel(CANONICAL_CONTENT.levels[0]), fresh)
+        .availableTowers,
+    ).toEqual(["bolt"]);
+  });
+  it("still resolves pre-expansion content with no board collection and no Skunk grant", () => {
+    const legacy = legacyFirstBoard();
+    const context = progressionContext(legacy);
+    expect(resolveBoards(legacy)[0].levelIds).toEqual(
+      legacy.levels.map(({ id }) => id),
     );
     const save = winFirst(context);
     expect(save.unlocked).toEqual([
@@ -99,15 +128,11 @@ describe("resolved boards through public progression and save interfaces", () =>
     });
     expect(
       expeditionScreen(
-        CANONICAL_CONTENT.levels.map((level) => compileLevel(level)),
+        legacy.levels.map((level) => compileLevel(level)),
         save,
         context,
       ),
     ).not.toContain('data-action="board:');
-    expect(
-      levelForAttempt(compileLevel(CANONICAL_CONTENT.levels[0]), freshSave())
-        .availableTowers,
-    ).toEqual(["bolt"]);
   });
   it("requires every victory, accepts one star, announces completion exactly once and never travels automatically", () => {
     const { context } = fixture();

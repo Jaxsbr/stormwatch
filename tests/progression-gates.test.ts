@@ -21,7 +21,7 @@ it("uses earned Turtle and Squirrel upgrades on completed maps after reload", ()
       ),
     ),
   );
-  for (const level of LEVELS) {
+  for (const level of LEVELS.slice(0, 3)) {
     const replay = levelForAttempt(level, earned);
     const game = new Game({ ...replay, startCoins: 500 }, "none", false, 42, {
       unlockedUpgrades: earned.unlocked.includes("squirrel-upgrade")

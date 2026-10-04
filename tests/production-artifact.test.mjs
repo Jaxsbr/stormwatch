@@ -52,3 +52,16 @@ describe("production artifact boundary", () => {
     );
   });
 });
+
+it.each([
+  "mosswater-feedback",
+  "prepareBoardReviewProfile",
+  "Recorded legal finale build diverged",
+])(
+  "rejects feedback profile and replay helpers from production: %s",
+  async (symbol) => {
+    const root = await artifact();
+    await writeFile(join(root, "assets/game.js"), symbol);
+    await expect(checkProductionArtifact(root)).rejects.toThrow("Utility code");
+  },
+);

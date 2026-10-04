@@ -43,7 +43,10 @@ Read the accepted records before changing consequential behavior. For a new deci
 - [Authored boards and profile continuation](boards-profile-progression.md) — descriptive candidate filename for coordinated expansion review; numbering is reserved during synthesis.
 
 - [Twin switchbacks crossing battlefield — approved geometry](twin-switchbacks-layout.md) — one shared layout for woodland encounters 1, 2 and 5.
+- [Iron Boar resistance torso](boar-resistance-torso.md) — accepted side pose, 600 ms motion, directional and battlefield presentation.
 
-- [Enemy facing follows route travel](enemy-route-facing.md) — shared renderer repair using existing art and route geometry.
+- [Enemy facing follows route travel](enemy-route-facing.md) — shared renderer fix for leftward return segments.
 
 - [040: One fixed landscape battlefield frame](040-fixed-battlefield-frame.md) — complete scene letterboxing and aligned picking.
+
+- [Accepted Mosswater canonical activation](mosswater-campaign-activation.md) — owner playthrough, original-board compatibility and production verification.

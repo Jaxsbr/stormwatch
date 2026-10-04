@@ -3,6 +3,9 @@ import type { AuthoringContent } from "../config/configuration";
 export const FIRST_BOARD_ID = "first-board";
 /** Reviewed board artwork. New illustrations join only with accepted runtime assets. */
 export const BOARD_ILLUSTRATIONS = {
+  // Owner-accepted runtime illustration; stable asset ID retained after activation.
+  "mosswater-board-candidate-v1":
+    "art/v2/mosswater-board-candidate-v1/atlas.webp",
   "expedition-map-v1": "art/v2/expedition-map-v1/atlas.webp",
 } as const;
 export interface BoardDef {

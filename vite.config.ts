@@ -4,7 +4,7 @@ import { runtimeContentPlugin } from "./tools/runtime-content.mjs";
 import { workbenchApiPlugin } from "./tools/workbench-api.mjs";
 
 const utilityModule =
-  /\/(?:src\/(?:workbench|qa)\/|src\/render\/recording\.|tools\/)/;
+  /\/(?:(?:src\/(?:workbench|qa)|review)\/|src\/render\/recording\.|tools\/)/;
 
 /** Inspect the emitted graph, including dynamically imported chunks. */
 function productionBoundary(): Plugin {

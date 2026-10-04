@@ -1,3 +1,4 @@
+import { legacyFirstBoard } from "./fixtures/first-board-content";
 import { expect, it } from "vitest";
 import {
   CANONICAL_CONTENT,
@@ -20,7 +21,7 @@ import {
 } from "../src/workbench/promotion";
 
 const baseline = () => {
-  const content = structuredClone(CANONICAL_CONTENT);
+  const content = legacyFirstBoard();
   const first = resolveBoards(content)[0];
   content.boards = [
     { ...first, levelIds: first.levelIds.slice(0, 2) },
@@ -34,13 +35,13 @@ const baseline = () => {
   return content;
 };
 it("migrates absent board collections without changing pending maps or eagerly freezing legacy membership", () => {
-  const draft = createWorkingDraft(CANONICAL_CONTENT);
+  const draft = createWorkingDraft(legacyFirstBoard());
   draft.content.levels[0].name = "Pending map";
   const restored = validateWorkingDraft(JSON.parse(JSON.stringify(draft)));
   expect(restored.content.boards).toBeUndefined();
   expect(restored.content.levels[0].name).toBe("Pending map");
   expect(resolveBoards(restored.content)[0].levelIds).toEqual(
-    CANONICAL_CONTENT.levels.map(({ id }) => id),
+    CANONICAL_CONTENT.levels.slice(0, 3).map(({ id }) => id),
   );
 });
 it("promotes one board with its wave, preserves unrelated live/draft boards and rejects stale conflicts after rebase", () => {

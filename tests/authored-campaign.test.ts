@@ -15,6 +15,8 @@ it("registers appended recipes in campaign order and preserves their earned star
     id: "new-crossing",
     name: "New <Crossing> & trail",
   });
+  promoted.boards[0].levelIds.push("new-crossing");
+  const appendedIndex = promoted.levels.length - 1;
   vi.resetModules();
   vi.doMock("../src/content/recipes.json", () => ({ default: promoted }));
   const { LEVELS } = await import("../src/content/levels");
@@ -26,10 +28,10 @@ it("registers appended recipes in campaign order and preserves their earned star
     promoted.levels.map((level) => level.id),
   );
   let progress = freshSave();
-  expect(levelUnlocked(LEVELS, 3, progress)).toBe(false);
+  expect(levelUnlocked(LEVELS, appendedIndex, progress)).toBe(false);
   for (const level of LEVELS.slice(0, 3))
     progress = recordVictory(progress, level.id, 1);
-  expect(levelUnlocked(LEVELS, 3, progress)).toBe(true);
+  expect(levelUnlocked(LEVELS, appendedIndex, progress)).toBe(true);
   progress = recordVictory(progress, "new-crossing", 3);
   expect(parseSave(JSON.stringify(progress))).toEqual(progress);
   const profiles = loadProfiles(
@@ -47,8 +49,8 @@ it("registers appended recipes in campaign order and preserves their earned star
       }),
     ).stars["not-promoted"],
   ).toBeUndefined();
-  expect(advantageScreen(LEVELS[3], [], "none")).toContain(
+  expect(advantageScreen(LEVELS[appendedIndex], [], "none")).toContain(
     "New &lt;Crossing&gt; &amp; trail",
   );
-  expect(LEVELS[3].path).toEqual(LEVELS[0].path);
+  expect(LEVELS[appendedIndex].path).toEqual(LEVELS[0].path);
 });

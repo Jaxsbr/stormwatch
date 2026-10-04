@@ -133,8 +133,9 @@
     "farLegAnatomy": "character left"
   },
   "review": {
-    "status": "candidate",
-    "notes": "Imported native separated parts. Assembly and motion gates pending."
+    "status": "owner-accepted-runtime",
+    "date": "2026-10-04",
+    "notes": "Owner completed the assembled expansion playthrough and accepted the current runtime art, motion, effects, HUD, board navigation and balance for merge on 4 October 2026. Stable asset identity and image bytes retained."
   },
   "sourceSha256": "bdd97f8bfbfcc3e190277ba44b35c2200fb7bee63e3dc5bb5019a36940ccb508",
   "validation": {

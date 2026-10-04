@@ -104,7 +104,7 @@ function renderer(reducedMotion = false) {
   };
   return { field, updates, actor };
 }
-function fixture(kind, reducedMotion = false) {
+function fixture(kind, reducedMotion = false, withSkunk = false) {
   const rendered = renderer(reducedMotion);
   const content = structuredClone(CANONICAL_CONTENT);
   const map = content.levels[0];
@@ -127,11 +127,18 @@ function fixture(kind, reducedMotion = false) {
       ],
     },
   ];
+  if (withSkunk) {
+    map.availableTowers = ["stone"];
+    map.startCoins = 1000;
+    content.towers.stone.range = 100;
+    content.enemies.armored.hp = 50000;
+  }
   const config = resolveConfiguration(content);
   const game = new Game(config.level, "none", false, 42, {
     configuration: config,
   });
   rendered.field.load(game.level);
+  if (withSkunk) expect(game.place("stone", { x: 3, z: 2 })).toBe(true);
   game.startWave();
   return { ...rendered, game, config };
 }
@@ -312,5 +319,63 @@ it("keeps reflected Rat boot contact within the native IK reach tolerance during
     expect(Math.abs(foot.x - feet[0].x)).toBeLessThan(1);
     expect(Math.abs(foot.y - feet[0].y)).toBeLessThan(1);
   }
+  field.dispose();
+});
+
+it("renders a real leftward Boar immunity cue, pauses, returns after600ms and resets a reused actor", () => {
+  const { game, field, actor, config } = fixture("armored", false, true);
+  let cue;
+  for (let i = 0; i < 3000; i++) {
+    game.tick(DT);
+    field.update(game, null, DT);
+    const e = game.state.enemies[0];
+    if (
+      e &&
+      e.distance > 16.1 &&
+      e.distance < 18.8 &&
+      e.immuneAt === game.state.clock
+    ) {
+      cue = e;
+      break;
+    }
+  }
+  expect(cue).toBeDefined();
+  const left = actor(),
+    body = left.cutout.parts.get("body"),
+    brace = left.cutout.parts.get("bodyResist");
+  expect(left.mirrored).toBe(true);
+  expect(brace.visible).toBe(true);
+  expect(body.visible).toBe(false);
+  expect(brace.material.map.repeat.x).toBe(-1);
+  expect(left.cutout.resource.textures.get("bodyResist").repeat.x).toBe(1);
+  expect(brace.position).toEqual(body.position);
+  expect(brace.material.rotation).toBe(body.material.rotation);
+  game.pause();
+  game.tick(DT * 10);
+  field.update(game, null, DT);
+  expect(brace.visible).toBe(true);
+  game.pause();
+  game.tick(DT * 10);
+  field.update(game, null, DT);
+  expect(game.state.clock - cue.immuneAt).toBeGreaterThanOrEqual(0.3);
+  expect(brace.visible).toBe(true);
+  expect(body.visible).toBe(false);
+  game.tick(DT * 9);
+  field.update(game, null, DT);
+  expect(game.state.clock - cue.immuneAt).toBeGreaterThanOrEqual(0.6);
+  expect(brace.visible).toBe(false);
+  expect(body.visible).toBe(true);
+  const next = new Game(game.level, "none", false, 42, {
+    configuration: config,
+  });
+  field.load(next.level);
+  next.startWave();
+  advanceTo(next, (d) => d > 16.4);
+  field.update(next, null, DT);
+  expect(actor()).toBe(left);
+  expect(brace.visible).toBe(false);
+  expect(body.visible).toBe(true);
+  expect(brace.material.map.repeat.x).toBe(-1);
+  expect(left.cutout.resource.textures.get("bodyResist").repeat.x).toBe(1);
   field.dispose();
 });

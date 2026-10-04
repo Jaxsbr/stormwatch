@@ -1,3 +1,8 @@
+> Current expansion acceptance: the owner completed the assembled eight-encounter
+> playthrough and accepted merge on 4 October 2026. See [canonical activation evidence](evidence/mosswater-activation.md).
+> Physical-device performance remains unverified. Painted mouth/route registration
+> and trail-edge spill remain explicitly deferred; the foundation report below is historical.
+
 > Historical foundation report: the renderer/art/UI reboot supersedes the build assessed below. Current reboot acceptance is tracked in [the rubric audit](../review/2026-09-20-reboot/current-rubric-audit.md). The published site and older performance/byte results below do not certify the current animal build.
 
 # Acceptance report — Stormwatch MVP candidate

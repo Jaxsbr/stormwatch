@@ -1,6 +1,6 @@
 # Enemy facing follows route travel
 
-Status: owner-requested bug fix, 4 October 2026; standalone main review and deployment verification pending.
+Status: owner-requested bug fix, 4 October 2026; standalone main PR20 merged at `9e0b65a`; build and deployment verified successful.
 
 ## Context
 
@@ -49,4 +49,6 @@ Browser verification uses normal-mode crossing play on the shared renderer, with
 paused left-return and right-forward Rats visible together. This is desktop browser
 behavior evidence, not physical mobile performance or whole-expansion art approval.
 Independent review of the identical renderer implementation and its standalone
-main adaptation passes. Post-merge deployment verification remains pending.
+main adaptation passes. Main workflow `37162460066` verifies successful build and deployment of `9e0b65a`.
+
+The held feedback build combines the independently reviewed Boar immunity torso with this repair. All 433 integrated tests, type checking, formatting and both builds pass; a retained actual Game/Battlefield regression verifies the reflected brace, pause, 600 ms recovery and neutral pooled reuse. This integration does not close owner directional or battlefield-art acceptance.

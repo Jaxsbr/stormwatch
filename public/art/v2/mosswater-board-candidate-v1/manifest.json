@@ -1,0 +1,26 @@
+{
+  "version": 1,
+  "id": "mosswater-board-candidate-v1",
+  "role": "board",
+  "review": {
+    "status": "owner-accepted-runtime",
+    "date": "2026-10-04",
+    "notes": "Owner completed the assembled expansion playthrough and accepted the current runtime art, motion, effects, HUD, board navigation and balance for merge on 4 October 2026. Stable asset identity and image bytes retained."
+  },
+  "texture": "art/v2/mosswater-board-candidate-v1/atlas.webp",
+  "width": 1672,
+  "height": 940,
+  "sha256": "e8fd357dfb6d4a2ac43b6993bfd454264d284a819032db39a7683a303c5660a7",
+  "bytes": 746324,
+  "source": "exec-647fc16b-123d-4e5b-b2ee-522b274c7700.png",
+  "provenance": "Native ImageGen edit of selected session concept, converted to WebP quality 92 without cropping. Full original archived in ideas catalogue.",
+  "generation": {
+    "tool": "Native ImageGen",
+    "mode": "edit",
+    "prompt": "prompt.txt",
+    "transparentBackground": false,
+    "referenceImage": "ideas-catalogue/assets/mosswater-reach.png",
+    "referenceContext": "Single image edit reference: selected Mosswater Reach concept sheet, native output exec-cd3847a1-eade-49c6-8e46-cf13fa7ad1cd.png.",
+    "promptRecovery": "Exact submitted prompt recovered from this art chat\u2019s visible generation tool-call history; final file newline is storage formatting."
+  }
+}

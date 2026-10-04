@@ -8,12 +8,23 @@ const bundle = () => ({
   traces: [],
   results: [],
 });
+// Five real CLI subprocesses are an integration check, not a five-second performance budget.
 it("previews and atomically applies only canonical content in a disposable workspace, preserving it on errors", async () => {
   const { mkdtemp, mkdir, writeFile, readFile, rm } =
     await import("node:fs/promises");
   const { tmpdir } = await import("node:os");
   const { join } = await import("node:path");
   const { execFileSync } = await import("node:child_process");
+  function expectRefusal(args) {
+    try {
+      execFileSync(process.execPath, args, { stdio: "pipe", timeout: 10_000 });
+    } catch (error) {
+      // A killed or timed-out process cannot stand in for intentional CLI refusal.
+      expect(error).toMatchObject({ status: 1, signal: null });
+      return;
+    }
+    expect.unreachable("Promotion should refuse invalid or stale input");
+  }
   const workspace = await mkdtemp(join(tmpdir(), "stormwatch-promotion-"));
   try {
     await mkdir(join(workspace, "src/content"), { recursive: true });
@@ -38,33 +49,33 @@ it("previews and atomically applies only canonical content in a disposable works
       "--workspace",
       workspace,
     ];
-    const output = execFileSync(process.execPath, args, { encoding: "utf8" });
+    const output = execFileSync(process.execPath, args, {
+      encoding: "utf8",
+      timeout: 10_000,
+    });
     expect(output).toContain("candidateIdentity");
     expect(await readFile(destination, "utf8")).toBe(original);
     await writeFile(selectionFile, JSON.stringify({ towers: ["bolt"] }));
-    expect(() =>
-      execFileSync(process.execPath, [...args, "--apply"], { stdio: "pipe" }),
-    ).toThrow();
+    expectRefusal([...args, "--apply"]);
     expect(await readFile(destination, "utf8")).toBe(original);
     await writeFile(
       selectionFile,
       JSON.stringify({ levels: [revision.content.levels[0].id] }),
     );
-    execFileSync(process.execPath, [...args, "--apply"], { encoding: "utf8" });
+    execFileSync(process.execPath, [...args, "--apply"], {
+      encoding: "utf8",
+      timeout: 10_000,
+    });
     const accepted = await readFile(destination, "utf8");
     expect(JSON.parse(accepted).levels[0].startCoins).toBe(
       revision.content.levels[0].startCoins,
     );
-    expect(() =>
-      execFileSync(process.execPath, [...args, "--apply"], { stdio: "pipe" }),
-    ).toThrow();
+    expectRefusal([...args, "--apply"]);
     expect(await readFile(destination, "utf8")).toBe(accepted);
     await writeFile(exportFile, '{"schemaVersion":99}');
-    expect(() =>
-      execFileSync(process.execPath, [...args, "--apply"], { stdio: "pipe" }),
-    ).toThrow();
+    expectRefusal([...args, "--apply"]);
     expect(await readFile(destination, "utf8")).toBe(accepted);
   } finally {
     await rm(workspace, { recursive: true, force: true });
   }
-});
+}, 30_000);

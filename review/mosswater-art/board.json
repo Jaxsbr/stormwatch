@@ -1,0 +1,36 @@
+{
+  "id": "mosswater-reach",
+  "name": "Mosswater Reach",
+  "levelIds": [
+    "mosswater-01",
+    "mosswater-02",
+    "mosswater-03",
+    "mosswater-04",
+    "mosswater-05"
+  ],
+  "visual": {
+    "illustration": "mosswater-board-candidate-v1",
+    "markers": {
+      "mosswater-01": {
+        "x": 12,
+        "y": 53
+      },
+      "mosswater-02": {
+        "x": 30,
+        "y": 26
+      },
+      "mosswater-03": {
+        "x": 50,
+        "y": 43
+      },
+      "mosswater-04": {
+        "x": 69,
+        "y": 29
+      },
+      "mosswater-05": {
+        "x": 89,
+        "y": 55
+      }
+    }
+  }
+}

@@ -3,9 +3,9 @@ import { resolve, relative } from "node:path";
 import { fileURLToPath } from "node:url";
 
 const forbiddenPath =
-  /(?:^|\/)(?:qa|workbench|fixtures?|drafts?|scenarios?|research|tools)(?:[./-]|$)|heartbeat/i;
+  /(?:^|\/)(?:qa|workbench|review|fixtures?|drafts?|scenarios?|research|tools)(?:[./-]|$)|heartbeat/i;
 const forbiddenCode =
-  /review-recording|MediaRecorder|profileTiming|frameProfile|stormwatch-workbench|artificial stress fixture|showLoadReport|Run attribution diagnostic|Download evidence|Object\.defineProperty\(window,["']stormwatch/;
+  /mosswater-feedback|prepareBoardReviewProfile|Recorded legal finale build diverged|review-recording|MediaRecorder|profileTiming|frameProfile|stormwatch-workbench|artificial stress fixture|showLoadReport|Run attribution diagnostic|Download evidence|Object\.defineProperty\(window,["']stormwatch/;
 
 export async function checkProductionArtifact(directory = "dist") {
   const root = resolve(directory);

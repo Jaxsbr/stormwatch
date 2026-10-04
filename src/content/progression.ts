@@ -58,15 +58,51 @@ const DISCOVERIES = [
 /** Explicit contexts support isolated authoring fixtures; runtime uses accepted content. */
 export function progressionContext(
   content: AuthoringContent = CANONICAL_CONTENT,
-  discoveries: readonly DiscoveryRule[] = DISCOVERIES,
+  discoveries?: readonly DiscoveryRule[],
 ): ProgressionContext {
   validateBoards(content);
   const boards = resolveBoards(content);
   return {
     boards,
     levelIds: boards.flatMap(({ levelIds }) => levelIds),
-    discoveries: structuredClone(discoveries),
+    discoveries: structuredClone(discoveries ?? campaignDiscoveries(boards)),
   };
+}
+
+/** Expansion rewards activate only with the complete authored destination. */
+function campaignDiscoveries(
+  boards: readonly BoardDef[],
+): readonly DiscoveryRule[] {
+  const destination = boards.find(({ id }) => id === "mosswater-reach");
+  const ids = [
+    "mosswater-01",
+    "mosswater-02",
+    "mosswater-03",
+    "mosswater-04",
+    "mosswater-05",
+  ];
+  if (
+    !destination ||
+    destination.levelIds.length !== ids.length ||
+    !ids.every((id, index) => destination.levelIds[index] === id)
+  )
+    return DISCOVERIES;
+  return [
+    ...DISCOVERIES,
+    {
+      id: "skunk",
+      board: boards[0].id,
+      legacy: true,
+      replayTower: "stone",
+      reward: { kind: "tower-unlock", tower: "stone" },
+    },
+    {
+      id: "skunk-upgrade",
+      encounter: "mosswater-02",
+      legacy: true,
+      reward: { kind: "tower-upgrade", tower: "stone" },
+    },
+  ];
 }
 export function boardComplete(
   board: BoardDef,

@@ -1,0 +1,32 @@
+{
+  "version": 1,
+  "id": "mossy-poolbanks-candidate-v1",
+  "role": "battlefield",
+  "review": {
+    "status": "owner-accepted-runtime",
+    "date": "2026-10-04",
+    "notes": "Owner completed the assembled expansion playthrough and accepted the current runtime art, motion, effects, HUD, board navigation and balance for merge on 4 October 2026. Stable asset identity and image bytes retained. Painted entrance/exit alignment and trail spill remain the explicit deferred battlefield-art-registration scope exception; this does not assert measured scenery registration."
+  },
+  "texture": "art/v2/mossy-poolbanks-candidate-v1/atlas.webp",
+  "width": 1672,
+  "height": 940,
+  "sha256": "22fbcc8ab655ec2df6316e2f6c5e9a74523e0f30846baa52a8b9eaaa8d0c2d21",
+  "bytes": 613850,
+  "source": "exec-f252bd5e-a11e-48bf-8344-2a3d99944625.png",
+  "provenance": "Native ImageGen edit of selected Poolbanks clearance candidate using owner annotations; wet-mottling option selected. Converted to WebP quality 92 without cropping. Original and alternatives archived in ideas catalogue.",
+  "clearance": {
+    "layout": "twin-switchbacks",
+    "blockedCellsAdded": 0,
+    "interiorPools": "cosmetic traversable shallows"
+  },
+  "sourceSha256": "08532b99383f6c146a7a20ed90400c3f03a37d2e283200155f5e35d0d15f8434",
+  "generation": {
+    "tool": "Native ImageGen",
+    "mode": "edit",
+    "prompt": "prompt.txt",
+    "transparentBackground": false,
+    "referenceImage": "ideas-catalogue/assets/mossy-poolbanks-clearance-candidate.png",
+    "referenceContext": "Actual edit input was the owner-annotated screenshot codex-clipboard-3658471b-a545-46e3-93b1-32516ef62104.png of this clearance candidate. Three cream rectangles marked the upper, middle and lower right worn-earth strip for removal. The unannotated underlying candidate is archived at referenceImage; it is not a byte-identical substitute for the annotated input.",
+    "promptRecovery": "Exact submitted prompt recovered from this art chat\u2019s visible generation tool-call history; final file newline is storage formatting."
+  }
+}

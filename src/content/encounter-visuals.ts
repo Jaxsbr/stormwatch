@@ -19,7 +19,7 @@ export const enemyVisuals: Record<
     briefing: "weasel-rig-v1/body.webp",
   },
   armored: {
-    views: ["boar-rig-v1", "boar-front-rig-v1", "boar-rear-rig-v1"],
+    views: ["boar-side-resistance-v1", "boar-front-rig-v1", "boar-rear-rig-v1"],
     briefing: "boar-rig-v1/body.webp",
   },
   boss: {
@@ -52,6 +52,8 @@ export const defenderVisuals: Record<
 
 /** Approved scenery can be reused by new authored maps without changing JavaScript. */
 export const backdropVisuals: Record<string, string> = {
+  // Owner-accepted Poolbanks painting; stable asset ID retained after activation.
+  "mossy-poolbanks-candidate-v1": "mossy-poolbanks-candidate-v1/atlas.webp",
   woodland: "woodland-clearing-v3/atlas.webp",
   rainstone: "rainstone-riverbank-v2/atlas.webp",
 };

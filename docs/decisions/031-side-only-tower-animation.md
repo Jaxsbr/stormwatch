@@ -34,3 +34,43 @@ playtest supplies the visual evidence for this same facing policy. A fresh brows
 walkthrough did not advance past the title screen in the automation session, so
 no new battlefield verification is claimed. Subsequent action changes must still
 pass their own pose, motion and battlefield review gates.
+
+## Skunk action and effects — 4 October 2026
+
+The owner selected the underhand action from A with B's corked flask, approximately
+2× the prior bomb size and bright neon green for visibility. The revised poses and
+continuous motion were accepted, followed by B's soft puffs with no “Poisoned”
+text. This extends the existing side-only decision; battlefield acceptance remains
+pending. [Study and provenance](../../review/2026-10-03-skunk-study/README.md).
+
+The runtime keeps the original body and continuous arm rig, sampling the exact
+release pose to hand the same texture and dimensions to the real projectile.
+Soft puffs read living enemies' authoritative poison status and the existing
+transient splash event. There is no additional combat timer or ground damage zone.
+Pause, expiry, immunity and evasion remain simulation decisions. Reloading the
+flask is a brief visual fade, as accepted in the motion study; vertical targets
+retain stylized side poses. The crowd fixture deliberately exaggerates overlap
+and does not establish encounter balance or physical-device performance.
+
+Focused tests cover mirrored release, first/late rendering, planted feet, pause,
+cadence scaling, pooled idle reset, reduced motion, actual Game poison outcomes,
+expiry and buffer reuse. The real Battlefield fixture covers both facings,
+vertical targets, a crowd, sale while a bomb is in flight and fresh-attempt cleanup.
+See [runtime verification](../../review/2026-10-03-skunk-study/battlefield/README.md).
+
+## Target authority correction — 4 October 2026
+
+Combined explicit-route acceptance exposed two renderer defects: raw-distance
+preparation disagreed with remaining-travel-time firing, and the release lock
+retained idle facing on the first Skunk shot. The existing firing policy is now
+exposed by the read-only `Game.targetFor` query and shared with preparation. A new
+Skunk projectile establishes release facing before the existing lock. This keeps
+combat policy in the simulation while preserving accepted motion and projectile
+handoff, at the cost of a small public query on Game. No authored fields change.
+
+The actual Game/Battlefield legal replay changed from 80 opposite-side releases
+among 504 Skunk shots to zero among the same 504. Focused cases protect first/late
+release, cross-route priority, pause, immutable query and sale during flight.
+410 tests, type checking and game/workbench builds pass. Browser inspection agrees
+at 0.7s, 6.7s and 6.8s. [Evidence and replay](../../review/2026-10-03-skunk-study/facing/README.md).
+Final owner acceptance and post-merge deployment checks belong to parent integration.

@@ -30,6 +30,111 @@
       "path": "review/boards-profiles/invalid-destination-recovered.png",
       "sha256": "20e5fbba0973f4a9a028ece9a7b8cdc7f3ec8419e0bc7ce33b9a35bfd1b6a752",
       "reason": "Diagnostic board/profile browser verification using existing approved art; no new art idea or generated variation"
+    },
+    {
+      "path": "review/2026-10-03-skunk-study/battlefield/crowd.jpg",
+      "sha256": "e08256eb83cc529369f2a17ce7c3440ba6709539a029551f6a24cc0bc5b94040",
+      "reason": "Diagnostic actual-Game crowd screenshot; existing art and procedural gas, no new generated art."
+    },
+    {
+      "path": "review/2026-10-03-skunk-study/battlefield/release.jpg",
+      "sha256": "539557727fa8400e713efb66e80a777dfdb6d5d047324d0c40db45bee153c69f",
+      "reason": "Diagnostic exact release screenshot of accepted rig and flask; source art archived separately."
+    },
+    {
+      "path": "review/2026-10-03-skunk-study/effects/attached-comparison.jpg",
+      "sha256": "bbe7aa8d48273e3430c2fc4515933098880e39399b233dc5b94de6dd2a0e9ef9",
+      "reason": "Historical procedural-effect comparison screenshot before label removal; no generated artwork."
+    },
+    {
+      "path": "review/2026-10-03-skunk-study/motion/follow-through.jpg",
+      "sha256": "6355819da98d6192a32a4dc865a760253b202058fba339014db0907ef0ccafac",
+      "reason": "Diagnostic follow-through rig screenshot; generated source flask already archived."
+    },
+    {
+      "path": "review/2026-10-03-skunk-study/motion/preparation.jpg",
+      "sha256": "99b70b7b8315616c66e7b7f04c8af69f3b3fe9bb54cf84bfc4887ed9c9b0d09c",
+      "reason": "Diagnostic preparation rig screenshot; generated source flask already archived."
+    },
+    {
+      "path": "review/2026-10-03-skunk-study/motion/review.jpg",
+      "sha256": "a9deeb8f661ae26616ca5c3dd5adfd5b703ae3fdf7de4bf5a42ab66e939fecac",
+      "reason": "Diagnostic motion-study review screenshot; generated source flask already archived."
+    },
+    {
+      "path": "review/2026-10-03-skunk-study/motion/small-scale.jpg",
+      "sha256": "db08d3d13d3ed8a9b323841bc7123c276f9deccec879dba58cf326b10a802d0c",
+      "reason": "Diagnostic game-scale rig screenshot; generated source flask already archived."
+    },
+    {
+      "path": "review/mosswater-art/phone-clearance.png",
+      "sha256": "c474097012fac9f1ad9b83ce4f769c7a06f67b097135c0097cf0044289483be2",
+      "reason": "Diagnostic real-renderer phone-sized clearance screenshot; no new art concept"
+    },
+    {
+      "path": "review/mosswater-encounters/finale-preparation.jpg",
+      "sha256": "f13d45b95a431ab0ecbf4d11c131dd7790eb91fe8976450deaabadbba16e5655",
+      "reason": "Diagnostic legal finale preparation using existing renderer and captured source assets; no new generated art."
+    },
+    {
+      "path": "review/mosswater-encounters/inspection.jpg",
+      "sha256": "b62a6d26b84a4ec4132fd9ff5dbebb896989cc950d87b6993a4ee45bc6a0e904",
+      "reason": "Diagnostic enemy inspection UI screenshot; no new generated art."
+    },
+    {
+      "path": "review/mosswater-encounters/promoted-game.jpg",
+      "sha256": "a95d7a73434e772ee52194e301b02c8481cb6615efaf1a0948ef5e0fb97ec300",
+      "reason": "Diagnostic candidate promotion and game reload screenshot; no new generated art."
+    },
+    {
+      "path": "review/mosswater-encounters/twin-bosses.jpg",
+      "sha256": "fc1bb225dcfbfb79bf7543d1b329ba84c1246318f15ace76e279e3b6f01c614b",
+      "reason": "Diagnostic real Game twin-boss fixture using captured source assets; no new generated art."
+    },
+    {
+      "path": "review/mosswater-encounters/workbench-promotion.jpg",
+      "sha256": "30a2e39e054f686f9e5f915ac6c4894f36f0f732b2fd966ced8b547ae843daab",
+      "reason": "Diagnostic workbench promotion verification screenshot; no new generated art."
+    },
+    {
+      "path": "review/mosswater-encounters/route-promoted-game.jpg",
+      "sha256": "66d70fe24a2a60639dae36d10e8c137909a1eb71dac055c7de5875bf7fd3a597",
+      "reason": "Diagnostic explicit single-route promotion and reload verification; no new generated art."
+    },
+    {
+      "path": "review/2026-10-03-skunk-study/facing/first.jpg",
+      "sha256": "d31e5cff5fe081a15762a8da96717319f5fcc1ef9d85183b6fb35f86d60302be",
+      "reason": "Diagnostic legal replay capture of corrected first-shot facing; no new generated art."
+    },
+    {
+      "path": "review/2026-10-03-skunk-study/facing/routes.jpg",
+      "sha256": "0aa59744985b226844f6e948f169dd95fdeb760837e82e3aa5b7a772a603c507",
+      "reason": "Diagnostic legal replay capture of corrected cross-route release; no new generated art."
+    },
+    {
+      "path": "review/2026-10-04-boar-runtime/evidence/mixed-brace.png",
+      "sha256": "57ace602891d18792395dee7cf58a81323ce49477778625a3ce49a89e6876d07",
+      "reason": "Diagnostic capture of runtime Boar resistance in a real mixed encounter; no new art idea"
+    },
+    {
+      "path": "review/2026-10-04-boar-runtime/evidence/finale-brace.png",
+      "sha256": "1a6ff57018a3ba7fbd445a66ab3da52801d17a54cb56653198f8a788c1b530eb",
+      "reason": "Diagnostic capture of runtime Boar resistance among twin-boss crowds; no new art idea"
+    },
+    {
+      "path": "docs/evidence/mosswater-production-gates.png",
+      "sha256": "74d3f0293d0f5e18d591cb97f897272307b77392f5700c1fb862591f2594014e",
+      "reason": "Diagnostic capture of canonical campaign gates; unchanged accepted artwork"
+    },
+    {
+      "path": "docs/evidence/mosswater-production-finale.png",
+      "sha256": "417e85bf713869ce5aafc729b4e2a7b9ff0883dc80c44d88dce419277aac47ee",
+      "reason": "Diagnostic capture of ordinary finale preparation; unchanged accepted artwork"
+    },
+    {
+      "path": "docs/evidence/mosswater-canonical-roundtrip.png",
+      "sha256": "dff131279c00086292502009fbcbd151f7244dcd705984ee5384bbf93aabb841",
+      "reason": "Diagnostic capture of disposable canonical promotion result; unchanged accepted artwork"
     }
   ]
 }
