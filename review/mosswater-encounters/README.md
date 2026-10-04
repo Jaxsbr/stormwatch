@@ -7,6 +7,8 @@ Status: implementation ready for review; owner play feel and visual acceptance p
 `npm ci`, then `npm run feedback:mosswater`.
 
 - Guide: `http://127.0.0.1:4177/review/mosswater-encounters/`
+- Board navigation: `/review/mosswater-encounters/board-review.html?preset=first-board`
+- Every new map accessible: `/review/mosswater-encounters/board-review.html?preset=all-maps`
 - Rat teaching: `/review/mosswater-encounters/playtest.html?map=mosswater-01`
 - Mixed matchups: `/review/mosswater-encounters/playtest.html?map=mosswater-04`
 - Earned twin-boss preparation: `/review/mosswater-encounters/playtest.html?map=mosswater-05&finale=1`
@@ -72,3 +74,7 @@ Parent integrates this contribution with remaining capability/art fixes and owns
 Finale feedback formation: before launching wave five, the legal replay has twelve defenders and 21 coins. Continue buying during combat: the baseline winning policy adds and upgrades a Skunk beside the right exit at cell (10, 4) when earned coins allow. No extra purchases happen automatically in manual feedback playback.
 
 Latest scenery: owner approved wet-mottling painting (art contribution `5574d1c`) replaces the earlier right-edge stripe. The complete HUD/crowd/layout review remains open. Earlier promotion/inspection screenshots establish functional behavior, not approval of this newer painting.
+
+## Board review shortcuts
+
+The two local launchers prepare dedicated review profiles using the existing legal normal-mode winning policy and real victory/progression interfaces. First-board entry earns only the original board; all-maps entry earns all eight encounters for unrestricted replay selection. Both begin on the first board so the owner can test the real forward/back controls, briefing and battlefield entry. Click Play at the ordinary title screen. Existing profiles are retained; repeat launch resumes the review profile, including its last-viewed board and subsequent progress. Volume settings carry over from the previous active profile. The launcher checks the feedback storage namespace before writing; it does not alter canonical content, production progression gates or ordinary saved profiles.

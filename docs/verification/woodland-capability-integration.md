@@ -16,7 +16,7 @@ The feedback adapter isolates its candidate content and profile/draft storage. P
 
 ## Verification
 
-The reviewed facing repair `ba5799b` and approved Boar motion `d0e847d` are integrated. The combined build passed type checking, formatting, all 433 tests across 71 files, production build and workbench build. The production boundary check passed across 250 files. Both builds retain the existing large-chunk advisory; no physical-device performance claim is made.
+The reviewed facing repair `ba5799b` and approved Boar motion `d0e847d` are integrated. The combined build passed type checking, formatting, all 435 tests across 72 files, production build and workbench build. The production boundary check passed across 250 files. Both builds retain the existing large-chunk advisory; no physical-device performance claim is made.
 
 Each new encounter passed edit → draft reload → Playtest → scoped Promote → uncached game reload. Temporary payout edits were restored through promotion, without a JavaScript rebuild. The encounter report records legal campaign traces, all-wave art demand and balance qualifications. The baseline legal strategy wins all eight encounters; this establishes reachability rather than owner-approved difficulty.
 
@@ -33,3 +33,7 @@ Thirty-nine generated-art catalogue ideas verify, including rejected variants; r
 Owner feedback remains required for board markers/navigation, painting clearance with the full HUD and crowds, Skunk battlefield effects, Boar directional variants/battlefield appearance and final encounter balance. Full-profile progression, all-map briefings/crowds and phone/tablet touch review remain release checks.
 
 The parent coordinates canonical activation only after the standalone capability review and owner gates close. Feedback readiness does not authorize merging the held art/campaign assembly into main.
+
+## Prepared board-review entries
+
+The feedback guide provides completed-first-board and all-maps review launchers. Each earns its entry through normal won Game attempts and the existing victory/profile interfaces, writes only the feedback profile namespace and retains existing players. Repeat launch resumes its review profile and last-viewed board. Browser verification confirms the real title → Play → first-board forward arrow → Mosswater → previous-board arrow, current board persistence after reload, every new map selectable in the all-maps profile and normal Boar briefing entry. Two focused tests protect ordinary player/settings preservation, earned gates, persistent board selection and ordinary replay resources. Check, formatting, all 435 tests, production build/boundary and workbench build pass. Production gameplay and canonical content are unchanged.
