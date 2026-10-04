@@ -174,6 +174,17 @@ Phases are bounded reviewable units, not permission to bypass their owner gates.
 
 ## Further Notes
 
+### Owner playtest scope exception — 4 October 2026
+
+The owner permits the current painted entrance/exit mismatch and live trail spill
+at the scenery edges to remain while the expansion proceeds. The orchestrator
+chooses a deferred [battlefield art registration effort](../battlefield-art-registration/spec.md),
+with generation guides, independently measured artwork landmarks, workbench
+validation and matching edge treatment. This is a narrow scope exception; other
+art, motion, effects, balance, profile and touch acceptance gates remain open.
+The fixed landscape frame remains required. Its passing transform tests do not
+prove that visible painted openings match the authored routes.
+
 The owner confirmed the design after three interview rounds and the final summary. Later corrections supersede the early proposals: Boar has permanent tough-skin poison immunity rather than a charge; the finale contains two Roadwardens rather than one; encounters 1, 2 and 5 use one shared layout rather than distinct crossing geometries; feedback words are Evade, Immune and Shield.
 
 Map-board names, exact illustration direction, bomb design, green gas palette/opacity, Boar expression count, effect symbols, motion and exact crossing geometry are deliberately reserved for the required interactive sessions. Agents must not silently choose these and call them approved. Start visual exploration with three meaningful alternatives, refine iteratively, and record exactly what the owner accepts. Reuse accepted resources and continuous rig motion where possible; whole-character frame replacement requires explicit review under the existing animation process.
