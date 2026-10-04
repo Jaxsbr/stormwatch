@@ -72,8 +72,11 @@ Changing its playable geometry or adding scenery blocks requires coordination
 with the design owners before campaign acceptance.
 
 Renderer samplers and scenery reuse keys include every route. Actor/resource
-pools retain their existing lifetime. Briefing and workbench previews show both
-entrances and exits, using the same resolved geometry.
+pools retain their existing lifetime. Workbench previews show both entrances and
+exits using the same resolved geometry. On 4 October 2026 the owner removed the
+player briefing's route preview, “Guard both exits” heading and route/shared-heart
+instructions: players discover the map challenge during play. This presentation
+change leaves the authored geometry and gameplay rules unchanged.
 
 ## Verification
 

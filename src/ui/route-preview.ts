@@ -8,7 +8,7 @@ const escape = (s: string) =>
         c
       ]!,
   );
-/** The same resolved geometry is previewed in the briefing and authoring adapter. */
+/** Preview resolved route geometry in the authoring adapter. */
 export function routePreview(
   level: Pick<LevelDef, "width" | "depth" | "path" | "routes" | "blocked">,
 ): string {
