@@ -192,3 +192,11 @@ Map-board names, exact illustration direction, bomb design, green gas palette/op
 Numerical tuning is delegated, with owner approval of resulting play experience. Choose and record consistent poison-strength refresh semantics and travel-time targeting estimation during implementation; these are technical details under the confirmed nonstacking and exit-threat rules, not authorization to change the player-facing mechanics.
 
 The project issue tracker is local Markdown. This is the parent spec; any later implementation tickets must be separate numbered issue files and inherit the phase gates. No implementation, generation, promotion, commit or deployment is performed by publication of this spec.
+
+
+## Owner briefing update — 4 October 2026
+
+The map-selection-to-play briefing must omit the map challenge preview image,
+its challenge heading and its explanatory subtext. Players discover the crossing
+challenge by playing. This supersedes story 42's player-facing route-preview
+requirement; route previews remain available to designers in the workbench.
